@@ -77,6 +77,7 @@ namespace EODAddIn
             this.btnAbout.Label = "About";
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.ShowImage = true;
+            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnAbout_Click);
             // 
             // btnCheckUpdate
             // 

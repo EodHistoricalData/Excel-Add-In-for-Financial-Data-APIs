@@ -70,6 +70,7 @@ namespace EODAddIn.Program
             this.lnkSite.TabIndex = 18;
             this.lnkSite.TabStop = true;
             this.lnkSite.Text = "https://eodhistoricaldata.com/";
+            this.lnkSite.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LnkSite_LinkClicked);
             // 
             // label2
             // 
@@ -114,6 +115,7 @@ namespace EODAddIn.Program
             this.btnCancel.Size = new System.Drawing.Size(23, 23);
             this.btnCancel.TabIndex = 14;
             this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.BtnCancel_Click);
             // 
             // panel1
             // 

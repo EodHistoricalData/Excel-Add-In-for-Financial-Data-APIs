@@ -13,5 +13,11 @@ namespace EODAddIn
         {
 
         }
+
+        private void BtnAbout_Click(object sender, RibbonControlEventArgs e)
+        {
+            Program.FrmAbout frm = new Program.FrmAbout();
+            frm.ShowDialog();
+        }
     }
 }

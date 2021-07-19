@@ -103,6 +103,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -156,15 +157,21 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="Program\ErrorReport.cs" />
     <Compile Include="Program\FrmAbout.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Program\FrmAbout.Designer.cs">
       <DependentUpon>FrmAbout.cs</DependentUpon>
     </Compile>
+    <Compile Include="Program\Program.cs" />
+    <Compile Include="Program\Settings.cs" />
+    <Compile Include="Program\SettingsFields.cs" />
+    <Compile Include="Program\Version.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Utils\API.cs" />
     <EmbeddedResource Include="Program\FrmAbout.resx">
       <DependentUpon>FrmAbout.cs</DependentUpon>
     </EmbeddedResource>
