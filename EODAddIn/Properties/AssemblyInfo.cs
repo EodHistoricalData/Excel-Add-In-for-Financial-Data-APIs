@@ -7,12 +7,12 @@ using System.Security;
 // набора атрибутов. Измените значения этих атрибутов, чтобы изменить сведения,
 // общие сведения об этой сборке.
 [assembly: AssemblyTitle("EODAddIn")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("The Excel Plugin for EODHistoricalData Financial APIs")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("EOD Historical Data")]
 [assembly: AssemblyProduct("EODAddIn")]
 [assembly: AssemblyCopyright("Copyright ©  2021")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyTrademark("EOD Historical Data")]
 [assembly: AssemblyCulture("")]
 
 // Установка значения False в параметре ComVisible делает типы в этой сборке невидимыми 
