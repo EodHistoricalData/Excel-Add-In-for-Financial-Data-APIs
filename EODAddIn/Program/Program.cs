@@ -27,6 +27,7 @@ namespace EODAddIn.Program
         /// Версия программы
         /// </summary>
         internal static Version Version { get; private set; }
+        
 
         /// <summary>
         /// Ключ активации программы
@@ -51,7 +52,11 @@ namespace EODAddIn.Program
         }
         private static string _UserHash = string.Empty;
 
-
+        static Program()
+        {
+            var ver = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
+            Version = new Version() { Major = ver.Major, Minor = ver.Minor, Build = ver.Build, Revision = ver.Revision };
+        }
 
 
         /// <summary>

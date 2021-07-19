@@ -110,7 +110,7 @@ namespace EODAddIn.Program
             this.btnCancel.FlatAppearance.BorderSize = 0;
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancel.Image = ((System.Drawing.Image)(resources.GetObject("btnCancel.Image")));
-            this.btnCancel.Location = new System.Drawing.Point(368, -1);
+            this.btnCancel.Location = new System.Drawing.Point(464, -1);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(23, 23);
             this.btnCancel.TabIndex = 14;
@@ -131,7 +131,7 @@ namespace EODAddIn.Program
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(392, 122);
+            this.panel1.Size = new System.Drawing.Size(488, 122);
             this.panel1.TabIndex = 21;
             // 
             // label1
@@ -140,7 +140,7 @@ namespace EODAddIn.Program
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.Location = new System.Drawing.Point(134, 33);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(245, 28);
+            this.label1.Size = new System.Drawing.Size(341, 28);
             this.label1.TabIndex = 20;
             this.label1.Text = "The Excel Plugin for EODHistoricalData Financial APIs";
             // 
@@ -148,7 +148,7 @@ namespace EODAddIn.Program
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(392, 122);
+            this.ClientSize = new System.Drawing.Size(488, 122);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FrmAbout";
