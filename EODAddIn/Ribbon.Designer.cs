@@ -35,6 +35,7 @@ namespace EODAddIn
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Ribbon));
             this.tabMain = this.Factory.CreateRibbonTab();
             this.grpMain = this.Factory.CreateRibbonGroup();
             this.grpAbout = this.Factory.CreateRibbonGroup();
@@ -72,22 +73,29 @@ namespace EODAddIn
             // 
             // btnAbout
             // 
+            this.btnAbout.Image = ((System.Drawing.Image)(resources.GetObject("btnAbout.Image")));
             this.btnAbout.Label = "About";
             this.btnAbout.Name = "btnAbout";
+            this.btnAbout.ShowImage = true;
             // 
             // btnCheckUpdate
             // 
+            this.btnCheckUpdate.Image = ((System.Drawing.Image)(resources.GetObject("btnCheckUpdate.Image")));
             this.btnCheckUpdate.Label = "Сheck for updates";
             this.btnCheckUpdate.Name = "btnCheckUpdate";
+            this.btnCheckUpdate.ShowImage = true;
             // 
             // btnErrorMessage
             // 
+            this.btnErrorMessage.Image = ((System.Drawing.Image)(resources.GetObject("btnErrorMessage.Image")));
             this.btnErrorMessage.Label = "Error message";
             this.btnErrorMessage.Name = "btnErrorMessage";
+            this.btnErrorMessage.ShowImage = true;
             // 
             // btnSendIdea
             // 
             this.btnSendIdea.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnSendIdea.Image = ((System.Drawing.Image)(resources.GetObject("btnSendIdea.Image")));
             this.btnSendIdea.Label = "Send an idea";
             this.btnSendIdea.Name = "btnSendIdea";
             this.btnSendIdea.ShowImage = true;
@@ -95,6 +103,7 @@ namespace EODAddIn
             // btnSettings
             // 
             this.btnSettings.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnSettings.Image = ((System.Drawing.Image)(resources.GetObject("btnSettings.Image")));
             this.btnSettings.Label = "Settings";
             this.btnSettings.Name = "btnSettings";
             this.btnSettings.ShowImage = true;
