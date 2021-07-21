@@ -38,9 +38,9 @@ namespace EODAddIn
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Ribbon));
             this.tabMain = this.Factory.CreateRibbonTab();
             this.grpMain = this.Factory.CreateRibbonGroup();
+            this.grpAbout = this.Factory.CreateRibbonGroup();
             this.btnGetHistorical = this.Factory.CreateRibbonButton();
             this.btnSettings = this.Factory.CreateRibbonButton();
-            this.grpAbout = this.Factory.CreateRibbonGroup();
             this.btnSendIdea = this.Factory.CreateRibbonButton();
             this.btnCheckUpdate = this.Factory.CreateRibbonButton();
             this.btnErrorMessage = this.Factory.CreateRibbonButton();
@@ -64,9 +64,19 @@ namespace EODAddIn
             this.grpMain.Label = "Commands";
             this.grpMain.Name = "grpMain";
             // 
+            // grpAbout
+            // 
+            this.grpAbout.Items.Add(this.btnSendIdea);
+            this.grpAbout.Items.Add(this.btnCheckUpdate);
+            this.grpAbout.Items.Add(this.btnErrorMessage);
+            this.grpAbout.Items.Add(this.btnAbout);
+            this.grpAbout.Label = "About";
+            this.grpAbout.Name = "grpAbout";
+            // 
             // btnGetHistorical
             // 
             this.btnGetHistorical.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnGetHistorical.Image = ((System.Drawing.Image)(resources.GetObject("btnGetHistorical.Image")));
             this.btnGetHistorical.Label = "Get historical data";
             this.btnGetHistorical.Name = "btnGetHistorical";
             this.btnGetHistorical.ShowImage = true;
@@ -80,15 +90,6 @@ namespace EODAddIn
             this.btnSettings.Name = "btnSettings";
             this.btnSettings.ShowImage = true;
             this.btnSettings.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSettings_Click);
-            // 
-            // grpAbout
-            // 
-            this.grpAbout.Items.Add(this.btnSendIdea);
-            this.grpAbout.Items.Add(this.btnCheckUpdate);
-            this.grpAbout.Items.Add(this.btnErrorMessage);
-            this.grpAbout.Items.Add(this.btnAbout);
-            this.grpAbout.Label = "About";
-            this.grpAbout.Name = "grpAbout";
             // 
             // btnSendIdea
             // 

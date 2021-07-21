@@ -118,6 +118,18 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="btnGetHistorical.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAFnSURBVFhH7ZNBSwJBGIbn5/Rb+hN7iTp08hDUJfoBgh2LOtWxq9eOHfZWUSRhgWhYK7WorC6b
+        NvF87cCULAyYo4IPvPDy7Y7vOzujWgjOtrbXL4KNc58iM49XikEtCHSrVPIissjM438K8GBYqXgRWYtX
+        YK5HcLhzsB8eneq3atWLyCIzj1dqt3yyGd48aF+QRWYevyqwJAWaUayv6y3x791E/CDNRHhmgOddeGxG
+        or8sZ4H/xLkAOzG7ieK+rr90xHeTofg0+xThmQGed8Feb+NcgM9pPjs/fHX3LP71oye+P0hFeGaAN0Xt
+        9TbOBWaFcwEulrlcfGKzSy4ePhuNRHhmgDfHYa+3cS4w9yMwfzPgshEG7Bo/Hn+J8MwAz7tgr7fxVqAI
+        5wLTHkERzgWmvYRFOBeYFasCi1ng/qml23HiRWRNFKg12rrR6XkRWRMFLsNbeeBDZP0qsFc+XmPgU2Tm
+        8fNEqW+Yk0fdXX1L4wAAAABJRU5ErkJggg==
+</value>
+  </data>
   <data name="btnSettings.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABGdBTUEAALGPC/xhBQAABAxJREFUWEfF

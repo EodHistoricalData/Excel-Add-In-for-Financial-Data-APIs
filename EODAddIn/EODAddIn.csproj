@@ -162,6 +162,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="BL\LoadToExcel.cs" />
     <Compile Include="Controls\SearchControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -174,6 +175,7 @@
     <Compile Include="Forms\FrmGetHistorical.Designer.cs">
       <DependentUpon>FrmGetHistorical.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\EndOfDay.cs" />
     <Compile Include="Model\SearchResult.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Panels\PanelExcel.cs">

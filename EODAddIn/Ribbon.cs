@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using EODAddIn.BL;
 
 namespace EODAddIn
 {
@@ -28,8 +29,11 @@ namespace EODAddIn
 
         private void GetHistorical_Click(object sender, RibbonControlEventArgs e)
         {
-            List<Model.SearchResult> res = Utils.APIEOD.Search("AAPL");
-
+            Forms.FrmGetHistorical frm = new Forms.FrmGetHistorical();
+            frm.ShowDialog();
+            
+            List<Model.EndOfDay> res = frm.Results;
+            LoadToExcel.LoadEndOfDay(res);
             string a = "";
            // user.Email = "asd";
             //Utils.EODAPI.User();
