@@ -38,7 +38,7 @@ namespace EODAddIn
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Ribbon));
             this.tabMain = this.Factory.CreateRibbonTab();
             this.grpMain = this.Factory.CreateRibbonGroup();
-            this.button1 = this.Factory.CreateRibbonButton();
+            this.btnGetHistorical = this.Factory.CreateRibbonButton();
             this.btnSettings = this.Factory.CreateRibbonButton();
             this.grpAbout = this.Factory.CreateRibbonGroup();
             this.btnSendIdea = this.Factory.CreateRibbonButton();
@@ -59,16 +59,18 @@ namespace EODAddIn
             // 
             // grpMain
             // 
-            this.grpMain.Items.Add(this.button1);
+            this.grpMain.Items.Add(this.btnGetHistorical);
             this.grpMain.Items.Add(this.btnSettings);
             this.grpMain.Label = "Commands";
             this.grpMain.Name = "grpMain";
             // 
-            // button1
+            // btnGetHistorical
             // 
-            this.button1.Label = "button1";
-            this.button1.Name = "button1";
-            this.button1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button1_Click);
+            this.btnGetHistorical.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnGetHistorical.Label = "Get historical data";
+            this.btnGetHistorical.Name = "btnGetHistorical";
+            this.btnGetHistorical.ShowImage = true;
+            this.btnGetHistorical.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.GetHistorical_Click);
             // 
             // btnSettings
             // 
@@ -144,7 +146,7 @@ namespace EODAddIn
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnErrorMessage;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnSettings;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton button1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnGetHistorical;
     }
 
     partial class ThisRibbonCollection

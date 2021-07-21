@@ -26,7 +26,7 @@ namespace EODAddIn
             frm.ShowDialog();
         }
 
-        private void button1_Click(object sender, RibbonControlEventArgs e)
+        private void GetHistorical_Click(object sender, RibbonControlEventArgs e)
         {
             List<Model.SearchResult> res = Utils.APIEOD.Search("AAPL");
 
