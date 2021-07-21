@@ -162,6 +162,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="Model\SearchResult.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Program\ErrorReport.cs" />
     <Compile Include="Program\FrmAbout.cs">

@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Management;
 using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace EODAddIn.Program
 {
@@ -15,7 +12,7 @@ namespace EODAddIn.Program
         /// Название программы
         /// </summary>
         internal const string ProgramName = "EOD Excel Plagin";
-        internal const string CompanyName = "EODHistoricalData";   
+        internal const string CompanyName = "EODHistoricalData";
         internal const string UrlCompany = "https://eodhistoricaldata.com";
         internal const string UrlKey = "https://eodhistoricaldata.com/cp/settings";
         internal const string UrlPrice = "https://eodhistoricaldata.com/pricing";
@@ -29,7 +26,7 @@ namespace EODAddIn.Program
         /// Версия программы
         /// </summary>
         internal static Version Version { get; private set; }
-        
+
 
         /// <summary>
         /// Ключ активации программы

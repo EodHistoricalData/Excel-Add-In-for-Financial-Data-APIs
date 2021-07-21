@@ -28,7 +28,9 @@ namespace EODAddIn
 
         private void button1_Click(object sender, RibbonControlEventArgs e)
         {
-           // Model.User user = Utils.EODAPI.User();
+            List<Model.SearchResult> res = Utils.APIEOD.Search("AAPL");
+
+            string a = "";
            // user.Email = "asd";
             //Utils.EODAPI.User();
         }
