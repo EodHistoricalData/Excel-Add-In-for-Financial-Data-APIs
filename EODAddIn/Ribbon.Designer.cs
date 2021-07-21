@@ -38,12 +38,13 @@ namespace EODAddIn
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Ribbon));
             this.tabMain = this.Factory.CreateRibbonTab();
             this.grpMain = this.Factory.CreateRibbonGroup();
-            this.grpAbout = this.Factory.CreateRibbonGroup();
             this.btnSettings = this.Factory.CreateRibbonButton();
+            this.grpAbout = this.Factory.CreateRibbonGroup();
             this.btnSendIdea = this.Factory.CreateRibbonButton();
             this.btnCheckUpdate = this.Factory.CreateRibbonButton();
             this.btnErrorMessage = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
+            this.button1 = this.Factory.CreateRibbonButton();
             this.tabMain.SuspendLayout();
             this.grpMain.SuspendLayout();
             this.grpAbout.SuspendLayout();
@@ -58,18 +59,10 @@ namespace EODAddIn
             // 
             // grpMain
             // 
+            this.grpMain.Items.Add(this.button1);
             this.grpMain.Items.Add(this.btnSettings);
             this.grpMain.Label = "Commands";
             this.grpMain.Name = "grpMain";
-            // 
-            // grpAbout
-            // 
-            this.grpAbout.Items.Add(this.btnSendIdea);
-            this.grpAbout.Items.Add(this.btnCheckUpdate);
-            this.grpAbout.Items.Add(this.btnErrorMessage);
-            this.grpAbout.Items.Add(this.btnAbout);
-            this.grpAbout.Label = "About";
-            this.grpAbout.Name = "grpAbout";
             // 
             // btnSettings
             // 
@@ -79,6 +72,15 @@ namespace EODAddIn
             this.btnSettings.Name = "btnSettings";
             this.btnSettings.ShowImage = true;
             this.btnSettings.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSettings_Click);
+            // 
+            // grpAbout
+            // 
+            this.grpAbout.Items.Add(this.btnSendIdea);
+            this.grpAbout.Items.Add(this.btnCheckUpdate);
+            this.grpAbout.Items.Add(this.btnErrorMessage);
+            this.grpAbout.Items.Add(this.btnAbout);
+            this.grpAbout.Label = "About";
+            this.grpAbout.Name = "grpAbout";
             // 
             // btnSendIdea
             // 
@@ -110,6 +112,12 @@ namespace EODAddIn
             this.btnAbout.ShowImage = true;
             this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnAbout_Click);
             // 
+            // button1
+            // 
+            this.button1.Label = "button1";
+            this.button1.Name = "button1";
+            this.button1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button1_Click);
+            // 
             // Ribbon
             // 
             this.Name = "Ribbon";
@@ -136,6 +144,7 @@ namespace EODAddIn
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnErrorMessage;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnSettings;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button1;
     }
 
     partial class ThisRibbonCollection

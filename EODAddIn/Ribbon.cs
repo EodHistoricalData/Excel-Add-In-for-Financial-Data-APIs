@@ -25,5 +25,12 @@ namespace EODAddIn
             Program.FrmAPIKey frm = new Program.FrmAPIKey();
             frm.ShowDialog();
         }
+
+        private void button1_Click(object sender, RibbonControlEventArgs e)
+        {
+           // Model.User user = Utils.EODAPI.User();
+           // user.Email = "asd";
+            //Utils.EODAPI.User();
+        }
     }
 }

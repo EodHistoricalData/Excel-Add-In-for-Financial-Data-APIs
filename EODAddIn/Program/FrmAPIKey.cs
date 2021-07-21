@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EODAddIn.Utils;
+
+using System;
 using System.Windows.Forms;
 
 namespace EODAddIn.Program
@@ -25,7 +20,21 @@ namespace EODAddIn.Program
         /// <param name="e"></param>
         private void Save(object sender, EventArgs e)
         {
-            Program.SaveAPI(txtAPI.Text);
+            try
+            {
+                Model.User user = APIEOD.User(txtAPI.Text);
+                Program.SaveAPI(txtAPI.Text);
+                MessageBox.Show("API key saved", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Close();
+            }
+            catch (APIException ex)
+            {
+                if (ex.Code == 401)
+                {
+                    MessageBox.Show("Invalid API key", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
         }
 
         /// <summary>

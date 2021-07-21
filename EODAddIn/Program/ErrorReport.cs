@@ -52,7 +52,7 @@ namespace EODAddIn.Program
             {
                 try
                 {
-                    API.POST(Url, $"prog_id=1001&" +
+                    Response.POST(Url, $"prog_id=1001&" +
                                         $"prog_ver={Program.Version.Text}&" +
                                         $"comp={Program.UserHash}&" +
                                         $"error={Exception}");

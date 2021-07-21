@@ -6,7 +6,7 @@ namespace EODAddIn.Utils
     /// <summary>
     /// Класс для отправки и получения запросов от сторонних сервисов
     /// </summary>
-    public static class API
+    public static class Response
     {
         /// <summary>
         /// Отправка POST запроса
@@ -49,6 +49,7 @@ namespace EODAddIn.Utils
         /// <param name="Url">Адрес ресурса</param>
         /// <param name="Data">Данные</param>
         /// <returns></returns>
+        /// <exception cref="APIException">Код ошибки</exception>
         public static string GET(string Url, string Data = "")
         {
             byte[] qwe;
@@ -63,13 +64,25 @@ namespace EODAddIn.Utils
 
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
             WebRequest req = WebRequest.Create(Encoding.Unicode.GetString(qwe));
-            WebResponse resp = req.GetResponse();
-            System.IO.Stream stream = resp.GetResponseStream();
-            System.IO.StreamReader sr = new System.IO.StreamReader(stream);
-            string Out = sr.ReadToEnd();
-            sr.Close();
 
-            return Out;
+            try
+            {
+                WebResponse resp = req.GetResponse();
+                System.IO.Stream stream = resp.GetResponseStream();
+                System.IO.StreamReader sr = new System.IO.StreamReader(stream);
+                string Out = sr.ReadToEnd();
+                sr.Close();
+
+                return Out;
+            }
+            catch (WebException ex)
+            {
+                HttpWebResponse httpResponse = (HttpWebResponse)ex.Response;
+
+                throw new APIException((int)httpResponse.StatusCode);
+
+            }
+
         }
     }
 }
