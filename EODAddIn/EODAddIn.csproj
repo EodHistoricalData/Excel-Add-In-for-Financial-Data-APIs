@@ -170,6 +170,12 @@
     </Compile>
     <Compile Include="Model\SearchResult.cs" />
     <Compile Include="Model\User.cs" />
+    <Compile Include="Panels\PanelExcel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Panels\PanelExcel.Designer.cs">
+      <DependentUpon>PanelExcel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program\ErrorReport.cs" />
     <Compile Include="Program\FrmAbout.cs">
       <SubType>Form</SubType>
