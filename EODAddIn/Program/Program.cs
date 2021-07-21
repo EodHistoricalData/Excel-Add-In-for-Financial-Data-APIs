@@ -17,6 +17,8 @@ namespace EODAddIn.Program
         internal const string ProgramName = "EOD Excel Plagin";
         internal const string CompanyName = "EODHistoricalData";   
         internal const string UrlCompany = "https://eodhistoricaldata.com";
+        internal const string UrlKey = "https://eodhistoricaldata.com/cp/settings";
+        internal const string UrlPrice = "https://eodhistoricaldata.com/pricing";
 
         /// <summary>
         /// Папка пользователя
@@ -58,6 +60,10 @@ namespace EODAddIn.Program
             Version = new Version() { Major = ver.Major, Minor = ver.Minor, Build = ver.Build, Revision = ver.Revision };
         }
 
+        public static void SaveAPI(string api)
+        {
+            APIKey = api;
+        }
 
         /// <summary>
         /// Получение хэшкода компьютера пользователя
@@ -102,5 +108,6 @@ namespace EODAddIn.Program
                 return result;
             }
         }
+
     }
 }

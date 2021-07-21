@@ -19,5 +19,11 @@ namespace EODAddIn
             Program.FrmAbout frm = new Program.FrmAbout();
             frm.ShowDialog();
         }
+
+        private void BtnSettings_Click(object sender, RibbonControlEventArgs e)
+        {
+            Program.FrmAPIKey frm = new Program.FrmAPIKey();
+            frm.ShowDialog();
+        }
     }
 }

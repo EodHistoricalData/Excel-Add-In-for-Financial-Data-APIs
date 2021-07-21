@@ -164,6 +164,12 @@
     <Compile Include="Program\FrmAbout.Designer.cs">
       <DependentUpon>FrmAbout.cs</DependentUpon>
     </Compile>
+    <Compile Include="Program\FrmAPIKey.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Program\FrmAPIKey.Designer.cs">
+      <DependentUpon>FrmAPIKey.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program\Program.cs" />
     <Compile Include="Program\Settings.cs" />
     <Compile Include="Program\SettingsFields.cs" />
@@ -174,6 +180,9 @@
     <Compile Include="Utils\API.cs" />
     <EmbeddedResource Include="Program\FrmAbout.resx">
       <DependentUpon>FrmAbout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Program\FrmAPIKey.resx">
+      <DependentUpon>FrmAPIKey.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
