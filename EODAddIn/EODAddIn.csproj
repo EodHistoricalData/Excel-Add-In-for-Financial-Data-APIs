@@ -184,6 +184,9 @@
     <Compile Include="Model\AddressData.cs" />
     <Compile Include="Model\Balance_Sheet.cs" />
     <Compile Include="Model\Balance_SheetData.cs" />
+    <Compile Include="Model\Earnings.cs" />
+    <Compile Include="Model\EarningsHistoryData.cs" />
+    <Compile Include="Model\EarningsTrendData.cs" />
     <Compile Include="Model\EndOfDay.cs" />
     <Compile Include="Model\Financials.cs" />
     <Compile Include="Model\FundamentalData.cs" />

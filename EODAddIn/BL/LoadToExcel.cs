@@ -281,6 +281,83 @@ namespace EODAddIn.BL
             }
             sh.Range[sh.Cells[r, 1], sh.Cells[r + countValues - 1, c - 1]].Value = val;
             r += countValues;
+
+            // Earnings 
+            sh.Cells[r, 1] = "Earnings";
+            sh.Cells[r, 1].Font.Bold = true;
+
+            r++;
+            sh.Cells[r, 1] = "History";
+            sh.Cells[r, 1].Font.Bold = true;
+
+            r++;
+
+            EarningsHistoryData earningsHistoryData = new EarningsHistoryData();
+
+            c = 1;
+            properties = earningsHistoryData.GetType().GetProperties();
+            foreach (var prop in properties)
+            {
+                sh.Cells[r, c] = prop.Name;
+                c++;
+            }
+
+            r++;
+
+            c = 1;
+            countValues = data.Earnings.History.Values.Count;
+            val = new object[countValues, properties.Length];
+            foreach (var prop in properties)
+            {
+                int i = 0;
+
+                foreach (EarningsHistoryData item in data.Earnings.History.Values)
+                {
+                    val[i, c - 1] = prop.GetValue(item);
+                    i++;
+                }
+
+                c++;
+            }
+            sh.Range[sh.Cells[r, 1], sh.Cells[r + countValues - 1, c - 1]].Value = val;
+            r += countValues;
+
+
+            r++;
+            sh.Cells[r, 1] = "Trend";
+            sh.Cells[r, 1].Font.Bold = true;
+
+            r++;
+
+            EarningsTrendData earningsTrendData = new EarningsTrendData();
+
+            c = 1;
+            properties = earningsTrendData.GetType().GetProperties();
+            foreach (var prop in properties)
+            {
+                sh.Cells[r, c] = prop.Name;
+                c++;
+            }
+
+            r++;
+
+            c = 1;
+            countValues = data.Earnings.Trend.Values.Count;
+            val = new object[countValues, properties.Length];
+            foreach (var prop in properties)
+            {
+                int i = 0;
+
+                foreach (EarningsTrendData item in data.Earnings.Trend.Values)
+                {
+                    val[i, c - 1] = prop.GetValue(item);
+                    i++;
+                }
+
+                c++;
+            }
+            sh.Range[sh.Cells[r, 1], sh.Cells[r + countValues - 1, c - 1]].Value = val;
+            r += countValues;
         }
     }
 }

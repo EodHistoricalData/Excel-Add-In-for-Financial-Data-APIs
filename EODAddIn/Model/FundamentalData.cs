@@ -10,6 +10,7 @@ namespace EODAddIn.Model
     {
         public General General { get; set; }
         public Highlights Highlights { get; set; }
+        public Earnings Earnings { get; set; }
         public Financials Financials { get; set; }
     }
 }
