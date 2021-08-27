@@ -34,9 +34,16 @@ namespace EODAddIn
             
             List<Model.EndOfDay> res = frm.Results;
             LoadToExcel.LoadEndOfDay(res);
-            string a = "";
-           // user.Email = "asd";
-            //Utils.EODAPI.User();
+        }
+
+        private void GetFundamentalData_Click(object sender, RibbonControlEventArgs e)
+        {
+            Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
+            frm.ShowDialog();
+
+            Model.FundamentalData res = frm.Results;
+            LoadToExcel.LoadFundamental(res);
+
         }
     }
 }

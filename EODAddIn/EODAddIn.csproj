@@ -169,13 +169,30 @@
     <Compile Include="Controls\SearchControl.Designer.cs">
       <DependentUpon>SearchControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FrmGetFundamental.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmGetFundamental.Designer.cs">
+      <DependentUpon>FrmGetFundamental.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmGetHistorical.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\FrmGetHistorical.Designer.cs">
       <DependentUpon>FrmGetHistorical.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\AddressData.cs" />
+    <Compile Include="Model\Balance_Sheet.cs" />
+    <Compile Include="Model\Balance_SheetData.cs" />
     <Compile Include="Model\EndOfDay.cs" />
+    <Compile Include="Model\Financials.cs" />
+    <Compile Include="Model\FundamentalData.cs" />
+    <Compile Include="Model\General.cs" />
+    <Compile Include="Model\Highlights.cs" />
+    <Compile Include="Model\Income_Statement.cs" />
+    <Compile Include="Model\Income_StatementData.cs" />
+    <Compile Include="Model\Listing.cs" />
+    <Compile Include="Model\Officer.cs" />
     <Compile Include="Model\SearchResult.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="Panels\PanelExcel.cs">
@@ -209,6 +226,9 @@
     <Compile Include="Utils\APIEOD.cs" />
     <EmbeddedResource Include="Controls\SearchControl.resx">
       <DependentUpon>SearchControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmGetFundamental.resx">
+      <DependentUpon>FrmGetFundamental.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmGetHistorical.resx">
       <DependentUpon>FrmGetHistorical.cs</DependentUpon>

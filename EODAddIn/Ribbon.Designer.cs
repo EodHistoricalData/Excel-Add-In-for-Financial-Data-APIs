@@ -38,13 +38,14 @@ namespace EODAddIn
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Ribbon));
             this.tabMain = this.Factory.CreateRibbonTab();
             this.grpMain = this.Factory.CreateRibbonGroup();
-            this.grpAbout = this.Factory.CreateRibbonGroup();
             this.btnGetHistorical = this.Factory.CreateRibbonButton();
             this.btnSettings = this.Factory.CreateRibbonButton();
+            this.grpAbout = this.Factory.CreateRibbonGroup();
             this.btnSendIdea = this.Factory.CreateRibbonButton();
             this.btnCheckUpdate = this.Factory.CreateRibbonButton();
             this.btnErrorMessage = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
+            this.btnGetFundamentalData = this.Factory.CreateRibbonButton();
             this.tabMain.SuspendLayout();
             this.grpMain.SuspendLayout();
             this.grpAbout.SuspendLayout();
@@ -60,18 +61,10 @@ namespace EODAddIn
             // grpMain
             // 
             this.grpMain.Items.Add(this.btnGetHistorical);
+            this.grpMain.Items.Add(this.btnGetFundamentalData);
             this.grpMain.Items.Add(this.btnSettings);
             this.grpMain.Label = "Commands";
             this.grpMain.Name = "grpMain";
-            // 
-            // grpAbout
-            // 
-            this.grpAbout.Items.Add(this.btnSendIdea);
-            this.grpAbout.Items.Add(this.btnCheckUpdate);
-            this.grpAbout.Items.Add(this.btnErrorMessage);
-            this.grpAbout.Items.Add(this.btnAbout);
-            this.grpAbout.Label = "About";
-            this.grpAbout.Name = "grpAbout";
             // 
             // btnGetHistorical
             // 
@@ -90,6 +83,15 @@ namespace EODAddIn
             this.btnSettings.Name = "btnSettings";
             this.btnSettings.ShowImage = true;
             this.btnSettings.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSettings_Click);
+            // 
+            // grpAbout
+            // 
+            this.grpAbout.Items.Add(this.btnSendIdea);
+            this.grpAbout.Items.Add(this.btnCheckUpdate);
+            this.grpAbout.Items.Add(this.btnErrorMessage);
+            this.grpAbout.Items.Add(this.btnAbout);
+            this.grpAbout.Label = "About";
+            this.grpAbout.Name = "grpAbout";
             // 
             // btnSendIdea
             // 
@@ -121,6 +123,15 @@ namespace EODAddIn
             this.btnAbout.ShowImage = true;
             this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnAbout_Click);
             // 
+            // btnGetFundamentalData
+            // 
+            this.btnGetFundamentalData.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnGetFundamentalData.Image = ((System.Drawing.Image)(resources.GetObject("btnGetFundamentalData.Image")));
+            this.btnGetFundamentalData.Label = "Get fundamental data";
+            this.btnGetFundamentalData.Name = "btnGetFundamentalData";
+            this.btnGetFundamentalData.ShowImage = true;
+            this.btnGetFundamentalData.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.GetFundamentalData_Click);
+            // 
             // Ribbon
             // 
             this.Name = "Ribbon";
@@ -148,6 +159,7 @@ namespace EODAddIn
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnSettings;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnGetHistorical;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnGetFundamentalData;
     }
 
     partial class ThisRibbonCollection

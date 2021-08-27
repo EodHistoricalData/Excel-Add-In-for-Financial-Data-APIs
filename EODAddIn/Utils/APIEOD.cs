@@ -40,5 +40,13 @@ namespace EODAddIn.Utils
             string s = Response.GET(url, data);
             return JsonConvert.DeserializeObject<List<EndOfDay>>(s);
         }
+
+        public static FundamentalData GetFundamental(string code)
+        {
+            string url = $"https://eodhistoricaldata.com/api/fundamentals/{code}";
+            string data = $"api_token={Program.Program.APIKey}";
+            string s = Response.GET(url, data);
+            return JsonConvert.DeserializeObject<FundamentalData>(s);
+        }
     }
 }

@@ -1,10 +1,6 @@
 ﻿using EODAddIn.Model;
 
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -36,6 +32,255 @@ namespace EODAddIn.BL
                 worksheet.Cells[r, 6] = item.Adjusted_close;
                 worksheet.Cells[r, 7] = item.Volume;
             }
+        }
+
+        public static void LoadFundamental(FundamentalData data)
+        {
+            Excel.Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
+
+            int r = 1;
+
+            // General
+            sh.Cells[r, 1] = "General";
+            sh.Cells[r, 1].Font.Bold = true;
+            r++;
+
+            sh.Cells[r, 1] = "Code";
+            sh.Cells[r, 2] = data.General.Code;
+
+            sh.Cells[r, 3] = "Type";
+            sh.Cells[r, 4] = data.General.Type;
+
+            r++;
+
+            sh.Cells[r, 1] = "Name";
+            sh.Cells[r, 2] = data.General.Name;
+
+            sh.Cells[r, 3] = "Exchange";
+            sh.Cells[r, 4] = data.General.Exchange;
+
+            r++;
+
+            sh.Cells[r, 1] = "Currency";
+            sh.Cells[r, 2] = data.General.CurrencyCode;
+            sh.Cells[r, 3] = data.General.CurrencySymbol;
+            r++;
+
+            sh.Cells[r, 1] = "Sector";
+            sh.Cells[r, 2] = data.General.Sector;
+            r++;
+
+            sh.Cells[r, 1] = "Industry";
+            sh.Cells[r, 2] = data.General.Industry;
+            r++;
+
+            sh.Cells[r, 1] = "Employees";
+            sh.Cells[r, 2] = data.General.FullTimeEmployees;
+            r++;
+
+            sh.Cells[r, 1] = "Description";
+            sh.Cells[r, 2] = data.General.Description;
+
+            r++;
+            r++;
+
+            // Highlights
+            sh.Cells[r, 1] = "Highlights";
+            sh.Cells[r, 1].Font.Bold = true;
+            r++;
+
+            sh.Cells[r, 1] = "Market Cap";
+            sh.Cells[r, 2] = data.Highlights.MarketCapitalization;
+
+            sh.Cells[r, 3] = "EBITDA";
+            sh.Cells[r, 4] = data.Highlights.EBITDA;
+
+            r++;
+
+            sh.Cells[r, 1] = "PE Ratio";
+            sh.Cells[r, 2] = data.Highlights.PERatio;
+
+            sh.Cells[r, 3] = "PEG Ratio";
+            sh.Cells[r, 4] = data.Highlights.PEGRatio;
+
+            r++;
+
+            sh.Cells[r, 1] = "Earning Share";
+            sh.Cells[r, 2] = data.Highlights.EarningsShare;
+
+            r++;
+
+            sh.Cells[r, 1] = "Dividend Share";
+            sh.Cells[r, 2] = data.Highlights.DividendShare;
+
+            sh.Cells[r, 3] = "Dividend Yield";
+            sh.Cells[r, 4] = data.Highlights.DividendYield;
+
+            r++;
+
+            sh.Cells[r, 1] = "EPS Estimate"; r++;
+
+            sh.Cells[r, 1] = "Current Year";
+            sh.Cells[r, 2] = data.Highlights.EPSEstimateCurrentYear;
+
+            r++;
+
+            sh.Cells[r, 1] = "Next Year";
+            sh.Cells[r, 2] = data.Highlights.EPSEstimateNextYear;
+
+            r++;
+
+            sh.Cells[r, 1] = "Next Quarter";
+            sh.Cells[r, 2] = data.Highlights.EPSEstimateNextQuarter;
+
+            r++;
+
+            // Balance Sheet
+            sh.Cells[r, 1] = "Balance Sheet";
+            sh.Cells[r, 1].Font.Bold = true;
+
+            r++;
+            sh.Cells[r, 1] = "Quarterly";
+            sh.Cells[r, 1].Font.Bold = true;
+
+            r++;
+
+            Balance_SheetData balance_SheetData = new Balance_SheetData();
+
+            int c = 1;
+            System.Reflection.PropertyInfo[] properties = balance_SheetData.GetType().GetProperties();
+            foreach (var prop in properties)
+            {
+                sh.Cells[r, c] = prop.Name;
+                c++;
+            }
+
+            r++;
+
+            c = 1;
+            int countValues = data.Financials.Balance_Sheet.Quarterly.Values.Count;
+            object[,] val = new object[countValues, properties.Length];
+            foreach (var prop in properties)
+            {
+                int i = 0;
+
+                foreach (Balance_SheetData item in data.Financials.Balance_Sheet.Quarterly.Values)
+                {
+                    val[i, c - 1] = prop.GetValue(item);
+                    i++;
+                }
+
+                c++;
+            }
+            sh.Range[sh.Cells[r, 1], sh.Cells[r + countValues - 1, c - 1]].Value = val;
+            r += countValues;
+
+
+            r++;
+            sh.Cells[r, 1] = "Yearly";
+            sh.Cells[r, 1].Font.Bold = true;
+
+            r++;
+
+            c = 1;
+            foreach (var prop in properties)
+            {
+                sh.Cells[r, c] = prop.Name;
+                c++;
+            }
+
+            r++;
+
+            c = 1;
+            countValues = data.Financials.Balance_Sheet.Yearly.Values.Count;
+            val = new object[countValues, properties.Length];
+            foreach (var prop in properties)
+            {
+                int i = 0;
+                foreach (Balance_SheetData item in data.Financials.Balance_Sheet.Yearly.Values)
+                {
+                    val[i, c - 1] = prop.GetValue(item);
+                    i++;
+                }
+
+                c++;
+            }
+            sh.Range[sh.Cells[r, 1], sh.Cells[r + countValues - 1, c - 1]].Value = val;
+            r += countValues;
+
+
+            // Income_Statement
+            sh.Cells[r, 1] = "Income Statement";
+            sh.Cells[r, 1].Font.Bold = true;
+
+            r++;
+            sh.Cells[r, 1] = "Quarterly";
+            sh.Cells[r, 1].Font.Bold = true;
+
+            r++;
+
+            Income_StatementData income_StatementData = new Income_StatementData();
+
+            c = 1;
+            properties = income_StatementData.GetType().GetProperties();
+            foreach (var prop in properties)
+            {
+                sh.Cells[r, c] = prop.Name;
+                c++;
+            }
+
+            r++;
+
+            c = 1;
+            countValues = data.Financials.Income_Statement.Quarterly.Values.Count;
+            val = new object[countValues, properties.Length];
+            foreach (var prop in properties)
+            {
+                int i = 0;
+
+                foreach (Income_StatementData item in data.Financials.Income_Statement.Quarterly.Values)
+                {
+                    val[i, c - 1] = prop.GetValue(item);
+                    i++;
+                }
+
+                c++;
+            }
+            sh.Range[sh.Cells[r, 1], sh.Cells[r + countValues - 1, c - 1]].Value = val;
+            r += countValues;
+
+
+            r++;
+            sh.Cells[r, 1] = "Yearly";
+            sh.Cells[r, 1].Font.Bold = true;
+
+            r++;
+
+            c = 1;
+            foreach (var prop in properties)
+            {
+                sh.Cells[r, c] = prop.Name;
+                c++;
+            }
+
+            r++;
+
+            c = 1;
+            countValues = data.Financials.Income_Statement.Yearly.Values.Count;
+            val = new object[countValues, properties.Length];
+            foreach (var prop in properties)
+            {
+                int i = 0;
+                foreach (Income_StatementData item in data.Financials.Income_Statement.Yearly.Values)
+                {
+                    val[i, c - 1] = prop.GetValue(item);
+                    i++;
+                }
+
+                c++;
+            }
+            sh.Range[sh.Cells[r, 1], sh.Cells[r + countValues - 1, c - 1]].Value = val;
+            r += countValues;
         }
     }
 }
