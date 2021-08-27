@@ -39,21 +39,29 @@ namespace EODAddIn
             this.tabMain = this.Factory.CreateRibbonTab();
             this.grpMain = this.Factory.CreateRibbonGroup();
             this.btnGetHistorical = this.Factory.CreateRibbonButton();
+            this.btnGetFundamentalData = this.Factory.CreateRibbonButton();
             this.btnSettings = this.Factory.CreateRibbonButton();
             this.grpAbout = this.Factory.CreateRibbonGroup();
             this.btnSendIdea = this.Factory.CreateRibbonButton();
             this.btnCheckUpdate = this.Factory.CreateRibbonButton();
             this.btnErrorMessage = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
-            this.btnGetFundamentalData = this.Factory.CreateRibbonButton();
+            this.group1 = this.Factory.CreateRibbonGroup();
+            this.label2 = this.Factory.CreateRibbonLabel();
+            this.label3 = this.Factory.CreateRibbonLabel();
+            this.lblRequest = this.Factory.CreateRibbonLabel();
+            this.lblRequestLeft = this.Factory.CreateRibbonLabel();
+            this.label1 = this.Factory.CreateRibbonLabel();
             this.tabMain.SuspendLayout();
             this.grpMain.SuspendLayout();
             this.grpAbout.SuspendLayout();
+            this.group1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabMain
             // 
             this.tabMain.Groups.Add(this.grpMain);
+            this.tabMain.Groups.Add(this.group1);
             this.tabMain.Groups.Add(this.grpAbout);
             this.tabMain.Label = "EOD";
             this.tabMain.Name = "tabMain";
@@ -74,6 +82,15 @@ namespace EODAddIn
             this.btnGetHistorical.Name = "btnGetHistorical";
             this.btnGetHistorical.ShowImage = true;
             this.btnGetHistorical.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.GetHistorical_Click);
+            // 
+            // btnGetFundamentalData
+            // 
+            this.btnGetFundamentalData.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnGetFundamentalData.Image = ((System.Drawing.Image)(resources.GetObject("btnGetFundamentalData.Image")));
+            this.btnGetFundamentalData.Label = "Get fundamental data";
+            this.btnGetFundamentalData.Name = "btnGetFundamentalData";
+            this.btnGetFundamentalData.ShowImage = true;
+            this.btnGetFundamentalData.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.GetFundamentalData_Click);
             // 
             // btnSettings
             // 
@@ -107,6 +124,7 @@ namespace EODAddIn
             this.btnCheckUpdate.Label = "Сheck for updates";
             this.btnCheckUpdate.Name = "btnCheckUpdate";
             this.btnCheckUpdate.ShowImage = true;
+            this.btnCheckUpdate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.CheckUpdate_Click);
             // 
             // btnErrorMessage
             // 
@@ -123,14 +141,40 @@ namespace EODAddIn
             this.btnAbout.ShowImage = true;
             this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnAbout_Click);
             // 
-            // btnGetFundamentalData
+            // group1
             // 
-            this.btnGetFundamentalData.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btnGetFundamentalData.Image = ((System.Drawing.Image)(resources.GetObject("btnGetFundamentalData.Image")));
-            this.btnGetFundamentalData.Label = "Get fundamental data";
-            this.btnGetFundamentalData.Name = "btnGetFundamentalData";
-            this.btnGetFundamentalData.ShowImage = true;
-            this.btnGetFundamentalData.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.GetFundamentalData_Click);
+            this.group1.Items.Add(this.label2);
+            this.group1.Items.Add(this.label3);
+            this.group1.Items.Add(this.label1);
+            this.group1.Items.Add(this.lblRequest);
+            this.group1.Items.Add(this.lblRequestLeft);
+            this.group1.Label = "Limits";
+            this.group1.Name = "group1";
+            // 
+            // label2
+            // 
+            this.label2.Label = "Request";
+            this.label2.Name = "label2";
+            // 
+            // label3
+            // 
+            this.label3.Label = "Left";
+            this.label3.Name = "label3";
+            // 
+            // lblRequest
+            // 
+            this.lblRequest.Label = "-";
+            this.lblRequest.Name = "lblRequest";
+            // 
+            // lblRequestLeft
+            // 
+            this.lblRequestLeft.Label = "-";
+            this.lblRequestLeft.Name = "lblRequestLeft";
+            // 
+            // label1
+            // 
+            this.label1.Label = " ";
+            this.label1.Name = "label1";
             // 
             // Ribbon
             // 
@@ -144,6 +188,8 @@ namespace EODAddIn
             this.grpMain.PerformLayout();
             this.grpAbout.ResumeLayout(false);
             this.grpAbout.PerformLayout();
+            this.group1.ResumeLayout(false);
+            this.group1.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -160,6 +206,12 @@ namespace EODAddIn
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnSettings;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnGetHistorical;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnGetFundamentalData;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonLabel label2;
+        internal Microsoft.Office.Tools.Ribbon.RibbonLabel label3;
+        internal Microsoft.Office.Tools.Ribbon.RibbonLabel label1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonLabel lblRequest;
+        internal Microsoft.Office.Tools.Ribbon.RibbonLabel lblRequestLeft;
     }
 
     partial class ThisRibbonCollection

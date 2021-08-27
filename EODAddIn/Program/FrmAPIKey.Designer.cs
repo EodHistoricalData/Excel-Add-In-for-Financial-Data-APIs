@@ -151,9 +151,9 @@ namespace EODAddIn.Program
             // btnRegister
             // 
             this.btnRegister.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnRegister.Location = new System.Drawing.Point(517, 120);
+            this.btnRegister.Location = new System.Drawing.Point(498, 120);
             this.btnRegister.Name = "btnRegister";
-            this.btnRegister.Size = new System.Drawing.Size(127, 32);
+            this.btnRegister.Size = new System.Drawing.Size(146, 32);
             this.btnRegister.TabIndex = 28;
             this.btnRegister.Text = "Go to the site";
             this.btnRegister.UseVisualStyleBackColor = true;
@@ -162,9 +162,9 @@ namespace EODAddIn.Program
             // btnPrice
             // 
             this.btnPrice.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnPrice.Location = new System.Drawing.Point(517, 162);
+            this.btnPrice.Location = new System.Drawing.Point(498, 162);
             this.btnPrice.Name = "btnPrice";
-            this.btnPrice.Size = new System.Drawing.Size(127, 32);
+            this.btnPrice.Size = new System.Drawing.Size(146, 32);
             this.btnPrice.TabIndex = 29;
             this.btnPrice.Text = "Choose";
             this.btnPrice.UseVisualStyleBackColor = true;
@@ -173,9 +173,9 @@ namespace EODAddIn.Program
             // btnCopyAPI
             // 
             this.btnCopyAPI.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnCopyAPI.Location = new System.Drawing.Point(517, 206);
+            this.btnCopyAPI.Location = new System.Drawing.Point(498, 206);
             this.btnCopyAPI.Name = "btnCopyAPI";
-            this.btnCopyAPI.Size = new System.Drawing.Size(127, 31);
+            this.btnCopyAPI.Size = new System.Drawing.Size(146, 31);
             this.btnCopyAPI.TabIndex = 30;
             this.btnCopyAPI.Text = "Go to the site";
             this.btnCopyAPI.UseVisualStyleBackColor = true;
@@ -184,9 +184,9 @@ namespace EODAddIn.Program
             // btnSave
             // 
             this.btnSave.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.btnSave.Location = new System.Drawing.Point(517, 292);
+            this.btnSave.Location = new System.Drawing.Point(498, 292);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(127, 32);
+            this.btnSave.Size = new System.Drawing.Size(146, 32);
             this.btnSave.TabIndex = 31;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
