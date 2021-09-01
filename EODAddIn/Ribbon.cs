@@ -1,11 +1,11 @@
-﻿using Microsoft.Office.Tools.Ribbon;
+﻿using EODAddIn.BL;
+using EODAddIn.Utils;
+
+using Microsoft.Office.Tools.Ribbon;
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using EODAddIn.BL;
-using EODAddIn.Utils;
+using System.Diagnostics;
 using System.Windows.Threading;
 
 namespace EODAddIn
@@ -39,7 +39,7 @@ namespace EODAddIn
         {
             Forms.FrmGetHistorical frm = new Forms.FrmGetHistorical();
             frm.ShowDialog();
-            
+
             List<Model.EndOfDay> res = frm.Results;
             LoadToExcel.LoadEndOfDay(res);
         }
@@ -81,6 +81,45 @@ namespace EODAddIn
                 lblRequest.Label = "-";
                 lblRequestLeft.Label = "-";
             }
+        }
+
+        /// <summary>
+        /// Отправка предложения по программе
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SendIdea_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                Process.Start("mailto:support@eodhistoricaldata.com" +
+                          "?subject=Proposal for Excel AddIn ver. " + Program.Program.Version.Text);
+            }
+            catch (Exception ex)
+            {
+                Program.ErrorReport errorReport = new Program.ErrorReport(ex);
+                errorReport.ShowAndSend();
+            }
+        }
+
+        /// <summary>
+        /// Отправка сообщения об ошибке по почте
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ErrorMessage_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                Process.Start("mailto:support@eodhistoricaldata.com" +
+                                          "?subject=Error in Excel AddIn ver. " + Program.Program.Version.Text);
+            }
+            catch (Exception ex)
+            {
+                Program.ErrorReport errorReport = new Program.ErrorReport(ex);
+                errorReport.ShowAndSend();
+            }
+
         }
     }
 }

@@ -41,21 +41,21 @@ namespace EODAddIn
             this.btnGetHistorical = this.Factory.CreateRibbonButton();
             this.btnGetFundamentalData = this.Factory.CreateRibbonButton();
             this.btnSettings = this.Factory.CreateRibbonButton();
+            this.group1 = this.Factory.CreateRibbonGroup();
+            this.label2 = this.Factory.CreateRibbonLabel();
+            this.label3 = this.Factory.CreateRibbonLabel();
+            this.label1 = this.Factory.CreateRibbonLabel();
+            this.lblRequest = this.Factory.CreateRibbonLabel();
+            this.lblRequestLeft = this.Factory.CreateRibbonLabel();
             this.grpAbout = this.Factory.CreateRibbonGroup();
             this.btnSendIdea = this.Factory.CreateRibbonButton();
             this.btnCheckUpdate = this.Factory.CreateRibbonButton();
             this.btnErrorMessage = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
-            this.group1 = this.Factory.CreateRibbonGroup();
-            this.label2 = this.Factory.CreateRibbonLabel();
-            this.label3 = this.Factory.CreateRibbonLabel();
-            this.lblRequest = this.Factory.CreateRibbonLabel();
-            this.lblRequestLeft = this.Factory.CreateRibbonLabel();
-            this.label1 = this.Factory.CreateRibbonLabel();
             this.tabMain.SuspendLayout();
             this.grpMain.SuspendLayout();
-            this.grpAbout.SuspendLayout();
             this.group1.SuspendLayout();
+            this.grpAbout.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabMain
@@ -101,46 +101,6 @@ namespace EODAddIn
             this.btnSettings.ShowImage = true;
             this.btnSettings.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSettings_Click);
             // 
-            // grpAbout
-            // 
-            this.grpAbout.Items.Add(this.btnSendIdea);
-            this.grpAbout.Items.Add(this.btnCheckUpdate);
-            this.grpAbout.Items.Add(this.btnErrorMessage);
-            this.grpAbout.Items.Add(this.btnAbout);
-            this.grpAbout.Label = "About";
-            this.grpAbout.Name = "grpAbout";
-            // 
-            // btnSendIdea
-            // 
-            this.btnSendIdea.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btnSendIdea.Image = ((System.Drawing.Image)(resources.GetObject("btnSendIdea.Image")));
-            this.btnSendIdea.Label = "Send an idea";
-            this.btnSendIdea.Name = "btnSendIdea";
-            this.btnSendIdea.ShowImage = true;
-            // 
-            // btnCheckUpdate
-            // 
-            this.btnCheckUpdate.Image = ((System.Drawing.Image)(resources.GetObject("btnCheckUpdate.Image")));
-            this.btnCheckUpdate.Label = "Сheck for updates";
-            this.btnCheckUpdate.Name = "btnCheckUpdate";
-            this.btnCheckUpdate.ShowImage = true;
-            this.btnCheckUpdate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.CheckUpdate_Click);
-            // 
-            // btnErrorMessage
-            // 
-            this.btnErrorMessage.Image = ((System.Drawing.Image)(resources.GetObject("btnErrorMessage.Image")));
-            this.btnErrorMessage.Label = "Error message";
-            this.btnErrorMessage.Name = "btnErrorMessage";
-            this.btnErrorMessage.ShowImage = true;
-            // 
-            // btnAbout
-            // 
-            this.btnAbout.Image = ((System.Drawing.Image)(resources.GetObject("btnAbout.Image")));
-            this.btnAbout.Label = "About";
-            this.btnAbout.Name = "btnAbout";
-            this.btnAbout.ShowImage = true;
-            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnAbout_Click);
-            // 
             // group1
             // 
             this.group1.Items.Add(this.label2);
@@ -161,6 +121,11 @@ namespace EODAddIn
             this.label3.Label = "Left";
             this.label3.Name = "label3";
             // 
+            // label1
+            // 
+            this.label1.Label = " ";
+            this.label1.Name = "label1";
+            // 
             // lblRequest
             // 
             this.lblRequest.Label = "-";
@@ -171,10 +136,47 @@ namespace EODAddIn
             this.lblRequestLeft.Label = "-";
             this.lblRequestLeft.Name = "lblRequestLeft";
             // 
-            // label1
+            // grpAbout
             // 
-            this.label1.Label = " ";
-            this.label1.Name = "label1";
+            this.grpAbout.Items.Add(this.btnSendIdea);
+            this.grpAbout.Items.Add(this.btnCheckUpdate);
+            this.grpAbout.Items.Add(this.btnErrorMessage);
+            this.grpAbout.Items.Add(this.btnAbout);
+            this.grpAbout.Label = "About";
+            this.grpAbout.Name = "grpAbout";
+            // 
+            // btnSendIdea
+            // 
+            this.btnSendIdea.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnSendIdea.Image = ((System.Drawing.Image)(resources.GetObject("btnSendIdea.Image")));
+            this.btnSendIdea.Label = "Send an idea";
+            this.btnSendIdea.Name = "btnSendIdea";
+            this.btnSendIdea.ShowImage = true;
+            this.btnSendIdea.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SendIdea_Click);
+            // 
+            // btnCheckUpdate
+            // 
+            this.btnCheckUpdate.Image = ((System.Drawing.Image)(resources.GetObject("btnCheckUpdate.Image")));
+            this.btnCheckUpdate.Label = "Сheck for updates";
+            this.btnCheckUpdate.Name = "btnCheckUpdate";
+            this.btnCheckUpdate.ShowImage = true;
+            this.btnCheckUpdate.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.CheckUpdate_Click);
+            // 
+            // btnErrorMessage
+            // 
+            this.btnErrorMessage.Image = ((System.Drawing.Image)(resources.GetObject("btnErrorMessage.Image")));
+            this.btnErrorMessage.Label = "Error message";
+            this.btnErrorMessage.Name = "btnErrorMessage";
+            this.btnErrorMessage.ShowImage = true;
+            this.btnErrorMessage.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.ErrorMessage_Click);
+            // 
+            // btnAbout
+            // 
+            this.btnAbout.Image = ((System.Drawing.Image)(resources.GetObject("btnAbout.Image")));
+            this.btnAbout.Label = "About";
+            this.btnAbout.Name = "btnAbout";
+            this.btnAbout.ShowImage = true;
+            this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnAbout_Click);
             // 
             // Ribbon
             // 
@@ -186,10 +188,10 @@ namespace EODAddIn
             this.tabMain.PerformLayout();
             this.grpMain.ResumeLayout(false);
             this.grpMain.PerformLayout();
-            this.grpAbout.ResumeLayout(false);
-            this.grpAbout.PerformLayout();
             this.group1.ResumeLayout(false);
             this.group1.PerformLayout();
+            this.grpAbout.ResumeLayout(false);
+            this.grpAbout.PerformLayout();
             this.ResumeLayout(false);
 
         }
