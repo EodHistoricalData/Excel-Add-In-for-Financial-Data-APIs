@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EODAddIn.Program
 {
@@ -14,6 +11,10 @@ namespace EODAddIn.Program
         /// </summary>
         public string APIKey = string.Empty;
 
+        public List<string> EndOfDayTickers;
+        public string EndOfDayPeriod;
+        public DateTime EndOfDayFrom = new DateTime(1970, 1, 1);
+        public DateTime EndOfDayTo;
 
         public SettingsFields()
         {

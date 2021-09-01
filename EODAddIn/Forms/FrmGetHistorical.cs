@@ -1,4 +1,5 @@
 ﻿using EODAddIn.BL;
+using EODAddIn.Program;
 
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,34 @@ namespace EODAddIn.Forms
         public FrmGetHistorical()
         {
             InitializeComponent();
-            cboPeriod.SelectedIndex = 0;
+
+            switch (Settings.SettingsFields.EndOfDayPeriod)
+            {
+                case "d":
+                    cboPeriod.SelectedIndex = 0;
+                    break;
+                case "w":
+                    cboPeriod.SelectedIndex = 1;
+                    break;
+                case "m":
+                    cboPeriod.SelectedIndex = 2;
+                    break;
+                default:
+                    cboPeriod.SelectedIndex = 0;
+                    break;
+            }
+
+            dtpFrom.Value = Settings.SettingsFields.EndOfDayFrom;
+            if (Settings.SettingsFields.EndOfDayTo != DateTime.MinValue)
+            {
+                dtpTo.Value = Settings.SettingsFields.EndOfDayTo;
+            }
+            
+            foreach (string ticker in Settings.SettingsFields.EndOfDayTickers)
+            {
+                int i = gridTickers.Rows.Add();
+                gridTickers.Rows[i].Cells[0].Value = ticker;
+            }
         }
 
         private void BtnLoad_Click(object sender, EventArgs e)
@@ -29,14 +57,22 @@ namespace EODAddIn.Forms
             DateTime from = dtpFrom.Value;
             DateTime to = dtpTo.Value;
 
+            List<string> tikers = new List<string>();
             foreach (DataGridViewRow row in gridTickers.Rows)
             {
                 if (row.Cells[0].Value == null) continue;
                 string ticker = row.Cells[0].Value.ToString();
                 List<Model.EndOfDay> res = Utils.APIEOD.GetEOD(ticker, from, to, period);
                 LoadToExcel.LoadEndOfDay(res, ticker, period);
+                tikers.Add(ticker);
             }
-            
+
+            Settings.SettingsFields.EndOfDayPeriod = period;
+            Settings.SettingsFields.EndOfDayTo = to;
+            Settings.SettingsFields.EndOfDayFrom = from;
+            Settings.SettingsFields.EndOfDayTickers = tikers;
+            Settings.Save();
+
             Close();
         }
 
