@@ -182,6 +182,12 @@
     <Compile Include="Forms\FrmGetHistorical.Designer.cs">
       <DependentUpon>FrmGetHistorical.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FrmSearchTiker.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmSearchTiker.Designer.cs">
+      <DependentUpon>FrmSearchTiker.cs</DependentUpon>
+    </Compile>
     <Compile Include="Model\AddressData.cs" />
     <Compile Include="Model\Balance_Sheet.cs" />
     <Compile Include="Model\Balance_SheetData.cs" />
@@ -225,6 +231,7 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Utils\ExcelUtils.cs" />
     <Compile Include="Utils\Response.cs" />
     <Compile Include="Utils\APIException.cs" />
     <Compile Include="Utils\APIEOD.cs" />
@@ -236,6 +243,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmGetHistorical.resx">
       <DependentUpon>FrmGetHistorical.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmSearchTiker.resx">
+      <DependentUpon>FrmSearchTiker.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Program\FrmAbout.resx">
       <DependentUpon>FrmAbout.cs</DependentUpon>

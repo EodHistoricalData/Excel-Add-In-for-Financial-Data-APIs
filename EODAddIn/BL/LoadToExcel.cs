@@ -1,4 +1,5 @@
 ﻿using EODAddIn.Model;
+using EODAddIn.Utils;
 
 using System.Collections.Generic;
 
@@ -8,9 +9,20 @@ namespace EODAddIn.BL
 {
     public class LoadToExcel
     {
-        public static void LoadEndOfDay(List<EndOfDay> endOfDays)
+        public static void LoadEndOfDay(List<EndOfDay> endOfDays, string ticker, string period)
         {
-            Excel.Worksheet worksheet = Globals.ThisAddIn.Application.ActiveSheet;
+            string nameSheet = $"{ticker}-{period}";
+            Excel.Worksheet worksheet;
+            if (ExcelUtils.SheetExists(nameSheet))
+            {
+                worksheet = Globals.ThisAddIn.Application.Worksheets[nameSheet];
+                worksheet.Cells.Clear();
+            }
+            else
+            {
+                worksheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Add();
+                worksheet.Name = nameSheet;
+            }
 
             int r = 2;
             worksheet.Cells[r, 1] = "Date";

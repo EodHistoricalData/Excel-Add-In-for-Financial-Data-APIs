@@ -14,7 +14,7 @@ namespace EODAddIn.Model
         public double Low { get; set; }
         public double Close { get; set; }
         public double Adjusted_close { get; set; }
-        public int Volume { get; set; }
+        public long Volume { get; set; }
 
     }
 }

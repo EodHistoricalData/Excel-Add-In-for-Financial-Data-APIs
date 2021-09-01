@@ -32,8 +32,9 @@ namespace EODAddIn.Forms
             foreach (DataGridViewRow row in gridTickers.Rows)
             {
                 if (row.Cells[0].Value == null) continue;
-                List<Model.EndOfDay> res = Utils.APIEOD.GetEOD($"{row.Cells[0].Value}", from, to, period);
-                LoadToExcel.LoadEndOfDay(res);
+                string ticker = row.Cells[0].Value.ToString();
+                List<Model.EndOfDay> res = Utils.APIEOD.GetEOD(ticker, from, to, period);
+                LoadToExcel.LoadEndOfDay(res, ticker, period);
             }
             
             Close();
@@ -79,5 +80,18 @@ namespace EODAddIn.Forms
             if (gridTickers.SelectedRows.Count == 0) return;
             gridTickers.Rows.Remove(gridTickers.SelectedRows[0]);
         }
+
+        private void TsmiFindTicker_Click(object sender, EventArgs e)
+        {
+            FrmSearchTiker frm = new FrmSearchTiker();
+            frm.ShowDialog();
+
+            if (frm.Result.Code == null) return;
+
+            int i = gridTickers.Rows.Add();
+
+            gridTickers.Rows[i].Cells[0].Value = $"{frm.Result.Code}.{frm.Result.Exchange}";
+        }
+
     }
 }
