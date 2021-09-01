@@ -1,4 +1,6 @@
-﻿using System;
+﻿using EODAddIn.BL;
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,12 +14,6 @@ namespace EODAddIn.Forms
 {
     public partial class FrmGetHistorical : Form
     {
-        public List<Model.EndOfDay> Results;
-        public string Tiker;
-        public string Exchange;
-        public string Period;
-        public DateTime From;
-        public DateTime To;
 
         public FrmGetHistorical()
         {
@@ -25,34 +21,36 @@ namespace EODAddIn.Forms
             cboPeriod.SelectedIndex = 0;
         }
 
-        private void btnLoad_Click(object sender, EventArgs e)
+        private void BtnLoad_Click(object sender, EventArgs e)
         {
             if (!CheckForm()) return; 
 
-            Tiker = txtCode.Text;
-            Exchange = txtExchange.Text;
+            string period = cboPeriod.SelectedItem.ToString().ToLower().Substring(0, 1);
+            DateTime from = dtpFrom.Value;
+            DateTime to = dtpTo.Value;
 
-            Period = cboPeriod.SelectedItem.ToString().ToLower().Substring(0, 1);
-            From = dtpFrom.Value;
-            To = dtpTo.Value;
-
-            Results = Utils.APIEOD.GetEOD($"{Tiker}.{Exchange}", From, To, Period);
-
+            foreach (DataGridViewRow row in gridTickers.Rows)
+            {
+                if (row.Cells[0].Value == null) continue;
+                List<Model.EndOfDay> res = Utils.APIEOD.GetEOD($"{row.Cells[0].Value}", from, to, period);
+                LoadToExcel.LoadEndOfDay(res);
+            }
+            
             Close();
         }
 
         private bool CheckForm()
         {
-            if (string.IsNullOrEmpty(txtCode.Text))
+
+            foreach (DataGridViewRow row in gridTickers.Rows)
             {
-                MessageBox.Show("Insert a tiсker", "Error", MessageBoxButtons.OK,MessageBoxIcon.Error);
-                return false;
+                if (row.Cells[0].Value != null && !row.Cells[0].Value.ToString().Contains("."))
+                {
+                    MessageBox.Show("Enter the ticket in the Ticket.Exchange format", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
             }
-            if (string.IsNullOrEmpty(txtExchange.Text))
-            {
-                MessageBox.Show("Insert exchange", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
+
             if (cboPeriod.SelectedIndex == -1)
             {
                 MessageBox.Show("Select period", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -69,6 +67,17 @@ namespace EODAddIn.Forms
                 return false;
             }
             return true;
+        }
+
+        private void ClearTicker_Click(object sender, EventArgs e)
+        {
+            gridTickers.Rows.Clear();
+        }
+
+        private void TsmiDeleteRowDataGrid_Click(object sender, EventArgs e)
+        {
+            if (gridTickers.SelectedRows.Count == 0) return;
+            gridTickers.Rows.Remove(gridTickers.SelectedRows[0]);
         }
     }
 }

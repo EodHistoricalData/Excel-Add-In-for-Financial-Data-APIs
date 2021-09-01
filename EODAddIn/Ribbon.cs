@@ -39,9 +39,6 @@ namespace EODAddIn
         {
             Forms.FrmGetHistorical frm = new Forms.FrmGetHistorical();
             frm.ShowDialog();
-
-            List<Model.EndOfDay> res = frm.Results;
-            LoadToExcel.LoadEndOfDay(res);
         }
 
         private void GetFundamentalData_Click(object sender, RibbonControlEventArgs e)
