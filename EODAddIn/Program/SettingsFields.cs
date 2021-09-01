@@ -16,6 +16,8 @@ namespace EODAddIn.Program
         public DateTime EndOfDayFrom = new DateTime(1970, 1, 1);
         public DateTime EndOfDayTo;
 
+        public string FundamentalTicker;
+
         public SettingsFields()
         {
 

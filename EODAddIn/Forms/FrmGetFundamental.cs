@@ -22,17 +22,18 @@ namespace EODAddIn.Forms
         public FrmGetFundamental()
         {
             InitializeComponent();
+            txtCode.Text = Program.Settings.SettingsFields.FundamentalTicker;
         }
 
-        private void btnLoad_Click(object sender, EventArgs e)
+        private void BtnLoad_Click(object sender, EventArgs e)
         {
             if (!CheckForm()) return; 
 
             Tiker = txtCode.Text;
-            Exchange = txtExchange.Text;
 
-            Results = Utils.APIEOD.GetFundamental($"{Tiker}.{Exchange}");
-
+            Results = Utils.APIEOD.GetFundamental(Tiker);
+            Program.Settings.SettingsFields.FundamentalTicker = Tiker;
+            Program.Settings.Save();
             Close();
         }
 
@@ -43,7 +44,7 @@ namespace EODAddIn.Forms
                 MessageBox.Show("Insert a tiсker", "Error", MessageBoxButtons.OK,MessageBoxIcon.Error);
                 return false;
             }
-            if (string.IsNullOrEmpty(txtExchange.Text))
+            if (!txtCode.Text.Contains("."))
             {
                 MessageBox.Show("Insert exchange", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;

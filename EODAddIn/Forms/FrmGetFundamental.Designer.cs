@@ -32,8 +32,6 @@ namespace EODAddIn.Forms
             this.label1 = new System.Windows.Forms.Label();
             this.txtCode = new System.Windows.Forms.TextBox();
             this.btnLoad = new System.Windows.Forms.Button();
-            this.label4 = new System.Windows.Forms.Label();
-            this.txtExchange = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label1
@@ -54,37 +52,19 @@ namespace EODAddIn.Forms
             // 
             // btnLoad
             // 
-            this.btnLoad.Location = new System.Drawing.Point(149, 61);
+            this.btnLoad.Location = new System.Drawing.Point(150, 36);
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(75, 23);
             this.btnLoad.TabIndex = 6;
             this.btnLoad.Text = "Load";
             this.btnLoad.UseVisualStyleBackColor = true;
-            this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 38);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(55, 13);
-            this.label4.TabIndex = 7;
-            this.label4.Text = "Exchange";
-            // 
-            // txtExchange
-            // 
-            this.txtExchange.Location = new System.Drawing.Point(73, 35);
-            this.txtExchange.Name = "txtExchange";
-            this.txtExchange.Size = new System.Drawing.Size(152, 20);
-            this.txtExchange.TabIndex = 8;
+            this.btnLoad.Click += new System.EventHandler(this.BtnLoad_Click);
             // 
             // FrmGetFundamental
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(236, 93);
-            this.Controls.Add(this.txtExchange);
-            this.Controls.Add(this.label4);
+            this.ClientSize = new System.Drawing.Size(236, 67);
             this.Controls.Add(this.btnLoad);
             this.Controls.Add(this.txtCode);
             this.Controls.Add(this.label1);
@@ -104,7 +84,5 @@ namespace EODAddIn.Forms
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtCode;
         private System.Windows.Forms.Button btnLoad;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox txtExchange;
     }
 }
