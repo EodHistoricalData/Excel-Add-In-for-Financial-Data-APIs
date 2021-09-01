@@ -39,7 +39,12 @@ namespace EODAddIn
             this.tabMain = this.Factory.CreateRibbonTab();
             this.grpMain = this.Factory.CreateRibbonGroup();
             this.btnGetHistorical = this.Factory.CreateRibbonButton();
-            this.btnGetFundamentalData = this.Factory.CreateRibbonButton();
+            this.splitbtnFundamental = this.Factory.CreateRibbonSplitButton();
+            this.btnGetGeneral = this.Factory.CreateRibbonButton();
+            this.btnGetHighlights = this.Factory.CreateRibbonButton();
+            this.btnGetBalanceSheet = this.Factory.CreateRibbonButton();
+            this.btnGetIncomeStatement = this.Factory.CreateRibbonButton();
+            this.btnGetEarnings = this.Factory.CreateRibbonButton();
             this.btnSettings = this.Factory.CreateRibbonButton();
             this.group1 = this.Factory.CreateRibbonGroup();
             this.label2 = this.Factory.CreateRibbonLabel();
@@ -69,7 +74,7 @@ namespace EODAddIn
             // grpMain
             // 
             this.grpMain.Items.Add(this.btnGetHistorical);
-            this.grpMain.Items.Add(this.btnGetFundamentalData);
+            this.grpMain.Items.Add(this.splitbtnFundamental);
             this.grpMain.Items.Add(this.btnSettings);
             this.grpMain.Label = "Commands";
             this.grpMain.Name = "grpMain";
@@ -83,14 +88,53 @@ namespace EODAddIn
             this.btnGetHistorical.ShowImage = true;
             this.btnGetHistorical.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.GetHistorical_Click);
             // 
-            // btnGetFundamentalData
+            // splitbtnFundamental
             // 
-            this.btnGetFundamentalData.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.btnGetFundamentalData.Image = ((System.Drawing.Image)(resources.GetObject("btnGetFundamentalData.Image")));
-            this.btnGetFundamentalData.Label = "Get fundamental data";
-            this.btnGetFundamentalData.Name = "btnGetFundamentalData";
-            this.btnGetFundamentalData.ShowImage = true;
-            this.btnGetFundamentalData.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.GetFundamentalData_Click);
+            this.splitbtnFundamental.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.splitbtnFundamental.Image = ((System.Drawing.Image)(resources.GetObject("splitbtnFundamental.Image")));
+            this.splitbtnFundamental.Items.Add(this.btnGetGeneral);
+            this.splitbtnFundamental.Items.Add(this.btnGetHighlights);
+            this.splitbtnFundamental.Items.Add(this.btnGetBalanceSheet);
+            this.splitbtnFundamental.Items.Add(this.btnGetIncomeStatement);
+            this.splitbtnFundamental.Items.Add(this.btnGetEarnings);
+            this.splitbtnFundamental.Label = "Get fundamental data";
+            this.splitbtnFundamental.Name = "splitbtnFundamental";
+            this.splitbtnFundamental.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SplitbtnFundamental_Click);
+            // 
+            // btnGetGeneral
+            // 
+            this.btnGetGeneral.Label = "General";
+            this.btnGetGeneral.Name = "btnGetGeneral";
+            this.btnGetGeneral.ShowImage = true;
+            this.btnGetGeneral.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnGetGeneral_Click);
+            // 
+            // btnGetHighlights
+            // 
+            this.btnGetHighlights.Label = "Highlights";
+            this.btnGetHighlights.Name = "btnGetHighlights";
+            this.btnGetHighlights.ShowImage = true;
+            this.btnGetHighlights.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnGetHighlights_Click);
+            // 
+            // btnGetBalanceSheet
+            // 
+            this.btnGetBalanceSheet.Label = "Balance Sheet";
+            this.btnGetBalanceSheet.Name = "btnGetBalanceSheet";
+            this.btnGetBalanceSheet.ShowImage = true;
+            this.btnGetBalanceSheet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnGetBalanceSheet_Click);
+            // 
+            // btnGetIncomeStatement
+            // 
+            this.btnGetIncomeStatement.Label = "Income Statement";
+            this.btnGetIncomeStatement.Name = "btnGetIncomeStatement";
+            this.btnGetIncomeStatement.ShowImage = true;
+            this.btnGetIncomeStatement.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnGetIncomeStatement_Click);
+            // 
+            // btnGetEarnings
+            // 
+            this.btnGetEarnings.Label = "Earnings";
+            this.btnGetEarnings.Name = "btnGetEarnings";
+            this.btnGetEarnings.ShowImage = true;
+            this.btnGetEarnings.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnGetEarnings_Click);
             // 
             // btnSettings
             // 
@@ -207,13 +251,18 @@ namespace EODAddIn
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnAbout;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnSettings;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnGetHistorical;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnGetFundamentalData;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
         internal Microsoft.Office.Tools.Ribbon.RibbonLabel label2;
         internal Microsoft.Office.Tools.Ribbon.RibbonLabel label3;
         internal Microsoft.Office.Tools.Ribbon.RibbonLabel label1;
         internal Microsoft.Office.Tools.Ribbon.RibbonLabel lblRequest;
         internal Microsoft.Office.Tools.Ribbon.RibbonLabel lblRequestLeft;
+        internal Microsoft.Office.Tools.Ribbon.RibbonSplitButton splitbtnFundamental;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnGetGeneral;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnGetHighlights;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnGetBalanceSheet;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnGetIncomeStatement;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnGetEarnings;
     }
 
     partial class ThisRibbonCollection

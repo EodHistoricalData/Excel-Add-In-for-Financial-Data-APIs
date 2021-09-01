@@ -41,7 +41,7 @@ namespace EODAddIn
             frm.ShowDialog();
         }
 
-        private void GetFundamentalData_Click(object sender, RibbonControlEventArgs e)
+        private void SplitbtnFundamental_Click(object sender, RibbonControlEventArgs e)
         {
             Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
             frm.ShowDialog();
@@ -117,6 +117,51 @@ namespace EODAddIn
                 errorReport.ShowAndSend();
             }
 
+        }
+
+        private void BtnGetGeneral_Click(object sender, RibbonControlEventArgs e)
+        {
+            Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
+            frm.ShowDialog();
+
+            Model.FundamentalData res = frm.Results;
+            LoadToExcel.LoadFundamentalGeneral(res);
+        }
+
+        private void BtnGetHighlights_Click(object sender, RibbonControlEventArgs e)
+        {
+            Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
+            frm.ShowDialog();
+
+            Model.FundamentalData res = frm.Results;
+            LoadToExcel.LoadFundamentalHighlights(res);
+        }
+
+        private void BtnGetBalanceSheet_Click(object sender, RibbonControlEventArgs e)
+        {
+            Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
+            frm.ShowDialog();
+
+            Model.FundamentalData res = frm.Results;
+            LoadToExcel.LoadFundamentalBalanceSheet(res);
+        }
+
+        private void BtnGetIncomeStatement_Click(object sender, RibbonControlEventArgs e)
+        {
+            Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
+            frm.ShowDialog();
+
+            Model.FundamentalData res = frm.Results;
+            LoadToExcel.LoadFundamentalIncomeStatement(res);
+        }
+
+        private void BtnGetEarnings_Click(object sender, RibbonControlEventArgs e)
+        {
+            Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
+            frm.ShowDialog();
+
+            Model.FundamentalData res = frm.Results;
+            LoadToExcel.LoadFundamentalEarnings(res);
         }
     }
 }
