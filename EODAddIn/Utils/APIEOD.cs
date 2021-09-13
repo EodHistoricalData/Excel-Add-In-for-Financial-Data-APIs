@@ -28,9 +28,17 @@ namespace EODAddIn.Utils
         /// <returns></returns>
         public static List<SearchResult> Search (string queryString)
         {
-            string url = $"https://eodhistoricaldata.com/api/search/{queryString}";
-            string s = Response.GET(url, "api_token=" + Program.Program.APIKey);
-            return JsonConvert.DeserializeObject<List<SearchResult>>(s);
+            string url = $"https://eodhistoricaldata.com/api/query-search-extended/?q={queryString}";
+            
+            try
+            {
+                string s = Response.GET(url);
+                return JsonConvert.DeserializeObject<List<SearchResult>>(s);
+            }
+            catch (Exception)
+            {
+                return new List<SearchResult>();
+            }
         }
 
         public static List<EndOfDay> GetEOD(string code,  DateTime from, DateTime to, string period = "d")
