@@ -9,7 +9,7 @@ namespace EODAddIn.Program
         /// <summary>
         /// API ключ
         /// </summary>
-        public string APIKey = "";
+        public string APIKey = "OeAFFmMliFG5orCUuwAKQ8l4WWFQ67YX";
 
         public List<string> EndOfDayTickers;
         public string EndOfDayPeriod;
