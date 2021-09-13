@@ -29,43 +29,31 @@ namespace EODAddIn.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            this.btnSearch = new System.Windows.Forms.Button();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.btnSelect = new System.Windows.Forms.Button();
             this.gridResult = new System.Windows.Forms.DataGridView();
             this.ColCode = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColExchange = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColCountry = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColCurrency = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.gridResult)).BeginInit();
             this.SuspendLayout();
-            // 
-            // btnSearch
-            // 
-            this.btnSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSearch.Location = new System.Drawing.Point(431, 11);
-            this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(76, 22);
-            this.btnSearch.TabIndex = 4;
-            this.btnSearch.Text = "Search";
-            this.btnSearch.UseVisualStyleBackColor = true;
-            this.btnSearch.Click += new System.EventHandler(this.BtnSearch_Click);
             // 
             // txtSearch
             // 
             this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtSearch.Location = new System.Drawing.Point(12, 12);
+            this.txtSearch.Location = new System.Drawing.Point(59, 12);
             this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(419, 20);
+            this.txtSearch.Size = new System.Drawing.Size(448, 20);
             this.txtSearch.TabIndex = 3;
+            this.txtSearch.TextChanged += new System.EventHandler(this.TxtSearch_TextChanged);
             // 
             // btnSelect
             // 
             this.btnSelect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSelect.Location = new System.Drawing.Point(431, 288);
+            this.btnSelect.Location = new System.Drawing.Point(431, 284);
             this.btnSelect.Name = "btnSelect";
             this.btnSelect.Size = new System.Drawing.Size(76, 22);
             this.btnSelect.TabIndex = 6;
@@ -76,23 +64,25 @@ namespace EODAddIn.Forms
             // gridResult
             // 
             this.gridResult.AllowUserToAddRows = false;
+            this.gridResult.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.gridResult.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.gridResult.BackgroundColor = System.Drawing.SystemColors.Window;
             this.gridResult.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gridResult.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColCode,
             this.ColExchange,
-            this.ColName,
-            this.ColCountry,
-            this.ColCurrency});
+            this.ColName});
             this.gridResult.Location = new System.Drawing.Point(12, 38);
             this.gridResult.MultiSelect = false;
             this.gridResult.Name = "gridResult";
             this.gridResult.ReadOnly = true;
             this.gridResult.RowHeadersVisible = false;
             this.gridResult.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gridResult.Size = new System.Drawing.Size(495, 244);
+            this.gridResult.Size = new System.Drawing.Size(495, 240);
             this.gridResult.TabIndex = 7;
+            this.gridResult.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.GridResult_CellDoubleClick);
             // 
             // ColCode
             // 
@@ -115,28 +105,23 @@ namespace EODAddIn.Forms
             this.ColName.Name = "ColName";
             this.ColName.ReadOnly = true;
             // 
-            // ColCountry
+            // label1
             // 
-            this.ColCountry.FillWeight = 40F;
-            this.ColCountry.HeaderText = "Country";
-            this.ColCountry.Name = "ColCountry";
-            this.ColCountry.ReadOnly = true;
-            // 
-            // ColCurrency
-            // 
-            this.ColCurrency.FillWeight = 20F;
-            this.ColCurrency.HeaderText = "Currency";
-            this.ColCurrency.Name = "ColCurrency";
-            this.ColCurrency.ReadOnly = true;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 15);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(41, 13);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Search";
             // 
             // FrmSearchTiker
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(519, 322);
+            this.ClientSize = new System.Drawing.Size(519, 313);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.gridResult);
             this.Controls.Add(this.btnSelect);
-            this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.txtSearch);
             this.Name = "FrmSearchTiker";
             this.ShowIcon = false;
@@ -148,14 +133,12 @@ namespace EODAddIn.Forms
         }
 
         #endregion
-        private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.Button btnSelect;
         private System.Windows.Forms.DataGridView gridResult;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColCode;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColExchange;
         private System.Windows.Forms.DataGridViewTextBoxColumn ColName;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColCountry;
-        private System.Windows.Forms.DataGridViewTextBoxColumn ColCurrency;
+        private System.Windows.Forms.Label label1;
     }
 }
