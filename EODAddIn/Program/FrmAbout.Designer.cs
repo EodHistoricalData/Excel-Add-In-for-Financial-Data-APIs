@@ -46,7 +46,7 @@ namespace EODAddIn.Program
             // lblVersion
             // 
             this.lblVersion.AutoSize = true;
-            this.lblVersion.Location = new System.Drawing.Point(249, 66);
+            this.lblVersion.Location = new System.Drawing.Point(183, 66);
             this.lblVersion.Name = "lblVersion";
             this.lblVersion.Size = new System.Drawing.Size(40, 13);
             this.lblVersion.TabIndex = 20;
@@ -77,9 +77,9 @@ namespace EODAddIn.Program
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(134, 66);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(109, 13);
+            this.label2.Size = new System.Drawing.Size(45, 13);
             this.label2.TabIndex = 17;
-            this.label2.Text = "Версия программы:";
+            this.label2.Text = "Version:";
             // 
             // lblProgramName
             // 
