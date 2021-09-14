@@ -238,6 +238,12 @@
       <DependentUpon>PanelExcel.cs</DependentUpon>
     </Compile>
     <Compile Include="Program\ErrorReport.cs" />
+    <Compile Include="Program\FormUpdateList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Program\FormUpdateList.designer.cs">
+      <DependentUpon>FormUpdateList.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program\FrmAbout.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -272,6 +278,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmSearchTiker.resx">
       <DependentUpon>FrmSearchTiker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Program\FormUpdateList.resx">
+      <DependentUpon>FormUpdateList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Program\FrmAbout.resx">
       <DependentUpon>FrmAbout.cs</DependentUpon>

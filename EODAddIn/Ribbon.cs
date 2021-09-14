@@ -53,7 +53,7 @@ namespace EODAddIn
 
         private void CheckUpdate_Click(object sender, RibbonControlEventArgs e)
         {
-
+            Program.Program.CheckUpdates();
         }
 
         private void UpdateRequests(object sender, EventArgs e)
