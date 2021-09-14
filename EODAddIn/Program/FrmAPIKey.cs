@@ -48,26 +48,6 @@ namespace EODAddIn.Program
         }
 
         /// <summary>
-        /// Кнопка регистрации
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Register(object sender, EventArgs e)
-        {
-            System.Diagnostics.Process.Start(Program.UrlCompany);
-        }
-
-        /// <summary>
-        /// Кнопка перехода к API ключу
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void CopyAPI(object sender, EventArgs e)
-        {
-            System.Diagnostics.Process.Start(Program.UrlKey);
-        }
-
-        /// <summary>
         /// Кнопка перехода к прайс листу
         /// </summary>
         /// <param name="sender"></param>
@@ -75,6 +55,11 @@ namespace EODAddIn.Program
         private void Price(object sender, EventArgs e)
         {
             System.Diagnostics.Process.Start(Program.UrlPrice);
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start(Program.UrlCompany);
         }
     }
 }
