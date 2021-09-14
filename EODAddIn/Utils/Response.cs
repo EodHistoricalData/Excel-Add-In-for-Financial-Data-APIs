@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Text;
 
 namespace EODAddIn.Utils
@@ -77,10 +78,22 @@ namespace EODAddIn.Utils
             }
             catch (WebException ex)
             {
-                HttpWebResponse httpResponse = (HttpWebResponse)ex.Response;
+                if (ex.Status == WebExceptionStatus.ProtocolError)
+                {
+                    HttpWebResponse httpResponse = (HttpWebResponse)ex.Response;
+                    throw new APIException((int)httpResponse.StatusCode, ex.Message);
+                }
+                else
+                {
+                    throw new APIException(500, ex.Message);
+                }
 
-                throw new APIException((int)httpResponse.StatusCode);
-
+            }
+            catch (Exception ex)
+            {
+                Program.ErrorReport error = new Program.ErrorReport(ex);
+                error.Send();
+                throw new APIException(0, ex.Message);
             }
 
         }

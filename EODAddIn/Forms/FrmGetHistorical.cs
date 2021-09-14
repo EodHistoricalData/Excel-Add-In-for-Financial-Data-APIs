@@ -10,6 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MS.ProgressBar;
+using EODAddIn.Utils;
 
 namespace EODAddIn.Forms
 {
@@ -58,15 +60,34 @@ namespace EODAddIn.Forms
             DateTime to = dtpTo.Value;
 
             List<string> tikers = new List<string>();
+
+            Progress progress = new Progress("Load end of data", gridTickers.Rows.Count-1);
             foreach (DataGridViewRow row in gridTickers.Rows)
             {
                 if (row.Cells[0].Value == null) continue;
+                progress.TaskStart(row.Cells[0].Value?.ToString(), 1);
+                
                 string ticker = row.Cells[0].Value.ToString();
-                List<Model.EndOfDay> res = Utils.APIEOD.GetEOD(ticker, from, to, period);
-                LoadToExcel.LoadEndOfDay(res, ticker, period);
+                try
+                {
+                    List<Model.EndOfDay> res = APIEOD.GetEOD(ticker, from, to, period);
+                    LoadToExcel.LoadEndOfDay(res, ticker, period);
+                }
+                catch (APIException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                }
+                catch (Exception ex)
+                {
+                    ErrorReport error = new ErrorReport(ex);
+                    error.ShowAndSend();
+                    break;
+                }
+                
                 tikers.Add(ticker);
             }
-
+            progress.Finish();
             Settings.SettingsFields.EndOfDayPeriod = period;
             Settings.SettingsFields.EndOfDayTo = to;
             Settings.SettingsFields.EndOfDayFrom = from;
