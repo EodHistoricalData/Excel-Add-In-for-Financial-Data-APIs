@@ -30,8 +30,11 @@ namespace EODAddIn.BL
             worksheet.Cells[r, 3] = "High";
             worksheet.Cells[r, 4] = "Low";
             worksheet.Cells[r, 5] = "Close";
-            worksheet.Cells[r, 6] = "Adjusted_close";
-            worksheet.Cells[r, 7] = "Volume";
+            worksheet.Cells[r, 6] = "Adjusted_open";
+            worksheet.Cells[r, 7] = "Adjusted_high";
+            worksheet.Cells[r, 8] = "Adjusted_lowe";
+            worksheet.Cells[r, 9] = "Adjusted_close";
+            worksheet.Cells[r, 10] = "Volume";
 
             foreach (EndOfDay item in endOfDays)
             {
@@ -41,8 +44,11 @@ namespace EODAddIn.BL
                 worksheet.Cells[r, 3] = item.High;
                 worksheet.Cells[r, 4] = item.Low;
                 worksheet.Cells[r, 5] = item.Close;
-                worksheet.Cells[r, 6] = item.Adjusted_close;
-                worksheet.Cells[r, 7] = item.Volume;
+                worksheet.Cells[r, 6] = item.Adjusted_open;
+                worksheet.Cells[r, 7] = item.Adjusted_high;
+                worksheet.Cells[r, 8] = item.Adjusted_low;
+                worksheet.Cells[r, 9] = item.Adjusted_close;
+                worksheet.Cells[r, 10] = item.Volume;
             }
         }
 
