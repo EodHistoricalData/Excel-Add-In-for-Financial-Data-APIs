@@ -25,6 +25,11 @@ namespace EODAddIn.Forms
             txtCode.Text = Program.Settings.SettingsFields.FundamentalTicker;
         }
 
+        /// <summary>
+        /// Кнопка загрузки данных
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void BtnLoad_Click(object sender, EventArgs e)
         {
             if (!CheckForm()) return; 
@@ -37,6 +42,10 @@ namespace EODAddIn.Forms
             Close();
         }
 
+        /// <summary>
+        /// Проверка корректности заполнения формы
+        /// </summary>
+        /// <returns></returns>
         private bool CheckForm()
         {
             if (string.IsNullOrEmpty(txtCode.Text))
@@ -51,6 +60,21 @@ namespace EODAddIn.Forms
             }
            
             return true;
+        }
+
+        /// <summary>
+        /// Отображение формы поиска тикера
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void TsmiFindTicker_Click(object sender, EventArgs e)
+        {
+            FrmSearchTiker frm = new FrmSearchTiker();
+            frm.ShowDialog();
+
+            if (frm.Result.Code == null) return;
+
+            txtCode.Text = $"{frm.Result.Code}.{frm.Result.Exchange}";
         }
     }
 }
