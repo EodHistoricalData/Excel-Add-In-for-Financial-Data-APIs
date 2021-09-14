@@ -8,8 +8,8 @@ namespace EODAddIn.Model
 {
     public class EarningsHistoryData
     {
-        public DateTime ReportDate { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime? ReportDate { get; set; }
+        public DateTime? Date { get; set; }
         public string BeforeAfterMarket { get; set; }
         public string Currency { get; set; }
         public double? EpsActual { get; set; }

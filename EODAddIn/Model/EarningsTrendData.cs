@@ -8,7 +8,7 @@ namespace EODAddIn.Model
 {
     public class EarningsTrendData
     {
-        public DateTime Date { get; set; }
+        public DateTime? Date { get; set; }
         public string Period { get; set; }
         public double? Growth { get; set; }
         public double? EarningsEstimateAvg { get; set; }

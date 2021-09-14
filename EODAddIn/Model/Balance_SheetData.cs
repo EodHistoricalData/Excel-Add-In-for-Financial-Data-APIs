@@ -8,7 +8,7 @@ namespace EODAddIn.Model
 {
     public class Balance_SheetData
     {
-        public DateTime Date { get; set; }
+        public DateTime? Date { get; set; }
         public DateTime? Filing_date { get; set; }
         public string Currency_symbol { get; set; }
         public double? TotalAssets { get; set; }
