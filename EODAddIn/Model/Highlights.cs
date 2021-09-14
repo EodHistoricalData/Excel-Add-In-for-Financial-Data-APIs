@@ -32,6 +32,6 @@ namespace EODAddIn.Model
         public double? QuarterlyRevenueGrowthYOY { get; set; }
         public long? GrossProfitTTM { get; set; }
         public double? DilutedEpsTTM { get; set; }
-        public int? QuarterlyEarningsGrowthYOY { get; set; }
+        public double? QuarterlyEarningsGrowthYOY { get; set; }
     }
 }

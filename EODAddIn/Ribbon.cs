@@ -70,10 +70,10 @@ namespace EODAddIn
             {
                 Model.User user = APIEOD.User(key);
 
-                lblRequest.Label = user.ApiRequests.ToString("# ##0");
-                lblRequestLeft.Label = (user.DailyRateLimit - user.ApiRequests).ToString("# ##0");
+                lblRequest.Label = user.ApiRequests?.ToString("# ##0");
+                lblRequestLeft.Label = (user.DailyRateLimit - user.ApiRequests)?.ToString("# ##0");
             }
-            catch (APIException ex)
+            catch
             {
                 lblRequest.Label = "-";
                 lblRequestLeft.Label = "-";
