@@ -75,7 +75,7 @@ namespace EODAddIn.Forms
                 }
                 catch (APIException ex)
                 {
-                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(ex.StatusError, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
                 }
                 catch (Exception ex)

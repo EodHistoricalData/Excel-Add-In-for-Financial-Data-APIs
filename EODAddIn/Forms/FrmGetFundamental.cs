@@ -1,4 +1,7 @@
-﻿using System;
+﻿using EODAddIn.Program;
+using EODAddIn.Utils;
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -36,7 +39,22 @@ namespace EODAddIn.Forms
 
             Tiker = txtCode.Text;
 
-            Results = Utils.APIEOD.GetFundamental(Tiker);
+            try
+            {
+                Results = Utils.APIEOD.GetFundamental(Tiker);
+            }
+            catch (APIException ex)
+            {
+                MessageBox.Show(ex.StatusError, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+            catch (Exception ex)
+            {
+                ErrorReport error = new ErrorReport(ex);
+                error.ShowAndSend();
+                return;
+            }
+            
             Program.Settings.SettingsFields.FundamentalTicker = Tiker;
             Program.Settings.Save();
             Close();
