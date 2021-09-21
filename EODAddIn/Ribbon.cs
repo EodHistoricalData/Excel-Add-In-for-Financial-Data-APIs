@@ -163,5 +163,14 @@ namespace EODAddIn
             Model.FundamentalData res = frm.Results;
             LoadToExcel.LoadFundamentalEarnings(res);
         }
+
+        private void btnFundamentalAllData_Click(object sender, RibbonControlEventArgs e)
+        {
+            Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
+            frm.ShowDialog();
+
+            Model.FundamentalData res = frm.Results;
+            LoadToExcel.LoadFundamental(res);
+        }
     }
 }
