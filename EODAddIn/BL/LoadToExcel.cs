@@ -1,7 +1,9 @@
 ﻿using EODAddIn.Model;
 using EODAddIn.Utils;
 
+using System;
 using System.Collections.Generic;
+using System.Drawing;
 
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -11,12 +13,16 @@ namespace EODAddIn.BL
     {
         public static void LoadEndOfDay(List<EndOfDay> endOfDays, string ticker, string period)
         {
+            bool createSheet = true;
             string nameSheet = $"{ticker}-{period}";
             Excel.Worksheet worksheet;
+
             if (ExcelUtils.SheetExists(nameSheet))
             {
                 worksheet = Globals.ThisAddIn.Application.Worksheets[nameSheet];
-                worksheet.Cells.Clear();
+                int maxrow = Utils.ExcelUtils.RowsCount(worksheet);
+                worksheet.Range[$"A1:J{maxrow}"].ClearContents();
+                createSheet = false;
             }
             else
             {
@@ -24,6 +30,7 @@ namespace EODAddIn.BL
                 worksheet.Name = nameSheet;
             }
 
+           
             int r = 2;
             worksheet.Cells[r, 1] = "Date";
             worksheet.Cells[r, 2] = "Open";
@@ -36,20 +43,107 @@ namespace EODAddIn.BL
             worksheet.Cells[r, 9] = "Adjusted_close";
             worksheet.Cells[r, 10] = "Volume";
 
-            foreach (EndOfDay item in endOfDays)
+            try
             {
-                r++;
-                worksheet.Cells[r, 1] = item.Date;
-                worksheet.Cells[r, 2] = item.Open;
-                worksheet.Cells[r, 3] = item.High;
-                worksheet.Cells[r, 4] = item.Low;
-                worksheet.Cells[r, 5] = item.Close;
-                worksheet.Cells[r, 6] = item.Adjusted_open;
-                worksheet.Cells[r, 7] = item.Adjusted_high;
-                worksheet.Cells[r, 8] = item.Adjusted_low;
-                worksheet.Cells[r, 9] = item.Adjusted_close;
-                worksheet.Cells[r, 10] = item.Volume;
+                Globals.ThisAddIn.Application.ScreenUpdating = false;
+                Globals.ThisAddIn.Application.Calculation = Excel.XlCalculation.xlCalculationManual;
+                foreach (EndOfDay item in endOfDays)
+                {
+                    r++;
+                    worksheet.Cells[r, 1] = item.Date;
+                    worksheet.Cells[r, 2] = item.Open;
+                    worksheet.Cells[r, 3] = item.High;
+                    worksheet.Cells[r, 4] = item.Low;
+                    worksheet.Cells[r, 5] = item.Close;
+                    worksheet.Cells[r, 6] = item.Adjusted_open;
+                    worksheet.Cells[r, 7] = item.Adjusted_high;
+                    worksheet.Cells[r, 8] = item.Adjusted_low;
+                    worksheet.Cells[r, 9] = item.Adjusted_close;
+                    worksheet.Cells[r, 10] = item.Volume;
+                }
             }
+            catch (Exception)
+            {
+                throw;
+                
+            }
+            finally
+            {
+                Globals.ThisAddIn.Application.ScreenUpdating = true;
+                Globals.ThisAddIn.Application.Calculation = Excel.XlCalculation.xlCalculationAutomatic;
+            }
+
+            if (!createSheet) return;
+            worksheet.Range["A2:E3"].Select();
+
+            Excel.Shape shp = worksheet.Shapes.AddChart2(-1, Excel.XlChartType.xlStockOHLC);
+            Excel.Chart chrt = shp.Chart;
+
+            chrt.ChartGroups(1).UpBars.Format.Fill.ForeColor.RGB = Color.FromArgb(0, 176, 80);
+            chrt.ChartGroups(1).DownBars.Format.Fill.ForeColor.RGB = Color.FromArgb(255, 0, 0);
+
+            worksheet.Cells[2, 13].Value = DateTime.Today.AddDays(-90);
+            worksheet.Cells[3, 13].Value = DateTime.Today.AddDays(-1);
+
+            worksheet.Cells[2, 12].Value = "Start";
+            worksheet.Cells[3, 12].Value = "End";
+
+            worksheet.Range["A:A"].EntireColumn.AutoFit();
+            worksheet.Range["M:M"].EntireColumn.AutoFit();
+            worksheet.Range["L:L"].EntireColumn.AutoFit();
+
+            Excel.Range rng = worksheet.Range["Q1"];
+            string formula;
+
+            // worksheet.Names.Add("_open", RefersToR1C1: работает некоректно с именованными ячейками
+            rng.FormulaR1C1 = $"=IFERROR(OFFSET('{worksheet.Name}'!R2C1,MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C1:C1,1)-2,1,MATCH('{worksheet.Name}'!R3C13,'{worksheet.Name}'!C1:C1,1)-MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C1:C1,1)+1,1),1)";
+            formula = rng.FormulaR1C1Local;
+            worksheet.Names.Add("_open", RefersToR1C1Local: formula);
+
+            rng.FormulaR1C1 = $"=IFERROR(OFFSET('{worksheet.Name}'!R2C1,MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C1:C1,1)-2,2,MATCH('{worksheet.Name}'!R3C13,'{worksheet.Name}'!C1:C1,1)-MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C1:C1,1)+1,1),1)";
+            formula = rng.FormulaR1C1Local;
+            worksheet.Names.Add("_high", RefersToR1C1Local: formula);
+
+            rng.FormulaR1C1 = $"=IFERROR(OFFSET('{worksheet.Name}'!R2C1,MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C1:C1,1)-2,3,MATCH('{worksheet.Name}'!R3C13,'{worksheet.Name}'!C1:C1,1)-MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C1:C1,1)+1,1),1)";
+            formula = rng.FormulaR1C1Local;
+            worksheet.Names.Add("_low", RefersToR1C1Local: formula);
+
+            rng.FormulaR1C1 = $"=IFERROR(OFFSET('{worksheet.Name}'!R2C1,MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C1:C1,1)-2,4,MATCH('{worksheet.Name}'!R3C13,'{worksheet.Name}'!C1:C1,1)-MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C1:C1,1)+1,1),1)";
+            formula = rng.FormulaR1C1Local;
+            worksheet.Names.Add("_close", RefersToR1C1Local: formula);
+            
+            rng.FormulaR1C1 = $"=OFFSET('{worksheet.Name}'!R2C1,IFERROR(MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C1:C1,1)-2,0),0,IFERROR(MATCH('{worksheet.Name}'!R3C13,'{worksheet.Name}'!C1:C1,1)-MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C1:C1,1)+1,1),1)";
+            formula = rng.FormulaR1C1Local;
+            worksheet.Names.Add("_period", RefersToR1C1Local: formula);
+
+            rng.ClearContents();
+            //worksheet.Names.Add("_high", RefersToR1C1Local: $"=OFFSET('{worksheet.Name}'!R2C1;MATCH('{worksheet.Name}'!R2C13;'{worksheet.Name}'!C1:C1;1)-1;2;MATCH('{worksheet.Name}'!R3C13;'{worksheet.Name}'!C1:C1;1)-1;1)");
+            //worksheet.Names.Add("_low", RefersToR1C1Local: $"=OFFSET('{worksheet.Name}'!R2C1;MATCH('{worksheet.Name}'!R2C13;'{worksheet.Name}'!C1:C1;1)-1;3;MATCH('{worksheet.Name}'!R3C13;'{worksheet.Name}'!C1:C1;1)-1;1)");
+            //worksheet.Names.Add("_close", RefersToR1C1Local: $"=OFFSET('{worksheet.Name}'!R2C1;MATCH('{worksheet.Name}'!R2C13;'{worksheet.Name}'!C1:C1;1)-1;4;MATCH('{worksheet.Name}'!R3C13;'{worksheet.Name}'!C1:C1;1)-1;1)");
+            //worksheet.Names.Add("_period", RefersToR1C1Local: $"=OFFSET('{worksheet.Name}'!R2C1;MATCH('{worksheet.Name}'!R2C13;'{worksheet.Name}'!C1:C1;1)-1;0;MATCH('{worksheet.Name}'!R3C13;'{worksheet.Name}'!C1:C1;1)-1;1)");
+
+            chrt.FullSeriesCollection(1).Values = $"='{worksheet.Name}'!_open"; 
+            chrt.FullSeriesCollection(2).Values = $"='{worksheet.Name}'!_high";
+            chrt.FullSeriesCollection(3).Values = $"='{worksheet.Name}'!_low"; 
+            chrt.FullSeriesCollection(4).Values = $"='{worksheet.Name}'!_close"; 
+            chrt.FullSeriesCollection(1).XValues = $"='{worksheet.Name}'!_period";
+
+            chrt.FullSeriesCollection(4).Trendlines().Add();
+            chrt.FullSeriesCollection(4).Trendlines(1).Type = Excel.XlTrendlineType.xlMovingAvg;
+            chrt.FullSeriesCollection(4).Trendlines(1).Period = 2;
+
+
+            shp.Left = (float)worksheet.Cells[5, 12].Left;
+            shp.Top = (float)worksheet.Cells[5, 12].Top;
+
+
+            shp.Height = 340.157480315f;
+            shp.Width = 680.3149606299f;
+
+
+            chrt.ChartTitle.Caption = worksheet.Name;
+
+
         }
 
         public static void LoadFundamental(FundamentalData data)
@@ -470,7 +564,7 @@ namespace EODAddIn.BL
             sh.Cells[r, 1] = "Highlights";
             sh.Cells[r, 1].Font.Bold = true;
             r++;
-     
+
             sh.Cells[r, 1] = "Market Cap";
             sh.Cells[r, 2] = data.Highlights.MarketCapitalization;
 
@@ -524,7 +618,7 @@ namespace EODAddIn.BL
             int r = Globals.ThisAddIn.Application.ActiveCell.Row;
             int c;
             int countValues;
-            
+
 
 
             // Earnings 
@@ -599,7 +693,7 @@ namespace EODAddIn.BL
                 c++;
             }
             sh.Range[sh.Cells[r, 1], sh.Cells[r + countValues - 1, c - 1]].Value = val;
-    
+
         }
 
         public static void LoadFundamentalIncomeStatement(FundamentalData data)
@@ -697,7 +791,7 @@ namespace EODAddIn.BL
             sh.Cells[r, 1].Font.Bold = true;
 
             r++;
- 
+
             Balance_SheetData balance_SheetData = new Balance_SheetData();
 
             int c = 1;

@@ -84,6 +84,7 @@ Source: "{#FilesPath}{#AppName}.dll.manifest"; DestDir: "{app}"; Flags: ignoreve
 Source: "{#FilesPath}{#AppName}.pdb"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#FilesPath}{#AppName}.vsto"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#FilesPath}Newtonsoft.Json.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "{#FilesPath}MS.ProgressBar.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "{#FilesPath}Microsoft.Office.Tools.Common.v4.0.Utilities.dll"; DestDir: "{app}"; Flags: ignoreversion
 
 ;Source: "{#FilesPath}{#AppName}.xla"; DestDir: "{userappdata}\Micro-Solution\{#AppName}"; Flags: ignoreversion

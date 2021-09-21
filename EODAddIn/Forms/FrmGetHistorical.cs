@@ -1,17 +1,12 @@
 ﻿using EODAddIn.BL;
 using EODAddIn.Program;
+using EODAddIn.Utils;
+
+using MS.ProgressBar;
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using MS.ProgressBar;
-using EODAddIn.Utils;
 
 namespace EODAddIn.Forms
 {
@@ -39,11 +34,9 @@ namespace EODAddIn.Forms
             }
 
             dtpFrom.Value = Settings.SettingsFields.EndOfDayFrom;
-            if (Settings.SettingsFields.EndOfDayTo != DateTime.MinValue)
-            {
-                dtpTo.Value = Settings.SettingsFields.EndOfDayTo;
-            }
-            
+            dtpTo.Value = DateTime.Today.AddDays(-1);
+
+
             foreach (string ticker in Settings.SettingsFields.EndOfDayTickers)
             {
                 int i = gridTickers.Rows.Add();
@@ -53,7 +46,7 @@ namespace EODAddIn.Forms
 
         private void BtnLoad_Click(object sender, EventArgs e)
         {
-            if (!CheckForm()) return; 
+            if (!CheckForm()) return;
 
             string period = cboPeriod.SelectedItem.ToString().ToLower().Substring(0, 1);
             DateTime from = dtpFrom.Value;
@@ -61,13 +54,14 @@ namespace EODAddIn.Forms
 
             List<string> tikers = new List<string>();
 
-            Progress progress = new Progress("Load end of data", gridTickers.Rows.Count-1);
+            Progress progress = new Progress("Load end of data", gridTickers.Rows.Count - 1);
             foreach (DataGridViewRow row in gridTickers.Rows)
             {
                 if (row.Cells[0].Value == null) continue;
                 progress.TaskStart(row.Cells[0].Value?.ToString(), 1);
-                
+
                 string ticker = row.Cells[0].Value.ToString();
+                tikers.Add(ticker);
                 try
                 {
                     List<Model.EndOfDay> res = APIEOD.GetEOD(ticker, from, to, period);
@@ -75,17 +69,17 @@ namespace EODAddIn.Forms
                 }
                 catch (APIException ex)
                 {
-                    MessageBox.Show(ex.StatusError, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    break;
+                    MessageBox.Show(ex.StatusError, "Error load " + ticker, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    continue;
                 }
                 catch (Exception ex)
                 {
                     ErrorReport error = new ErrorReport(ex);
                     error.ShowAndSend();
-                    break;
+                    continue;
                 }
+
                 
-                tikers.Add(ticker);
             }
             progress.Finish();
             Settings.SettingsFields.EndOfDayPeriod = period;
