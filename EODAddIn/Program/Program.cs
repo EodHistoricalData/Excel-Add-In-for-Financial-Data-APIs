@@ -197,9 +197,9 @@ namespace EODAddIn.Program
         }
 
         /// <summary>
-        /// Проверка обновлений в отдельном потоке. Ведение статистики запусков
+        /// Проверка обновлений в отдельном потоке
         /// </summary>
-        private static void Run()
+        public static void Run()
         {
             System.Threading.Tasks.Task.Factory.StartNew(() =>
             {

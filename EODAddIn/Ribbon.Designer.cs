@@ -40,6 +40,7 @@ namespace EODAddIn
             this.grpMain = this.Factory.CreateRibbonGroup();
             this.btnGetHistorical = this.Factory.CreateRibbonButton();
             this.splitbtnFundamental = this.Factory.CreateRibbonSplitButton();
+            this.btnFundamentalAllData = this.Factory.CreateRibbonButton();
             this.btnGetGeneral = this.Factory.CreateRibbonButton();
             this.btnGetHighlights = this.Factory.CreateRibbonButton();
             this.btnGetBalanceSheet = this.Factory.CreateRibbonButton();
@@ -58,7 +59,6 @@ namespace EODAddIn
             this.btnCheckUpdate = this.Factory.CreateRibbonButton();
             this.btnErrorMessage = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
-            this.btnFundamentalAllData = this.Factory.CreateRibbonButton();
             this.tabMain.SuspendLayout();
             this.grpMain.SuspendLayout();
             this.group1.SuspendLayout();
@@ -102,6 +102,13 @@ namespace EODAddIn
             this.splitbtnFundamental.Label = "Get fundamental data";
             this.splitbtnFundamental.Name = "splitbtnFundamental";
             this.splitbtnFundamental.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SplitbtnFundamental_Click);
+            // 
+            // btnFundamentalAllData
+            // 
+            this.btnFundamentalAllData.Label = "All Data";
+            this.btnFundamentalAllData.Name = "btnFundamentalAllData";
+            this.btnFundamentalAllData.ShowImage = true;
+            this.btnFundamentalAllData.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFundamentalAllData_Click);
             // 
             // btnGetGeneral
             // 
@@ -229,13 +236,6 @@ namespace EODAddIn
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.ShowImage = true;
             this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnAbout_Click);
-            // 
-            // btnFundamentalAllData
-            // 
-            this.btnFundamentalAllData.Label = "All Data";
-            this.btnFundamentalAllData.Name = "btnFundamentalAllData";
-            this.btnFundamentalAllData.ShowImage = true;
-            this.btnFundamentalAllData.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFundamentalAllData_Click);
             // 
             // Ribbon
             // 

@@ -61,7 +61,6 @@ namespace EODAddIn.Program
             {
                 new ErrorReport(ex).ShowAndSend();
             }
-
         }
 
         /// <summary>
@@ -85,9 +84,16 @@ namespace EODAddIn.Program
         /// </summary>
         private void DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
         {
-            Process.Start(fileName);
+            try
+            {
+                Process.Start(fileName);
+                MessageBox.Show("Before starting the installation process, close all Excel files", "Update", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Failed to download update", "Update", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             Close();
-            MessageBox.Show("Before starting the installation process, close all Excel files", "Update", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         /// <summary>

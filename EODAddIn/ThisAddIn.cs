@@ -13,6 +13,7 @@ namespace EODAddIn
     {
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
+            Program.Program.Run();
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)

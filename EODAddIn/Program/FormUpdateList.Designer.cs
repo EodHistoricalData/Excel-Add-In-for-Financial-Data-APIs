@@ -46,6 +46,7 @@
             this.rtxtUpdatesList.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.rtxtUpdatesList.Location = new System.Drawing.Point(0, 0);
             this.rtxtUpdatesList.Name = "rtxtUpdatesList";
+            this.rtxtUpdatesList.ReadOnly = true;
             this.rtxtUpdatesList.Size = new System.Drawing.Size(564, 295);
             this.rtxtUpdatesList.TabIndex = 0;
             this.rtxtUpdatesList.Text = "";
