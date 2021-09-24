@@ -98,7 +98,7 @@ namespace EODAddIn.Forms
             {
                 if (row.Cells[0].Value != null && !row.Cells[0].Value.ToString().Contains("."))
                 {
-                    MessageBox.Show("Enter the ticket in the Ticket.Exchange format", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Enter the ticker in the Ticker.Exchange format", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return false;
                 }
             }
