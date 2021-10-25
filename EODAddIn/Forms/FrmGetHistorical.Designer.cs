@@ -45,10 +45,10 @@ namespace EODAddIn.Forms
             this.tsmiDeleteRowDataGrid = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.tsmiFindTicker = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiClearTicker = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiLoadTickers = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiFromTxt = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiFromExcel = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiClearTicker = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.gridTickers)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -183,14 +183,6 @@ namespace EODAddIn.Forms
             this.tsmiFindTicker.Text = "Find ticker";
             this.tsmiFindTicker.Click += new System.EventHandler(this.TsmiFindTicker_Click);
             // 
-            // tsmiClearTicker
-            // 
-            this.tsmiClearTicker.Image = ((System.Drawing.Image)(resources.GetObject("tsmiClearTicker.Image")));
-            this.tsmiClearTicker.Name = "tsmiClearTicker";
-            this.tsmiClearTicker.Size = new System.Drawing.Size(80, 20);
-            this.tsmiClearTicker.Text = "Clear list";
-            this.tsmiClearTicker.Click += new System.EventHandler(this.ClearTicker_Click);
-            // 
             // tsmiLoadTickers
             // 
             this.tsmiLoadTickers.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -215,6 +207,15 @@ namespace EODAddIn.Forms
             this.tsmiFromExcel.Name = "tsmiFromExcel";
             this.tsmiFromExcel.Size = new System.Drawing.Size(180, 22);
             this.tsmiFromExcel.Text = "From Excel range";
+            this.tsmiFromExcel.Click += new System.EventHandler(this.TsmiFromExcel_Click);
+            // 
+            // tsmiClearTicker
+            // 
+            this.tsmiClearTicker.Image = ((System.Drawing.Image)(resources.GetObject("tsmiClearTicker.Image")));
+            this.tsmiClearTicker.Name = "tsmiClearTicker";
+            this.tsmiClearTicker.Size = new System.Drawing.Size(80, 20);
+            this.tsmiClearTicker.Text = "Clear list";
+            this.tsmiClearTicker.Click += new System.EventHandler(this.ClearTicker_Click);
             // 
             // FrmGetHistorical
             // 

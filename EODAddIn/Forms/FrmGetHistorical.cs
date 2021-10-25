@@ -170,5 +170,11 @@ namespace EODAddIn.Forms
                 }
             }
         }
+
+        private void TsmiFromExcel_Click(object sender, EventArgs e)
+        {
+            FrmSelectRange frm = new FrmSelectRange();
+            frm.Show(new WinHwnd());
+        }
     }
 }

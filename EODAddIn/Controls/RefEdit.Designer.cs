@@ -1,5 +1,5 @@
 ﻿
-namespace ProXL.Forms
+namespace EODAddIn.Controls
 {
     partial class RefEdit
     {

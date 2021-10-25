@@ -190,6 +190,12 @@
   -->
   <ItemGroup>
     <Compile Include="BL\LoadToExcel.cs" />
+    <Compile Include="Controls\RefEdit.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\RefEdit.designer.cs">
+      <DependentUpon>RefEdit.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\SearchControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -213,6 +219,12 @@
     </Compile>
     <Compile Include="Forms\FrmSearchTiker.Designer.cs">
       <DependentUpon>FrmSearchTiker.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmSelectRange.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmSelectRange.Designer.cs">
+      <DependentUpon>FrmSelectRange.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\AddressData.cs" />
     <Compile Include="Model\Balance_Sheet.cs" />
@@ -268,6 +280,9 @@
     <Compile Include="Utils\APIException.cs" />
     <Compile Include="Utils\APIEOD.cs" />
     <Compile Include="Utils\WinHwnd.cs" />
+    <EmbeddedResource Include="Controls\RefEdit.resx">
+      <DependentUpon>RefEdit.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\SearchControl.resx">
       <DependentUpon>SearchControl.cs</DependentUpon>
     </EmbeddedResource>
@@ -279,6 +294,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmSearchTiker.resx">
       <DependentUpon>FrmSearchTiker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmSelectRange.resx">
+      <DependentUpon>FrmSelectRange.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Program\FormUpdateList.resx">
       <DependentUpon>FormUpdateList.cs</DependentUpon>

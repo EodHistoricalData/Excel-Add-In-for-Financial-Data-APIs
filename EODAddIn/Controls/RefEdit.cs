@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 using Excel = Microsoft.Office.Interop.Excel;
 
-namespace ProXL.Forms
+namespace EODAddIn.Controls
 {
     public partial class RefEdit : UserControl
     {
