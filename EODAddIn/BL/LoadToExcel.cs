@@ -11,7 +11,7 @@ namespace EODAddIn.BL
 {
     public class LoadToExcel
     {
-        public static void LoadEndOfDay(List<EndOfDay> endOfDays, string ticker, string period)
+        public static void LoadEndOfDay(List<EndOfDay> endOfDays, string ticker, string period, bool chart)
         {
             bool createSheet = true;
             string nameSheet = $"{ticker}-{period}";
@@ -74,6 +74,8 @@ namespace EODAddIn.BL
             }
 
             if (!createSheet) return;
+            if (!chart) return;
+
             worksheet.Range["A2:E3"].Select();
 
             Excel.Shape shp = worksheet.Shapes.AddChart2(-1, Excel.XlChartType.xlStockOHLC);

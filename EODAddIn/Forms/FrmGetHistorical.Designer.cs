@@ -49,6 +49,7 @@ namespace EODAddIn.Forms
             this.tsmiFromTxt = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiFromExcel = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiClearTicker = new System.Windows.Forms.ToolStripMenuItem();
+            this.chkChart = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.gridTickers)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -89,7 +90,7 @@ namespace EODAddIn.Forms
             // 
             // btnLoad
             // 
-            this.btnLoad.Location = new System.Drawing.Point(163, 325);
+            this.btnLoad.Location = new System.Drawing.Point(163, 345);
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(75, 23);
             this.btnLoad.TabIndex = 8;
@@ -197,7 +198,7 @@ namespace EODAddIn.Forms
             // 
             this.tsmiFromTxt.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFromTxt.Image")));
             this.tsmiFromTxt.Name = "tsmiFromTxt";
-            this.tsmiFromTxt.Size = new System.Drawing.Size(180, 22);
+            this.tsmiFromTxt.Size = new System.Drawing.Size(165, 22);
             this.tsmiFromTxt.Text = "From file txt";
             this.tsmiFromTxt.Click += new System.EventHandler(this.TsmiFromTxt_Click);
             // 
@@ -205,7 +206,7 @@ namespace EODAddIn.Forms
             // 
             this.tsmiFromExcel.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFromExcel.Image")));
             this.tsmiFromExcel.Name = "tsmiFromExcel";
-            this.tsmiFromExcel.Size = new System.Drawing.Size(180, 22);
+            this.tsmiFromExcel.Size = new System.Drawing.Size(165, 22);
             this.tsmiFromExcel.Text = "From Excel range";
             this.tsmiFromExcel.Click += new System.EventHandler(this.TsmiFromExcel_Click);
             // 
@@ -217,11 +218,23 @@ namespace EODAddIn.Forms
             this.tsmiClearTicker.Text = "Clear list";
             this.tsmiClearTicker.Click += new System.EventHandler(this.ClearTicker_Click);
             // 
+            // chkChart
+            // 
+            this.chkChart.Location = new System.Drawing.Point(12, 325);
+            this.chkChart.Name = "chkChart";
+            this.chkChart.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.chkChart.Size = new System.Drawing.Size(88, 24);
+            this.chkChart.TabIndex = 9;
+            this.chkChart.Text = "Chart";
+            this.chkChart.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkChart.UseVisualStyleBackColor = true;
+            // 
             // FrmGetHistorical
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(250, 358);
+            this.ClientSize = new System.Drawing.Size(250, 380);
+            this.Controls.Add(this.chkChart);
             this.Controls.Add(this.gridTickers);
             this.Controls.Add(this.cboPeriod);
             this.Controls.Add(this.label5);
@@ -266,5 +279,6 @@ namespace EODAddIn.Forms
         private System.Windows.Forms.ToolStripMenuItem tsmiLoadTickers;
         private System.Windows.Forms.ToolStripMenuItem tsmiFromTxt;
         private System.Windows.Forms.ToolStripMenuItem tsmiFromExcel;
+        private System.Windows.Forms.CheckBox chkChart;
     }
 }
