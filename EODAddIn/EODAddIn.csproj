@@ -267,6 +267,7 @@
     <Compile Include="Utils\Response.cs" />
     <Compile Include="Utils\APIException.cs" />
     <Compile Include="Utils\APIEOD.cs" />
+    <Compile Include="Utils\WinHwnd.cs" />
     <EmbeddedResource Include="Controls\SearchControl.resx">
       <DependentUpon>SearchControl.cs</DependentUpon>
     </EmbeddedResource>
