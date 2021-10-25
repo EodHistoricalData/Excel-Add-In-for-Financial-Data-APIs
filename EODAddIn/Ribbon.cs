@@ -38,13 +38,13 @@ namespace EODAddIn
         private void GetHistorical_Click(object sender, RibbonControlEventArgs e)
         {
             Forms.FrmGetHistorical frm = new Forms.FrmGetHistorical();
-            frm.ShowDialog();
+            frm.Show(new WinHwnd());
         }
 
         private void SplitbtnFundamental_Click(object sender, RibbonControlEventArgs e)
         {
             Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
-            frm.ShowDialog();
+            frm.Show(new WinHwnd());
 
             Model.FundamentalData res = frm.Results;
             LoadToExcel.LoadFundamental(res);
@@ -122,7 +122,7 @@ namespace EODAddIn
         private void BtnGetGeneral_Click(object sender, RibbonControlEventArgs e)
         {
             Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
-            frm.ShowDialog();
+            frm.Show(new WinHwnd());
 
             Model.FundamentalData res = frm.Results;
             LoadToExcel.LoadFundamentalGeneral(res);
@@ -131,7 +131,7 @@ namespace EODAddIn
         private void BtnGetHighlights_Click(object sender, RibbonControlEventArgs e)
         {
             Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
-            frm.ShowDialog();
+            frm.Show(new WinHwnd());
 
             Model.FundamentalData res = frm.Results;
             LoadToExcel.LoadFundamentalHighlights(res);
@@ -140,7 +140,7 @@ namespace EODAddIn
         private void BtnGetBalanceSheet_Click(object sender, RibbonControlEventArgs e)
         {
             Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
-            frm.ShowDialog();
+            frm.Show(new WinHwnd());
 
             Model.FundamentalData res = frm.Results;
             LoadToExcel.LoadFundamentalBalanceSheet(res);
@@ -149,7 +149,7 @@ namespace EODAddIn
         private void BtnGetIncomeStatement_Click(object sender, RibbonControlEventArgs e)
         {
             Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
-            frm.ShowDialog();
+            frm.Show(new WinHwnd());
 
             Model.FundamentalData res = frm.Results;
             LoadToExcel.LoadFundamentalIncomeStatement(res);
@@ -158,7 +158,7 @@ namespace EODAddIn
         private void BtnGetEarnings_Click(object sender, RibbonControlEventArgs e)
         {
             Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
-            frm.ShowDialog();
+            frm.Show(new WinHwnd());
 
             Model.FundamentalData res = frm.Results;
             LoadToExcel.LoadFundamentalEarnings(res);
@@ -167,7 +167,7 @@ namespace EODAddIn
         private void btnFundamentalAllData_Click(object sender, RibbonControlEventArgs e)
         {
             Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
-            frm.ShowDialog();
+            frm.Show(new WinHwnd());
 
             Model.FundamentalData res = frm.Results;
             LoadToExcel.LoadFundamental(res);
