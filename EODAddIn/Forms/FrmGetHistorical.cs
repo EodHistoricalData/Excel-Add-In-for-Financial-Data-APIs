@@ -155,19 +155,17 @@ namespace EODAddIn.Forms
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    //Get the path of specified file
                     string filePath = openFileDialog.FileName;
-                    using (FileStream fstream = File.OpenRead(filePath))
+                    
+                    using (StreamReader fstream = new StreamReader(filePath))
                     {
-                        // преобразуем строку в байты
-                        byte[] array = new byte[fstream.Length];
-                        // считываем данные
-                        fstream.Read(array, 0, array.Length);
-                        // декодируем байты в строку
-                        string textFromFile = System.Text.Encoding.Default.GetString(array);
-
-                        int i = gridTickers.Rows.Add();
-                        gridTickers.Rows[i].Cells[0].Value = textFromFile;
+                        while (!fstream.EndOfStream)
+                        {
+                            string text = fstream.ReadLine();
+                            int i = gridTickers.Rows.Add();
+                            gridTickers.Rows[i].Cells[0].Value = text;
+                        }
+                        fstream.Close();
                     }
                 }
             }

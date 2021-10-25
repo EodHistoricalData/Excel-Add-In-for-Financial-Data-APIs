@@ -60,7 +60,7 @@ namespace EODAddIn.Forms
             this.label2.Location = new System.Drawing.Point(12, 277);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(30, 13);
-            this.label2.TabIndex = 1;
+            this.label2.TabIndex = 4;
             this.label2.Text = "From";
             // 
             // dtpFrom
@@ -68,7 +68,7 @@ namespace EODAddIn.Forms
             this.dtpFrom.Location = new System.Drawing.Point(86, 273);
             this.dtpFrom.Name = "dtpFrom";
             this.dtpFrom.Size = new System.Drawing.Size(152, 20);
-            this.dtpFrom.TabIndex = 3;
+            this.dtpFrom.TabIndex = 5;
             this.dtpFrom.Value = new System.DateTime(1970, 1, 1, 0, 0, 0, 0);
             // 
             // label3
@@ -77,7 +77,7 @@ namespace EODAddIn.Forms
             this.label3.Location = new System.Drawing.Point(12, 303);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(20, 13);
-            this.label3.TabIndex = 4;
+            this.label3.TabIndex = 6;
             this.label3.Text = "To";
             // 
             // dtpTo
@@ -85,14 +85,14 @@ namespace EODAddIn.Forms
             this.dtpTo.Location = new System.Drawing.Point(86, 299);
             this.dtpTo.Name = "dtpTo";
             this.dtpTo.Size = new System.Drawing.Size(152, 20);
-            this.dtpTo.TabIndex = 5;
+            this.dtpTo.TabIndex = 7;
             // 
             // btnLoad
             // 
             this.btnLoad.Location = new System.Drawing.Point(163, 325);
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(75, 23);
-            this.btnLoad.TabIndex = 6;
+            this.btnLoad.TabIndex = 8;
             this.btnLoad.Text = "Load";
             this.btnLoad.UseVisualStyleBackColor = true;
             this.btnLoad.Click += new System.EventHandler(this.BtnLoad_Click);
@@ -103,7 +103,7 @@ namespace EODAddIn.Forms
             this.label5.Location = new System.Drawing.Point(12, 250);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(37, 13);
-            this.label5.TabIndex = 9;
+            this.label5.TabIndex = 2;
             this.label5.Text = "Period";
             // 
             // cboPeriod
@@ -116,7 +116,7 @@ namespace EODAddIn.Forms
             this.cboPeriod.Location = new System.Drawing.Point(86, 245);
             this.cboPeriod.Name = "cboPeriod";
             this.cboPeriod.Size = new System.Drawing.Size(152, 21);
-            this.cboPeriod.TabIndex = 10;
+            this.cboPeriod.TabIndex = 3;
             // 
             // gridTickers
             // 
@@ -131,7 +131,7 @@ namespace EODAddIn.Forms
             this.gridTickers.RowHeadersWidth = 20;
             this.gridTickers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.gridTickers.Size = new System.Drawing.Size(223, 209);
-            this.gridTickers.TabIndex = 11;
+            this.gridTickers.TabIndex = 1;
             // 
             // Column1
             // 
@@ -172,7 +172,7 @@ namespace EODAddIn.Forms
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(250, 24);
-            this.menuStrip1.TabIndex = 12;
+            this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // tsmiFindTicker
