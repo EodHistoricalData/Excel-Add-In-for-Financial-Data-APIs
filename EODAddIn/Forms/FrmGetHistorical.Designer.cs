@@ -46,6 +46,9 @@ namespace EODAddIn.Forms
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.tsmiFindTicker = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiClearTicker = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiLoadTickers = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiFromTxt = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiFromExcel = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.gridTickers)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -62,7 +65,7 @@ namespace EODAddIn.Forms
             // 
             // dtpFrom
             // 
-            this.dtpFrom.Location = new System.Drawing.Point(73, 273);
+            this.dtpFrom.Location = new System.Drawing.Point(86, 273);
             this.dtpFrom.Name = "dtpFrom";
             this.dtpFrom.Size = new System.Drawing.Size(152, 20);
             this.dtpFrom.TabIndex = 3;
@@ -79,14 +82,14 @@ namespace EODAddIn.Forms
             // 
             // dtpTo
             // 
-            this.dtpTo.Location = new System.Drawing.Point(73, 299);
+            this.dtpTo.Location = new System.Drawing.Point(86, 299);
             this.dtpTo.Name = "dtpTo";
             this.dtpTo.Size = new System.Drawing.Size(152, 20);
             this.dtpTo.TabIndex = 5;
             // 
             // btnLoad
             // 
-            this.btnLoad.Location = new System.Drawing.Point(150, 325);
+            this.btnLoad.Location = new System.Drawing.Point(163, 325);
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(75, 23);
             this.btnLoad.TabIndex = 6;
@@ -110,7 +113,7 @@ namespace EODAddIn.Forms
             "daily",
             "weekly",
             "monthly"});
-            this.cboPeriod.Location = new System.Drawing.Point(73, 245);
+            this.cboPeriod.Location = new System.Drawing.Point(86, 245);
             this.cboPeriod.Name = "cboPeriod";
             this.cboPeriod.Size = new System.Drawing.Size(152, 21);
             this.cboPeriod.TabIndex = 10;
@@ -127,7 +130,7 @@ namespace EODAddIn.Forms
             this.gridTickers.RowHeadersVisible = false;
             this.gridTickers.RowHeadersWidth = 20;
             this.gridTickers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gridTickers.Size = new System.Drawing.Size(210, 209);
+            this.gridTickers.Size = new System.Drawing.Size(223, 209);
             this.gridTickers.TabIndex = 11;
             // 
             // Column1
@@ -142,13 +145,13 @@ namespace EODAddIn.Forms
             this.findTickerToolStripMenuItem,
             this.tsmiDeleteRowDataGrid});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(130, 48);
             // 
             // findTickerToolStripMenuItem
             // 
             this.findTickerToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("findTickerToolStripMenuItem.Image")));
             this.findTickerToolStripMenuItem.Name = "findTickerToolStripMenuItem";
-            this.findTickerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.findTickerToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.findTickerToolStripMenuItem.Text = "Find ticker";
             this.findTickerToolStripMenuItem.Click += new System.EventHandler(this.TsmiFindTicker_Click);
             // 
@@ -156,7 +159,7 @@ namespace EODAddIn.Forms
             // 
             this.tsmiDeleteRowDataGrid.Image = ((System.Drawing.Image)(resources.GetObject("tsmiDeleteRowDataGrid.Image")));
             this.tsmiDeleteRowDataGrid.Name = "tsmiDeleteRowDataGrid";
-            this.tsmiDeleteRowDataGrid.Size = new System.Drawing.Size(180, 22);
+            this.tsmiDeleteRowDataGrid.Size = new System.Drawing.Size(129, 22);
             this.tsmiDeleteRowDataGrid.Text = "Delete";
             this.tsmiDeleteRowDataGrid.Click += new System.EventHandler(this.TsmiDeleteRowDataGrid_Click);
             // 
@@ -164,10 +167,11 @@ namespace EODAddIn.Forms
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiFindTicker,
+            this.tsmiLoadTickers,
             this.tsmiClearTicker});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(240, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(250, 24);
             this.menuStrip1.TabIndex = 12;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -187,11 +191,36 @@ namespace EODAddIn.Forms
             this.tsmiClearTicker.Text = "Clear list";
             this.tsmiClearTicker.Click += new System.EventHandler(this.ClearTicker_Click);
             // 
+            // tsmiLoadTickers
+            // 
+            this.tsmiLoadTickers.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiFromTxt,
+            this.tsmiFromExcel});
+            this.tsmiLoadTickers.Image = ((System.Drawing.Image)(resources.GetObject("tsmiLoadTickers.Image")));
+            this.tsmiLoadTickers.Name = "tsmiLoadTickers";
+            this.tsmiLoadTickers.Size = new System.Drawing.Size(71, 20);
+            this.tsmiLoadTickers.Text = "Import";
+            // 
+            // tsmiFromTxt
+            // 
+            this.tsmiFromTxt.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFromTxt.Image")));
+            this.tsmiFromTxt.Name = "tsmiFromTxt";
+            this.tsmiFromTxt.Size = new System.Drawing.Size(180, 22);
+            this.tsmiFromTxt.Text = "From file txt";
+            this.tsmiFromTxt.Click += new System.EventHandler(this.TsmiFromTxt_Click);
+            // 
+            // tsmiFromExcel
+            // 
+            this.tsmiFromExcel.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFromExcel.Image")));
+            this.tsmiFromExcel.Name = "tsmiFromExcel";
+            this.tsmiFromExcel.Size = new System.Drawing.Size(180, 22);
+            this.tsmiFromExcel.Text = "From Excel range";
+            // 
             // FrmGetHistorical
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(240, 358);
+            this.ClientSize = new System.Drawing.Size(250, 358);
             this.Controls.Add(this.gridTickers);
             this.Controls.Add(this.cboPeriod);
             this.Controls.Add(this.label5);
@@ -233,5 +262,8 @@ namespace EODAddIn.Forms
         private System.Windows.Forms.ToolStripMenuItem tsmiClearTicker;
         private System.Windows.Forms.ToolStripMenuItem findTickerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tsmiDeleteRowDataGrid;
+        private System.Windows.Forms.ToolStripMenuItem tsmiLoadTickers;
+        private System.Windows.Forms.ToolStripMenuItem tsmiFromTxt;
+        private System.Windows.Forms.ToolStripMenuItem tsmiFromExcel;
     }
 }

@@ -6,6 +6,7 @@ using MS.ProgressBar;
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
 
 namespace EODAddIn.Forms
@@ -144,5 +145,30 @@ namespace EODAddIn.Forms
             gridTickers.Rows[i].Cells[0].Value = $"{frm.Result.Code}.{frm.Result.Exchange}";
         }
 
+        private void TsmiFromTxt_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "txt files (*.txt)|*.txt";
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    //Get the path of specified file
+                    string filePath = openFileDialog.FileName;
+                    using (FileStream fstream = File.OpenRead(filePath))
+                    {
+                        // преобразуем строку в байты
+                        byte[] array = new byte[fstream.Length];
+                        // считываем данные
+                        fstream.Read(array, 0, array.Length);
+                        // декодируем байты в строку
+                        string textFromFile = System.Text.Encoding.Default.GetString(array);
+
+                        int i = gridTickers.Rows.Add();
+                        gridTickers.Rows[i].Cells[0].Value = textFromFile;
+                    }
+                }
+            }
+        }
     }
 }

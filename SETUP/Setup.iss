@@ -58,7 +58,7 @@ PrivilegesRequired=none
 
 ; –езультат компил€ции установщика
 OutputDir            = {#ReleasePath}
-OutputBaseFilename   = Setup {#AppName}
+OutputBaseFilename   = Setup{#AppName}
 SetupIconFile        = {#AppIco}
 Compression          = lzma
 SolidCompression     = yes
