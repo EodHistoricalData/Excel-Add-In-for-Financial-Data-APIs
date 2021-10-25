@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
+using Excel = Microsoft.Office.Interop.Excel;
+
 namespace EODAddIn.Forms
 {
     public partial class FrmGetHistorical : Form
@@ -80,7 +82,7 @@ namespace EODAddIn.Forms
                     continue;
                 }
 
-                
+
             }
             progress.Finish();
             Settings.SettingsFields.EndOfDayPeriod = period;
@@ -175,6 +177,26 @@ namespace EODAddIn.Forms
         {
             FrmSelectRange frm = new FrmSelectRange();
             frm.Show(new WinHwnd());
+            frm.FormClosing += FrmSelectRangeClosing;
+        }
+
+        private void FrmSelectRangeClosing(object sender, FormClosingEventArgs e)
+        {
+            FrmSelectRange frm = (FrmSelectRange)sender;
+            if (ExcelUtils.IsRange(frm.RangeAddress))
+            {
+                Excel.Range range = Globals.ThisAddIn.Application.Range[frm.RangeAddress];
+
+                foreach (Excel.Range cell in range)
+                {
+                    string txt = cell.Text;
+                    if (!string.IsNullOrEmpty(txt))
+                    {
+                        int i = gridTickers.Rows.Add();
+                        gridTickers.Rows[i].Cells[0].Value = cell.Text;
+                    }
+                }
+            }
         }
     }
 }
