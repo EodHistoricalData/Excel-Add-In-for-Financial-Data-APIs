@@ -4,13 +4,22 @@ using EODAddIn.Utils;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Reflection;
+
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace EODAddIn.BL
 {
     public class LoadToExcel
     {
-        public static void LoadEndOfDay(List<EndOfDay> endOfDays, string ticker, string period, bool chart)
+        /// <summary>
+        /// Загрузка данных на конец дня на лист Excel
+        /// </summary>
+        /// <param name="endOfDays">Список с данными</param>
+        /// <param name="ticker">Тикер</param>
+        /// <param name="period">Период</param>
+        /// <param name="chart">Необходимость построения диаграммы</param>
+        public static void PrintEndOfDay(List<EndOfDay> endOfDays, string ticker, string period, bool chart)
         {
             bool createSheet = true;
             string nameSheet = $"{ticker}-{period}";
@@ -19,7 +28,7 @@ namespace EODAddIn.BL
             if (ExcelUtils.SheetExists(nameSheet))
             {
                 worksheet = Globals.ThisAddIn.Application.Worksheets[nameSheet];
-                int maxrow = Utils.ExcelUtils.RowsCount(worksheet);
+                int maxrow = ExcelUtils.RowsCount(worksheet);
                 worksheet.Range[$"A1:J{maxrow}"].ClearContents();
                 createSheet = false;
             }
@@ -29,7 +38,6 @@ namespace EODAddIn.BL
                 worksheet.Name = nameSheet;
             }
 
-           
             int r = 2;
             worksheet.Cells[r, 1] = "Date";
             worksheet.Cells[r, 2] = "Open";
@@ -44,8 +52,7 @@ namespace EODAddIn.BL
 
             try
             {
-                Globals.ThisAddIn.Application.ScreenUpdating = false;
-                Globals.ThisAddIn.Application.Calculation = Excel.XlCalculation.xlCalculationManual;
+                ExcelUtils.OnStart();
                 foreach (EndOfDay item in endOfDays)
                 {
                     r++;
@@ -64,12 +71,10 @@ namespace EODAddIn.BL
             catch (Exception)
             {
                 throw;
-                
             }
             finally
             {
-                Globals.ThisAddIn.Application.ScreenUpdating = true;
-                Globals.ThisAddIn.Application.Calculation = Excel.XlCalculation.xlCalculationAutomatic;
+                ExcelUtils.OnEnd();
             }
 
             if (!createSheet) return;
@@ -111,469 +116,65 @@ namespace EODAddIn.BL
             rng.FormulaR1C1 = $"=IFERROR(OFFSET('{worksheet.Name}'!R2C1,MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C1:C1,1)-2,4,MATCH('{worksheet.Name}'!R3C13,'{worksheet.Name}'!C1:C1,1)-MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C1:C1,1)+1,1),1)";
             formula = rng.FormulaR1C1Local;
             worksheet.Names.Add("_close", RefersToR1C1Local: formula);
-            
+
             rng.FormulaR1C1 = $"=OFFSET('{worksheet.Name}'!R2C1,IFERROR(MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C1:C1,1)-2,0),0,IFERROR(MATCH('{worksheet.Name}'!R3C13,'{worksheet.Name}'!C1:C1,1)-MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C1:C1,1)+1,1),1)";
             formula = rng.FormulaR1C1Local;
             worksheet.Names.Add("_period", RefersToR1C1Local: formula);
 
             rng.ClearContents();
 
-            chrt.FullSeriesCollection(1).Values = $"='{worksheet.Name}'!_open"; 
+            chrt.FullSeriesCollection(1).Values = $"='{worksheet.Name}'!_open";
             chrt.FullSeriesCollection(2).Values = $"='{worksheet.Name}'!_high";
-            chrt.FullSeriesCollection(3).Values = $"='{worksheet.Name}'!_low"; 
-            chrt.FullSeriesCollection(4).Values = $"='{worksheet.Name}'!_close"; 
+            chrt.FullSeriesCollection(3).Values = $"='{worksheet.Name}'!_low";
+            chrt.FullSeriesCollection(4).Values = $"='{worksheet.Name}'!_close";
             chrt.FullSeriesCollection(1).XValues = $"='{worksheet.Name}'!_period";
 
             chrt.FullSeriesCollection(4).Trendlines().Add();
             chrt.FullSeriesCollection(4).Trendlines(1).Type = Excel.XlTrendlineType.xlMovingAvg;
             chrt.FullSeriesCollection(4).Trendlines(1).Period = 2;
 
-
             shp.Left = (float)worksheet.Cells[5, 12].Left;
             shp.Top = (float)worksheet.Cells[5, 12].Top;
-
-
             shp.Height = 340.157480315f;
             shp.Width = 680.3149606299f;
 
-
             chrt.ChartTitle.Caption = worksheet.Name;
-
-
         }
 
-        public static void LoadFundamental(FundamentalData data)
+        /// <summary>
+        /// Загрузка всех фундаментальных данных на лист Excel
+        /// </summary>
+        /// <param name="data"></param>
+        public static void PrintFundamentalAll(FundamentalData data)
         {
             Excel.Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
 
-            int r = 1;
+            int row = 1;
             int startGroup1 = 2;
-            // General
-            sh.Cells[r, 1] = "General";
-            sh.Cells[r, 1].Font.Bold = true;
-            r++;
 
+            row = PrintFundamentalGeneral(data, sh.Cells[row, 1]);
+            row++;
 
-            sh.Cells[r, 1] = "Code";
-            sh.Cells[r, 2] = data.General.Code;
+            sh.Rows[$"{startGroup1}:{row}"].Group();
+            row++;
 
-            sh.Cells[r, 3] = "Type";
-            sh.Cells[r, 4] = data.General.Type;
+            startGroup1 = row+1;
+            row = PrintFundamentalHighlights(data, sh.Cells[row, 1]);
+            
+            sh.Rows[$"{startGroup1}:{row}"].Group();
+            row++;
 
-            r++;
+            row = PrintFundamentalData("Balance Sheet", data.Financials.Balance_Sheet.Quarterly, data.Financials.Balance_Sheet.Yearly, sh.Cells[row, 1]);
+            row++;
 
-            sh.Cells[r, 1] = "Name";
-            sh.Cells[r, 2] = data.General.Name;
+            row = PrintFundamentalData("Income Statement", data.Financials.Income_Statement.Quarterly, data.Financials.Income_Statement.Yearly, sh.Cells[row, 1]);
+            row++;
 
-            sh.Cells[r, 3] = "Exchange";
-            sh.Cells[r, 4] = data.General.Exchange;
+            row = PrintFundamentalData("Cash Flow", data.Financials.Cash_Flow.Quarterly, data.Financials.Cash_Flow.Yearly, sh.Cells[row, 1]);
+            row++;
 
-            r++;
+            PrintFundamentalData("Earnings", data.Earnings.History, data.Earnings.Trend, sh.Cells[row, 1], "History", "Trend");
 
-            sh.Cells[r, 1] = "Currency";
-            sh.Cells[r, 2] = data.General.CurrencyCode;
-            sh.Cells[r, 3] = data.General.CurrencySymbol;
-            r++;
-
-            sh.Cells[r, 1] = "Sector";
-            sh.Cells[r, 2] = data.General.Sector;
-            r++;
-
-            sh.Cells[r, 1] = "Industry";
-            sh.Cells[r, 2] = data.General.Industry;
-            r++;
-
-            sh.Cells[r, 1] = "Employees";
-            sh.Cells[r, 2] = data.General.FullTimeEmployees;
-            r++;
-
-            sh.Cells[r, 1] = "Description";
-            sh.Cells[r, 2] = data.General.Description;
-
-            r++;
-
-            sh.Rows[$"{startGroup1}:{r}"].Group();
-
-            r++;
-
-            // Highlights
-            sh.Cells[r, 1] = "Highlights";
-            sh.Cells[r, 1].Font.Bold = true;
-            r++;
-            startGroup1 = r;
-            sh.Cells[r, 1] = "Market Cap";
-            sh.Cells[r, 2] = data.Highlights.MarketCapitalization;
-
-            sh.Cells[r, 3] = "EBITDA";
-            sh.Cells[r, 4] = data.Highlights.EBITDA;
-
-            r++;
-
-            sh.Cells[r, 1] = "PE Ratio";
-            sh.Cells[r, 2] = data.Highlights.PERatio;
-
-            sh.Cells[r, 3] = "PEG Ratio";
-            sh.Cells[r, 4] = data.Highlights.PEGRatio;
-
-            r++;
-
-            sh.Cells[r, 1] = "Earning Share";
-            sh.Cells[r, 2] = data.Highlights.EarningsShare;
-
-            r++;
-
-            sh.Cells[r, 1] = "Dividend Share";
-            sh.Cells[r, 2] = data.Highlights.DividendShare;
-
-            sh.Cells[r, 3] = "Dividend Yield";
-            sh.Cells[r, 4] = data.Highlights.DividendYield;
-
-            r++;
-
-            sh.Cells[r, 1] = "EPS Estimate"; r++;
-
-            sh.Cells[r, 1] = "Current Year";
-            sh.Cells[r, 2] = data.Highlights.EPSEstimateCurrentYear;
-
-            r++;
-
-            sh.Cells[r, 1] = "Next Year";
-            sh.Cells[r, 2] = data.Highlights.EPSEstimateNextYear;
-
-            r++;
-
-            sh.Cells[r, 1] = "Next Quarter";
-            sh.Cells[r, 2] = data.Highlights.EPSEstimateNextQuarter;
-
-            sh.Rows[$"{startGroup1}:{r}"].Group();
-
-            r++;
-
-            // Balance Sheet
-            sh.Cells[r, 1] = "Balance Sheet";
-            sh.Cells[r, 1].Font.Bold = true;
-
-            r++;
-            startGroup1 = r;
-
-
-            sh.Cells[r, 1] = "Quarterly";
-            sh.Cells[r, 1].Font.Bold = true;
-
-            r++;
-            int startGroup2 = r;
-            Balance_SheetData balance_SheetData = new Balance_SheetData();
-
-            int c = 1;
-            System.Reflection.PropertyInfo[] properties = balance_SheetData.GetType().GetProperties();
-            foreach (var prop in properties)
-            {
-                sh.Cells[r, c] = prop.Name;
-                c++;
-            }
-
-            r++;
-
-            c = 1;
-            int countValues = data.Financials.Balance_Sheet.Quarterly.Values.Count;
-            object[,] val = new object[countValues, properties.Length];
-            foreach (var prop in properties)
-            {
-                int i = 0;
-
-                foreach (Balance_SheetData item in data.Financials.Balance_Sheet.Quarterly.Values)
-                {
-                    val[i, c - 1] = prop.GetValue(item);
-                    i++;
-                }
-
-                c++;
-            }
-            sh.Range[sh.Cells[r, 1], sh.Cells[r + countValues - 1, c - 1]].Value = val;
-            r += countValues;
-
-            sh.Rows[$"{startGroup2}:{r}"].Group();
-
-            r++;
-            sh.Cells[r, 1] = "Yearly";
-            sh.Cells[r, 1].Font.Bold = true;
-
-            r++;
-            startGroup2 = r;
-            c = 1;
-            foreach (var prop in properties)
-            {
-                sh.Cells[r, c] = prop.Name;
-                c++;
-            }
-
-            r++;
-
-            c = 1;
-            countValues = data.Financials.Balance_Sheet.Yearly.Values.Count;
-            val = new object[countValues, properties.Length];
-            foreach (var prop in properties)
-            {
-                int i = 0;
-                foreach (Balance_SheetData item in data.Financials.Balance_Sheet.Yearly.Values)
-                {
-                    val[i, c - 1] = prop.GetValue(item);
-                    i++;
-                }
-
-                c++;
-            }
-            sh.Range[sh.Cells[r, 1], sh.Cells[r + countValues - 1, c - 1]].Value = val;
-            r += countValues;
-            sh.Rows[$"{startGroup2}:{r}"].Group();
-
-            r++;
-            sh.Rows[$"{startGroup1}:{r}"].Group();
-            r++;
-            // Income_Statement
-            sh.Cells[r, 1] = "Income Statement";
-            sh.Cells[r, 1].Font.Bold = true;
-
-            r++;
-
-            startGroup1 = r;
-            sh.Cells[r, 1] = "Quarterly";
-            sh.Cells[r, 1].Font.Bold = true;
-
-            r++;
-            startGroup2 = r;
-            Income_StatementData income_StatementData = new Income_StatementData();
-
-            c = 1;
-            properties = income_StatementData.GetType().GetProperties();
-            foreach (var prop in properties)
-            {
-                sh.Cells[r, c] = prop.Name;
-                c++;
-            }
-
-            r++;
-
-            c = 1;
-            countValues = data.Financials.Income_Statement.Quarterly.Values.Count;
-            val = new object[countValues, properties.Length];
-            foreach (var prop in properties)
-            {
-                int i = 0;
-
-                foreach (Income_StatementData item in data.Financials.Income_Statement.Quarterly.Values)
-                {
-                    val[i, c - 1] = prop.GetValue(item);
-                    i++;
-                }
-
-                c++;
-            }
-            sh.Range[sh.Cells[r, 1], sh.Cells[r + countValues - 1, c - 1]].Value = val;
-            r += countValues;
-
-            sh.Rows[$"{startGroup2}:{r}"].Group();
-
-            r++;
-            sh.Cells[r, 1] = "Yearly";
-            sh.Cells[r, 1].Font.Bold = true;
-
-            r++;
-            startGroup2 = r;
-            c = 1;
-            foreach (var prop in properties)
-            {
-                sh.Cells[r, c] = prop.Name;
-                c++;
-            }
-
-            r++;
-
-            c = 1;
-            countValues = data.Financials.Income_Statement.Yearly.Values.Count;
-            val = new object[countValues, properties.Length];
-            foreach (var prop in properties)
-            {
-                int i = 0;
-                foreach (Income_StatementData item in data.Financials.Income_Statement.Yearly.Values)
-                {
-                    val[i, c - 1] = prop.GetValue(item);
-                    i++;
-                }
-
-                c++;
-            }
-            sh.Range[sh.Cells[r, 1], sh.Cells[r + countValues - 1, c - 1]].Value = val;
-            r += countValues;
-            sh.Rows[$"{startGroup2}:{r}"].Group();
-            r++;
-            sh.Rows[$"{startGroup1}:{r}"].Group();
-            r++;
-
-            //Cash_Flow
-
-            sh.Cells[r, 1] = "Cash Flow";
-            sh.Cells[r, 1].Font.Bold = true;
-
-            r++;
-
-            startGroup1 = r;
-            sh.Cells[r, 1] = "Quarterly";
-            sh.Cells[r, 1].Font.Bold = true;
-
-            r++;
-            startGroup2 = r;
-            Cash_FlowData cash_FlowData = new Cash_FlowData();
-            // Income_StatementData income_StatementData = new Income_StatementData();
-
-            c = 1;
-            properties = cash_FlowData.GetType().GetProperties();
-            foreach (var prop in properties)
-            {
-                sh.Cells[r, c] = prop.Name;
-                c++;
-            }
-
-            r++;
-
-            c = 1;
-            countValues = data.Financials.Cash_Flow.Quarterly.Values.Count;
-            val = new object[countValues, properties.Length];
-            foreach (var prop in properties)
-            {
-                int i = 0;
-
-                foreach (Cash_FlowData item in data.Financials.Cash_Flow.Quarterly.Values)
-                {
-                    val[i, c - 1] = prop.GetValue(item);
-                    i++;
-                }
-
-                c++;
-            }
-            sh.Range[sh.Cells[r, 1], sh.Cells[r + countValues - 1, c - 1]].Value = val;
-            r += countValues;
-
-            sh.Rows[$"{startGroup2}:{r}"].Group();
-
-            r++;
-            sh.Cells[r, 1] = "Yearly";
-            sh.Cells[r, 1].Font.Bold = true;
-
-            r++;
-            startGroup2 = r;
-            c = 1;
-            foreach (var prop in properties)
-            {
-                sh.Cells[r, c] = prop.Name;
-                c++;
-            }
-
-            r++;
-
-            c = 1;
-            countValues = data.Financials.Cash_Flow.Yearly.Values.Count;
-            val = new object[countValues, properties.Length];
-            foreach (var prop in properties)
-            {
-                int i = 0;
-                foreach (Cash_FlowData item in data.Financials.Cash_Flow.Yearly.Values)
-                {
-                    val[i, c - 1] = prop.GetValue(item);
-                    i++;
-                }
-
-                c++;
-            }
-            sh.Range[sh.Cells[r, 1], sh.Cells[r + countValues - 1, c - 1]].Value = val;
-            r += countValues;
-            sh.Rows[$"{startGroup2}:{r}"].Group();
-            r++;
-            sh.Rows[$"{startGroup1}:{r}"].Group();
-            //r++;
-
-            // Earnings 
-            sh.Cells[r, 1] = "Earnings";
-            sh.Cells[r, 1].Font.Bold = true;
-
-            r++;
-            startGroup1 = r;
-
-            sh.Cells[r, 1] = "History";
-            sh.Cells[r, 1].Font.Bold = true;
-
-            r++;
-            startGroup2 = r;
-            EarningsHistoryData earningsHistoryData = new EarningsHistoryData();
-
-            c = 1;
-            properties = earningsHistoryData.GetType().GetProperties();
-            foreach (var prop in properties)
-            {
-                sh.Cells[r, c] = prop.Name;
-                c++;
-            }
-
-            r++;
-
-            c = 1;
-            countValues = data.Earnings.History.Values.Count;
-            val = new object[countValues, properties.Length];
-            foreach (var prop in properties)
-            {
-                int i = 0;
-
-                foreach (EarningsHistoryData item in data.Earnings.History.Values)
-                {
-                    val[i, c - 1] = prop.GetValue(item);
-                    i++;
-                }
-
-                c++;
-            }
-            sh.Range[sh.Cells[r, 1], sh.Cells[r + countValues - 1, c - 1]].Value = val;
-            r += countValues;
-
-            sh.Rows[$"{startGroup2}:{r}"].Group();
-
-            r++;
-            sh.Cells[r, 1] = "Trend";
-            sh.Cells[r, 1].Font.Bold = true;
-
-            r++;
-            startGroup2 = r;
-            EarningsTrendData earningsTrendData = new EarningsTrendData();
-
-            c = 1;
-            properties = earningsTrendData.GetType().GetProperties();
-            foreach (var prop in properties)
-            {
-                sh.Cells[r, c] = prop.Name;
-                c++;
-            }
-
-            r++;
-
-            c = 1;
-            countValues = data.Earnings.Trend.Values.Count;
-            val = new object[countValues, properties.Length];
-            foreach (var prop in properties)
-            {
-                int i = 0;
-
-                foreach (EarningsTrendData item in data.Earnings.Trend.Values)
-                {
-                    val[i, c - 1] = prop.GetValue(item);
-                    i++;
-                }
-
-                c++;
-            }
-            sh.Range[sh.Cells[r, 1], sh.Cells[r + countValues - 1, c - 1]].Value = val;
-            r += countValues;
-            sh.Rows[$"{startGroup2}:{r}"].Group();
-            r++;
-            sh.Rows[$"{startGroup1}:{r}"].Group();
 
             sh.Outline.AutomaticStyles = false;
             sh.Outline.SummaryRow = Excel.XlSummaryRow.xlSummaryAbove;
@@ -581,263 +182,255 @@ namespace EODAddIn.BL
             sh.Outline.ShowLevels(1);
         }
 
-        public static void LoadFundamentalGeneral(FundamentalData data)
+        /// <summary>
+        /// Выводит фундаментальные General данные на лист в активную ячейку
+        /// </summary>
+        /// <param name="data">Фундаментальные данные</param>
+        public static void PrintFundamentalGeneral(FundamentalData data)
         {
-            Excel.Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
-
-            int r = Globals.ThisAddIn.Application.ActiveCell.Row;
-
-            // General
-            sh.Cells[r, 1] = "General";
-            sh.Cells[r, 1].Font.Bold = true;
-            r++;
-
-
-            sh.Cells[r, 1] = "Code";
-            sh.Cells[r, 2] = data.General.Code;
-
-            sh.Cells[r, 3] = "Type";
-            sh.Cells[r, 4] = data.General.Type;
-
-            r++;
-
-            sh.Cells[r, 1] = "Name";
-            sh.Cells[r, 2] = data.General.Name;
-
-            sh.Cells[r, 3] = "Exchange";
-            sh.Cells[r, 4] = data.General.Exchange;
-
-            r++;
-
-            sh.Cells[r, 1] = "Currency";
-            sh.Cells[r, 2] = data.General.CurrencyCode;
-            sh.Cells[r, 3] = data.General.CurrencySymbol;
-            r++;
-
-            sh.Cells[r, 1] = "Sector";
-            sh.Cells[r, 2] = data.General.Sector;
-            r++;
-
-            sh.Cells[r, 1] = "Industry";
-            sh.Cells[r, 2] = data.General.Industry;
-            r++;
-
-            sh.Cells[r, 1] = "Employees";
-            sh.Cells[r, 2] = data.General.FullTimeEmployees;
-            r++;
-
-            sh.Cells[r, 1] = "Description";
-            sh.Cells[r, 2] = data.General.Description;
+            PrintFundamentalGeneral(data, Globals.ThisAddIn.Application.ActiveCell);
         }
 
-        public static void LoadFundamentalHighlights(FundamentalData data)
+        /// <summary>
+        /// Выводит фундаментальные Highlights данные на лист в активную ячейку
+        /// </summary>
+        /// <param name="data"></param>
+        public static void PrintFundamentalHighlights(FundamentalData data)
         {
-            Excel.Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
-
-            int r = Globals.ThisAddIn.Application.ActiveCell.Row;
-
-
-
-            // Highlights
-            sh.Cells[r, 1] = "Highlights";
-            sh.Cells[r, 1].Font.Bold = true;
-            r++;
-
-            sh.Cells[r, 1] = "Market Cap";
-            sh.Cells[r, 2] = data.Highlights.MarketCapitalization;
-
-            sh.Cells[r, 3] = "EBITDA";
-            sh.Cells[r, 4] = data.Highlights.EBITDA;
-
-            r++;
-
-            sh.Cells[r, 1] = "PE Ratio";
-            sh.Cells[r, 2] = data.Highlights.PERatio;
-
-            sh.Cells[r, 3] = "PEG Ratio";
-            sh.Cells[r, 4] = data.Highlights.PEGRatio;
-
-            r++;
-
-            sh.Cells[r, 1] = "Earning Share";
-            sh.Cells[r, 2] = data.Highlights.EarningsShare;
-
-            r++;
-
-            sh.Cells[r, 1] = "Dividend Share";
-            sh.Cells[r, 2] = data.Highlights.DividendShare;
-
-            sh.Cells[r, 3] = "Dividend Yield";
-            sh.Cells[r, 4] = data.Highlights.DividendYield;
-
-            r++;
-
-            sh.Cells[r, 1] = "EPS Estimate"; r++;
-
-            sh.Cells[r, 1] = "Current Year";
-            sh.Cells[r, 2] = data.Highlights.EPSEstimateCurrentYear;
-
-            r++;
-
-            sh.Cells[r, 1] = "Next Year";
-            sh.Cells[r, 2] = data.Highlights.EPSEstimateNextYear;
-
-            r++;
-
-            sh.Cells[r, 1] = "Next Quarter";
-            sh.Cells[r, 2] = data.Highlights.EPSEstimateNextQuarter;
-
+            PrintFundamentalHighlights(data, Globals.ThisAddIn.Application.ActiveCell);
         }
 
-        public static void LoadFundamentalEarnings(FundamentalData data)
+        /// <summary>
+        /// Выводит фундаментальные Earnings данные на лист в активную ячейку
+        /// </summary>
+        /// <param name="data"></param>
+        public static void PrintFundamentalEarnings(FundamentalData data)
         {
-            Excel.Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
-
-            int r = Globals.ThisAddIn.Application.ActiveCell.Row;
-            int c;
-            int countValues;
-
-
-
-            // Earnings 
-            sh.Cells[r, 1] = "Earnings";
-            sh.Cells[r, 1].Font.Bold = true;
-
-
-            sh.Cells[r, 1] = "History";
-            sh.Cells[r, 1].Font.Bold = true;
-
-            r++;
-            EarningsHistoryData earningsHistoryData = new EarningsHistoryData();
-
-            c = 1;
-            System.Reflection.PropertyInfo[] properties = earningsHistoryData.GetType().GetProperties();
-            foreach (var prop in properties)
-            {
-                sh.Cells[r, c] = prop.Name;
-                c++;
-            }
-
-            r++;
-
-            c = 1;
-            
-            countValues = data.Earnings.History.Values.Count;
-            object[,] val = new object[countValues, properties.Length];
-            foreach (var prop in properties)
-            {
-                int i = 0;
-
-                foreach (EarningsHistoryData item in data.Earnings.History.Values)
-                {
-                    val[i, c - 1] = prop.GetValue(item);
-                    i++;
-                }
-
-                c++;
-            }
-            sh.Range[sh.Cells[r, 1], sh.Cells[r + countValues - 1, c - 1]].Value = val;
-            r += countValues;
-
-            sh.Cells[r, 1] = "Trend";
-            sh.Cells[r, 1].Font.Bold = true;
-
-            r++;
-
-            EarningsTrendData earningsTrendData = new EarningsTrendData();
-
-            c = 1;
-            properties = earningsTrendData.GetType().GetProperties();
-            foreach (var prop in properties)
-            {
-                sh.Cells[r, c] = prop.Name;
-                c++;
-            }
-
-            r++;
-
-            c = 1;
-            countValues = data.Earnings.Trend.Values.Count;
-            val = new object[countValues, properties.Length];
-            foreach (var prop in properties)
-            {
-                int i = 0;
-
-                foreach (EarningsTrendData item in data.Earnings.Trend.Values)
-                {
-                    val[i, c - 1] = prop.GetValue(item);
-                    i++;
-                }
-
-                c++;
-            }
-            sh.Range[sh.Cells[r, 1], sh.Cells[r + countValues - 1, c - 1]].Value = val;
-
+            PrintFundamentalData("Earnings", data.Earnings.History, data.Earnings.Trend, Globals.ThisAddIn.Application.ActiveCell, "History", "Trend");
         }
 
-        public static void LoadData<T>(string name,Dictionary<DateTime, T> metodDictionarQuarterly, Dictionary<DateTime, T> metodDictionarYearly, int row, int column)
-             where T : class, new()
+        /// <summary>
+        /// Выводит фундаментальные Cash Flow данные на лист в активную ячейку
+        /// </summary>
+        /// <param name="data"></param>
+        public static void PrintFundamentalCashFlow(FundamentalData data)
         {
-            Excel.Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
-            int Column = 1;
-            int startGroup1 = row;
-            int startGroup2 = 1;
+            PrintFundamentalData("Cash Flow", data.Financials.Cash_Flow.Quarterly, data.Financials.Cash_Flow.Yearly, Globals.ThisAddIn.Application.ActiveCell);
+        }
 
-            sh.Cells[row, 1] = $"{name}";
-            sh.Cells[row, 1].Font.Bold = true;
+        /// <summary>
+        /// Выводит фундаментальные Balance Sheet данные на лист в активную ячейку
+        /// </summary>
+        /// <param name="data"></param>
+        public static void PrintFundamentalBalanceSheet(FundamentalData data)
+        {
+            PrintFundamentalData("Balance Sheet", data.Financials.Balance_Sheet.Quarterly, data.Financials.Balance_Sheet.Yearly, Globals.ThisAddIn.Application.ActiveCell);
+        }
+
+        /// <summary>
+        /// Выводит фундаментальные Income Statement данные на лист в активную ячейку
+        /// </summary>
+        /// <param name="data"></param>
+        public static void PrintFundamentalIncomeStatement(FundamentalData data)
+        {
+            PrintFundamentalData("Income Statement", data.Financials.Income_Statement.Quarterly, data.Financials.Income_Statement.Yearly, Globals.ThisAddIn.Application.ActiveCell);
+        }
+
+
+
+        /// <summary>
+        /// Выводит фундаментальные Highlights данные на лист 
+        /// </summary>
+        /// <param name="data">Фундаментальные данные</param>
+        /// <param name="range">Ячейка с которой начинается печать</param>
+        /// <returns>Номер последней задействованной строки</returns>
+        private static int PrintFundamentalHighlights(FundamentalData data, Excel.Range range)
+        {
+            Excel.Worksheet sh = range.Parent;
+            int row = range.Row;
+            int column = range.Column;
+
+            sh.Cells[row, column] = "Highlights";
+            sh.Cells[row, column].Font.Bold = true;
+            row++;
+
+            sh.Cells[row, column] = "Market Cap";
+            sh.Cells[row, column+1] = data.Highlights.MarketCapitalization;
+
+            sh.Cells[row, column+2] = "EBITDA";
+            sh.Cells[row, column+3] = data.Highlights.EBITDA;
+            row++;
+
+            sh.Cells[row, column] = "PE Ratio";
+            sh.Cells[row, column+1] = data.Highlights.PERatio;
+
+            sh.Cells[row, column+2] = "PEG Ratio";
+            sh.Cells[row, column+3] = data.Highlights.PEGRatio;
+            row++;
+
+            sh.Cells[row, column] = "Earning Share";
+            sh.Cells[row, column+1] = data.Highlights.EarningsShare;
+            row++;
+
+            sh.Cells[row, column] = "Dividend Share";
+            sh.Cells[row, column+1] = data.Highlights.DividendShare;
+
+            sh.Cells[row, column+2] = "Dividend Yield";
+            sh.Cells[row, column+3] = data.Highlights.DividendYield;
+            row++;
+
+            sh.Cells[row, column] = "EPS Estimate"; 
+            row++;
+
+            sh.Cells[row, column] = "Current Year";
+            sh.Cells[row, column+1] = data.Highlights.EPSEstimateCurrentYear;
 
             row++;
-            startGroup1=row;
-            startGroup2 = row+1;
 
-            T MetoData = new T();
-            System.Reflection.PropertyInfo[] properties = MetoData.GetType().GetProperties();
+            sh.Cells[row, column] = "Next Year";
+            sh.Cells[row, column+1] = data.Highlights.EPSEstimateNextYear;
 
-            LoadTimePeriod("Quarterly", row,Column, metodDictionarQuarterly, sh, properties, startGroup2);
-            row += metodDictionarQuarterly.Values.Count;
-            sh.Rows[$"{startGroup2}:{row-1}"].Group();
+            row++;
+
+            sh.Cells[row, column] = "Next Quarter";
+            sh.Cells[row, column+1] = data.Highlights.EPSEstimateNextQuarter;
+
+            return row;
+        }
+        /// <summary>
+        /// Выводит фундаментальные General данные на лист
+        /// </summary>
+        /// <param name="data">Фундаментальные данные</param>
+        /// <param name="range">Ячейка с которой начинается печать</param>
+        /// <returns>Номер последней задействованной строки</returns>
+        private static int PrintFundamentalGeneral(FundamentalData data, Excel.Range range)
+        {
+            Excel.Worksheet sh = range.Parent;
+            int row = range.Row;
+            int column = range.Column;
+
+            sh.Cells[row, column] = "General";
+            sh.Cells[row, column].Font.Bold = true;
+            row++;
+
+            sh.Cells[row, column] = "Code";
+            sh.Cells[row, column + 1] = data.General.Code;
+
+            sh.Cells[row, column + 2] = "Type";
+            sh.Cells[row, column + 3] = data.General.Type;
+            row++;
+
+            sh.Cells[row, column] = "Name";
+            sh.Cells[row, column + 1] = data.General.Name;
+
+            sh.Cells[row, column + 2] = "Exchange";
+            sh.Cells[row, column + 3] = data.General.Exchange;
+            row++;
+
+            sh.Cells[row, column] = "Currency";
+            sh.Cells[row, column + 1] = data.General.CurrencyCode;
+            sh.Cells[row, column + 2] = data.General.CurrencySymbol;
+            row++;
+
+            sh.Cells[row, column] = "Sector";
+            sh.Cells[row, column + 1] = data.General.Sector;
+            row++;
+
+            sh.Cells[row, column] = "Industry";
+            sh.Cells[row, column + 1] = data.General.Industry;
+            row++;
+
+            sh.Cells[row, column] = "Employees";
+            sh.Cells[row, column + 1] = data.General.FullTimeEmployees;
+            row++;
+
+            sh.Cells[row, column] = "Description";
+            sh.Cells[row, column + 1] = data.General.Description;
+
+            return row;
+        }
+
+        private static int PrintFundamentalData<T, U>(string nameData, 
+                                                    Dictionary<DateTime, T> dataTable1, 
+                                                    Dictionary<DateTime, U> dataTable2, 
+                                                    Excel.Range range, 
+                                                    string dataTable1Name = "Quarterly", 
+                                                    string dataTable2Name = "Yearly")
+             where T : class
+             where U : class
+        {
+            Excel.Worksheet sh = range.Parent;
+            int row = range.Row;
+            int column = range.Column;
+
+            sh.Cells[row, column] = $"{nameData}";
+            sh.Cells[row, column].Font.Bold = true;
+            row++;
+
+            int startGroup1 = row;
+            int startGroup2 = row + 1;
+
+            PrintTablePeriod(dataTable1Name, sh.Cells[row, column], dataTable1);
+            row += dataTable1.Values.Count+1;
+            sh.Rows[$"{startGroup2}:{row}"].Group();
             row++;
             startGroup2 = row + 1;
 
-            LoadTimePeriod("Yearly", row, Column, metodDictionarYearly, sh, properties, startGroup2);
-            row += metodDictionarYearly.Values.Count;
-            sh.Rows[$"{startGroup2}:{row-1}"].Group();
+            PrintTablePeriod(dataTable2Name, sh.Cells[row, column], dataTable2);
+            row += dataTable2.Values.Count+1;
+            sh.Rows[$"{startGroup2}:{row}"].Group();
             sh.Rows[$"{startGroup1}:{row}"].Group();
 
+            return row;
         }
-        private static void LoadTimePeriod<T>(string TimePeriodName,int row, int column, Dictionary<DateTime, T> MetodDictionary, Excel.Worksheet sh, System.Reflection.PropertyInfo[] properties,int startGroup2)
-        {
-            
-            sh.Cells[row, 1] = $"{TimePeriodName}";
-            sh.Cells[row, 1].Font.Bold = true;
 
+
+        /// <summary>
+        /// Печать таблицы с данными по периоду
+        /// </summary>
+        /// <typeparam name="T">Тип данных в таблице</typeparam>
+        /// <param name="periodName">Название периода</param>
+        /// <param name="range">Целевая ячейка</param>
+        /// <param name="data">Данные таблицы</param>
+        /// <param name="properties">Список свойств</param>
+        private static void PrintTablePeriod<T>(string periodName, Excel.Range range, Dictionary<DateTime, T> data)
+            where T : class, new()
+        {
+            Excel.Worksheet sh = range.Parent;
+            int row = range.Row;
+            int column = range.Column;
+
+            sh.Cells[row, column] = $"{periodName}";
+            sh.Cells[row, column].Font.Bold = true;
             row++;
-            startGroup2 = row;
+
+            T model = new T();
+            PropertyInfo[] properties = model.GetType().GetProperties();
+
             foreach (var prop in properties)
             {
                 sh.Cells[row, column] = prop.Name;
                 column++;
             }
-
             row++;
 
-            column = 1;
-            int countValues = MetodDictionary.Values.Count;
+            column = range.Column;
+            int countValues = data.Values.Count;
             object[,] val = new object[countValues, properties.Length];
+            int j = 0;
             foreach (var prop in properties)
             {
                 int i = 0;
-
-                foreach (T item in MetodDictionary.Values)
+                foreach (T item in data.Values)
                 {
-                    val[i, column - 1] = prop.GetValue(item);
+                    val[i, j] = prop.GetValue(item);
                     i++;
                 }
-
                 column++;
+                j++;
             }
-            sh.Range[sh.Cells[row, 1], sh.Cells[row + countValues - 1, column - 1]].Value = val;
-            
+            sh.Range[sh.Cells[row, range.Column], sh.Cells[row + countValues-1, column - 1]].Value = val;
+
         }
     }
 }

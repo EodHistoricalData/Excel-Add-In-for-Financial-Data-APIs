@@ -5,7 +5,6 @@ using EODAddIn.Utils;
 using Microsoft.Office.Tools.Ribbon;
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Threading;
 
@@ -49,7 +48,7 @@ namespace EODAddIn
 
             Model.FundamentalData res = frm.Results;
             if (res == null) return;
-            LoadToExcel.LoadFundamental(res);
+            LoadToExcel.PrintFundamentalAll(res);
 
         }
 
@@ -126,8 +125,8 @@ namespace EODAddIn
             Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
             frm.ShowDialog(new WinHwnd());
 
-            Model.FundamentalData res = frm.Results;
-            LoadToExcel.LoadFundamentalGeneral(res);
+            FundamentalData res = frm.Results;
+            LoadToExcel.PrintFundamentalGeneral(res);
         }
 
         private void BtnGetHighlights_Click(object sender, RibbonControlEventArgs e)
@@ -135,20 +134,26 @@ namespace EODAddIn
             Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
             frm.ShowDialog(new WinHwnd());
 
-            Model.FundamentalData res = frm.Results;
-            LoadToExcel.LoadFundamentalHighlights(res);
+            FundamentalData res = frm.Results;
+            LoadToExcel.PrintFundamentalHighlights(res);
         }
 
         private void BtnGetBalanceSheet_Click(object sender, RibbonControlEventArgs e)
         {
-            Model.FundamentalData res = GetFundamentalData();
-            LoadToExcel.LoadData("Balance Sheet", res.Financials.Balance_Sheet.Quarterly, res.Financials.Balance_Sheet.Yearly, Globals.ThisAddIn.Application.ActiveCell.Row,1);
+            Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
+            frm.ShowDialog(new WinHwnd());
+
+            FundamentalData res = frm.Results;
+            LoadToExcel.PrintFundamentalBalanceSheet(res);
         }
+
         private void BtnGetIncomeStatement_Click(object sender, RibbonControlEventArgs e)
         {
+            Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
+            frm.ShowDialog(new WinHwnd());
 
-            Model.FundamentalData res = GetFundamentalData();
-            LoadToExcel.LoadData("Income Statement", res.Financials.Income_Statement.Quarterly, res.Financials.Income_Statement.Yearly, Globals.ThisAddIn.Application.ActiveCell.Row, 1);
+            FundamentalData res = frm.Results;
+            LoadToExcel.PrintFundamentalIncomeStatement(res);
         }
 
         private void BtnGetEarnings_Click(object sender, RibbonControlEventArgs e)
@@ -156,34 +161,26 @@ namespace EODAddIn
             Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
             frm.ShowDialog(new WinHwnd());
 
-            Model.FundamentalData res = frm.Results;
-            LoadToExcel.LoadFundamentalEarnings(res);
-
-            //Model.FundamentalData res = GetFundamentalData();
-            //LoadToExcel.LoadCashFlow("Cash Flow", res.Earnings.Trend, res.Earnings.History);
-        
-    }
-
-        private void btnGetFlowCash_Click(object sender, RibbonControlEventArgs e)
-        {
-            Model.FundamentalData res = GetFundamentalData();
-           LoadToExcel.LoadData("Cash Flow", res.Financials.Cash_Flow.Quarterly, res.Financials.Cash_Flow.Yearly, Globals.ThisAddIn.Application.ActiveCell.Row,1);
+            FundamentalData res = frm.Results;
+            LoadToExcel.PrintFundamentalEarnings(res);
         }
-        private void btnFundamentalAllData_Click(object sender, RibbonControlEventArgs e)
+
+        private void BtnGetCashFlow_Click(object sender, RibbonControlEventArgs e)
         {
             Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
             frm.ShowDialog(new WinHwnd());
 
-            Model.FundamentalData res = frm.Results;
-            LoadToExcel.LoadFundamental(res);
+            FundamentalData res = frm.Results;
+            LoadToExcel.PrintFundamentalCashFlow(res);
         }
-        private Model.FundamentalData GetFundamentalData()
+        private void BtnFundamentalAllData_Click(object sender, RibbonControlEventArgs e)
         {
             Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
             frm.ShowDialog(new WinHwnd());
 
-            Model.FundamentalData res = frm.Results;
-            return res;
+            FundamentalData res = frm.Results;
+            LoadToExcel.PrintFundamentalAll(res);
         }
+
     }
 }

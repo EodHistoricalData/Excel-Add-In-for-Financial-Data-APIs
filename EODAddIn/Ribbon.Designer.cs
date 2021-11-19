@@ -99,8 +99,8 @@ namespace EODAddIn
             this.splitbtnFundamental.Items.Add(this.btnGetHighlights);
             this.splitbtnFundamental.Items.Add(this.btnGetBalanceSheet);
             this.splitbtnFundamental.Items.Add(this.btnGetIncomeStatement);
-            this.splitbtnFundamental.Items.Add(this.btnGetEarnings);
             this.splitbtnFundamental.Items.Add(this.btnGetFlowCash);
+            this.splitbtnFundamental.Items.Add(this.btnGetEarnings);
             this.splitbtnFundamental.Label = "Get fundamental data";
             this.splitbtnFundamental.Name = "splitbtnFundamental";
             this.splitbtnFundamental.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SplitbtnFundamental_Click);
@@ -110,7 +110,7 @@ namespace EODAddIn
             this.btnFundamentalAllData.Label = "All Data";
             this.btnFundamentalAllData.Name = "btnFundamentalAllData";
             this.btnFundamentalAllData.ShowImage = true;
-            this.btnFundamentalAllData.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnFundamentalAllData_Click);
+            this.btnFundamentalAllData.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnFundamentalAllData_Click);
             // 
             // btnGetGeneral
             // 
@@ -152,7 +152,7 @@ namespace EODAddIn
             this.btnGetFlowCash.Label = "FlowCash";
             this.btnGetFlowCash.Name = "btnGetFlowCash";
             this.btnGetFlowCash.ShowImage = true;
-            this.btnGetFlowCash.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnGetFlowCash_Click);
+            this.btnGetFlowCash.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnGetCashFlow_Click);
             // 
             // group1
             // 

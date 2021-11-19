@@ -68,7 +68,7 @@ namespace EODAddIn.Forms
                 try
                 {
                     List<Model.EndOfDay> res = APIEOD.GetEOD(ticker, from, to, period);
-                    LoadToExcel.LoadEndOfDay(res, ticker, period, chkChart.Checked);
+                    LoadToExcel.PrintEndOfDay(res, ticker, period, chkChart.Checked);
                 }
                 catch (APIException ex)
                 {
