@@ -46,6 +46,7 @@ namespace EODAddIn
             this.btnGetBalanceSheet = this.Factory.CreateRibbonButton();
             this.btnGetIncomeStatement = this.Factory.CreateRibbonButton();
             this.btnGetEarnings = this.Factory.CreateRibbonButton();
+            this.btnGetFlowCash = this.Factory.CreateRibbonButton();
             this.group1 = this.Factory.CreateRibbonGroup();
             this.label2 = this.Factory.CreateRibbonLabel();
             this.label3 = this.Factory.CreateRibbonLabel();
@@ -99,6 +100,7 @@ namespace EODAddIn
             this.splitbtnFundamental.Items.Add(this.btnGetBalanceSheet);
             this.splitbtnFundamental.Items.Add(this.btnGetIncomeStatement);
             this.splitbtnFundamental.Items.Add(this.btnGetEarnings);
+            this.splitbtnFundamental.Items.Add(this.btnGetFlowCash);
             this.splitbtnFundamental.Label = "Get fundamental data";
             this.splitbtnFundamental.Name = "splitbtnFundamental";
             this.splitbtnFundamental.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SplitbtnFundamental_Click);
@@ -144,6 +146,13 @@ namespace EODAddIn
             this.btnGetEarnings.Name = "btnGetEarnings";
             this.btnGetEarnings.ShowImage = true;
             this.btnGetEarnings.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnGetEarnings_Click);
+            // 
+            // btnGetFlowCash
+            // 
+            this.btnGetFlowCash.Label = "FlowCash";
+            this.btnGetFlowCash.Name = "btnGetFlowCash";
+            this.btnGetFlowCash.ShowImage = true;
+            this.btnGetFlowCash.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnGetFlowCash_Click);
             // 
             // group1
             // 
@@ -280,6 +289,7 @@ namespace EODAddIn
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnGetEarnings;
         internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFundamentalAllData;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnGetFlowCash;
     }
 
     partial class ThisRibbonCollection

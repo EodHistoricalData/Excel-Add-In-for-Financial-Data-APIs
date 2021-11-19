@@ -229,6 +229,8 @@
     <Compile Include="Model\AddressData.cs" />
     <Compile Include="Model\Balance_Sheet.cs" />
     <Compile Include="Model\Balance_SheetData.cs" />
+    <Compile Include="Model\Cash_Flow.cs" />
+    <Compile Include="Model\Cash_FlowData.cs" />
     <Compile Include="Model\Earnings.cs" />
     <Compile Include="Model\EarningsHistoryData.cs" />
     <Compile Include="Model\EarningsTrendData.cs" />
