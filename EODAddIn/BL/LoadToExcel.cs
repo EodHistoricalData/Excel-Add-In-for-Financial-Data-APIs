@@ -297,6 +297,7 @@ namespace EODAddIn.BL
 
             return row;
         }
+        
         /// <summary>
         /// Выводит фундаментальные General данные на лист
         /// </summary>

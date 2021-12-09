@@ -45,8 +45,8 @@ namespace EODAddIn
             this.btnGetHighlights = this.Factory.CreateRibbonButton();
             this.btnGetBalanceSheet = this.Factory.CreateRibbonButton();
             this.btnGetIncomeStatement = this.Factory.CreateRibbonButton();
-            this.btnGetEarnings = this.Factory.CreateRibbonButton();
             this.btnGetFlowCash = this.Factory.CreateRibbonButton();
+            this.btnGetEarnings = this.Factory.CreateRibbonButton();
             this.group1 = this.Factory.CreateRibbonGroup();
             this.label2 = this.Factory.CreateRibbonLabel();
             this.label3 = this.Factory.CreateRibbonLabel();
@@ -140,19 +140,19 @@ namespace EODAddIn
             this.btnGetIncomeStatement.ShowImage = true;
             this.btnGetIncomeStatement.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnGetIncomeStatement_Click);
             // 
-            // btnGetEarnings
-            // 
-            this.btnGetEarnings.Label = "Earnings";
-            this.btnGetEarnings.Name = "btnGetEarnings";
-            this.btnGetEarnings.ShowImage = true;
-            this.btnGetEarnings.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnGetEarnings_Click);
-            // 
             // btnGetFlowCash
             // 
             this.btnGetFlowCash.Label = "FlowCash";
             this.btnGetFlowCash.Name = "btnGetFlowCash";
             this.btnGetFlowCash.ShowImage = true;
             this.btnGetFlowCash.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnGetCashFlow_Click);
+            // 
+            // btnGetEarnings
+            // 
+            this.btnGetEarnings.Label = "Earnings";
+            this.btnGetEarnings.Name = "btnGetEarnings";
+            this.btnGetEarnings.ShowImage = true;
+            this.btnGetEarnings.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnGetEarnings_Click);
             // 
             // group1
             // 
