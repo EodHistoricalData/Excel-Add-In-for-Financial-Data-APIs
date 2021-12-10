@@ -15,12 +15,12 @@ namespace EODAddIn.Program
         /// <summary>
         /// Название программы
         /// </summary>
-        internal const string ProgramName = "EOD Excel Plagin";
-        internal const string CompanyName = "EODHistoricalData";
-        internal const string UrlCompany = "https://eodhistoricaldata.com";
+        internal const string ProgramName = "Excel Plagin";
+        internal const string CompanyName = "Techknow Consulting";
+        internal const string UrlCompany = "https://techknow-consulting.com/";
         internal const string UrlKey = "https://eodhistoricaldata.com/cp/settings";
         internal const string UrlPrice = "https://eodhistoricaldata.com/pricing";
-        internal const string UrlUpdate = "https://eodhistoricaldata.com/excel-plugin-updates.xml";
+        internal const string UrlUpdate = "https://eodhistoricaldata.com/excel-plugin-tc-updates.xml";
 
         /// <summary>
         /// Папка пользователя

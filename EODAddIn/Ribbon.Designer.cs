@@ -71,7 +71,7 @@ namespace EODAddIn
             this.tabMain.Groups.Add(this.grpMain);
             this.tabMain.Groups.Add(this.group1);
             this.tabMain.Groups.Add(this.grpAbout);
-            this.tabMain.Label = "EOD";
+            this.tabMain.Label = "TC";
             this.tabMain.Name = "tabMain";
             // 
             // grpMain

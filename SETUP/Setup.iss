@@ -1,16 +1,16 @@
 ; -------------------------------------------------------------------------------------------------------------------------------------------------
 ; Основные переменные установщика
 ; -------------------------------------------------------------------------------------------------------------------------------------------------
-#define AppName      "EODAddIn"                                              
+#define AppName      "TCAddIn"                                              
 #define AppPublisher "Micro-Solution LLC"
-#define AppURL       "https://eodhistoricaldata.com"
+#define AppURL       "https://techknow-consulting.com/"
 #define AppGUI       "954b1976-5920-420c-86b4-ee520daf33b1"
 
 #define ProjectPath  "C:\Users\zhelt\source\repos\ExcelPlugin\"
 #define SetupPath    ProjectPath + "Setup\"                        
 
 #define FilesPath    ProjectPath + "EODAddIn\bin\Release\"                  ; Папка с файлами, которые необходимо упаковать
-#define ReleasePath  SetupPath + "Release\"                                 ; Выходная папка
+#define ReleasePath  SetupPath + "Release\Techknow Consulting\"                                 ; Выходная папка
 #define AppIco       FilesPath + "icon.ico"                     ; Файл с иконкой
 
 #define AppVersion   GetFileVersion(FilesPath+AppName+'.dll')               ; Версия программы
@@ -45,9 +45,9 @@ AppPublisherURL  = {#AppURL}
 ;AppSupportURL    = {#AppURL}
 ;AppUpdatesURL    = {#AppURL}
 
-DefaultDirName       = {autopf}\EOD Historical Data\{#AppName}
-DefaultGroupName     = EOD Historical Data\{#AppName}
-UninstallDisplayIcon ={#AppIco}
+DefaultDirName       = {autopf}\Techknow Consulting\{#AppName}
+DefaultGroupName     = Techknow Consulting\{#AppName}
+
 UninstallDisplayName ={#AppName}
 AllowNoIcons         = yes
 
@@ -59,7 +59,7 @@ PrivilegesRequired=none
 ; Результат компиляции установщика
 OutputDir            = {#ReleasePath}
 OutputBaseFilename   = Setup{#AppName}
-SetupIconFile        = {#AppIco}
+
 Compression          = lzma
 SolidCompression     = yes
 WizardStyle          = modern

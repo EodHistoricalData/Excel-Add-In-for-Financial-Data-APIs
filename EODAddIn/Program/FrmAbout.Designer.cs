@@ -46,7 +46,7 @@ namespace EODAddIn.Program
             // lblVersion
             // 
             this.lblVersion.AutoSize = true;
-            this.lblVersion.Location = new System.Drawing.Point(183, 66);
+            this.lblVersion.Location = new System.Drawing.Point(296, 66);
             this.lblVersion.Name = "lblVersion";
             this.lblVersion.Size = new System.Drawing.Size(40, 13);
             this.lblVersion.TabIndex = 20;
@@ -55,27 +55,27 @@ namespace EODAddIn.Program
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(134, 102);
+            this.label3.Location = new System.Drawing.Point(247, 102);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(138, 13);
+            this.label3.Size = new System.Drawing.Size(152, 13);
             this.label3.TabIndex = 19;
-            this.label3.Text = "© EODHistoricalData, 2021";
+            this.label3.Text = "© Techknow Consulting, 2021";
             // 
             // lnkSite
             // 
             this.lnkSite.AutoSize = true;
-            this.lnkSite.Location = new System.Drawing.Point(134, 83);
+            this.lnkSite.Location = new System.Drawing.Point(247, 83);
             this.lnkSite.Name = "lnkSite";
-            this.lnkSite.Size = new System.Drawing.Size(151, 13);
+            this.lnkSite.Size = new System.Drawing.Size(169, 13);
             this.lnkSite.TabIndex = 18;
             this.lnkSite.TabStop = true;
-            this.lnkSite.Text = "https://eodhistoricaldata.com/";
+            this.lnkSite.Text = "https://techknow-consulting.com/";
             this.lnkSite.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LnkSite_LinkClicked);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(134, 66);
+            this.label2.Location = new System.Drawing.Point(247, 66);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(45, 13);
             this.label2.TabIndex = 17;
@@ -85,7 +85,7 @@ namespace EODAddIn.Program
             // 
             this.lblProgramName.AutoSize = true;
             this.lblProgramName.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblProgramName.Location = new System.Drawing.Point(133, 8);
+            this.lblProgramName.Location = new System.Drawing.Point(246, 8);
             this.lblProgramName.Name = "lblProgramName";
             this.lblProgramName.Size = new System.Drawing.Size(114, 24);
             this.lblProgramName.TabIndex = 16;
@@ -95,9 +95,9 @@ namespace EODAddIn.Program
             // 
             this.pictureBox1.ErrorImage = null;
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(-1, 1);
+            this.pictureBox1.Location = new System.Drawing.Point(-1, 4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(128, 118);
+            this.pictureBox1.Size = new System.Drawing.Size(242, 118);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 15;
             this.pictureBox1.TabStop = false;
@@ -110,7 +110,7 @@ namespace EODAddIn.Program
             this.btnCancel.FlatAppearance.BorderSize = 0;
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancel.Image = ((System.Drawing.Image)(resources.GetObject("btnCancel.Image")));
-            this.btnCancel.Location = new System.Drawing.Point(464, -1);
+            this.btnCancel.Location = new System.Drawing.Point(549, -1);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(23, 23);
             this.btnCancel.TabIndex = 14;
@@ -131,24 +131,24 @@ namespace EODAddIn.Program
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(488, 122);
+            this.panel1.Size = new System.Drawing.Size(573, 129);
             this.panel1.TabIndex = 21;
             // 
             // label1
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.label1.Location = new System.Drawing.Point(134, 33);
+            this.label1.Location = new System.Drawing.Point(247, 33);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(341, 28);
+            this.label1.Size = new System.Drawing.Size(313, 28);
             this.label1.TabIndex = 20;
-            this.label1.Text = "The Excel Plugin for EODHistoricalData Financial APIs";
+            this.label1.Text = "The Excel Plugin for Financial APIs";
             // 
             // FrmAbout
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(488, 122);
+            this.ClientSize = new System.Drawing.Size(573, 129);
             this.Controls.Add(this.panel1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FrmAbout";

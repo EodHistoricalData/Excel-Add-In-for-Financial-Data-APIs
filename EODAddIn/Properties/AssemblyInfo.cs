@@ -6,13 +6,13 @@ using System.Security;
 // Управление общими сведениями о сборке осуществляется посредством следующего 
 // набора атрибутов. Измените значения этих атрибутов, чтобы изменить сведения,
 // общие сведения об этой сборке.
-[assembly: AssemblyTitle("EODAddIn")]
-[assembly: AssemblyDescription("The Excel Plugin for EODHistoricalData Financial APIs")]
+[assembly: AssemblyTitle("TCAddIn")]
+[assembly: AssemblyDescription("The Excel Plugin for Financial APIs")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("EOD Historical Data")]
-[assembly: AssemblyProduct("EODAddIn")]
+[assembly: AssemblyCompany("Techknow Consalting")]
+[assembly: AssemblyProduct("TCAddIn")]
 [assembly: AssemblyCopyright("Copyright ©  2021")]
-[assembly: AssemblyTrademark("EOD Historical Data")]
+[assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 // Установка значения False в параметре ComVisible делает типы в этой сборке невидимыми 

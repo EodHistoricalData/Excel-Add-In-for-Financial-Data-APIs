@@ -25,7 +25,7 @@
     <OutputType>Library</OutputType>
     <NoStandardLibraries>false</NoStandardLibraries>
     <RootNamespace>EODAddIn</RootNamespace>
-    <AssemblyName>EODAddIn</AssemblyName>
+    <AssemblyName>TCAddIn</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <DefineConstants>VSTO40</DefineConstants>
     <TargetFrameworkProfile />
@@ -370,7 +370,8 @@
     <ManifestCertificateThumbprint>A39B55A4E01FFC62DFADAFD4C2F39222553AD3A9</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>icon.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
