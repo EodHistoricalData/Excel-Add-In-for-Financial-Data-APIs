@@ -29,16 +29,16 @@
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <DefineConstants>VSTO40</DefineConstants>
     <TargetFrameworkProfile />
+    <IsWebBootstrapper>False</IsWebBootstrapper>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <PublishUrl>опубликовать\</PublishUrl>
     <InstallUrl />
     <TargetCulture>ru</TargetCulture>
-    <ApplicationVersion>1.0.0.0</ApplicationVersion>
+    <ApplicationVersion>1.0.3.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>true</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>days</UpdateIntervalUnits>
-    <IsWebBootstrapper>False</IsWebBootstrapper>
     <ProductName>EODAddIn</ProductName>
     <PublisherName />
     <SupportUrl />
@@ -125,7 +125,7 @@
   <ItemGroup>
     <Reference Include="Accessibility" />
     <Reference Include="MS.ProgressBar">
-      <HintPath>..\packages\MS.ProgressBar.dll</HintPath>
+      <HintPath>..\packages\ProgressBar\MS.ProgressBar.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -208,6 +208,12 @@
     <Compile Include="Forms\FrmGetFundamental.Designer.cs">
       <DependentUpon>FrmGetFundamental.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FrmGetIntradayHistoricalData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmGetIntradayHistoricalData.Designer.cs">
+      <DependentUpon>FrmGetIntradayHistoricalData.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmGetHistorical.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -241,6 +247,7 @@
     <Compile Include="Model\Highlights.cs" />
     <Compile Include="Model\Income_Statement.cs" />
     <Compile Include="Model\Income_StatementData.cs" />
+    <Compile Include="Model\Intraday.cs" />
     <Compile Include="Model\Listing.cs" />
     <Compile Include="Model\Officer.cs" />
     <Compile Include="Model\SearchResult.cs" />
@@ -290,6 +297,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmGetFundamental.resx">
       <DependentUpon>FrmGetFundamental.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmGetIntradayHistoricalData.resx">
+      <DependentUpon>FrmGetIntradayHistoricalData.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmGetHistorical.resx">
       <DependentUpon>FrmGetHistorical.cs</DependentUpon>

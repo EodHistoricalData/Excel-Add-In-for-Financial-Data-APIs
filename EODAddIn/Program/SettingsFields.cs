@@ -16,6 +16,11 @@ namespace EODAddIn.Program
         public DateTime EndOfDayFrom = new DateTime(1970, 1, 1);
         public DateTime EndOfDayTo;
 
+        public List<string> IntradayTickers;
+        public string IntradayInterval;
+        public DateTime IntradayFrom = new DateTime(1970, 1, 1);
+        public DateTime IntradayTo;
+
         public string FundamentalTicker;
 
         public SettingsFields()

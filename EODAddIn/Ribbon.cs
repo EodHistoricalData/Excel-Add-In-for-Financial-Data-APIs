@@ -182,5 +182,10 @@ namespace EODAddIn
             LoadToExcel.PrintFundamentalAll(res);
         }
 
+        private void BtnGetIntradayHistoricalData_Click(object sender, RibbonControlEventArgs e)
+        {
+            Forms.FrmGetIntradayHistoricalData frm = new Forms.FrmGetIntradayHistoricalData();
+            frm.ShowDialog(new WinHwnd());
+        }
     }
 }
