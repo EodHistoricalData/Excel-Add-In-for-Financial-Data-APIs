@@ -39,6 +39,7 @@ namespace EODAddIn
             this.tabMain = this.Factory.CreateRibbonTab();
             this.grpMain = this.Factory.CreateRibbonGroup();
             this.btnGetHistorical = this.Factory.CreateRibbonButton();
+            this.btnGetIntradayHistoricalData = this.Factory.CreateRibbonButton();
             this.splitbtnFundamental = this.Factory.CreateRibbonSplitButton();
             this.btnFundamentalAllData = this.Factory.CreateRibbonButton();
             this.btnGetGeneral = this.Factory.CreateRibbonButton();
@@ -77,6 +78,7 @@ namespace EODAddIn
             // grpMain
             // 
             this.grpMain.Items.Add(this.btnGetHistorical);
+            this.grpMain.Items.Add(this.btnGetIntradayHistoricalData);
             this.grpMain.Items.Add(this.splitbtnFundamental);
             this.grpMain.Label = "Commands";
             this.grpMain.Name = "grpMain";
@@ -89,6 +91,15 @@ namespace EODAddIn
             this.btnGetHistorical.Name = "btnGetHistorical";
             this.btnGetHistorical.ShowImage = true;
             this.btnGetHistorical.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.GetHistorical_Click);
+            // 
+            // btnGetIntradayHistoricalData
+            // 
+            this.btnGetIntradayHistoricalData.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnGetIntradayHistoricalData.Image = ((System.Drawing.Image)(resources.GetObject("btnGetIntradayHistoricalData.Image")));
+            this.btnGetIntradayHistoricalData.Label = "Get intraday historical data";
+            this.btnGetIntradayHistoricalData.Name = "btnGetIntradayHistoricalData";
+            this.btnGetIntradayHistoricalData.ShowImage = true;
+            this.btnGetIntradayHistoricalData.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnGetIntradayHistoricalData_Click);
             // 
             // splitbtnFundamental
             // 
@@ -290,6 +301,7 @@ namespace EODAddIn
         internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnFundamentalAllData;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnGetFlowCash;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnGetIntradayHistoricalData;
     }
 
     partial class ThisRibbonCollection

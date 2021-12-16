@@ -1,47 +1,43 @@
 ﻿using EODAddIn.BL;
 using EODAddIn.Program;
 using EODAddIn.Utils;
-
 using MS.ProgressBar;
-
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace EODAddIn.Forms
 {
-    public partial class FrmGetHistorical : Form
+    public partial class FrmGetIntradayHistoricalData : Form
     {
 
-        public FrmGetHistorical()
+        public FrmGetIntradayHistoricalData()
         {
             InitializeComponent();
 
-            switch (Settings.SettingsFields.EndOfDayPeriod)
+            /*  5m,1h,1m  */
+            switch (Settings.SettingsFields.IntradayInterval)
             {
-                case "d":
-                    cboPeriod.SelectedIndex = 0;
+                case "5m":
+                    cboInterval.SelectedIndex = 0;
                     break;
-                case "w":
-                    cboPeriod.SelectedIndex = 1;
+                case "1h":
+                    cboInterval.SelectedIndex = 1;
                     break;
-                case "m":
-                    cboPeriod.SelectedIndex = 2;
+                case "1m":
+                    cboInterval.SelectedIndex = 2;
                     break;
                 default:
-                    cboPeriod.SelectedIndex = 0;
+                    cboInterval.SelectedIndex = 0;
                     break;
             }
 
-            dtpFrom.Value = Settings.SettingsFields.EndOfDayFrom;
-            dtpTo.Value = DateTime.Today.AddDays(-1);
+            dtpFrom.Value = Settings.SettingsFields.IntradayFrom;
+            dtpTo.Value = DateTime.Now.AddDays(-1);
 
-
-            foreach (string ticker in Settings.SettingsFields.EndOfDayTickers)
+            foreach (string ticker in Settings.SettingsFields.IntradayTickers)
             {
                 int i = gridTickers.Rows.Add();
                 gridTickers.Rows[i].Cells[0].Value = ticker;
@@ -52,23 +48,24 @@ namespace EODAddIn.Forms
         {
             if (!CheckForm()) return;
 
-            string period = cboPeriod.SelectedItem.ToString().ToLower().Substring(0, 1);
+            string interval = cboInterval.SelectedItem.ToString().ToLower();
             DateTime from = dtpFrom.Value;
             DateTime to = dtpTo.Value;
 
             List<string> tikers = new List<string>();
+
             Progress progress = new Progress("Load end of data", gridTickers.Rows.Count - 1);
             foreach (DataGridViewRow row in gridTickers.Rows)
             {
                 if (row.Cells[0].Value == null) continue;
                 progress.TaskStart(row.Cells[0].Value?.ToString(), 1);
+
                 string ticker = row.Cells[0].Value.ToString();
                 tikers.Add(ticker);
                 try
                 {
-                    //async await Task.Run(() =>});
-                    List<Model.EndOfDay> res = APIEOD.GetEOD(ticker, from, to, period);
-                    LoadToExcel.PrintEndOfDay(res, ticker, period, chkChart.Checked);
+                    List<Model.Intraday> res = APIEOD.GetIntraday(ticker, from, to, interval);
+                    LoadToExcel.PrintIntraday(res, ticker, interval, chkChart.Checked);
                 }
                 catch (APIException ex)
                 {
@@ -83,10 +80,10 @@ namespace EODAddIn.Forms
                 }
             }
             progress.Finish();
-            Settings.SettingsFields.EndOfDayPeriod = period;
-            Settings.SettingsFields.EndOfDayTo = to;
-            Settings.SettingsFields.EndOfDayFrom = from;
-            Settings.SettingsFields.EndOfDayTickers = tikers;
+            Settings.SettingsFields.IntradayInterval = interval;
+            Settings.SettingsFields.IntradayTo = to;
+            Settings.SettingsFields.IntradayFrom = from;
+            Settings.SettingsFields.IntradayTickers = tikers;
             Settings.Save();
 
             Close();
@@ -104,7 +101,7 @@ namespace EODAddIn.Forms
                 }
             }
 
-            if (cboPeriod.SelectedIndex == -1)
+            if (cboInterval.SelectedIndex == -1)
             {
                 MessageBox.Show("Select period", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
@@ -194,5 +191,89 @@ namespace EODAddIn.Forms
                 }
             }
         }
+
+        private void dtpFrom_ValueChanged(object sender, EventArgs e)
+        {
+            if (!CheckDateInterval(dtpFrom.Value, dtpTo.Value))
+            {
+                dtpTo.Value = GetPossibleDateTo(dtpFrom.Value);
+            }
+        }
+
+        private void dtpTo_ValueChanged(object sender, EventArgs e)
+        {
+            if (!CheckDateInterval(dtpFrom.Value, dtpTo.Value))
+            {
+                dtpFrom.Value = GetPossibleDateFrom(dtpTo.Value);
+            }
+        }
+
+        private void cboInterval_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!CheckDateInterval(dtpFrom.Value, dtpTo.Value))
+            {
+                dtpFrom.Value = GetPossibleDateFrom(dtpTo.Value);
+            }
+        }
+
+        /// <summary>
+        /// Проверка диапазона дат на соответствие стандартам API
+        /// </summary>
+        /// <returns></returns>
+        private bool CheckDateInterval(DateTime from, DateTime to)
+        {
+            double selectedDateRange = to.Subtract(from).TotalSeconds;
+            double possibleDateRange;
+            switch (cboInterval.SelectedIndex)
+            {
+                case 1: //"1h":
+                    possibleDateRange = TimeSpan.FromDays(7200).TotalSeconds;
+                    break;
+                case 2: //"1m":
+                    possibleDateRange = TimeSpan.FromDays(120).TotalSeconds;
+                    break;
+                default: // 0 - "5m"
+                    possibleDateRange = TimeSpan.FromDays(600).TotalSeconds;
+                    break;
+            }
+
+            return  selectedDateRange<=possibleDateRange ;
+        }
+        private DateTime GetPossibleDateFrom(DateTime dateTo)
+        {
+            DateTime dateFrom;
+            switch (cboInterval.SelectedIndex)
+            {
+                case 1: //"1h":
+                    dateFrom = dateTo.AddSeconds(-TimeSpan.FromDays(7200).TotalSeconds);
+                    break;
+                case 2: //"1m":
+                    dateFrom = dateTo.AddSeconds(-TimeSpan.FromDays(120).TotalSeconds);
+                    break;
+                default: // 0 - "5m"
+                    dateFrom = dateTo.AddSeconds(-TimeSpan.FromDays(600).TotalSeconds);
+                    break;
+            }
+            return dateFrom;
+        }
+        private DateTime GetPossibleDateTo(DateTime dateFrom)
+        {
+            DateTime dateTo;
+            switch (cboInterval.SelectedIndex)
+            {
+                case 1: //"1h":
+                    dateTo = dateFrom.AddSeconds(TimeSpan.FromDays(7200).TotalSeconds);
+                    break;
+                case 2: //"1m":
+                    dateTo = dateFrom.AddSeconds(TimeSpan.FromDays(120).TotalSeconds);
+                    break;
+                default: // 0 - "5m"
+                    dateTo = dateFrom.AddSeconds(TimeSpan.FromDays(600).TotalSeconds);
+                    break;
+            }
+            return dateTo;
+        }
+
+      
     }
 }
