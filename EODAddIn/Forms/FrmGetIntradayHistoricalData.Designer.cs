@@ -117,9 +117,9 @@ namespace EODAddIn.Forms
             // 
             this.cboInterval.FormattingEnabled = true;
             this.cboInterval.Items.AddRange(new object[] {
-            "5m",
-            "1h",
-            "1m"});
+                "1m",
+                "5m",
+                "1h"});
             this.cboInterval.Location = new System.Drawing.Point(86, 245);
             this.cboInterval.Name = "cboInterval";
             this.cboInterval.Size = new System.Drawing.Size(152, 21);
