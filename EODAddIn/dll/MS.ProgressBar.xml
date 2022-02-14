@@ -1,0 +1,253 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MS.ProgressBar</name>
+    </assembly>
+    <members>
+        <member name="T:MS.ProgressBar.Progress">
+            <summary>
+            Класс для управления формой прогрессбара
+            </summary>
+        </member>
+        <member name="F:MS.ProgressBar.Progress.SubBar">
+            <summary>
+            Класс вложенного прогрессбара (2-й уровень)
+            </summary>
+        </member>
+        <member name="E:MS.ProgressBar.Progress.Canceled">
+            <summary>
+            Событие возникающее при закрытии прогрессбара пользователем
+            </summary>
+        </member>
+        <member name="M:MS.ProgressBar.Progress.#ctor(System.String,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Инициализация прогрессбара
+            </summary>
+            <param name="title">Заголовок (описание общей задачи)</param>
+            <param name="count">Количество итераций</param>
+            <param name="start">Начальная позиция</param>
+            <param name="step">Шаг итерации</param>
+        </member>
+        <member name="M:MS.ProgressBar.Progress.#ctor(System.String,System.Int32,System.Windows.Forms.IWin32Window,System.Int32,System.Int32)">
+            <summary>
+            Инициализация прогрессбара
+            </summary>
+            <param name="title">Заголовок (описание общей задачи)</param>
+            <param name="count">Количество итераций</param>
+            <param name="start">Начальная позиция</param>
+            <param name="step">Шаг итерации</param>
+            <param name="winHwnd">Окно-владелец формы</param>
+        </member>
+        <member name="M:MS.ProgressBar.Progress.TaskStart(System.String,System.Int32)">
+            <summary>
+            Запуск новой задачи. Также завершает предыдущую задачу если она была еще не завершена
+            </summary>
+            <param name="taskName">Название задачи</param>
+            <param name="count">Объем задачи</param>
+            <returns>Если пользователь отменил процесс - возвращает false</returns>
+        </member>
+        <member name="M:MS.ProgressBar.Progress.TaskEnd">
+            <summary>
+            Завершает текущую задачу
+            </summary>
+        </member>
+        <member name="M:MS.ProgressBar.Progress.Finish">
+            <summary>
+            Выключение прогрессбара
+            </summary>
+        </member>
+        <member name="M:MS.ProgressBar.Progress.AddNewLevel(System.String,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Добавление вложенного прогрессбара к текущему (Progress SubBar)
+            </summary>
+            <param name="title">Заголовок вложенного прогрессбара</param>
+            <param name="count">Количество итераций</param>
+            <param name="start">Начальная позиция</param>
+            <param name="step">Шаг прогрессбара</param>
+            <returns>Если пользователь отменил процесс - возвращает false</returns>
+        </member>
+        <member name="P:MS.ProgressBar.FormProgressBar.SubBar">
+            <summary>
+            Дочерний прогрессбар
+            </summary>
+        </member>
+        <member name="P:MS.ProgressBar.FormProgressBar.ParentBar">
+            <summary>
+            Родительский прогрессбар
+            </summary>
+        </member>
+        <member name="P:MS.ProgressBar.FormProgressBar.Title">
+            <summary>
+            Заголовок прогрессбара, то что будет написано в названии формы
+            </summary>
+        </member>
+        <member name="P:MS.ProgressBar.FormProgressBar.TaskName">
+            <summary>
+            Название задачи
+            </summary>
+        </member>
+        <member name="P:MS.ProgressBar.FormProgressBar.Level">
+            <summary>
+            Уровень прогрессбара
+            </summary>
+        </member>
+        <member name="P:MS.ProgressBar.FormProgressBar.Start">
+            <summary>
+            Начальная позиция прогресбара
+            </summary>
+        </member>
+        <member name="P:MS.ProgressBar.FormProgressBar.Step">
+            <summary>
+            Шаг прогрессбара
+            </summary>
+        </member>
+        <member name="P:MS.ProgressBar.FormProgressBar.Count">
+            <summary>
+            Общее количество итераций
+            </summary>
+        </member>
+        <member name="P:MS.ProgressBar.FormProgressBar.Value">
+            <summary>
+            Текущее значение прогрессбара
+            </summary>
+        </member>
+        <member name="P:MS.ProgressBar.FormProgressBar.IsCancel">
+            <summary>
+            Нажата кнопка отмены
+            </summary>
+        </member>
+        <member name="E:MS.ProgressBar.FormProgressBar.CancelClick">
+            <summary>
+            Событие клика кнопки отмены
+            </summary>
+        </member>
+        <member name="E:MS.ProgressBar.FormProgressBar.TaskDoned">
+            <summary>
+            Событие выполнения задачи
+            </summary>
+        </member>
+        <member name="E:MS.ProgressBar.FormProgressBar.ResisingPlus">
+            <summary>
+            Событие увеличения размеров прогрессбара
+            </summary>
+        </member>
+        <member name="E:MS.ProgressBar.FormProgressBar.ResisingMinus">
+            <summary>
+            Событие уменьшения размеров прогрессбара
+            </summary>
+        </member>
+        <member name="M:MS.ProgressBar.FormProgressBar.FormProgressBar_FormClosing(System.Object,System.Windows.Forms.FormClosingEventArgs)">
+            <summary>
+            Закрытие формы прогрессбара
+            </summary>
+        </member>
+        <member name="M:MS.ProgressBar.FormProgressBar.SubBar_FormClosing(System.Object,System.Windows.Forms.FormClosingEventArgs)">
+            <summary>
+            Закрытие дочерней формы
+            </summary>
+        </member>
+        <member name="M:MS.ProgressBar.FormProgressBar.CancelBox_Click(System.Object,System.EventArgs)">
+            <summary>
+            Кнопка закрытия формы
+            </summary>
+        </member>
+        <member name="M:MS.ProgressBar.FormProgressBar.#ctor(System.String,System.Int32,System.Int32,System.Int32,System.Windows.Forms.IWin32Window)">
+            <summary>
+            Инициализация прогрессбара
+            </summary>
+            <param name="title">Описание глобальной задачи</param>
+            <param name="count">Количество итераций</param>
+            <param name="winHwnd"></param>
+            <param name="start">Старт</param>
+            <param name="step">Шаг</param>
+        </member>
+        <member name="M:MS.ProgressBar.FormProgressBar.TaskStart(System.String,System.Int32)">
+            <summary>
+            Старт задачи
+            </summary>
+            <param name="taskName">Наименование задачи</param>
+            <param name="step">Шаг задачи в прогрессбаре</param>
+        </member>
+        <member name="M:MS.ProgressBar.FormProgressBar.TaskDone">
+            <summary>
+            Завершение задачи
+            </summary>
+        </member>
+        <member name="M:MS.ProgressBar.FormProgressBar.Cancel">
+            <summary>
+            Отмена операции
+            </summary>
+        </member>
+        <member name="M:MS.ProgressBar.FormProgressBar.AddSubBar(System.String,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Добавление дочернего прогрессбара
+            </summary>
+            <param name="title"></param>
+            <param name="count"></param>
+            <param name="start"></param>
+            <param name="step"></param>
+        </member>
+        <member name="M:MS.ProgressBar.FormProgressBar.ResizePlus(System.Int32)">
+            <summary>
+            Увеличение размеров прогрессбара
+            </summary>
+            <param name="count">количество в дочернем прогрессбаре</param>
+        </member>
+        <member name="M:MS.ProgressBar.FormProgressBar.ResizeMinus(System.Int32)">
+            <summary>
+            Уменьшение размеров прогрессбара
+            </summary>
+            <param name="count">количество в дочернем прогрессбаре</param>
+        </member>
+        <member name="M:MS.ProgressBar.FormProgressBar.SetTimeLost">
+            <summary>
+            Установка времени до завершения
+            </summary>
+        </member>
+        <member name="M:MS.ProgressBar.FormProgressBar.SetLabelText(System.Windows.Forms.Label,System.String)">
+            <summary>
+            Изменение текста контрола в томже потоке
+            </summary>
+            <param name="text"></param>
+        </member>
+        <member name="M:MS.ProgressBar.FormProgressBar.SetWidthLblIndicator(System.Int32)">
+            <summary>
+            Изменение ширины контрола индикатора в томже потоке
+            </summary>
+            <param name="value">Ширина контрола</param>
+        </member>
+        <member name="F:MS.ProgressBar.FormProgressBar.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:MS.ProgressBar.FormProgressBar.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:MS.ProgressBar.FormProgressBar.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:MS.ProgressBar.Properties.Resources">
+            <summary>
+              Класс ресурса со строгой типизацией для поиска локализованных строк и т.д.
+            </summary>
+        </member>
+        <member name="P:MS.ProgressBar.Properties.Resources.ResourceManager">
+            <summary>
+              Возвращает кэшированный экземпляр ResourceManager, использованный этим классом.
+            </summary>
+        </member>
+        <member name="P:MS.ProgressBar.Properties.Resources.Culture">
+            <summary>
+              Перезаписывает свойство CurrentUICulture текущего потока для всех
+              обращений к ресурсу с помощью этого класса ресурса со строгой типизацией.
+            </summary>
+        </member>
+    </members>
+</doc>
