@@ -10,7 +10,7 @@ namespace EODAddIn.Program
             InitializeComponent();
             lblVersion.Text = Program.Version.Text;
             lnkSite.Text = Program.UrlCompany;
-            lblProgramName.Text += Program.ProgramName;
+            lblProgramName.Text = Program.ProgramName;
         }
 
         private void LnkSite_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
