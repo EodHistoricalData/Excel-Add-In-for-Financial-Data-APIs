@@ -48,7 +48,7 @@ namespace EODAddIn
 
             FundamentalData res = frm.Results;
             if (res == null) return;
-            LoadToExcel.PrintEtf(res);
+            LoadToExcel.PrintEtf(res, frm.Tiker);
         }
 
         private void SplitbtnFundamental_Click(object sender, RibbonControlEventArgs e)
@@ -58,7 +58,7 @@ namespace EODAddIn
 
             Model.FundamentalData res = frm.Results;
             if (res == null) return;
-            LoadToExcel.PrintFundamentalAll(res);
+            LoadToExcel.PrintFundamentalAll(res, frm.Tiker);
 
         }
 
@@ -189,7 +189,7 @@ namespace EODAddIn
             frm.ShowDialog(new WinHwnd());
 
             FundamentalData res = frm.Results;
-            LoadToExcel.PrintFundamentalAll(res);
+            LoadToExcel.PrintFundamentalAll(res, frm.Tiker);
         }
 
         private void BtnGetIntradayHistoricalData_Click(object sender, RibbonControlEventArgs e)
@@ -211,7 +211,7 @@ namespace EODAddIn
                     BtnOptions.Enabled = false;
 
                     EOD.Model.OptionsData.OptionsData res = await GetOptions.GetOptionsData(frm.Ticker, frm.From, frm.To, frm.FromTrade, frm.ToTrade);
-                    LoadToExcel.PrintOptions(res);
+                    LoadToExcel.PrintOptions(res, frm.Ticker);
 
                     BtnOptions.Label = "Get Options";
                     BtnOptions.Enabled = true;

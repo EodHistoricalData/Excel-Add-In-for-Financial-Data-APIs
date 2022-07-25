@@ -93,7 +93,14 @@ namespace EODAddIn.Utils
             catch (Exception ex)
             {
                 Program.ErrorReport error = new Program.ErrorReport(ex);
-                error.Send();
+                if (ex.Message == "Unauthenticated" || ex.Message == "Forbidden")
+                {
+                    error.MessageToUser("Your Api key is incorrect or does not give access to the requested information.");
+                }
+                else
+                {
+                    error.Send();
+                }
                 throw new APIException(0, ex.Message);
             }
 

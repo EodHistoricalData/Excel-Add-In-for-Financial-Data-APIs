@@ -1,4 +1,5 @@
 ﻿using EODAddIn.Model;
+using EODAddIn.Program;
 using EODAddIn.Utils;
 
 using System;
@@ -12,6 +13,51 @@ namespace EODAddIn.BL
 {
     public class LoadToExcel
     {
+        private static Excel.Application _xlsApp = Globals.ThisAddIn.Application;
+        private static bool CreateSheet = true;
+
+        private static Excel.Worksheet AddSheet(string nameSheet)
+        {
+            Excel.Worksheet worksheet = null;
+
+            try
+            {
+                if (ExcelUtils.SheetExists(nameSheet))
+                {
+                    worksheet = Globals.ThisAddIn.Application.Worksheets[nameSheet];
+                    int maxrow = ExcelUtils.RowsCount(worksheet);
+                    worksheet.Range[$"A1:AZ{maxrow}"].ClearContents();
+                    CreateSheet = false;
+                }
+                else
+                {
+                    worksheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Add();
+                    worksheet.Name = nameSheet;
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorReport errorReport = new ErrorReport(ex);
+                errorReport.MessageToUser("Не получилось создать лист.");
+            }
+            return worksheet;
+        }
+
+        /// <summary>
+        /// Выключение интерактивности
+        /// </summary>
+        private static void SetNonInteractive()
+        {
+            while (_xlsApp.Interactive)
+            {
+                try
+                {
+                    _xlsApp.Interactive = false;
+                }
+                catch { }
+            }
+        }
+
         /// <summary>
         /// Загрузка данных на конец дня на лист Excel
         /// </summary>
@@ -21,122 +67,122 @@ namespace EODAddIn.BL
         /// <param name="chart">Необходимость построения диаграммы</param>
         public static void PrintEndOfDay(List<EndOfDay> endOfDays, string ticker, string period, bool chart)
         {
-            bool createSheet = true;
-            string nameSheet = $"{ticker}-{period}";
-            Excel.Worksheet worksheet;
-
-            if (ExcelUtils.SheetExists(nameSheet))
-            {
-                worksheet = Globals.ThisAddIn.Application.Worksheets[nameSheet];
-                int maxrow = ExcelUtils.RowsCount(worksheet);
-                worksheet.Range[$"A1:J{maxrow}"].ClearContents();
-                createSheet = false;
-            }
-            else
-            {
-                worksheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Add();
-                worksheet.Name = nameSheet;
-            }
-
-            int r = 2;
-            worksheet.Cells[r, 1] = "Date";
-            worksheet.Cells[r, 2] = "Open";
-            worksheet.Cells[r, 3] = "High";
-            worksheet.Cells[r, 4] = "Low";
-            worksheet.Cells[r, 5] = "Close";
-            worksheet.Cells[r, 6] = "Adjusted_open";
-            worksheet.Cells[r, 7] = "Adjusted_high";
-            worksheet.Cells[r, 8] = "Adjusted_lowe";
-            worksheet.Cells[r, 9] = "Adjusted_close";
-            worksheet.Cells[r, 10] = "Volume";
-
             try
             {
-                ExcelUtils.OnStart();
-                foreach (EndOfDay item in endOfDays)
+                SetNonInteractive();
+
+                string nameSheet = $"{ticker}-{period}";
+
+                Excel.Worksheet worksheet = AddSheet(nameSheet);
+
+                int r = 2;
+                worksheet.Cells[r, 1] = "Date";
+                worksheet.Cells[r, 2] = "Open";
+                worksheet.Cells[r, 3] = "High";
+                worksheet.Cells[r, 4] = "Low";
+                worksheet.Cells[r, 5] = "Close";
+                worksheet.Cells[r, 6] = "Adjusted_open";
+                worksheet.Cells[r, 7] = "Adjusted_high";
+                worksheet.Cells[r, 8] = "Adjusted_lowe";
+                worksheet.Cells[r, 9] = "Adjusted_close";
+                worksheet.Cells[r, 10] = "Volume";
+
+                try
                 {
-                    r++;
-                    worksheet.Cells[r, 1] = item.Date;
-                    worksheet.Cells[r, 2] = item.Open;
-                    worksheet.Cells[r, 3] = item.High;
-                    worksheet.Cells[r, 4] = item.Low;
-                    worksheet.Cells[r, 5] = item.Close;
-                    worksheet.Cells[r, 6] = item.Adjusted_open;
-                    worksheet.Cells[r, 7] = item.Adjusted_high;
-                    worksheet.Cells[r, 8] = item.Adjusted_low;
-                    worksheet.Cells[r, 9] = item.Adjusted_close;
-                    worksheet.Cells[r, 10] = item.Volume;
+                    ExcelUtils.OnStart();
+                    foreach (EndOfDay item in endOfDays)
+                    {
+                        r++;
+                        worksheet.Cells[r, 1] = item.Date;
+                        worksheet.Cells[r, 2] = item.Open;
+                        worksheet.Cells[r, 3] = item.High;
+                        worksheet.Cells[r, 4] = item.Low;
+                        worksheet.Cells[r, 5] = item.Close;
+                        worksheet.Cells[r, 6] = item.Adjusted_open;
+                        worksheet.Cells[r, 7] = item.Adjusted_high;
+                        worksheet.Cells[r, 8] = item.Adjusted_low;
+                        worksheet.Cells[r, 9] = item.Adjusted_close;
+                        worksheet.Cells[r, 10] = item.Volume;
+                    }
                 }
+                catch (Exception)
+                {
+                    throw;
+                }
+                finally
+                {
+                    ExcelUtils.OnEnd();
+                }
+
+                if (!CreateSheet) return;
+                if (!chart) return;
+
+                worksheet.Range["A2:E3"].Select();
+
+                Excel.Shape shp = worksheet.Shapes.AddChart2(-1, Excel.XlChartType.xlStockOHLC);
+                Excel.Chart chrt = shp.Chart;
+
+                chrt.ChartGroups(1).UpBars.Format.Fill.ForeColor.RGB = Color.FromArgb(0, 176, 80);
+                chrt.ChartGroups(1).DownBars.Format.Fill.ForeColor.RGB = Color.FromArgb(255, 0, 0);
+
+                worksheet.Cells[2, 13].Value = DateTime.Today.AddDays(-90);
+                worksheet.Cells[3, 13].Value = DateTime.Today.AddDays(-1);
+
+                worksheet.Cells[2, 12].Value = "Start";
+                worksheet.Cells[3, 12].Value = "End";
+
+                worksheet.Range["A:A"].EntireColumn.AutoFit();
+                worksheet.Range["M:M"].EntireColumn.AutoFit();
+                worksheet.Range["L:L"].EntireColumn.AutoFit();
+
+                Excel.Range rng = worksheet.Range["Q1"];
+                string formula;
+                rng.FormulaR1C1 = $"=IFERROR(OFFSET('{worksheet.Name}'!R2C1,MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C1:C1,1)-2,1,MATCH('{worksheet.Name}'!R3C13,'{worksheet.Name}'!C1:C1,1)-MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C1:C1,1)+1,1),1)";
+                formula = rng.FormulaR1C1Local;
+                worksheet.Names.Add("_open", RefersToR1C1Local: formula);
+
+                rng.FormulaR1C1 = $"=IFERROR(OFFSET('{worksheet.Name}'!R2C1,MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C1:C1,1)-2,2,MATCH('{worksheet.Name}'!R3C13,'{worksheet.Name}'!C1:C1,1)-MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C1:C1,1)+1,1),1)";
+                formula = rng.FormulaR1C1Local;
+                worksheet.Names.Add("_high", RefersToR1C1Local: formula);
+
+                rng.FormulaR1C1 = $"=IFERROR(OFFSET('{worksheet.Name}'!R2C1,MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C1:C1,1)-2,3,MATCH('{worksheet.Name}'!R3C13,'{worksheet.Name}'!C1:C1,1)-MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C1:C1,1)+1,1),1)";
+                formula = rng.FormulaR1C1Local;
+                worksheet.Names.Add("_low", RefersToR1C1Local: formula);
+
+                rng.FormulaR1C1 = $"=IFERROR(OFFSET('{worksheet.Name}'!R2C1,MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C1:C1,1)-2,4,MATCH('{worksheet.Name}'!R3C13,'{worksheet.Name}'!C1:C1,1)-MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C1:C1,1)+1,1),1)";
+                formula = rng.FormulaR1C1Local;
+                worksheet.Names.Add("_close", RefersToR1C1Local: formula);
+
+                rng.FormulaR1C1 = $"=OFFSET('{worksheet.Name}'!R2C1,IFERROR(MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C1:C1,1)-2,0),0,IFERROR(MATCH('{worksheet.Name}'!R3C13,'{worksheet.Name}'!C1:C1,1)-MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C1:C1,1)+1,1),1)";
+                formula = rng.FormulaR1C1Local;
+                worksheet.Names.Add("_period", RefersToR1C1Local: formula);
+
+                rng.ClearContents();
+
+                chrt.FullSeriesCollection(1).Values = $"='{worksheet.Name}'!_open";
+                chrt.FullSeriesCollection(2).Values = $"='{worksheet.Name}'!_high";
+                chrt.FullSeriesCollection(3).Values = $"='{worksheet.Name}'!_low";
+                chrt.FullSeriesCollection(4).Values = $"='{worksheet.Name}'!_close";
+                chrt.FullSeriesCollection(1).XValues = $"='{worksheet.Name}'!_period";
+
+                chrt.FullSeriesCollection(4).Trendlines().Add();
+                chrt.FullSeriesCollection(4).Trendlines(1).Type = Excel.XlTrendlineType.xlMovingAvg;
+                chrt.FullSeriesCollection(4).Trendlines(1).Period = 2;
+
+                shp.Left = (float)worksheet.Cells[5, 12].Left;
+                shp.Top = (float)worksheet.Cells[5, 12].Top;
+                shp.Height = 340.157480315f;
+                shp.Width = 680.3149606299f;
+                chrt.ChartTitle.Caption = worksheet.Name;
             }
-            catch (Exception)
+            catch
             {
                 throw;
             }
             finally
             {
-                ExcelUtils.OnEnd();
+                _xlsApp.Interactive = true;
             }
-
-            if (!createSheet) return;
-            if (!chart) return;
-
-            worksheet.Range["A2:E3"].Select();
-
-            Excel.Shape shp = worksheet.Shapes.AddChart2(-1, Excel.XlChartType.xlStockOHLC);
-            Excel.Chart chrt = shp.Chart;
-
-            chrt.ChartGroups(1).UpBars.Format.Fill.ForeColor.RGB = Color.FromArgb(0, 176, 80);
-            chrt.ChartGroups(1).DownBars.Format.Fill.ForeColor.RGB = Color.FromArgb(255, 0, 0);
-
-            worksheet.Cells[2, 13].Value = DateTime.Today.AddDays(-90);
-            worksheet.Cells[3, 13].Value = DateTime.Today.AddDays(-1);
-
-            worksheet.Cells[2, 12].Value = "Start";
-            worksheet.Cells[3, 12].Value = "End";
-
-            worksheet.Range["A:A"].EntireColumn.AutoFit();
-            worksheet.Range["M:M"].EntireColumn.AutoFit();
-            worksheet.Range["L:L"].EntireColumn.AutoFit();
-
-            Excel.Range rng = worksheet.Range["Q1"];
-            string formula;
-            rng.FormulaR1C1 = $"=IFERROR(OFFSET('{worksheet.Name}'!R2C1,MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C1:C1,1)-2,1,MATCH('{worksheet.Name}'!R3C13,'{worksheet.Name}'!C1:C1,1)-MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C1:C1,1)+1,1),1)";
-            formula = rng.FormulaR1C1Local;
-            worksheet.Names.Add("_open", RefersToR1C1Local: formula);
-
-            rng.FormulaR1C1 = $"=IFERROR(OFFSET('{worksheet.Name}'!R2C1,MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C1:C1,1)-2,2,MATCH('{worksheet.Name}'!R3C13,'{worksheet.Name}'!C1:C1,1)-MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C1:C1,1)+1,1),1)";
-            formula = rng.FormulaR1C1Local;
-            worksheet.Names.Add("_high", RefersToR1C1Local: formula);
-
-            rng.FormulaR1C1 = $"=IFERROR(OFFSET('{worksheet.Name}'!R2C1,MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C1:C1,1)-2,3,MATCH('{worksheet.Name}'!R3C13,'{worksheet.Name}'!C1:C1,1)-MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C1:C1,1)+1,1),1)";
-            formula = rng.FormulaR1C1Local;
-            worksheet.Names.Add("_low", RefersToR1C1Local: formula);
-
-            rng.FormulaR1C1 = $"=IFERROR(OFFSET('{worksheet.Name}'!R2C1,MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C1:C1,1)-2,4,MATCH('{worksheet.Name}'!R3C13,'{worksheet.Name}'!C1:C1,1)-MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C1:C1,1)+1,1),1)";
-            formula = rng.FormulaR1C1Local;
-            worksheet.Names.Add("_close", RefersToR1C1Local: formula);
-
-            rng.FormulaR1C1 = $"=OFFSET('{worksheet.Name}'!R2C1,IFERROR(MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C1:C1,1)-2,0),0,IFERROR(MATCH('{worksheet.Name}'!R3C13,'{worksheet.Name}'!C1:C1,1)-MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C1:C1,1)+1,1),1)";
-            formula = rng.FormulaR1C1Local;
-            worksheet.Names.Add("_period", RefersToR1C1Local: formula);
-
-            rng.ClearContents();
-
-            chrt.FullSeriesCollection(1).Values = $"='{worksheet.Name}'!_open";
-            chrt.FullSeriesCollection(2).Values = $"='{worksheet.Name}'!_high";
-            chrt.FullSeriesCollection(3).Values = $"='{worksheet.Name}'!_low";
-            chrt.FullSeriesCollection(4).Values = $"='{worksheet.Name}'!_close";
-            chrt.FullSeriesCollection(1).XValues = $"='{worksheet.Name}'!_period";
-
-            chrt.FullSeriesCollection(4).Trendlines().Add();
-            chrt.FullSeriesCollection(4).Trendlines(1).Type = Excel.XlTrendlineType.xlMovingAvg;
-            chrt.FullSeriesCollection(4).Trendlines(1).Period = 2;
-
-            shp.Left = (float)worksheet.Cells[5, 12].Left;
-            shp.Top = (float)worksheet.Cells[5, 12].Top;
-            shp.Height = 340.157480315f;
-            shp.Width = 680.3149606299f;
-            chrt.ChartTitle.Caption = worksheet.Name;
         }
 
         /// <summary>
@@ -148,201 +194,215 @@ namespace EODAddIn.BL
         /// <param name="chart">Необходимость построения диаграммы</param>
         public static void PrintIntraday(List<Intraday> intraday, string ticker, string interval, bool chart)
         {
-            bool createSheet = true;
-            string nameSheet = $"{ticker}-{interval}";
-            Excel.Worksheet worksheet;
-
-            if (ExcelUtils.SheetExists(nameSheet))
-            {
-                worksheet = Globals.ThisAddIn.Application.Worksheets[nameSheet];
-                int maxrow = ExcelUtils.RowsCount(worksheet);
-                worksheet.Range[$"A1:J{maxrow}"].ClearContents();
-                createSheet = false;
-            }
-            else
-            {
-                worksheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Add();
-                worksheet.Name = nameSheet;
-            }
-
-            int r = 2;
-            worksheet.Cells[r, 1] = "DateTime";
-            worksheet.Cells[r, 2] = "Gmtoffset";
-            worksheet.Cells[r, 3] = "DateTime";
-            worksheet.Cells[r, 4] = "Open";
-            worksheet.Cells[r, 5] = "High";
-            worksheet.Cells[r, 6] = "Low";
-            worksheet.Cells[r, 7] = "Close";
-            worksheet.Cells[r, 8] = "Volume";
-            worksheet.Cells[r, 9] = "Timestamp";
             try
             {
-                ExcelUtils.OnStart();
-                foreach (Intraday item in intraday)
+                SetNonInteractive();
+
+                string nameSheet = $"{ticker}-{interval}";
+
+                Excel.Worksheet worksheet = AddSheet(nameSheet);
+
+                int r = 2;
+                worksheet.Cells[r, 1] = "DateTime";
+                worksheet.Cells[r, 2] = "Gmtoffset";
+                worksheet.Cells[r, 3] = "DateTime";
+                worksheet.Cells[r, 4] = "Open";
+                worksheet.Cells[r, 5] = "High";
+                worksheet.Cells[r, 6] = "Low";
+                worksheet.Cells[r, 7] = "Close";
+                worksheet.Cells[r, 8] = "Volume";
+                worksheet.Cells[r, 9] = "Timestamp";
+                try
                 {
-                    r++;
-                    worksheet.Cells[r, 1] = item.DateTime;
-                    worksheet.Cells[r, 2] = item.Gmtoffset;
-                    worksheet.Cells[r, 3] = item.DateTime;
-                    worksheet.Cells[r, 4] = item.Open;
-                    worksheet.Cells[r, 5] = item.High;
-                    worksheet.Cells[r, 6] = item.Low;
-                    worksheet.Cells[r, 7] = item.Close;
-                    worksheet.Cells[r, 8] = item.Volume;
-                    worksheet.Cells[r, 9] = item.Timestamp;
+                    ExcelUtils.OnStart();
+                    foreach (Intraday item in intraday)
+                    {
+                        r++;
+                        worksheet.Cells[r, 1] = item.DateTime;
+                        worksheet.Cells[r, 2] = item.Gmtoffset;
+                        worksheet.Cells[r, 3] = item.DateTime;
+                        worksheet.Cells[r, 4] = item.Open;
+                        worksheet.Cells[r, 5] = item.High;
+                        worksheet.Cells[r, 6] = item.Low;
+                        worksheet.Cells[r, 7] = item.Close;
+                        worksheet.Cells[r, 8] = item.Volume;
+                        worksheet.Cells[r, 9] = item.Timestamp;
+                    }
                 }
+                catch (Exception)
+                {
+                    throw;
+                }
+                finally
+                {
+                    ExcelUtils.OnEnd();
+                }
+
+                if (!CreateSheet) return;
+                if (!chart) return;
+
+                worksheet.Range["C2:G3"].Select();
+
+                Excel.Shape shp = worksheet.Shapes.AddChart2(-1, Excel.XlChartType.xlStockOHLC);
+                Excel.Chart chrt = shp.Chart;
+
+                chrt.ChartGroups(1).UpBars.Format.Fill.ForeColor.RGB = Color.FromArgb(0, 176, 80);
+                chrt.ChartGroups(1).DownBars.Format.Fill.ForeColor.RGB = Color.FromArgb(255, 0, 0);
+
+                worksheet.Cells[2, 13].Value = DateTime.Now.AddDays(-10);
+                worksheet.Cells[3, 13].Value = DateTime.Now.AddDays(-1);
+
+                worksheet.Range["I:I"].EntireColumn.Hidden = true;
+                Excel.Range rng = worksheet.Range["Q1"];
+
+                string formula;
+                rng.FormulaR1C1 = $"=IFERROR(OFFSET('{worksheet.Name}'!R2C3,MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C3:C3,1)-2,1,MATCH('{worksheet.Name}'!R3C13,'{worksheet.Name}'!C3:C3,1)-MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C3:C3,1)+1,1),1)";
+                formula = rng.FormulaR1C1Local;
+                worksheet.Names.Add("_open", RefersToR1C1Local: formula);
+
+                rng.FormulaR1C1 = $"=IFERROR(OFFSET('{worksheet.Name}'!R2C3,MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C3:C3,1)-2,2,MATCH('{worksheet.Name}'!R3C13,'{worksheet.Name}'!C3:C3,1)-MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C3:C3,1)+1,1),1)";
+                formula = rng.FormulaR1C1Local;
+                worksheet.Names.Add("_high", RefersToR1C1Local: formula);
+
+                rng.FormulaR1C1 = $"=IFERROR(OFFSET('{worksheet.Name}'!R2C3,MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C3:C3,1)-2,3,MATCH('{worksheet.Name}'!R3C13,'{worksheet.Name}'!C3:C3,1)-MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C3:C3,1)+1,1),1)";
+                formula = rng.FormulaR1C1Local;
+                worksheet.Names.Add("_low", RefersToR1C1Local: formula);
+
+                rng.FormulaR1C1 = $"=IFERROR(OFFSET('{worksheet.Name}'!R2C3,MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C3:C3,1)-2,4,MATCH('{worksheet.Name}'!R3C13,'{worksheet.Name}'!C3:C3,1)-MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C3:C3,1)+1,1),1)";
+                formula = rng.FormulaR1C1Local;
+                worksheet.Names.Add("_close", RefersToR1C1Local: formula);
+
+                rng.FormulaR1C1 = $"=OFFSET('{worksheet.Name}'!R2C3,IFERROR(MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C3:C3,1)-2,0),0,IFERROR(MATCH('{worksheet.Name}'!R3C13,'{worksheet.Name}'!C3:C3,1)-MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C3:C3,1)+1,1),1)";
+                formula = rng.FormulaR1C1Local;
+                worksheet.Names.Add("_period", RefersToR1C1Local: formula);
+
+                rng.ClearContents();
+
+                chrt.FullSeriesCollection(1).Values = $"='{worksheet.Name}'!_open";
+                chrt.FullSeriesCollection(2).Values = $"='{worksheet.Name}'!_high";
+                chrt.FullSeriesCollection(3).Values = $"='{worksheet.Name}'!_low";
+                chrt.FullSeriesCollection(4).Values = $"='{worksheet.Name}'!_close";
+                chrt.FullSeriesCollection(1).XValues = $"='{worksheet.Name}'!_period";
+
+                chrt.FullSeriesCollection(4).Trendlines().Add();
+                chrt.FullSeriesCollection(4).Trendlines(1).Type = Excel.XlTrendlineType.xlMovingAvg;
+                chrt.FullSeriesCollection(4).Trendlines(1).Period = 2;
+
+                shp.Left = (float)worksheet.Cells[5, 11].Left;
+                shp.Top = (float)worksheet.Cells[5, 11].Top;
+                shp.Height = 340.157480315f;
+                shp.Width = 680.3149606299f;
+                chrt.ChartTitle.Caption = worksheet.Name;
+
+
+                int lastrow = ExcelUtils.RowsCount(worksheet);
+                if (lastrow <= 2) return;
+
+                Excel.Range timestampRng = worksheet.Range[$"I2:I{lastrow}"];
+                Excel.Range timeRng = worksheet.Range[$"C2:C{lastrow}"];
+                timeRng.Value = timestampRng.Value;
+
+                worksheet.Cells[2, 11].Value = "Start";
+                worksheet.Cells[3, 11].Value = "End";
+                worksheet.Cells[1, 12].Value = "Date";
+                worksheet.Cells[1, 13].Value = "Timestamp";
+
+                Excel.Range firstTimeRng = worksheet.Range[$"A2:A{lastrow}"];
+                worksheet.Cells[2, 12].Value = firstTimeRng.Cells[2, 1].Value;
+                worksheet.Cells[3, 12].Value = firstTimeRng.Cells[firstTimeRng.Rows.Count, 1].Value;
+
+                Excel.Range vlookupRng = worksheet.Range[$"A2:C{lastrow}"];
+                string addressRng = vlookupRng.Address;
+
+                string addressCell = worksheet.Cells[2, 12].Address[RowAbsolute: true, ColumnAbsolute: true];
+                Excel.Range cellEdit = worksheet.Cells[2, 13];
+                cellEdit.Formula = $"=IFERROR(VLOOKUP({addressCell},{addressRng},3,),1)";
+                cellEdit.NumberFormat = "@";
+
+                addressCell = worksheet.Cells[3, 12].Address[RowAbsolute: true, ColumnAbsolute: true];
+                cellEdit = worksheet.Cells[3, 13];
+                cellEdit.Formula = $"=IFERROR(VLOOKUP({addressCell},{addressRng},3,),1)";
+                cellEdit.NumberFormat = "@";
+                timeRng.NumberFormat = "@";
+
+                worksheet.Range["A:C"].EntireColumn.AutoFit();
+                worksheet.Range["L:M"].EntireColumn.AutoFit();
+
+                shp.Left = (float)worksheet.Cells[5, 11].Left;
+                shp.Top = (float)worksheet.Cells[5, 11].Top;
             }
-            catch (Exception)
+            catch
             {
                 throw;
             }
             finally
             {
-                ExcelUtils.OnEnd();
+                _xlsApp.Interactive = true;
             }
-
-            if (!createSheet) return;
-            if (!chart) return;
-
-            worksheet.Range["C2:G3"].Select();
-
-            Excel.Shape shp = worksheet.Shapes.AddChart2(-1, Excel.XlChartType.xlStockOHLC);
-            Excel.Chart chrt = shp.Chart;
-
-            chrt.ChartGroups(1).UpBars.Format.Fill.ForeColor.RGB = Color.FromArgb(0, 176, 80);
-            chrt.ChartGroups(1).DownBars.Format.Fill.ForeColor.RGB = Color.FromArgb(255, 0, 0);
-
-            worksheet.Cells[2, 13].Value = DateTime.Now.AddDays(-10);
-            worksheet.Cells[3, 13].Value = DateTime.Now.AddDays(-1);
-
-            worksheet.Range["I:I"].EntireColumn.Hidden = true;
-            Excel.Range rng = worksheet.Range["Q1"];
-
-            string formula;
-            rng.FormulaR1C1 = $"=IFERROR(OFFSET('{worksheet.Name}'!R2C3,MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C3:C3,1)-2,1,MATCH('{worksheet.Name}'!R3C13,'{worksheet.Name}'!C3:C3,1)-MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C3:C3,1)+1,1),1)";
-            formula = rng.FormulaR1C1Local;
-            worksheet.Names.Add("_open", RefersToR1C1Local: formula);
-
-            rng.FormulaR1C1 = $"=IFERROR(OFFSET('{worksheet.Name}'!R2C3,MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C3:C3,1)-2,2,MATCH('{worksheet.Name}'!R3C13,'{worksheet.Name}'!C3:C3,1)-MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C3:C3,1)+1,1),1)";
-            formula = rng.FormulaR1C1Local;
-            worksheet.Names.Add("_high", RefersToR1C1Local: formula);
-
-            rng.FormulaR1C1 = $"=IFERROR(OFFSET('{worksheet.Name}'!R2C3,MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C3:C3,1)-2,3,MATCH('{worksheet.Name}'!R3C13,'{worksheet.Name}'!C3:C3,1)-MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C3:C3,1)+1,1),1)";
-            formula = rng.FormulaR1C1Local;
-            worksheet.Names.Add("_low", RefersToR1C1Local: formula);
-
-            rng.FormulaR1C1 = $"=IFERROR(OFFSET('{worksheet.Name}'!R2C3,MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C3:C3,1)-2,4,MATCH('{worksheet.Name}'!R3C13,'{worksheet.Name}'!C3:C3,1)-MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C3:C3,1)+1,1),1)";
-            formula = rng.FormulaR1C1Local;
-            worksheet.Names.Add("_close", RefersToR1C1Local: formula);
-
-            rng.FormulaR1C1 = $"=OFFSET('{worksheet.Name}'!R2C3,IFERROR(MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C3:C3,1)-2,0),0,IFERROR(MATCH('{worksheet.Name}'!R3C13,'{worksheet.Name}'!C3:C3,1)-MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C3:C3,1)+1,1),1)";
-            formula = rng.FormulaR1C1Local;
-            worksheet.Names.Add("_period", RefersToR1C1Local: formula);
-
-            rng.ClearContents();
-
-            chrt.FullSeriesCollection(1).Values = $"='{worksheet.Name}'!_open";
-            chrt.FullSeriesCollection(2).Values = $"='{worksheet.Name}'!_high";
-            chrt.FullSeriesCollection(3).Values = $"='{worksheet.Name}'!_low";
-            chrt.FullSeriesCollection(4).Values = $"='{worksheet.Name}'!_close";
-            chrt.FullSeriesCollection(1).XValues = $"='{worksheet.Name}'!_period";
-
-            chrt.FullSeriesCollection(4).Trendlines().Add();
-            chrt.FullSeriesCollection(4).Trendlines(1).Type = Excel.XlTrendlineType.xlMovingAvg;
-            chrt.FullSeriesCollection(4).Trendlines(1).Period = 2;
-
-            shp.Left = (float)worksheet.Cells[5, 11].Left;
-            shp.Top = (float)worksheet.Cells[5, 11].Top;
-            shp.Height = 340.157480315f;
-            shp.Width = 680.3149606299f;
-            chrt.ChartTitle.Caption = worksheet.Name;
-
-
-            int lastrow = ExcelUtils.RowsCount(worksheet);
-            if (lastrow <= 2) return;
-
-            Excel.Range timestampRng = worksheet.Range[$"I2:I{lastrow}"];
-            Excel.Range timeRng = worksheet.Range[$"C2:C{lastrow}"];
-            timeRng.Value = timestampRng.Value;
-
-            worksheet.Cells[2, 11].Value = "Start";
-            worksheet.Cells[3, 11].Value = "End";
-            worksheet.Cells[1, 12].Value = "Date";
-            worksheet.Cells[1, 13].Value = "Timestamp";
-
-            Excel.Range firstTimeRng = worksheet.Range[$"A2:A{lastrow}"];
-            worksheet.Cells[2, 12].Value = firstTimeRng.Cells[2, 1].Value;
-            worksheet.Cells[3, 12].Value = firstTimeRng.Cells[firstTimeRng.Rows.Count, 1].Value;
-
-            Excel.Range vlookupRng = worksheet.Range[$"A2:C{lastrow}"];
-            string addressRng = vlookupRng.Address;
-
-            string addressCell = worksheet.Cells[2, 12].Address[RowAbsolute: true, ColumnAbsolute: true];
-            Excel.Range cellEdit = worksheet.Cells[2, 13];
-            cellEdit.Formula = $"=IFERROR(VLOOKUP({addressCell},{addressRng},3,),1)";
-            cellEdit.NumberFormat = "@";
-
-            addressCell = worksheet.Cells[3, 12].Address[RowAbsolute: true, ColumnAbsolute: true];
-            cellEdit = worksheet.Cells[3, 13];
-            cellEdit.Formula = $"=IFERROR(VLOOKUP({addressCell},{addressRng},3,),1)";
-            cellEdit.NumberFormat = "@";
-            timeRng.NumberFormat = "@";
-
-            worksheet.Range["A:C"].EntireColumn.AutoFit();
-            worksheet.Range["L:M"].EntireColumn.AutoFit();
-
-            shp.Left = (float)worksheet.Cells[5, 11].Left;
-            shp.Top = (float)worksheet.Cells[5, 11].Top;
         }
 
         /// <summary>
         /// Загрузка данных Опцонов на лист Excel
         /// </summary>
         /// <param name="data">Данные</param>
-        public static void PrintOptions(EOD.Model.OptionsData.OptionsData data)
+        public static void PrintOptions(EOD.Model.OptionsData.OptionsData data, string ticker)
         {
-            Excel.Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
-
-            int row = 1;
-            int column = 1;
-
-            sh.Cells[row, column] = "Code";
-            sh.Cells[row, column + 1] = data.Code;
-            sh.Cells[row, column + 2] = "Exchange";
-            sh.Cells[row, column + 3] = data.Exchange;
-            row++;
-
-            sh.Cells[row, column] = "Last trade date";
-            sh.Cells[row, column + 1] = data.LastTradeDate;
-            sh.Cells[row, column + 2] = "Last trade price";
-            sh.Cells[row, column + 3] = data.LastTradePrice;
-            row++;
-            sh.Cells[row, column] = "Data";
-            sh.Cells[row, column].Font.Bold = true;
-            row++;
-
             try
             {
-                Globals.ThisAddIn.Application.ScreenUpdating = false;
-                Globals.ThisAddIn.Application.Calculation = Excel.XlCalculation.xlCalculationManual;
-                PrintOptionsData(data, sh.Cells[row, 1]);
+                SetNonInteractive();
 
+                string nameSheet = $"{ticker}-Options";
+
+                Excel.Worksheet sh = AddSheet(nameSheet);
+
+                int row = 1;
+                int column = 1;
+
+                sh.Cells[row, column] = "Code";
+                sh.Cells[row, column + 1] = data.Code;
+                sh.Cells[row, column + 2] = "Exchange";
+                sh.Cells[row, column + 3] = data.Exchange;
+                row++;
+
+                sh.Cells[row, column] = "Last trade date";
+                sh.Cells[row, column + 1] = data.LastTradeDate;
+                sh.Cells[row, column + 2] = "Last trade price";
+                sh.Cells[row, column + 3] = data.LastTradePrice;
+                row++;
+                sh.Cells[row, column] = "Data";
+                sh.Cells[row, column].Font.Bold = true;
+                row++;
+
+                try
+                {
+                    Globals.ThisAddIn.Application.ScreenUpdating = false;
+                    Globals.ThisAddIn.Application.Calculation = Excel.XlCalculation.xlCalculationManual;
+                    PrintOptionsData(data, sh.Cells[row, 1]);
+
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+                finally
+                {
+                    Globals.ThisAddIn.Application.ScreenUpdating = true;
+                    Globals.ThisAddIn.Application.Calculation = Excel.XlCalculation.xlCalculationAutomatic;
+                }
+
+                sh.Outline.AutomaticStyles = false;
+                sh.Outline.SummaryRow = Excel.XlSummaryRow.xlSummaryAbove;
+
+                sh.Outline.ShowLevels(2);
             }
-            catch (Exception)
+            catch
             {
-
                 throw;
             }
             finally
             {
-                Globals.ThisAddIn.Application.ScreenUpdating = true;
-                Globals.ThisAddIn.Application.Calculation = Excel.XlCalculation.xlCalculationAutomatic;
+                _xlsApp.Interactive = true;
             }
-
-            sh.Outline.AutomaticStyles = false;
-            sh.Outline.SummaryRow = Excel.XlSummaryRow.xlSummaryAbove;
-
-            sh.Outline.ShowLevels(2);
         }
 
         private static void PrintOptionsData(EOD.Model.OptionsData.OptionsData data, Excel.Range range)
@@ -657,34 +717,61 @@ namespace EODAddIn.BL
         /// Загрузка всех данных ETF
         /// </summary>
         /// <param name="data"></param>
-        public static void PrintEtf(FundamentalData data)
+        public static void PrintEtf(FundamentalData data, string ticker)
         {
-            Excel.Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
+            try
+            {
+                SetNonInteractive();
 
-            int row = 1;
-            int startGroup1 = 2;
+                string nameSheet = $"{ticker}-Etfs";
 
-            row = PrintEtfGeneral(data, sh.Cells[row, 1]);
-            row++;
+                Excel.Worksheet sh = AddSheet(nameSheet);
 
-            sh.Rows[$"{startGroup1}:{row}"].Group();
-            row++;
+                if (ExcelUtils.SheetExists(nameSheet))
+                {
+                    sh = Globals.ThisAddIn.Application.Worksheets[nameSheet];
+                    int maxrow = ExcelUtils.RowsCount(sh);
+                    sh.Range[$"A1:Z{maxrow}"].ClearContents();
+                }
+                else
+                {
+                    sh = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Add();
+                    sh.Name = nameSheet;
+                }
 
-            startGroup1 = row + 1;
-            row = PrintEtfTechnicals(data, sh.Cells[row, 1]);
+                int row = 1;
+                int startGroup1 = 2;
 
-            sh.Rows[$"{startGroup1}:{row}"].Group();
-            row++;
+                row = PrintEtfGeneral(data, sh.Cells[row, 1]);
+                row++;
 
-            startGroup1 = row + 1;
-            row = PrintEtfData(data, sh.Cells[row, 1]);
+                sh.Rows[$"{startGroup1}:{row}"].Group();
+                row++;
 
-            sh.Rows[$"{startGroup1}:{row}"].Group();
+                startGroup1 = row + 1;
+                row = PrintEtfTechnicals(data, sh.Cells[row, 1]);
 
-            sh.Outline.AutomaticStyles = false;
-            sh.Outline.SummaryRow = Excel.XlSummaryRow.xlSummaryAbove;
+                sh.Rows[$"{startGroup1}:{row}"].Group();
+                row++;
 
-            sh.Outline.ShowLevels(1);
+                startGroup1 = row + 1;
+                row = PrintEtfData(data, sh.Cells[row, 1]);
+
+                sh.Rows[$"{startGroup1}:{row}"].Group();
+
+                sh.Outline.AutomaticStyles = false;
+                sh.Outline.SummaryRow = Excel.XlSummaryRow.xlSummaryAbove;
+
+                sh.Outline.ShowLevels(1);
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                _xlsApp.Interactive = true;
+            }
         }
         /// <summary>
         /// Заполнение листа данными General для ETF
@@ -1148,10 +1235,10 @@ namespace EODAddIn.BL
             sh.Cells[row, column + 2] = data.ETF_Data.Fixed_Income.EffectiveDuration.RelativeToCategory;
             row++;
 
-            sh.Cells[row, column] = "ModifiedDuration";
-            sh.Cells[row, column + 1] = data.ETF_Data.Fixed_Income.ModifiedDuration.FundPercent;
-            sh.Cells[row, column + 2] = data.ETF_Data.Fixed_Income.ModifiedDuration.RelativeToCategory;
-            row++;
+            //sh.Cells[row, column] = "ModifiedDuration";
+            //sh.Cells[row, column + 1] = data.ETF_Data.Fixed_Income.ModifiedDuration.FundPercent;
+            //sh.Cells[row, column + 2] = data.ETF_Data.Fixed_Income.ModifiedDuration.RelativeToCategory;
+            //row++;
 
             sh.Cells[row, column] = "EffectiveMaturity";
             sh.Cells[row, column + 1] = data.ETF_Data.Fixed_Income.EffectiveMaturity.FundPercent;
@@ -1299,41 +1386,68 @@ namespace EODAddIn.BL
         /// Загрузка всех фундаментальных данных на лист Excel
         /// </summary>
         /// <param name="data"></param>
-        public static void PrintFundamentalAll(FundamentalData data)
+        public static void PrintFundamentalAll(FundamentalData data, string ticker)
         {
-            Excel.Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
+            try
+            {
+                SetNonInteractive();
 
-            int row = 1;
-            int startGroup1 = 2;
+                string nameSheet = $"{ticker}-Fundamentals";
 
-            row = PrintFundamentalGeneral(data, sh.Cells[row, 1]);
-            row++;
+                Excel.Worksheet sh = AddSheet(nameSheet);
 
-            sh.Rows[$"{startGroup1}:{row}"].Group();
-            row++;
+                if (ExcelUtils.SheetExists(nameSheet))
+                {
+                    sh = Globals.ThisAddIn.Application.Worksheets[nameSheet];
+                    int maxrow = ExcelUtils.RowsCount(sh);
+                    sh.Range[$"A1:Z{maxrow}"].ClearContents();
+                }
+                else
+                {
+                    sh = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Add();
+                    sh.Name = nameSheet;
+                }
 
-            startGroup1 = row + 1;
-            row = PrintFundamentalHighlights(data, sh.Cells[row, 1]);
+                int row = 1;
+                int startGroup1 = 2;
 
-            sh.Rows[$"{startGroup1}:{row}"].Group();
-            row++;
+                row = PrintFundamentalGeneral(data, sh.Cells[row, 1]);
+                row++;
 
-            row = PrintFundamentalData("Balance Sheet", data.Financials.Balance_Sheet.Quarterly, data.Financials.Balance_Sheet.Yearly, sh.Cells[row, 1]);
-            row++;
+                sh.Rows[$"{startGroup1}:{row}"].Group();
+                row++;
 
-            row = PrintFundamentalData("Income Statement", data.Financials.Income_Statement.Quarterly, data.Financials.Income_Statement.Yearly, sh.Cells[row, 1]);
-            row++;
+                startGroup1 = row + 1;
+                row = PrintFundamentalHighlights(data, sh.Cells[row, 1]);
 
-            row = PrintFundamentalData("Cash Flow", data.Financials.Cash_Flow.Quarterly, data.Financials.Cash_Flow.Yearly, sh.Cells[row, 1]);
-            row++;
+                sh.Rows[$"{startGroup1}:{row}"].Group();
+                row++;
 
-            PrintFundamentalData("Earnings", data.Earnings.History, data.Earnings.Trend, sh.Cells[row, 1], "History", "Trend");
+                row = PrintFundamentalData("Balance Sheet", data.Financials.Balance_Sheet.Quarterly, data.Financials.Balance_Sheet.Yearly, sh.Cells[row, 1]);
+                row++;
+
+                row = PrintFundamentalData("Income Statement", data.Financials.Income_Statement.Quarterly, data.Financials.Income_Statement.Yearly, sh.Cells[row, 1]);
+                row++;
+
+                row = PrintFundamentalData("Cash Flow", data.Financials.Cash_Flow.Quarterly, data.Financials.Cash_Flow.Yearly, sh.Cells[row, 1]);
+                row++;
+
+                PrintFundamentalData("Earnings", data.Earnings.History, data.Earnings.Trend, sh.Cells[row, 1], "History", "Trend");
 
 
-            sh.Outline.AutomaticStyles = false;
-            sh.Outline.SummaryRow = Excel.XlSummaryRow.xlSummaryAbove;
+                sh.Outline.AutomaticStyles = false;
+                sh.Outline.SummaryRow = Excel.XlSummaryRow.xlSummaryAbove;
 
-            sh.Outline.ShowLevels(1);
+                sh.Outline.ShowLevels(1);
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                _xlsApp.Interactive = true;
+            }
         }
 
         /// <summary>

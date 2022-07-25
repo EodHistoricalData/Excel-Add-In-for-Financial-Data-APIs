@@ -40,6 +40,13 @@ namespace EODAddIn.Forms
             try
             {
                 Results = APIEOD.GetFundamental(Tiker);
+                if (Results.ETF_Data == null)
+                    throw new NullReferenceException("No ETF data");
+            }
+            catch (NullReferenceException ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
             catch (APIException ex)
             {
