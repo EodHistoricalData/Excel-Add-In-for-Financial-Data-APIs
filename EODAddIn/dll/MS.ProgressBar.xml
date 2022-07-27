@@ -14,11 +14,6 @@
             Класс вложенного прогрессбара (2-й уровень)
             </summary>
         </member>
-        <member name="E:MS.ProgressBar.Progress.Canceled">
-            <summary>
-            Событие возникающее при закрытии прогрессбара пользователем
-            </summary>
-        </member>
         <member name="M:MS.ProgressBar.Progress.#ctor(System.String,System.Int32,System.Int32,System.Int32)">
             <summary>
             Инициализация прогрессбара
@@ -40,7 +35,7 @@
         </member>
         <member name="M:MS.ProgressBar.Progress.TaskStart(System.String,System.Int32)">
             <summary>
-            Запуск новой задачи. Также завершает предыдущую задачу если она была еще не завершена
+            Запуск новой задачи. Также завершает предыдущую задачу если она была
             </summary>
             <param name="taskName">Название задачи</param>
             <param name="count">Объем задачи</param>
@@ -69,11 +64,6 @@
         <member name="P:MS.ProgressBar.FormProgressBar.SubBar">
             <summary>
             Дочерний прогрессбар
-            </summary>
-        </member>
-        <member name="P:MS.ProgressBar.FormProgressBar.ParentBar">
-            <summary>
-            Родительский прогрессбар
             </summary>
         </member>
         <member name="P:MS.ProgressBar.FormProgressBar.Title">
@@ -198,23 +188,6 @@
             Уменьшение размеров прогрессбара
             </summary>
             <param name="count">количество в дочернем прогрессбаре</param>
-        </member>
-        <member name="M:MS.ProgressBar.FormProgressBar.SetTimeLost">
-            <summary>
-            Установка времени до завершения
-            </summary>
-        </member>
-        <member name="M:MS.ProgressBar.FormProgressBar.SetLabelText(System.Windows.Forms.Label,System.String)">
-            <summary>
-            Изменение текста контрола в томже потоке
-            </summary>
-            <param name="text"></param>
-        </member>
-        <member name="M:MS.ProgressBar.FormProgressBar.SetWidthLblIndicator(System.Int32)">
-            <summary>
-            Изменение ширины контрола индикатора в томже потоке
-            </summary>
-            <param name="value">Ширина контрола</param>
         </member>
         <member name="F:MS.ProgressBar.FormProgressBar.components">
             <summary>
