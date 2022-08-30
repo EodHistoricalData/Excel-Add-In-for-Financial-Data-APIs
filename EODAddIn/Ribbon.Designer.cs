@@ -38,14 +38,6 @@ namespace EODAddIn
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Ribbon));
             this.tabMain = this.Factory.CreateRibbonTab();
             this.grpMain = this.Factory.CreateRibbonGroup();
-            this.group1 = this.Factory.CreateRibbonGroup();
-            this.label2 = this.Factory.CreateRibbonLabel();
-            this.label3 = this.Factory.CreateRibbonLabel();
-            this.label1 = this.Factory.CreateRibbonLabel();
-            this.lblRequest = this.Factory.CreateRibbonLabel();
-            this.lblRequestLeft = this.Factory.CreateRibbonLabel();
-            this.separator1 = this.Factory.CreateRibbonSeparator();
-            this.grpAbout = this.Factory.CreateRibbonGroup();
             this.btnGetHistorical = this.Factory.CreateRibbonButton();
             this.btnGetIntradayHistoricalData = this.Factory.CreateRibbonButton();
             this.splitbtnFundamental = this.Factory.CreateRibbonSplitButton();
@@ -56,9 +48,18 @@ namespace EODAddIn
             this.btnGetIncomeStatement = this.Factory.CreateRibbonButton();
             this.btnGetFlowCash = this.Factory.CreateRibbonButton();
             this.btnGetEarnings = this.Factory.CreateRibbonButton();
+            this.BtnGetBulk = this.Factory.CreateRibbonButton();
             this.BtnGetEtf = this.Factory.CreateRibbonButton();
             this.BtnOptions = this.Factory.CreateRibbonButton();
+            this.group1 = this.Factory.CreateRibbonGroup();
+            this.label2 = this.Factory.CreateRibbonLabel();
+            this.label3 = this.Factory.CreateRibbonLabel();
+            this.label1 = this.Factory.CreateRibbonLabel();
+            this.lblRequest = this.Factory.CreateRibbonLabel();
+            this.lblRequestLeft = this.Factory.CreateRibbonLabel();
+            this.separator1 = this.Factory.CreateRibbonSeparator();
             this.btnSettings = this.Factory.CreateRibbonButton();
+            this.grpAbout = this.Factory.CreateRibbonGroup();
             this.btnSendIdea = this.Factory.CreateRibbonButton();
             this.btnCheckUpdate = this.Factory.CreateRibbonButton();
             this.btnErrorMessage = this.Factory.CreateRibbonButton();
@@ -86,56 +87,6 @@ namespace EODAddIn
             this.grpMain.Items.Add(this.BtnOptions);
             this.grpMain.Label = "Commands";
             this.grpMain.Name = "grpMain";
-            // 
-            // group1
-            // 
-            this.group1.Items.Add(this.label2);
-            this.group1.Items.Add(this.label3);
-            this.group1.Items.Add(this.label1);
-            this.group1.Items.Add(this.lblRequest);
-            this.group1.Items.Add(this.lblRequestLeft);
-            this.group1.Items.Add(this.separator1);
-            this.group1.Items.Add(this.btnSettings);
-            this.group1.Label = "Limits";
-            this.group1.Name = "group1";
-            // 
-            // label2
-            // 
-            this.label2.Label = "Request   ";
-            this.label2.Name = "label2";
-            // 
-            // label3
-            // 
-            this.label3.Label = "Left";
-            this.label3.Name = "label3";
-            // 
-            // label1
-            // 
-            this.label1.Label = " ";
-            this.label1.Name = "label1";
-            // 
-            // lblRequest
-            // 
-            this.lblRequest.Label = "-";
-            this.lblRequest.Name = "lblRequest";
-            // 
-            // lblRequestLeft
-            // 
-            this.lblRequestLeft.Label = "-";
-            this.lblRequestLeft.Name = "lblRequestLeft";
-            // 
-            // separator1
-            // 
-            this.separator1.Name = "separator1";
-            // 
-            // grpAbout
-            // 
-            this.grpAbout.Items.Add(this.btnSendIdea);
-            this.grpAbout.Items.Add(this.btnCheckUpdate);
-            this.grpAbout.Items.Add(this.btnErrorMessage);
-            this.grpAbout.Items.Add(this.btnAbout);
-            this.grpAbout.Label = "About";
-            this.grpAbout.Name = "grpAbout";
             // 
             // btnGetHistorical
             // 
@@ -166,6 +117,7 @@ namespace EODAddIn
             this.splitbtnFundamental.Items.Add(this.btnGetIncomeStatement);
             this.splitbtnFundamental.Items.Add(this.btnGetFlowCash);
             this.splitbtnFundamental.Items.Add(this.btnGetEarnings);
+            this.splitbtnFundamental.Items.Add(this.BtnGetBulk);
             this.splitbtnFundamental.Label = "Get fundamental data";
             this.splitbtnFundamental.Name = "splitbtnFundamental";
             this.splitbtnFundamental.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SplitbtnFundamental_Click);
@@ -219,6 +171,14 @@ namespace EODAddIn
             this.btnGetEarnings.ShowImage = true;
             this.btnGetEarnings.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnGetEarnings_Click);
             // 
+            // BtnGetBulk
+            // 
+            this.BtnGetBulk.Image = ((System.Drawing.Image)(resources.GetObject("BtnGetBulk.Image")));
+            this.BtnGetBulk.Label = "Bulk Fundamentals";
+            this.BtnGetBulk.Name = "BtnGetBulk";
+            this.BtnGetBulk.ShowImage = true;
+            this.BtnGetBulk.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnGetBulk_Click);
+            // 
             // BtnGetEtf
             // 
             this.BtnGetEtf.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -237,6 +197,47 @@ namespace EODAddIn
             this.BtnOptions.ShowImage = true;
             this.BtnOptions.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnOptions_Click);
             // 
+            // group1
+            // 
+            this.group1.Items.Add(this.label2);
+            this.group1.Items.Add(this.label3);
+            this.group1.Items.Add(this.label1);
+            this.group1.Items.Add(this.lblRequest);
+            this.group1.Items.Add(this.lblRequestLeft);
+            this.group1.Items.Add(this.separator1);
+            this.group1.Items.Add(this.btnSettings);
+            this.group1.Label = "Limits";
+            this.group1.Name = "group1";
+            // 
+            // label2
+            // 
+            this.label2.Label = "Request   ";
+            this.label2.Name = "label2";
+            // 
+            // label3
+            // 
+            this.label3.Label = "Left";
+            this.label3.Name = "label3";
+            // 
+            // label1
+            // 
+            this.label1.Label = " ";
+            this.label1.Name = "label1";
+            // 
+            // lblRequest
+            // 
+            this.lblRequest.Label = "-";
+            this.lblRequest.Name = "lblRequest";
+            // 
+            // lblRequestLeft
+            // 
+            this.lblRequestLeft.Label = "-";
+            this.lblRequestLeft.Name = "lblRequestLeft";
+            // 
+            // separator1
+            // 
+            this.separator1.Name = "separator1";
+            // 
             // btnSettings
             // 
             this.btnSettings.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -245,6 +246,15 @@ namespace EODAddIn
             this.btnSettings.Name = "btnSettings";
             this.btnSettings.ShowImage = true;
             this.btnSettings.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSettings_Click);
+            // 
+            // grpAbout
+            // 
+            this.grpAbout.Items.Add(this.btnSendIdea);
+            this.grpAbout.Items.Add(this.btnCheckUpdate);
+            this.grpAbout.Items.Add(this.btnErrorMessage);
+            this.grpAbout.Items.Add(this.btnAbout);
+            this.grpAbout.Label = "About";
+            this.grpAbout.Name = "grpAbout";
             // 
             // btnSendIdea
             // 
@@ -326,6 +336,7 @@ namespace EODAddIn
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnGetIntradayHistoricalData;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnGetEtf;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnOptions;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnGetBulk;
     }
 
     partial class ThisRibbonCollection
