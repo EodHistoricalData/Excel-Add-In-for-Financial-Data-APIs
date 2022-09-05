@@ -237,6 +237,12 @@
     <Compile Include="Forms\FrmGetOptions.Designer.cs">
       <DependentUpon>FrmGetOptions.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FrmScreener.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmScreener.Designer.cs">
+      <DependentUpon>FrmScreener.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmSearchTiker.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -343,6 +349,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmGetOptions.resx">
       <DependentUpon>FrmGetOptions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmScreener.resx">
+      <DependentUpon>FrmScreener.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmSearchTiker.resx">
       <DependentUpon>FrmSearchTiker.cs</DependentUpon>

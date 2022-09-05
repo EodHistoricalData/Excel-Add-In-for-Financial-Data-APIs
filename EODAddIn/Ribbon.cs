@@ -223,5 +223,30 @@ namespace EODAddIn
                 errorReport.ShowAndSend();
             }
         }
+
+        private void btnCreateScreener_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                Forms.FrmScreener frm = new Forms.FrmScreener();
+                frm.ShowDialog(new WinHwnd());
+
+                if (frm.DialogResult == System.Windows.Forms.DialogResult.OK)
+                {
+                    BtnOptions.Label = "Processing";
+                    BtnOptions.Enabled = false;
+
+
+                    BtnOptions.Label = "Get Options";
+                    BtnOptions.Enabled = true;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Program.ErrorReport errorReport = new Program.ErrorReport(ex);
+                errorReport.ShowAndSend();
+            }
+        }
     }
 }
