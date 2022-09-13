@@ -1,17 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
+
 using static EOD.API;
+
 
 namespace EODAddIn.Forms
 {
     public partial class FrmScreener : Form
     {
         public List<(Field, Operation, string)> Filters { get; set; } = new List<(Field, Operation, string)>();
-        public string Signals { get; set; }
-        public string Sort { get; set; }
+        public List<Signal> Signals { get; set; } = new List<Signal>();
+        public (Field, Order)? Sort { get; set; }
         public int Limit { get; set; }
-        
+
         private Dictionary<string, string> _fields = new Dictionary<string, string>()
         {
             { "code", "string" },
@@ -27,7 +30,7 @@ namespace EODAddIn.Forms
             { "avgvol_1d", "number" },
             { "avgvol_200d", "number" },
         };
-        private List<string> _operationNumber = new List<string>()
+        private List<string> _operation = new List<string>()
         {
             { "=" },
             { ">" },
@@ -36,9 +39,428 @@ namespace EODAddIn.Forms
             { "<=" },
             { "!=" },
         };
-        private List<string> _operationString = new List<string>()
+        private Dictionary<string, string> _industries = new Dictionary<string, string>()
         {
-            { "=" },
+            { "Agricultural Chemicals", "Basic Materials"},
+            { "Agricultural Inputs", "Basic Materials"},
+            { "Aluminum", "Basic Materials"},
+            { "Building Materials", "Basic Materials"},
+            { "Chemicals", "Basic Materials"},
+            { "Chemicals - Major Diversified", "Basic Materials"},
+            { "Coal", "Basic Materials"},
+            { "Coking Coal", "Basic Materials"},
+            { "Copper", "Basic Materials"},
+            { "Gold", "Basic Materials"},
+            { "Independent Oil & Gas", "Basic Materials"},
+            { "Industrial Metals & Minerals", "Basic Materials"},
+            { "Lumber & Wood Production", "Basic Materials"},
+            { "Major Integrated Oil & Gas", "Basic Materials"},
+            { "Nonmetallic Mineral Mining", "Basic Materials"},
+            { "Oil & Gas Drilling & Exploration", "Basic Materials"},
+            { "Oil & Gas Equipment & Services", "Basic Materials"},
+            { "Oil & Gas Pipelines", "Basic Materials"},
+            { "Oil & Gas Refining & Marketing", "Basic Materials"},
+            { "Other Industrial Metals & Mining", "Basic Materials"},
+            { "Other Precious Metals & Mining", "Basic Materials"},
+            { "Paper & Paper Products", "Basic Materials"},
+            { "Silver", "Basic Materials"},
+            { "Specialty Chemicals", "Basic Materials"},
+            { "Steel", "Basic Materials"},
+            { "Steel & Iron", "Basic Materials"},
+            { "Synthetics", "Basic Materials"},
+            { "Advertising Agencies", "Communication Services"},
+            { "Broadcasting", "Communication Services"},
+            { "Electronic Gaming & Multimedia", "Communication Services"},
+            { "Entertainment", "Communication Services"},
+            { "Internet Content & Information", "Communication Services"},
+            { "Pay TV", "Communication Services"},
+            { "Publishing", "Communication Services"},
+            { "Telecom Services", "Communication Services"},
+            { "Conglomerates", "Conglomerates"},
+            { "Advertising Agencies", "Consumer Cyclical"},
+            { "Apparel Manufacturing", "Consumer Cyclical"},
+            { "Apparel Retail", "Consumer Cyclical"},
+            { "Apparel Stores", "Consumer Cyclical"},
+            { "Auto & Truck Dealerships", "Consumer Cyclical"},
+            { "Auto Manufacturers", "Consumer Cyclical"},
+            { "Auto Parts", "Consumer Cyclical"},
+            { "Broadcasting - Radio", "Consumer Cyclical"},
+            { "Broadcasting - TV", "Consumer Cyclical"},
+            { "Department Stores", "Consumer Cyclical"},
+            { "Footwear & Accessories", "Consumer Cyclical"},
+            { "Furnishings", "Consumer Cyclical"},
+            { "Gambling", "Consumer Cyclical"},
+            { "Home Furnishings & Fixtures", "Consumer Cyclical"},
+            { "Home Improvement Retail", "Consumer Cyclical"},
+            { "Home Improvement Stores", "Consumer Cyclical"},
+            { "Internet Retail", "Consumer Cyclical"},
+            { "Leisure", "Consumer Cyclical"},
+            { "Lodging", "Consumer Cyclical"},
+            { "Luxury Goods", "Consumer Cyclical"},
+            { "Marketing Services", "Consumer Cyclical"},
+            { "Media - Diversified", "Consumer Cyclical"},
+            { "Packaging & Containers", "Consumer Cyclical"},
+            { "Personal Services", "Consumer Cyclical"},
+            { "Publishing", "Consumer Cyclical"},
+            { "Recreational Vehicles", "Consumer Cyclical"},
+            { "Residential Construction", "Consumer Cyclical"},
+            { "Resorts & Casinos", "Consumer Cyclical"},
+            { "Restaurants", "Consumer Cyclical"},
+            { "Rubber & Plastics", "Consumer Cyclical"},
+            { "Specialty Retail", "Consumer Cyclical"},
+            { "Textile Manufacturing", "Consumer Cyclical"},
+            { "Travel Services", "Consumer Cyclical"},
+            { "Beverages - Brewers", "Consumer Defensive"},
+            { "Beverages - Soft Drinks", "Consumer Defensive"},
+            { "Beverages - Wineries & Distilleries", "Consumer Defensive"},
+            { "Beverages-Brewers", "Consumer Defensive"},
+            { "Beverages-Non-Alcoholic", "Consumer Defensive"},
+            { "Beverages-Wineries & Distilleries", "Consumer Defensive"},
+            { "Confectioners", "Consumer Defensive"},
+            { "Discount Stores", "Consumer Defensive"},
+            { "Education & Training Services", "Consumer Defensive"},
+            { "Farm Products", "Consumer Defensive"},
+            { "Food Distribution", "Consumer Defensive"},
+            { "Grocery Stores", "Consumer Defensive"},
+            { "Household & Personal Products", "Consumer Defensive"},
+            { "Packaged Foods", "Consumer Defensive"},
+            { "Pharmaceutical Retailers", "Consumer Defensive"},
+            { "Tobacco", "Consumer Defensive"},
+            { "Appliances", "Consumer Goods"},
+            { "Auto Manufacturers - Major", "Consumer Goods"},
+            { "Auto Parts", "Consumer Goods"},
+            { "Beverages - Brewers", "Consumer Goods"},
+            { "Beverages - Soft Drinks", "Consumer Goods"},
+            { "Beverages - Wineries & Distillers", "Consumer Goods"},
+            { "Business Equipment", "Consumer Goods"},
+            { "Cigarettes", "Consumer Goods"},
+            { "Cleaning Products", "Consumer Goods"},
+            { "Confectioners", "Consumer Goods"},
+            { "Dairy Products", "Consumer Goods"},
+            { "Electronic Equipment", "Consumer Goods"},
+            { "Farm Products", "Consumer Goods"},
+            { "Food - Major Diversified", "Consumer Goods"},
+            { "Home Furnishings & Fixtures", "Consumer Goods"},
+            { "Housewares & Accessories", "Consumer Goods"},
+            { "Meat Products", "Consumer Goods"},
+            { "Office Supplies", "Consumer Goods"},
+            { "Packaging & Containers", "Consumer Goods"},
+            { "Paper & Paper Products", "Consumer Goods"},
+            { "Personal Products", "Consumer Goods"},
+            { "Photographic Equipment & Supplies", "Consumer Goods"},
+            { "Processed & Packaged Goods", "Consumer Goods"},
+            { "Recreational Goods", "Consumer Goods"},
+            { "Recreational Vehicles", "Consumer Goods"},
+            { "REIT - Retail", "Consumer Goods"},
+            { "Rubber & Plastics", "Consumer Goods"},
+            { "Sporting Goods", "Consumer Goods"},
+            { "Textile - Apparel Clothing", "Consumer Goods"},
+            { "Textile - Apparel Footwear & Accessories", "Consumer Goods"},
+            { "Tobacco Products", "Consumer Goods"},
+            { "Toys & Games", "Consumer Goods"},
+            { "Trucks & Other Vehicles", "Consumer Goods"},
+            { "Oil & Gas Drilling", "Energy"},
+            { "Oil & Gas E&P", "Energy"},
+            { "Oil & Gas Equipment & Services", "Energy"},
+            { "Oil & Gas Integrated", "Energy"},
+            { "Oil & Gas Midstream", "Energy"},
+            { "Oil & Gas Refining & Marketing", "Energy"},
+            { "Thermal Coal", "Energy"},
+            { "Uranium", "Energy"},
+            { "Accident & Health Insurance", "Financial"},
+            { "Asset Management", "Financial"},
+            { "Closed-End Fund - Debt", "Financial"},
+            { "Closed-End Fund - Equity", "Financial"},
+            { "Closed-End Fund - Foreign", "Financial"},
+            { "Credit Services", "Financial"},
+            { "Diversified Investments", "Financial"},
+            { "Foreign Money Center Banks", "Financial"},
+            { "Foreign Regional Banks", "Financial"},
+            { "Insurance Brokers", "Financial"},
+            { "Investment Brokerage - National", "Financial"},
+            { "Investment Brokerage - Regional", "Financial"},
+            { "Life Insurance", "Financial"},
+            { "Money Center Banks", "Financial"},
+            { "Mortgage Investment", "Financial"},
+            { "Property & Casualty Insurance", "Financial"},
+            { "Property Management", "Financial"},
+            { "Real Estate Development", "Financial"},
+            { "Regional - Mid-Atlantic Banks", "Financial"},
+            { "Regional - Midwest Banks", "Financial"},
+            { "Regional - Northeast Banks", "Financial"},
+            { "Regional - Pacific Banks", "Financial"},
+            { "Regional - Southeast Banks", "Financial"},
+            { "Regional - Southwest Banks", "Financial"},
+            { "REIT - Diversified", "Financial"},
+            { "REIT - Healthcare Facilities", "Financial"},
+            { "REIT - Hotel/Motel", "Financial"},
+            { "REIT - Industrial", "Financial"},
+            { "REIT - Office", "Financial"},
+            { "REIT - Residential", "Financial"},
+            { "REIT - Retail", "Financial"},
+            { "Savings & Loans", "Financial"},
+            { "Surety & Title Insurance", "Financial"},
+            { "Asset Management", "Financial Services"},
+            { "Banks - Global", "Financial Services"},
+            { "Banks - Regional - Africa", "Financial Services"},
+            { "Banks - Regional - Asia", "Financial Services"},
+            { "Banks - Regional - Australia", "Financial Services"},
+            { "Banks - Regional - Canada", "Financial Services"},
+            { "Banks - Regional - Europe", "Financial Services"},
+            { "Banks - Regional - Latin America", "Financial Services"},
+            { "Banks - Regional - US", "Financial Services"},
+            { "Banks-Diversified", "Financial Services"},
+            { "Banks-Regional", "Financial Services"},
+            { "Capital Markets", "Financial Services"},
+            { "Credit Services", "Financial Services"},
+            { "Financial Conglomerates", "Financial Services"},
+            { "Financial Data & Stock Exchanges", "Financial Services"},
+            { "Financial Exchanges", "Financial Services"},
+            { "Insurance - Diversified", "Financial Services"},
+            { "Insurance - Life", "Financial Services"},
+            { "Insurance - Property & Casualty", "Financial Services"},
+            { "Insurance - Reinsurance", "Financial Services"},
+            { "Insurance - Specialty", "Financial Services"},
+            { "Insurance Brokers", "Financial Services"},
+            { "Insurance-Diversified", "Financial Services"},
+            { "Insurance-Life", "Financial Services"},
+            { "Insurance-Property & Casualty", "Financial Services"},
+            { "Insurance-Reinsurance", "Financial Services"},
+            { "Insurance-Specialty", "Financial Services"},
+            { "Mortgage Finance", "Financial Services"},
+            { "Savings & Cooperative Banks", "Financial Services"},
+            { "Shell Companies", "Financial Services"},
+            { "Specialty Finance", "Financial Services"},
+            { "Biotechnology", "Healthcare"},
+            { "Diagnostic Substances", "Healthcare"},
+            { "Diagnostics & Research", "Healthcare"},
+            { "Drug Delivery", "Healthcare"},
+            { "Drug Manufacturers - Major", "Healthcare"},
+            { "Drug Manufacturers - Other", "Healthcare"},
+            { "Drug Manufacturers - Specialty & Generic", "Healthcare"},
+            { "Drug Manufacturers-General", "Healthcare"},
+            { "Drug Manufacturers-Specialty & Generic", "Healthcare"},
+            { "Drug Related Products", "Healthcare"},
+            { "Drugs - Generic", "Healthcare"},
+            { "Health Care Plans", "Healthcare"},
+            { "Health Information Services", "Healthcare"},
+            { "Healthcare Plans", "Healthcare"},
+            { "Home Health Care", "Healthcare"},
+            { "Hospitals", "Healthcare"},
+            { "Long-Term Care Facilities", "Healthcare"},
+            { "Medical Appliances & Equipment", "Healthcare"},
+            { "Medical Care", "Healthcare"},
+            { "Medical Care Facilities", "Healthcare"},
+            { "Medical Devices", "Healthcare"},
+            { "Medical Distribution", "Healthcare"},
+            { "Medical Instruments & Supplies", "Healthcare"},
+            { "Medical Laboratories & Research", "Healthcare"},
+            { "Medical Practitioners", "Healthcare"},
+            { "Pharmaceutical Retailers", "Healthcare"},
+            { "Specialized Health Services", "Healthcare"},
+            { "Aerospace/Defense - Major Diversified", "Industrial Goods"},
+            { "Aerospace/Defense Products & Services", "Industrial Goods"},
+            { "Cement", "Industrial Goods"},
+            { "Diversified Machinery", "Industrial Goods"},
+            { "Farm & Construction Machinery", "Industrial Goods"},
+            { "General Building Materials", "Industrial Goods"},
+            { "General Contractors", "Industrial Goods"},
+            { "Heavy Construction", "Industrial Goods"},
+            { "Industrial Electrical Equipment", "Industrial Goods"},
+            { "Industrial Equipment & Components", "Industrial Goods"},
+            { "Lumber", "Industrial Goods"},
+            { "Machine Tools & Accessories", "Industrial Goods"},
+            { "Manufactured Housing", "Industrial Goods"},
+            { "Metal Fabrication", "Industrial Goods"},
+            { "Pollution & Treatment Controls", "Industrial Goods"},
+            { "Residential Construction", "Industrial Goods"},
+            { "Small Tools & Accessories", "Industrial Goods"},
+            { "Textile Industrial", "Industrial Goods"},
+            { "Waste Management", "Industrial Goods"},
+            { "Aerospace & Defense", "Industrials"},
+            { "Airlines", "Industrials"},
+            { "Airports & Air Services", "Industrials"},
+            { "Building Products & Equipment", "Industrials"},
+            { "Business Equipment", "Industrials"},
+            { "Business Equipment & Supplies", "Industrials"},
+            { "Business Services", "Industrials"},
+            { "Conglomerates", "Industrials"},
+            { "Consulting Services", "Industrials"},
+            { "Diversified Industrials", "Industrials"},
+            { "Electrical Equipment & Parts", "Industrials"},
+            { "Engineering & Construction", "Industrials"},
+            { "Farm & Construction Equipment", "Industrials"},
+            { "Farm & Heavy Construction Machinery", "Industrials"},
+            { "Industrial Distribution", "Industrials"},
+            { "Infrastructure Operations", "Industrials"},
+            { "Integrated Freight & Logistics", "Industrials"},
+            { "Integrated Shipping & Logistics", "Industrials"},
+            { "Marine Shipping", "Industrials"},
+            { "Metal Fabrication", "Industrials"},
+            { "Pollution & Treatment Controls", "Industrials"},
+            { "Railroads", "Industrials"},
+            { "Rental & Leasing Services", "Industrials"},
+            { "Security & Protection Services", "Industrials"},
+            { "Shipping & Ports", "Industrials"},
+            { "Specialty Business Services", "Industrials"},
+            { "Specialty Industrial Machinery", "Industrials"},
+            { "Staffing & Employment Services", "Industrials"},
+            { "Staffing & Outsourcing Services", "Industrials"},
+            { "Tools & Accessories", "Industrials"},
+            { "Truck Manufacturing", "Industrials"},
+            { "Trucking", "Industrials"},
+            { "Waste Management", "Industrials"},
+            { "Other", "Other"},
+            { "Real Estate - General", "Real Estate"},
+            { "Real Estate Services", "Real Estate"},
+            { "Real Estate-Development", "Real Estate"},
+            { "Real Estate-Diversified", "Real Estate"},
+            { "REIT - Diversified", "Real Estate"},
+            { "REIT - Healthcare Facilities", "Real Estate"},
+            { "REIT - Hotel & Motel", "Real Estate"},
+            { "REIT - Industrial", "Real Estate"},
+            { "REIT - Office", "Real Estate"},
+            { "REIT - Residential", "Real Estate"},
+            { "REIT - Retail", "Real Estate"},
+            { "REIT-Diversified", "Real Estate"},
+            { "REIT-Healthcare Facilities", "Real Estate"},
+            { "REIT-Hotel & Motel", "Real Estate"},
+            { "REIT-Industrial", "Real Estate"},
+            { "REIT-Mortgage", "Real Estate"},
+            { "REIT-Office", "Real Estate"},
+            { "REIT-Residential", "Real Estate"},
+            { "REIT-Retail", "Real Estate"},
+            { "REIT-Specialty", "Real Estate"},
+            { "Advertising Agencies", "Services"},
+            { "Air Delivery & Freight Services", "Services"},
+            { "Air Services", "Services"},
+            { "Apparel Stores", "Services"},
+            { "Auto Dealerships", "Services"},
+            { "Auto Parts Stores", "Services"},
+            { "Auto Parts Wholesale", "Services"},
+            { "Basic Materials Wholesale", "Services"},
+            { "Broadcasting - Radio", "Services"},
+            { "Broadcasting - TV", "Services"},
+            { "Building Materials Wholesale", "Services"},
+            { "Business Services", "Services"},
+            { "Catalog & Mail Order Houses", "Services"},
+            { "CATV Systems", "Services"},
+            { "Computers Wholesale", "Services"},
+            { "Consumer Services", "Services"},
+            { "Department Stores", "Services"},
+            { "Discount", "Services"},
+            { "Drug Stores", "Services"},
+            { "Drugs Wholesale", "Services"},
+            { "Education & Training Services", "Services"},
+            { "Electronics Stores", "Services"},
+            { "Electronics Wholesale", "Services"},
+            { "Entertainment - Diversified", "Services"},
+            { "Food Wholesale", "Services"},
+            { "Gaming Activities", "Services"},
+            { "General Entertainment", "Services"},
+            { "Grocery Stores", "Services"},
+            { "Home Furnishing Stores", "Services"},
+            { "Home Improvement Stores", "Services"},
+            { "Industrial Equipment Wholesale", "Services"},
+            { "Information Technology Services", "Services"},
+            { "Jewelry Stores", "Services"},
+            { "Lodging", "Services"},
+            { "Major Airlines", "Services"},
+            { "Management Services", "Services"},
+            { "Marketing Services", "Services"},
+            { "Medical Equipment Wholesale", "Services"},
+            { "Movie Production", "Services"},
+            { "Music & Video Stores", "Services"},
+            { "Personal Services", "Services"},
+            { "Publishing - Books", "Services"},
+            { "Publishing - Newspapers", "Services"},
+            { "Publishing - Periodicals", "Services"},
+            { "Railroads", "Services"},
+            { "Regional Airlines", "Services"},
+            { "Rental & Leasing Services", "Services"},
+            { "Research Services", "Services"},
+            { "Resorts & Casinos", "Services"},
+            { "Restaurants", "Services"},
+            { "Security & Protection Services", "Services"},
+            { "Shipping", "Services"},
+            { "Specialty Eateries", "Services"},
+            { "Specialty Retail", "Services"},
+            { "Sporting Activities", "Services"},
+            { "Sporting Goods Stores", "Services"},
+            { "Staffing & Outsourcing Services", "Services"},
+            { "Technical Services", "Services"},
+            { "Toy & Hobby Stores", "Services"},
+            { "Trucking", "Services"},
+            { "Wholesale", "Services"},
+            { "Application Software", "Technology"},
+            { "Business Software & Services", "Technology"},
+            { "Communication Equipment", "Technology"},
+            { "Computer Based Systems", "Technology"},
+            { "Computer Distribution", "Technology"},
+            { "Computer Hardware", "Technology"},
+            { "Computer Peripherals", "Technology"},
+            { "Computer Systems", "Technology"},
+            { "Consumer Electronics", "Technology"},
+            { "Contract Manufacturers", "Technology"},
+            { "Data Storage", "Technology"},
+            { "Data Storage Devices", "Technology"},
+            { "Diversified Communication Services", "Technology"},
+            { "Diversified Computer Systems", "Technology"},
+            { "Diversified Electronics", "Technology"},
+            { "Electronic Components", "Technology"},
+            { "Electronic Gaming & Multimedia", "Technology"},
+            { "Electronics & Computer Distribution", "Technology"},
+            { "Electronics Distribution", "Technology"},
+            { "Health Information Services", "Technology"},
+            { "Healthcare Information Services", "Technology"},
+            { "Information & Delivery Services", "Technology"},
+            { "Information Technology Services", "Technology"},
+            { "Internet Content & Information", "Technology"},
+            { "Internet Information Providers", "Technology"},
+            { "Internet Service Providers", "Technology"},
+            { "Internet Software & Services", "Technology"},
+            { "Long Distance Carriers", "Technology"},
+            { "Multimedia & Graphics Software", "Technology"},
+            { "Networking & Communication Devices", "Technology"},
+            { "Personal Computers", "Technology"},
+            { "Printed Circuit Boards", "Technology"},
+            { "Processing Systems & Products", "Technology"},
+            { "Scientific & Technical Instruments", "Technology"},
+            { "Security Software & Services", "Technology"},
+            { "Semiconductor - Broad Line", "Technology"},
+            { "Semiconductor - Integrated Circuits", "Technology"},
+            { "Semiconductor - Specialized", "Technology"},
+            { "Semiconductor Equipment & Materials", "Technology"},
+            { "Semiconductor Memory", "Technology"},
+            { "Semiconductor- Memory Chips", "Technology"},
+            { "Semiconductors", "Technology"},
+            { "Software - Application", "Technology"},
+            { "Software - Infrastructure", "Technology"},
+            { "Software-Application", "Technology"},
+            { "Software-Infrastructure", "Technology"},
+            { "Solar", "Technology"},
+            { "Technical & System Software", "Technology"},
+            { "Telecom Services - Domestic", "Technology"},
+            { "Telecom Services - Foreign", "Technology"},
+            { "Wireless Communications", "Technology"},
+            { "Diversified Utilities", "Utilities"},
+            { "Electric Utilities", "Utilities"},
+            { "Foreign Utilities", "Utilities"},
+            { "Gas Utilities", "Utilities"},
+            { "Utilities - Diversified", "Utilities"},
+            { "Utilities - Independent Power Producers", "Utilities"},
+            { "Utilities - Regulated Electric", "Utilities"},
+            { "Utilities - Regulated Gas", "Utilities"},
+            { "Utilities - Regulated Water", "Utilities"},
+            { "Utilities-Diversified", "Utilities"},
+            { "Utilities-Independent Power Producers", "Utilities"},
+            { "Utilities-Regulated Electric", "Utilities"},
+            { "Utilities-Regulated Gas", "Utilities"},
+            { "Utilities-Regulated Water", "Utilities"},
+            { "Utilities-Renewable", "Utilities"},
+            { "Water Utilities", "Utilities"},
+
+
         };
 
         public FrmScreener()
@@ -64,16 +486,16 @@ namespace EODAddIn.Forms
                 {
                     DataGridViewComboBoxCell cell;
                     List<string> lst;
-                    if (_fields[val] == "string")
-                    {
+                    //if (_fields[val] == "string")
+                    //{
+                    //    cell = (DataGridViewComboBoxCell)dataGridViewFilters.Rows[e.RowIndex].Cells[colOperation.Index];
+                    //    lst = _operationString;
+                    //}
+                    //else
+                    //{
                         cell = (DataGridViewComboBoxCell)dataGridViewFilters.Rows[e.RowIndex].Cells[colOperation.Index];
-                        lst = _operationString;                   
-                    }
-                    else
-                    {
-                        cell = (DataGridViewComboBoxCell)dataGridViewFilters.Rows[e.RowIndex].Cells[colOperation.Index];
-                        lst = _operationNumber;
-                    }
+                        lst = _operation;
+                    //}
 
                     cell.Items.Clear();
                     foreach (var item in lst)
@@ -187,7 +609,7 @@ namespace EODAddIn.Forms
                     case "!=":
                         operation = Operation.NotEquals;
                         break;
-                    
+
                     default:
                         throw new Exception("Select a operation");
                 }
@@ -199,39 +621,108 @@ namespace EODAddIn.Forms
 
         private void SetSignals()
         {
-            Signals = string.Empty;
-            if (chk50d_new_lo.Checked) Signals += "50d_new_lo,";
-            if (chk50d_new_hi.Checked) Signals += "50d_new_hi,";
-            if (chk200d_new_lo.Checked) Signals += "200d_new_lo,";
-            if (chk200d_new_hi.Checked) Signals += "200d_new_hi,";
-            if (chkBookvalue_neg.Checked) Signals += "bookvalue_neg,";
-            if (chkBookvalue_pos.Checked) Signals += "bookvalue_pos,";
-            if (chkWallstreet_lo.Checked) Signals += "wallstreet_lo,";
-            if (chkWallstreet_hi.Checked) Signals += "wallstreet_hi,";
+            Signals = new List<Signal>();
+            if (chk50d_new_lo.Checked) Signals.Add(Signal.New_50d_low);
+            if (chk50d_new_hi.Checked) Signals.Add(Signal.New_50d_hi);
+            if (chk200d_new_lo.Checked) Signals.Add(Signal.New_200d_low);
+            if (chk200d_new_hi.Checked) Signals.Add(Signal.New_200d_hi);
+            if (chkBookvalue_neg.Checked) Signals.Add(Signal.Bookvalue_neg);
+            if (chkBookvalue_pos.Checked) Signals.Add(Signal.Bookvalue_pos);
+            if (chkWallstreet_lo.Checked) Signals.Add(Signal.Wallstreet_low);
+            if (chkWallstreet_hi.Checked) Signals.Add(Signal.Wallstreet_hi);
 
-            if (Signals.Length > 0) Signals = Signals.Substring(0, Signals.Length - 1);
+            if (Signals.Count == 0) Signals = null;
         }
 
         private void SetSort()
         {
-            Sort = string.Empty;
 
             if (cboSortField.SelectedIndex == -1) return;
-            Sort = cboSortField.Text;
+            Field field;
+            Order order;
+
+            switch (cboSortField.Text)
+            {
+                case "code":
+                    field = Field.Code;
+                    break;
+
+                case "name":
+                    field = Field.Name;
+                    break;
+                case "exchange":
+                    field = Field.Exchange;
+                    break;
+                case "sector":
+                    field = Field.Sector;
+                    break;
+                case "industry":
+                    field = Field.Industry;
+                    break;
+                case "market_capitalization":
+                    field = Field.MarketCapitalization;
+                    break;
+                case "earnings_share":
+                    field = Field.EarningsShare;
+                    break;
+                case "dividend_yield":
+                    field = Field.DividendYield;
+                    break;
+                case "refund_1d_p":
+                    field = Field.Refund1dP;
+                    break;
+                case "refund_5d_p":
+                    field = Field.Refund5dP;
+                    break;
+                case "avgvol_1d":
+                    field = Field.Refund5dP;
+                    break;
+                case "avgvol_200d":
+                    field = Field.Refund5dP;
+                    break;
+
+                default:
+                    Sort = null;
+                    return;
+            }
 
             if (rbtnSortAsc.Checked)
             {
-                Sort += ".asc";
+                order = Order.Ascending;
             }
             else
             {
-                Sort += ".desc";
+                order = Order.Descending;
             }
+
+            Sort = (field, order);
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
             Close();
+        }
+
+        private void FrmScreener_Load(object sender, EventArgs e)
+        {
+            List<string> list = new List<string>();
+            foreach (var item in _industries)
+            {
+                list.Add(item.Value);
+            }
+            cboSector.Items.AddRange(list.Distinct().ToArray());
+        }
+
+        private void cboSector_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            cboIndustry.Items.Clear();
+            List<string> list = new List<string>();
+
+            foreach (var item in _industries)
+            {
+                list.Add(item.Key);
+            }
+            cboIndustry.Items.AddRange(list.Distinct().ToArray());
         }
     }
 }

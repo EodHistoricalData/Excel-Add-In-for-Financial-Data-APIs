@@ -1,9 +1,14 @@
-﻿using EODAddIn.Model;
+﻿using EOD.Model.OptionsData;
+using EOD;
+
+using EODAddIn.Model;
 
 using Newtonsoft.Json;
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using Microsoft.Office.Interop.Excel;
 
 namespace EODAddIn.Utils
 {
@@ -26,10 +31,10 @@ namespace EODAddIn.Utils
         /// </summary>
         /// <param name="api_token"></param>
         /// <returns></returns>
-        public static List<SearchResult> Search (string queryString)
+        public static List<SearchResult> Search(string queryString)
         {
             string url = $"https://eodhistoricaldata.com/api/query-search-extended/?q={queryString}";
-            
+
             try
             {
                 string s = Response.GET(url);
@@ -41,7 +46,7 @@ namespace EODAddIn.Utils
             }
         }
 
-        public static List<EndOfDay> GetEOD(string code,  DateTime from, DateTime to, string period = "d")
+        public static List<EndOfDay> GetEOD(string code, DateTime from, DateTime to, string period = "d")
         {
             string url = $"https://eodhistoricaldata.com/api/eod/{code}";
             string data = $"fmt=json&period={period}&from={from:yyyy-MM-dd}&to={to:yyyy-MM-dd}&api_token={Program.Program.APIKey}";
@@ -50,7 +55,7 @@ namespace EODAddIn.Utils
         }
 
         public static List<Intraday> GetIntraday(string code, DateTime from, DateTime to, string interval = "5m")
-        {            
+        {
             long unixFrom = ((DateTimeOffset)from).ToUnixTimeSeconds();
             long unixTo = ((DateTimeOffset)to).ToUnixTimeSeconds();
 
@@ -69,6 +74,32 @@ namespace EODAddIn.Utils
             return JsonConvert.DeserializeObject<FundamentalData>(s);
         }
 
+        public static async Task<EOD.Model.Screener.StockMarkerScreener> GetScreener(List<(API.Field, API.Operation, string)> filters, List<API.Signal> signals, (API.Field, API.Order)? sort, int limit)
+        {
+            API api = new API(Program.Settings.SettingsFields.APIKey, null, Program.Settings.SettingsFields.AppName);
+
+            EOD.Model.Screener.StockMarkerScreener screener = new EOD.Model.Screener.StockMarkerScreener();
+            screener.Data = new List<EOD.Model.Screener.ScreenerData>();
+            for (int i = 0; i < limit; i += 100)
+            {
+                int ilimit;
+                if (limit > 100)
+                {
+                    ilimit = 100;
+                }
+                else
+                {
+                    ilimit = limit;
+                }
+
+                EOD.Model.Screener.StockMarkerScreener request = await api.GetStockMarketScreenerAsync(filters, signals, sort, ilimit, i);
+                if (request.Data.Count == 0) break;
+                screener.Data.AddRange(request.Data);
+                limit -= ilimit;
+            }
+
+            return screener;
+        }
 
     }
 }

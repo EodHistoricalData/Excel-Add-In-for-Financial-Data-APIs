@@ -2,8 +2,11 @@
 using EODAddIn.Program;
 using EODAddIn.Utils;
 
+using Microsoft.Office.Interop.Excel;
+
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Drawing;
 using System.Reflection;
 
@@ -1764,5 +1767,63 @@ namespace EODAddIn.BL
             }
             sh.Range[sh.Cells[range.Row, range.Column], sh.Cells[row - 2, column + properties.Length - 1]].Value = val;
         }
+
+
+        public static void PrintScreener(EOD.Model.Screener.StockMarkerScreener screener)
+        {
+            try
+            {
+                SetNonInteractive();
+
+                string nameSheet = $"Screener";
+    
+                Excel.Worksheet sh = AddSheet(nameSheet);
+
+                if (ExcelUtils.SheetExists(nameSheet))
+                {
+                    sh = Globals.ThisAddIn.Application.Worksheets[nameSheet];
+                    int maxrow = ExcelUtils.RowsCount(sh);
+                    sh.Range[$"A1:Z{maxrow}"].ClearContents();
+                }
+                else
+                {
+                    sh = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Add();
+                    sh.Name = nameSheet;
+                }
+
+                
+                object[,] val = new object[screener.Data.Count, 15];
+                int i = 0;
+                foreach (var item in screener.Data)
+                {
+                    int j = 0;
+                    val[i, j] = item.Code; j++;
+                    val[i, j] = item.Name; j++;
+                    val[i, j] = item.Last_Day_Data_Date; j++;
+                    val[i, j] = item.Adjusted_Close; j++;
+                    val[i, j] = item.Refund_1d; j++;
+                    val[i, j] = item.Exchange; j++;
+                    val[i, j] = item.Currency_Symbol; j++;
+                    val[i, j] = item.Market_Capitalization; j++;
+                    val[i, j] = item.Earnings_Share; j++;
+                    val[i, j] = item.Dividend_Yield; j++;
+                    val[i, j] = item.Sector; j++;
+                    val[i, j] = item.Industry; j++;
+
+                    i++;
+                }
+
+                sh.Range[sh.Cells[1, 1], sh.Cells[screener.Data.Count, 15]].Value = val;
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                _xlsApp.Interactive = true;
+            }
+        }
+
     }
 }

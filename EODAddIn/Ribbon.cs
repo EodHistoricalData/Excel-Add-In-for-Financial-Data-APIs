@@ -224,7 +224,7 @@ namespace EODAddIn
             }
         }
 
-        private void btnCreateScreener_Click(object sender, RibbonControlEventArgs e)
+        private async void btnCreateScreener_Click(object sender, RibbonControlEventArgs e)
         {
             try
             {
@@ -236,6 +236,8 @@ namespace EODAddIn
                     BtnOptions.Label = "Processing";
                     BtnOptions.Enabled = false;
 
+                    var res = await APIEOD.GetScreener(frm.Filters, frm.Signals, frm.Sort, frm.Limit);
+                    LoadToExcel.PrintScreener(res);
 
                     BtnOptions.Label = "Get Options";
                     BtnOptions.Enabled = true;
