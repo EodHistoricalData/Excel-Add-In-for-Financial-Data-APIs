@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Drawing;
 using System.Reflection;
-
+using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace EODAddIn.BL
@@ -22,7 +22,6 @@ namespace EODAddIn.BL
         private static Excel.Worksheet AddSheet(string nameSheet)
         {
             Excel.Worksheet worksheet = null;
-
             try
             {
                 if (ExcelUtils.SheetExists(nameSheet))
@@ -41,7 +40,7 @@ namespace EODAddIn.BL
             catch (Exception ex)
             {
                 ErrorReport errorReport = new ErrorReport(ex);
-                errorReport.MessageToUser("Не получилось создать лист.");
+                errorReport.MessageToUser("Can't create a worksheet.");
             }
             return worksheet;
         }
@@ -1768,16 +1767,26 @@ namespace EODAddIn.BL
             sh.Range[sh.Cells[range.Row, range.Column], sh.Cells[row - 2, column + properties.Length - 1]].Value = val;
         }
 
-
+        private static int screenerCounter=1;
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="screener"></param>
         public static void PrintScreener(EOD.Model.Screener.StockMarkerScreener screener)
         {
             try
             {
                 SetNonInteractive();
+                Worksheet sh=new Worksheet();
+                string nameSheet = "Screener " + Convert.ToString(screenerCounter);
+                while (ExcelUtils.SheetExists(nameSheet))
+                {
+                    screenerCounter++;
+                    nameSheet = "Screener " + Convert.ToString(screenerCounter);
+                }
+                sh = AddSheet(nameSheet);
 
-                string nameSheet = $"Screener";
-    
-                Excel.Worksheet sh = AddSheet(nameSheet);
+
 
                 if (ExcelUtils.SheetExists(nameSheet))
                 {
@@ -1791,9 +1800,26 @@ namespace EODAddIn.BL
                     sh.Name = nameSheet;
                 }
 
-                
-                object[,] val = new object[screener.Data.Count, 15];
-                int i = 0;
+
+                object[,] val = new object[screener.Data.Count+1, 15];
+                int i = 1;
+                val[0,0] = "Code";
+                val[0,1] = "Name";
+                val[0,2] = "Last day data date";
+                val[0,3] = "Adjusted Close";
+                val[0,4] = "Refund ID";
+                val[0,5] = "Exchange";
+                val[0,6] = "Currency symbol";
+                val[0,7] = "Market Capitalization";
+                val[0,8] = "Earnings Share";
+                val[0,9] = "Dividend yield";
+                val[0,10] = "Sector";
+                val[0,11] = "Industry";
+                if (screener.Data.Count==0)
+                {
+                    MessageBox.Show("No matches", "Error",  MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
                 foreach (var item in screener.Data)
                 {
                     int j = 0;
@@ -1809,11 +1835,17 @@ namespace EODAddIn.BL
                     val[i, j] = item.Dividend_Yield; j++;
                     val[i, j] = item.Sector; j++;
                     val[i, j] = item.Industry; j++;
-
                     i++;
                 }
-
                 sh.Range[sh.Cells[1, 1], sh.Cells[screener.Data.Count, 15]].Value = val;
+                string endpoint = "L"+Convert.ToString(i-1);
+                var range = sh.get_Range("A1",endpoint);
+                ListObject tbl = sh.ListObjects.AddEx(
+                    SourceType: XlListObjectSourceType.xlSrcRange,
+                    Source: range
+                    );
+                tbl.Name = nameSheet;
+                tbl.TableStyle = "TableStyleLight9";
             }
             catch
             {
@@ -1823,6 +1855,7 @@ namespace EODAddIn.BL
             {
                 _xlsApp.Interactive = true;
             }
+
         }
 
     }

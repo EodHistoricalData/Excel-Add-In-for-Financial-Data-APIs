@@ -1,11 +1,14 @@
 ﻿using EODAddIn.BL;
 using EODAddIn.Model;
 using EODAddIn.Utils;
-
+using Microsoft.Office.Interop.Excel;
+using Microsoft.Office.Tools.Excel;
 using Microsoft.Office.Tools.Ribbon;
 
 using System;
 using System.Diagnostics;
+using System.Reflection;
+using System.Windows.Forms;
 using System.Windows.Threading;
 
 namespace EODAddIn
@@ -230,7 +233,6 @@ namespace EODAddIn
             {
                 Forms.FrmScreener frm = new Forms.FrmScreener();
                 frm.ShowDialog(new WinHwnd());
-
                 if (frm.DialogResult == System.Windows.Forms.DialogResult.OK)
                 {
                     BtnOptions.Label = "Processing";
@@ -242,7 +244,6 @@ namespace EODAddIn
                     BtnOptions.Label = "Get Options";
                     BtnOptions.Enabled = true;
                 }
-
             }
             catch (Exception ex)
             {
