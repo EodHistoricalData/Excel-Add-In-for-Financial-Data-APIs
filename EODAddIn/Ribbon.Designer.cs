@@ -48,6 +48,7 @@ namespace EODAddIn
             this.btnGetIncomeStatement = this.Factory.CreateRibbonButton();
             this.btnGetFlowCash = this.Factory.CreateRibbonButton();
             this.btnGetEarnings = this.Factory.CreateRibbonButton();
+            this.BtnGetBulk = this.Factory.CreateRibbonButton();
             this.BtnGetEtf = this.Factory.CreateRibbonButton();
             this.BtnOptions = this.Factory.CreateRibbonButton();
             this.menuScreener = this.Factory.CreateRibbonMenu();
@@ -119,6 +120,7 @@ namespace EODAddIn
             this.splitbtnFundamental.Items.Add(this.btnGetIncomeStatement);
             this.splitbtnFundamental.Items.Add(this.btnGetFlowCash);
             this.splitbtnFundamental.Items.Add(this.btnGetEarnings);
+            this.splitbtnFundamental.Items.Add(this.BtnGetBulk);
             this.splitbtnFundamental.Label = "Get fundamental data";
             this.splitbtnFundamental.Name = "splitbtnFundamental";
             this.splitbtnFundamental.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.SplitbtnFundamental_Click);
@@ -171,6 +173,14 @@ namespace EODAddIn
             this.btnGetEarnings.Name = "btnGetEarnings";
             this.btnGetEarnings.ShowImage = true;
             this.btnGetEarnings.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnGetEarnings_Click);
+            // 
+            // BtnGetBulk
+            // 
+            this.BtnGetBulk.Image = ((System.Drawing.Image)(resources.GetObject("BtnGetBulk.Image")));
+            this.BtnGetBulk.Label = "Bulk Fundamentals";
+            this.BtnGetBulk.Name = "BtnGetBulk";
+            this.BtnGetBulk.ShowImage = true;
+            this.BtnGetBulk.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnGetBulk_Click);
             // 
             // BtnGetEtf
             // 
@@ -347,6 +357,7 @@ namespace EODAddIn
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnOptions;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuScreener;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnCreateScreener;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnGetBulk;
     }
 
     partial class ThisRibbonCollection

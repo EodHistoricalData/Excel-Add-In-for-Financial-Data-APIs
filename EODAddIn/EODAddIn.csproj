@@ -207,6 +207,12 @@
     <Compile Include="Controls\SearchControl.Designer.cs">
       <DependentUpon>SearchControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FrmGetBulk.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmGetBulk.Designer.cs">
+      <DependentUpon>FrmGetBulk.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmGetEtf.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -324,6 +330,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utils\ExcelUtils.cs" />
+    <Compile Include="Utils\GetBulkFundamental.cs" />
     <Compile Include="Utils\GetOptions.cs" />
     <Compile Include="Utils\Response.cs" />
     <Compile Include="Utils\APIException.cs" />
@@ -334,6 +341,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\SearchControl.resx">
       <DependentUpon>SearchControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmGetBulk.resx">
+      <DependentUpon>FrmGetBulk.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmGetEtf.resx">
       <DependentUpon>FrmGetEtf.cs</DependentUpon>

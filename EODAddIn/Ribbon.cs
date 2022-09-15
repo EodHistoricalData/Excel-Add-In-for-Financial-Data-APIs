@@ -6,6 +6,7 @@ using Microsoft.Office.Tools.Excel;
 using Microsoft.Office.Tools.Ribbon;
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
@@ -215,15 +216,45 @@ namespace EODAddIn
 
                     EOD.Model.OptionsData.OptionsData res = await GetOptions.GetOptionsData(frm.Ticker, frm.From, frm.To, frm.FromTrade, frm.ToTrade);
                     LoadToExcel.PrintOptions(res, frm.Ticker);
-
-                    BtnOptions.Label = "Get Options";
-                    BtnOptions.Enabled = true;
                 }
             }
             catch (Exception ex)
             {
                 Program.ErrorReport errorReport = new Program.ErrorReport(ex);
                 errorReport.ShowAndSend();
+            }
+            finally
+            {
+                BtnOptions.Label = "Get Options";
+                BtnOptions.Enabled = true;
+            }
+        }
+
+        private async void BtnGetBulk_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                Forms.FrmGetBulk frm = new Forms.FrmGetBulk();
+                frm.ShowDialog(new WinHwnd());
+
+                if (frm.DialogResult == System.Windows.Forms.DialogResult.OK)
+                {
+                    BtnGetBulk.Label = "Processing";
+                    BtnGetBulk.Enabled = false;
+
+                    Dictionary<string, EOD.Model.BulkFundamental.BulkFundamentalData> res = await GetBulkFundamental.GetBulkData(frm.Exchange, frm.Tickers, frm.Offset, frm.Limit);
+                    LoadToExcel.PrintBulkFundamentals(res);
+                }
+            }
+            catch (Exception ex)
+            {
+                Program.ErrorReport errorReport = new Program.ErrorReport(ex);
+                errorReport.ShowAndSend();
+            }
+            finally
+            {
+                BtnGetBulk.Label = "Bulk Fundamentals";
+                BtnGetBulk.Enabled = true;
             }
         }
 

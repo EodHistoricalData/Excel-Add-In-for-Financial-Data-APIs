@@ -31,6 +31,11 @@ namespace EODAddIn.Program
 
         public string OptionsTicker;
 
+        public string BulkFundamentalExchange;
+        public List<string> BulkFundamentalTickers;
+        public int BulkFundamentalOffset = 0;
+        public int BulkFundamentalLimit = 500;
+
         public SettingsFields()
         {
 
