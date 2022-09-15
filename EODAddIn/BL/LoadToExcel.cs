@@ -1,4 +1,5 @@
-﻿using EOD.Model.BulkFundamental;
+﻿using EOD.Model;
+using EOD.Model.BulkFundamental;
 using EODAddIn.Model;
 using EODAddIn.Program;
 using EODAddIn.Utils;
@@ -2356,9 +2357,6 @@ namespace EODAddIn.BL
                     nameSheet = "Screener " + Convert.ToString(screenerCounter);
                 }
                 sh = AddSheet(nameSheet);
-
-
-
                 if (ExcelUtils.SheetExists(nameSheet))
                 {
                     sh = Globals.ThisAddIn.Application.Worksheets[nameSheet];
@@ -2370,8 +2368,6 @@ namespace EODAddIn.BL
                     sh = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Add();
                     sh.Name = nameSheet;
                 }
-
-
                 object[,] val = new object[screener.Data.Count+1, 15];
                 int i = 1;
                 val[0,0] = "Code";
@@ -2429,5 +2425,78 @@ namespace EODAddIn.BL
 
         }
 
+        public async static void PrintScreenerBulk ()
+        {
+            Worksheet sh = new Worksheet();
+            if (!(Globals.ThisAddIn.Application.ActiveSheet is Worksheet sh1))
+            {
+                MessageBox.Show("Choose worksheet with a screener results");
+                return;
+            }
+            sh = Globals.ThisAddIn.Application.ActiveSheet;
+            string cellValue = Convert.ToString(sh.Cells[1, 6].Value) + Convert.ToString(sh.Cells[1, 1].Value);
+            if (cellValue != "ExchangeCode")
+            {
+                MessageBox.Show("Choose worksheet with a screener results");
+                return;
+            }
+            List<(string, string)> tickersAndExchanges = GetTickersAndExchangesFromScreener(sh);
+            List<string> exchanges = GetExchangesFromScreener(sh);
+            List<string> tickers = new List<string>();
+            int tickerCounter = 0;
+            int offset = 0;
+            Dictionary<string,BulkFundamentalData> res;
+            foreach (string exchange in exchanges)
+            {
+                foreach ((string,string) tickerAndExchange in tickersAndExchanges)
+                {
+                    if (tickerAndExchange.Item2==exchange)
+                    {
+                        tickers.Add(tickerAndExchange.Item1);
+                    }
+                }
+                tickerCounter = tickers.Count;
+                while (tickerCounter>0)
+                { 
+                    res =  await GetBulkFundamental.GetBulkData(exchange, tickers, offset, 500);
+                    tickerCounter -= 500;
+                    offset += 500;
+                    PrintBulkFundamentals(res);
+                }
+
+
+            }
+        }
+        private static List<(string, string)> GetTickersAndExchangesFromScreener(Worksheet sh)
+        {
+            List<(string,string)> tickers = new List<(string, string)>();
+            int i = 2;
+            string ticker = Convert.ToString(sh.Cells[i, 1].Value) + "." + Convert.ToString(sh.Cells[i, 6].Value);
+            string excahnge = Convert.ToString(sh.Cells[i, 6].Value);
+            while (ticker != ".")
+            {
+                i++;
+                tickers.Add((ticker, excahnge));
+                ticker = Convert.ToString(sh.Cells[i, 1].Value) + "." + Convert.ToString(sh.Cells[i, 6].Value);
+                excahnge = Convert.ToString(sh.Cells[i, 6].Value);
+            }
+            return tickers;
+        }
+        private static List<string> GetExchangesFromScreener(Worksheet sh)
+        {
+            List<string> exchanges = new List<string>();
+            int i = 2;
+            string cellValue = Convert.ToString(sh.Cells[i, 6].Value);
+            while (cellValue!=null)
+            {
+                i++;
+                if (!exchanges.Contains(cellValue))
+                {
+                    exchanges.Add(cellValue);
+                }
+                cellValue = Convert.ToString(sh.Cells[i, 6].Value);
+            }
+            return exchanges;
+        }
     }
 }

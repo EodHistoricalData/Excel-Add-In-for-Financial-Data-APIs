@@ -746,11 +746,5 @@ namespace EODAddIn.Forms
             }
             cboIndustry.Items.AddRange(list.Distinct().ToArray());
         }
-
-        private void txtCode_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
     }
 }

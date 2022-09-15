@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Forms;
 using System.Windows.Threading;
+using Worksheet = Microsoft.Office.Interop.Excel.Worksheet;
 
 namespace EODAddIn
 {
@@ -275,6 +276,19 @@ namespace EODAddIn
                     BtnOptions.Label = "Get Options";
                     BtnOptions.Enabled = true;
                 }
+            }
+            catch (Exception ex)
+            {
+                Program.ErrorReport errorReport = new Program.ErrorReport(ex);
+                errorReport.ShowAndSend();
+            }
+        }
+
+        private void btnGetScreenerFundamenat_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                LoadToExcel.PrintScreenerBulk();
             }
             catch (Exception ex)
             {

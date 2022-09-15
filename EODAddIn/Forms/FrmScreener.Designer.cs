@@ -242,11 +242,16 @@
             // 
             this.numLimit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.numLimit.Location = new System.Drawing.Point(390, 454);
+            this.numLimit.Maximum = new decimal(new int[] {
+            2000,
+            0,
+            0,
+            0});
             this.numLimit.Name = "numLimit";
             this.numLimit.Size = new System.Drawing.Size(120, 20);
             this.numLimit.TabIndex = 17;
             this.numLimit.Value = new decimal(new int[] {
-            100,
+            150,
             0,
             0,
             0});
@@ -321,7 +326,6 @@
             this.txtCode.Name = "txtCode";
             this.txtCode.Size = new System.Drawing.Size(100, 20);
             this.txtCode.TabIndex = 23;
-            this.txtCode.TextChanged += new System.EventHandler(this.txtCode_TextChanged);
             // 
             // label2
             // 
