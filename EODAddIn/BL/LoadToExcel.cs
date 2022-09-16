@@ -1,5 +1,6 @@
 ﻿using EOD.Model;
 using EOD.Model.BulkFundamental;
+using EOD.Model.OptionsData;
 using EODAddIn.Model;
 using EODAddIn.Program;
 using EODAddIn.Utils;
@@ -2425,7 +2426,7 @@ namespace EODAddIn.BL
 
         }
 
-        public async static void PrintScreenerBulk ()
+        public  static void PrintScreenerBulk ()
         {
             Worksheet sh = new Worksheet();
             if (!(Globals.ThisAddIn.Application.ActiveSheet is Worksheet sh1))
@@ -2442,8 +2443,8 @@ namespace EODAddIn.BL
             }
             List<(string, string)> tickersAndExchanges = GetTickersAndExchangesFromScreener(sh);
             List<string> exchanges = GetExchangesFromScreener(sh);
+            sh = CreateGeneralWorksheet();
             List<string> tickers = new List<string>();
-            int tickerCounter = 0;
             int offset = 0;
             Dictionary<string,BulkFundamentalData> res;
             foreach (string exchange in exchanges)
@@ -2455,17 +2456,34 @@ namespace EODAddIn.BL
                         tickers.Add(tickerAndExchange.Item1);
                     }
                 }
-                tickerCounter = tickers.Count;
-                while (tickerCounter>0)
-                { 
-                    res =  await GetBulkFundamental.GetBulkData(exchange, tickers, offset, 500);
-                    tickerCounter -= 500;
-                    offset += 500;
-                    PrintBulkFundamentals(res);
-                }
-
-
+                res = GetBulkFundamental.GetBulkData(exchange, tickers, offset, 500).Result;
+                PrintBulkResultForScreener(res, tickers,sh);
+                tickers.Clear();
             }
+        }
+        private static Worksheet CreateGeneralWorksheet()
+        {
+            Worksheet sh = new Worksheet();
+                sh = AddSheet("General data");
+                sh.Cells[1, 1] = "General data";
+                sh.Cells[1, 1].Font.Bold = true;
+                sh.Cells[2, 1] = "Name";
+                sh.Cells[2, 2] = "Market capitalization";
+                sh.Cells[2, 3] = "EBITDA";
+                sh.Cells[2, 4] = "PE Ratio";
+                sh.Cells[2, 5] = "PEG Ratio";
+                sh.Cells[2, 6] = "WallStreet Target Price";
+                sh.Cells[2, 7] = "Book Value";
+                sh.Cells[2, 8] = "Dividend Share";
+                sh.Cells[2, 9] = "Dividend Yield";
+                sh.Cells[2, 10] = "Earnings Share";
+                sh.Cells[2, 11] = "EPS Estimate Current Year";
+                sh.Cells[2, 12] = "EPS Estimate Next Year";
+                sh.Cells[2, 13] = "EPS Estimate Next Quarter";
+                sh.Cells[2, 14] = "Most Recent Quarter";
+                sh.Cells[2, 15] = "Profit Margin";
+                sh.Cells[2, 16] = "Operating Margin TTM";
+            return sh;
         }
         private static List<(string, string)> GetTickersAndExchangesFromScreener(Worksheet sh)
         {
@@ -2495,8 +2513,126 @@ namespace EODAddIn.BL
                     exchanges.Add(cellValue);
                 }
                 cellValue = Convert.ToString(sh.Cells[i, 6].Value);
+
             }
             return exchanges;
         }
+        static int rowTicker = 3;
+        private static void PrintBulkResultForScreener(Dictionary<string, BulkFundamentalData> data, List<string> tickers, Worksheet sh)
+        {
+            try
+            {
+                SetNonInteractive();
+                int column = 2;
+                for (int i = 0; i<tickers.Count; i++)
+                {
+                    sh.Cells[rowTicker, 1] = tickers[i];
+                    rowTicker++;
+                }
+                for (int i = 0; i < data.Count; i++)
+                {
+                    BulkFundamentalData symbol = data[i.ToString()];
+                    column = PrintScreenerBulkGeneral(symbol, sh);
+                }
+                //for (int i = 0; i < data.Count; i++)
+                //{
+                //    BulkFundamentalData symbol = data[i.ToString()];
+                //    column = PrintScreenerBulkGeneral(symbol, sh);
+                //    row = PrintBulkFundamentalsHighlights(symbol, sh.Cells[row, 1]);
+                //    row++;
+                //    row = PrintBulkFundamentalsValuation(symbol, sh.Cells[row, 1]);
+                //    row++;
+                //    row = PrintBulkFundamentalTechnicals(symbol, sh.Cells[row, 1]);
+                //    row++;
+                //    row = PrintBulkFundamentalEarnings(symbol, sh.Cells[row, 1]);
+                //    row++;
+                //    row = PrintBulkFundamentalFinancials(symbol, sh.Cells[row, 1]);
+                //}
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                _xlsApp.Interactive = true;
+            }
+        }
+        static int rowBulkScreener = 3;
+        private static int PrintScreenerBulkGeneral(BulkFundamentalData data, Worksheet sh)
+        {
+            int column = 2;
+            sh.Cells[rowBulkScreener, column ] = data.Highlights.MarketCapitalization;
+            column++;
+
+            sh.Cells[rowBulkScreener, column ] = data.Highlights.EBITDA;
+            column++;
+
+            sh.Cells[rowBulkScreener, column ] = data.Highlights.PERatio;
+            column++;
+
+            sh.Cells[rowBulkScreener, column] = data.Highlights.PEGRatio;
+            column++;
+
+            sh.Cells[rowBulkScreener, column ] = data.Highlights.WallStreetTargetPrice;
+            column++;
+
+            sh.Cells[rowBulkScreener, column ] = data.Highlights.BookValue;
+            column++;
+
+            sh.Cells[rowBulkScreener, column] = data.Highlights.DividendShare;
+            column++;
+
+            sh.Cells[rowBulkScreener, column ] = data.Highlights.DividendYield;
+            column++;
+
+            sh.Cells[rowBulkScreener, column ] = data.Highlights.EarningsShare;
+            column++;
+
+            sh.Cells[rowBulkScreener, column ] = data.Highlights.EPSEstimateCurrentYear;
+            column++;
+
+            sh.Cells[rowBulkScreener, column ] = data.Highlights.EPSEstimateNextYear;
+            column++;
+
+            sh.Cells[rowBulkScreener, column ] = data.Highlights.EPSEstimateNextQuarter;
+            column++;
+
+            sh.Cells[rowBulkScreener, column ] = data.Highlights.MostRecentQuarter;
+            column++;
+
+            sh.Cells[rowBulkScreener, column ] = data.Highlights.ProfitMargin;
+            column++;
+
+            sh.Cells[rowBulkScreener, column ] = data.Highlights.OperatingMarginTTM;
+            column++;
+
+            sh.Cells[rowBulkScreener, column] = data.Highlights.ReturnOnAssetsTTM;
+            column++;
+
+            sh.Cells[rowBulkScreener, column] = data.Highlights.ReturnOnEquityTTM;
+            column++;
+
+            sh.Cells[rowBulkScreener, column] = data.Highlights.RevenueTTM;
+            column++;
+
+            sh.Cells[rowBulkScreener, column] = data.Highlights.RevenuePerShareTTM;
+            column++;
+
+            sh.Cells[rowBulkScreener, column] = data.Highlights.QuarterlyRevenueGrowthYOY;
+            column++;
+
+            sh.Cells[rowBulkScreener, column] = data.Highlights.GrossProfitTTM;
+            column++;
+
+            sh.Cells[rowBulkScreener, column] = data.Highlights.DilutedEpsTTM;
+            column++;
+
+            sh.Cells[rowBulkScreener, column] = data.Highlights.QuarterlyEarningsGrowthYOY;
+            column++;
+            rowBulkScreener++;
+            return column;
+        }
+
     }
 }
