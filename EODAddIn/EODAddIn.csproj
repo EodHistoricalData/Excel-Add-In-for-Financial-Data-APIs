@@ -207,6 +207,12 @@
     <Compile Include="Controls\SearchControl.Designer.cs">
       <DependentUpon>SearchControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FrmScreenerHistorical.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmScreenerHistorical.Designer.cs">
+      <DependentUpon>FrmScreenerHistorical.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmGetBulk.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -341,6 +347,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\SearchControl.resx">
       <DependentUpon>SearchControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmScreenerHistorical.resx">
+      <DependentUpon>FrmScreenerHistorical.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmGetBulk.resx">
       <DependentUpon>FrmGetBulk.cs</DependentUpon>

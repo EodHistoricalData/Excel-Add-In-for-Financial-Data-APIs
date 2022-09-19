@@ -62,6 +62,7 @@ namespace EODAddIn
             this.menuScreener = this.Factory.CreateRibbonMenu();
             this.btnCreateScreener = this.Factory.CreateRibbonButton();
             this.btnGetScreenerFundamenat = this.Factory.CreateRibbonButton();
+            this.btnGetSreenerHistorical = this.Factory.CreateRibbonButton();
             this.btnSettings = this.Factory.CreateRibbonButton();
             this.btnSendIdea = this.Factory.CreateRibbonButton();
             this.btnCheckUpdate = this.Factory.CreateRibbonButton();
@@ -257,6 +258,7 @@ namespace EODAddIn
             this.menuScreener.Image = ((System.Drawing.Image)(resources.GetObject("menuScreener.Image")));
             this.menuScreener.Items.Add(this.btnCreateScreener);
             this.menuScreener.Items.Add(this.btnGetScreenerFundamenat);
+            this.menuScreener.Items.Add(this.btnGetSreenerHistorical);
             this.menuScreener.Label = "Screener";
             this.menuScreener.Name = "menuScreener";
             this.menuScreener.ShowImage = true;
@@ -274,6 +276,13 @@ namespace EODAddIn
             this.btnGetScreenerFundamenat.Name = "btnGetScreenerFundamenat";
             this.btnGetScreenerFundamenat.ShowImage = true;
             this.btnGetScreenerFundamenat.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnGetScreenerFundamenat_Click);
+            // 
+            // btnGetSreenerHistorical
+            // 
+            this.btnGetSreenerHistorical.Label = "Get hictorical";
+            this.btnGetSreenerHistorical.Name = "btnGetSreenerHistorical";
+            this.btnGetSreenerHistorical.ShowImage = true;
+            this.btnGetSreenerHistorical.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnGetSreenerHistorical_Click);
             // 
             // btnSettings
             // 
@@ -368,6 +377,7 @@ namespace EODAddIn
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnCreateScreener;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnGetBulk;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnGetScreenerFundamenat;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnGetSreenerHistorical;
     }
 
     partial class ThisRibbonCollection

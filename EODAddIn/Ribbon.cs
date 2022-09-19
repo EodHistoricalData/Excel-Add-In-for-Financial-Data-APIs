@@ -296,5 +296,21 @@ namespace EODAddIn
                 errorReport.ShowAndSend();
             }
         }
+
+        private void btnGetSreenerHistorical_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                Forms.FrmScreenerHistorical frm = new Forms.FrmScreenerHistorical();
+                frm.ShowDialog(new WinHwnd());
+
+                //LoadToExcel.PrintScreenerHistorical();
+            }
+            catch (Exception ex)
+            {
+                Program.ErrorReport errorReport = new Program.ErrorReport(ex);
+                errorReport.ShowAndSend();
+            }
+        }
     }
 }

@@ -230,6 +230,7 @@
             // 
             // lblLimit
             // 
+            this.lblLimit.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
             this.lblLimit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblLimit.AutoSize = true;
             this.lblLimit.Location = new System.Drawing.Point(344, 456);
@@ -251,7 +252,7 @@
             this.numLimit.Size = new System.Drawing.Size(120, 20);
             this.numLimit.TabIndex = 17;
             this.numLimit.Value = new decimal(new int[] {
-            150,
+            100,
             0,
             0,
             0});

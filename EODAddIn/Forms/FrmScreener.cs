@@ -524,7 +524,7 @@ namespace EODAddIn.Forms
                 }
                 SetSignals();
                 SetSort();
-                Limit = (int)numLimit.Value;
+                Limit = (int)numLimit.Value+1;
                 DialogResult = DialogResult.OK;
             }
             catch (Exception ex)
@@ -547,25 +547,25 @@ namespace EODAddIn.Forms
                 Operation operation;
                 switch (row.Cells[colField.Index].Value.ToString())
                 {            
-                    case "market_capitalization":
+                    case "market capitalization":
                         field = Field.MarketCapitalization;
                         break;
-                    case "earnings_share":
+                    case "earnings share":
                         field = Field.EarningsShare;
                         break;
-                    case "dividend_yield":
+                    case "dividend yield":
                         field = Field.DividendYield;
                         break;
-                    case "refund_1d_p":
+                    case "refund 1d p":
                         field = Field.Refund1dP;
                         break;
-                    case "refund_5d_p":
+                    case "refund 5d p":
                         field = Field.Refund5dP;
                         break;
-                    case "avgvol_1d":
+                    case "avgvol 1d":
                         field = Field.Refund5dP;
                         break;
-                    case "avgvol_200d":
+                    case "avgvol 200d":
                         field = Field.Refund5dP;
                         break;
 

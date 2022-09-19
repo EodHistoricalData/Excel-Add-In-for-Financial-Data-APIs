@@ -10,6 +10,7 @@ using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Reflection;
 using System.Windows.Forms;
@@ -2280,7 +2281,7 @@ namespace EODAddIn.BL
             int row = range.Row;
             int column = range.Column;
 
-            sh.Cells[row, column] = "Cash Flow";
+            sh.Cells[row, column] = "Income Statement";
             sh.Cells[row, column].Font.Bold = true;
             sh.Cells[row, column + 1] = data.Financials.Cash_Flow.Currency_symbol;
             row++;
@@ -2339,12 +2340,18 @@ namespace EODAddIn.BL
             return table;
         }
         #endregion
-
-        private static int screenerCounter=1;
         /// <summary>
         /// 
         /// </summary>
         /// <param name="screener"></param>
+        static int screenerCounter = 1;
+        static int rowGeneral = 3;
+        static int rowGeneralTicker = 3;
+        static int rowEarnings = 3;
+        static int rowEarningsTicker = 3;
+        static int rowBigTables = 3;
+        static int rowBigTablesTicker = 3;
+
         public static void PrintScreener(EOD.Model.Screener.StockMarkerScreener screener)
         {
             try
@@ -2407,14 +2414,7 @@ namespace EODAddIn.BL
                 }
                 sh.Range[sh.Cells[1, 1], sh.Cells[screener.Data.Count, 15]].Value = val;
                 string endpoint = "L"+Convert.ToString(i-1);
-                var range = sh.get_Range("A1",endpoint);
-                ListObject tbl = sh.ListObjects.AddEx(
-                    SourceType: XlListObjectSourceType.xlSrcRange,
-                    Source: range
-                    );
-                tbl.Name = nameSheet;
-                tbl.TableStyle = "TableStyleLight9";
-            }
+                MakeTable("A1", endpoint, sh,"Screener result", 9);            }
             catch
             {
                 throw;
@@ -2425,64 +2425,135 @@ namespace EODAddIn.BL
             }
 
         }
-
-        public  static void PrintScreenerBulk ()
+        private static bool CheckIsScreenerResult(Worksheet sh)
         {
-            Worksheet sh = new Worksheet();
             if (!(Globals.ThisAddIn.Application.ActiveSheet is Worksheet sh1))
             {
-                MessageBox.Show("Choose worksheet with a screener results");
-                return;
+                MessageBox.Show(
+                    "Choose worksheet with a screener results!",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return false;
             }
-            sh = Globals.ThisAddIn.Application.ActiveSheet;
-            string cellValue = Convert.ToString(sh.Cells[1, 6].Value) + Convert.ToString(sh.Cells[1, 1].Value);
-            if (cellValue != "ExchangeCode")
+            string codeValue = Convert.ToString(sh.Cells[1, 1].Value);
+            string exchangeValue = Convert.ToString(sh.Cells[1, 6].Value);
+            if (String.IsNullOrEmpty(codeValue) | String.IsNullOrEmpty(exchangeValue))
             {
-                MessageBox.Show("Choose worksheet with a screener results");
-                return;
+                MessageBox.Show(
+                    "Choose worksheet with a screener results!",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                return false;
             }
-            List<(string, string)> tickersAndExchanges = GetTickersAndExchangesFromScreener(sh);
-            List<string> exchanges = GetExchangesFromScreener(sh);
-            sh = CreateGeneralWorksheet();
-            List<string> tickers = new List<string>();
-            int offset = 0;
-            Dictionary<string,BulkFundamentalData> res;
-            foreach (string exchange in exchanges)
-            {
-                foreach ((string,string) tickerAndExchange in tickersAndExchanges)
-                {
-                    if (tickerAndExchange.Item2==exchange)
-                    {
-                        tickers.Add(tickerAndExchange.Item1);
-                    }
-                }
-                res = GetBulkFundamental.GetBulkData(exchange, tickers, offset, 500).Result;
-                PrintBulkResultForScreener(res, tickers,sh);
-                tickers.Clear();
-            }
+            return true;
         }
-        private static Worksheet CreateGeneralWorksheet()
+        #region +++Screener Bulk Printer+++
+        private static Worksheet CreateGeneralWorksheet(string sheetName)
         {
             Worksheet sh = new Worksheet();
-                sh = AddSheet("General data");
-                sh.Cells[1, 1] = "General data";
-                sh.Cells[1, 1].Font.Bold = true;
-                sh.Cells[2, 1] = "Name";
-                sh.Cells[2, 2] = "Market capitalization";
-                sh.Cells[2, 3] = "EBITDA";
-                sh.Cells[2, 4] = "PE Ratio";
-                sh.Cells[2, 5] = "PEG Ratio";
-                sh.Cells[2, 6] = "WallStreet Target Price";
-                sh.Cells[2, 7] = "Book Value";
-                sh.Cells[2, 8] = "Dividend Share";
-                sh.Cells[2, 9] = "Dividend Yield";
-                sh.Cells[2, 10] = "Earnings Share";
-                sh.Cells[2, 11] = "EPS Estimate Current Year";
-                sh.Cells[2, 12] = "EPS Estimate Next Year";
-                sh.Cells[2, 13] = "EPS Estimate Next Quarter";
-                sh.Cells[2, 14] = "Most Recent Quarter";
-                sh.Cells[2, 15] = "Profit Margin";
-                sh.Cells[2, 16] = "Operating Margin TTM";
+            sh = AddSheet("General data for "+ sheetName);
+            int columns = 1;
+            sh.Cells[1, 1] = "Highlights";
+            sh.Cells[1, 1].Font.Bold = true;
+            sh.Cells[2, columns] = "Ticker"; columns++;
+            sh.Cells[2, columns] = "Code"; columns++;
+            sh.Cells[2, columns] = "Type"; columns++;
+            sh.Cells[2, columns] = "Name"; columns++;
+            sh.Cells[2, columns] = "Currency Code"; columns++;
+            sh.Cells[2, columns] = "Currency Name"; columns++;
+            sh.Cells[2, columns] = "Sector"; columns++;
+            sh.Cells[2, columns] = "Industry"; columns++;
+            sh.Cells[2, columns] = "Employees"; columns++;
+            sh.Cells[2, columns] = "Description"; columns++;
+            sh.Cells[2, columns] = "Exchange"; columns++;
+            sh.Cells[2, columns] = "Market capitalization"; columns++;
+            sh.Cells[2, columns] = "EBITDA"; columns++;
+            sh.Cells[2, columns] = "PE Ratio"; columns++;
+            sh.Cells[2, columns] = "PEG Ratio"; columns++;
+            sh.Cells[2, columns] = "WallStreet Target Price"; columns++;
+            sh.Cells[2, columns] = "Book Value"; columns++;
+            sh.Cells[2, columns] = "Dividend Share"; columns++;
+            sh.Cells[2, columns] = "Dividend Yield"; columns++;
+            sh.Cells[2, columns] = "Earnings Share"; columns++;
+            sh.Cells[2, columns] = "EPS Estimate Current Year"; columns++;
+            sh.Cells[2, columns] = "EPS Estimate Next Year"; columns++;
+            sh.Cells[2, columns] = "EPS Estimate Next Quarter"; columns++;
+            sh.Cells[2, columns] = "Most Recent Quarter"; columns++;
+            sh.Cells[2, columns] = "Profit Margin"; columns++;
+            sh.Cells[2, columns] = "Operating Margin TTM"; columns++;
+            sh.Cells[2, columns] = "Return On Assets TTM"; columns++;
+            sh.Cells[2, columns] = "Return On Equity TTM"; columns++;
+            sh.Cells[2, columns] = "Revenue TTM"; columns++;
+            sh.Cells[2, columns] = "Revenue Per Share TTM"; columns++;
+            sh.Cells[2, columns] = "Quarterly Revenue Growth YOY"; columns++;
+            sh.Cells[2, columns] = "Gross Profit TTM"; columns++;
+            sh.Cells[2, columns] = "Diluted Eps TTM"; columns++;
+            sh.Cells[2, columns] = "Quarterly Earnings Growth YOY"; columns++;
+            sh.Cells[2, columns] = "Trailing PE"; columns++;
+            sh.Cells[2, columns] = "Forward PE"; columns++;
+            sh.Cells[2, columns] = "Price Sales TTM"; columns++;
+            sh.Cells[2, columns] = "Price Book MRQ"; columns++;
+            sh.Cells[2, columns] = "Enterprise Value Revenue"; columns++;
+            sh.Cells[2, columns] = "Enterprise Value Ebitda"; columns++;
+            sh.Cells[2, columns] = "Beta"; columns++;
+            sh.Cells[2, columns] = "52 Week High"; columns++;
+            sh.Cells[2, columns] = "52 Week Low"; columns++;
+            sh.Cells[2, columns] = "50 Day MA"; columns++;
+            sh.Cells[2, columns] = "200 Day MA"; columns++;
+            sh.Cells[2, columns] = "Shares Short"; columns++;
+            sh.Cells[2, columns] = "Shares Short Prior Month"; columns++;
+            sh.Cells[2, columns] = "Short Ratio"; columns++;
+            sh.Cells[2, columns] = "Short Percent"; columns++;
+            return sh;
+        }
+        private static Worksheet CreateEarningsWorksheet(string sheetName)
+        {
+            Worksheet sh = new Worksheet();
+            sh = AddSheet("Earnings data for " + sheetName);
+            int column = 1;
+            int row = 1;
+            sh.Cells[row, column] = "Earnings";
+            sh.Cells[row, column].Font.Bold = true;
+            row++;
+            sh.Cells[row, column] = "Ticker";
+            sh.Cells[row, column+1] = "Date";
+            sh.Cells[row, column + 2] = "EPS Actual";
+            sh.Cells[row, column + 3] = "EPS Estimate";
+            sh.Cells[row, column + 4] = "EPS Difference";
+            sh.Cells[row, column + 5] = "Surprise Percent";
+            row++;
+            return sh;
+        }
+        private static  Worksheet CreateBalanceWorksheet(string sheetName)
+        {
+            Worksheet sh = new Worksheet();
+            sh = AddSheet("Balance data for " + sheetName);
+            int column = 1;
+            int row = 1;
+            sh.Cells[row, column] = "Balance Sheet";
+            sh.Cells[row, column].Font.Bold = true;
+            return sh;
+        }
+        private static Worksheet CreateCashFlowWorksheet(string sheetName)
+        {
+            Worksheet sh = new Worksheet();
+            sh = AddSheet("Cash Flow data for " + sheetName);
+            int column = 1;
+            int row = 1;
+            sh.Cells[row, column] = "Cash FLow Sheet";
+            sh.Cells[row, column].Font.Bold = true;
+            return sh;
+        }
+        private static Worksheet CreateIncomeStatementWorksheet(string sheetName)
+        {
+            Worksheet sh = new Worksheet();
+            sh = AddSheet("Income data for " + sheetName);
+            int column = 1;
+            int row = 1;
+            sh.Cells[row, column] = "Income Statement Sheet";
+            sh.Cells[row, column].Font.Bold = true;
             return sh;
         }
         private static List<(string, string)> GetTickersAndExchangesFromScreener(Worksheet sh)
@@ -2517,37 +2588,131 @@ namespace EODAddIn.BL
             }
             return exchanges;
         }
-        static int rowTicker = 3;
-        private static void PrintBulkResultForScreener(Dictionary<string, BulkFundamentalData> data, List<string> tickers, Worksheet sh)
+        private static void MakeTable (string start, string end, Worksheet sh, string tableName, int tableStyle)
+        {
+            var range = sh.get_Range(start, end);
+            ListObject tbl = sh.ListObjects.AddEx(
+                SourceType: XlListObjectSourceType.xlSrcRange,
+                Source: range
+                );
+            tbl.Name = tableName;
+            switch (tableStyle)
+            {
+                case 1:
+                    tbl.TableStyle = "TableStyleLight1";
+                    break;
+                case 2:
+                    tbl.TableStyle = "TableStyleLight2";
+                    break;
+                case 3:
+                    tbl.TableStyle = "TableStyleLight3";
+                    break;
+                case 4:
+                    tbl.TableStyle = "TableStyleLight4";
+                    break;
+                case 5:
+                    tbl.TableStyle = "TableStyleLight5";
+                    break;
+                case 6:
+                    tbl.TableStyle = "TableStyleLight6";
+                    break;
+                case 7:
+                    tbl.TableStyle = "TableStyleLight7";
+                    break;
+                case 8:
+                    tbl.TableStyle = "TableStyleLight8";
+                    break;
+                default:
+                    tbl.TableStyle = "TableStyleLight9";
+                    break;
+            }
+        }
+        public  static void PrintScreenerBulk ()
+        {
+            Worksheet shGeneral = new Worksheet();
+            Worksheet shEarnings = new Worksheet();
+            Worksheet shBalance = new Worksheet();
+            Worksheet shCashFlow = new Worksheet();
+            Worksheet shIncomeStatement = new Worksheet();
+            shGeneral = Globals.ThisAddIn.Application.ActiveSheet;
+           if(!CheckIsScreenerResult(shGeneral))
+            {
+                return;
+            }
+            string screenerSheetName = shGeneral.Name;
+
+            List<(string, string)> tickersAndExchanges = GetTickersAndExchangesFromScreener(shGeneral);
+            List<string> exchanges = GetExchangesFromScreener(shGeneral);
+            shGeneral = CreateGeneralWorksheet(screenerSheetName);
+            shEarnings = CreateEarningsWorksheet(screenerSheetName);
+            shBalance = CreateBalanceWorksheet(screenerSheetName);
+            shCashFlow = CreateCashFlowWorksheet(screenerSheetName);
+            shIncomeStatement = CreateIncomeStatementWorksheet(screenerSheetName);
+            List<string> tickers = new List<string>();
+            int offset = 0;
+            Dictionary<string,BulkFundamentalData> res;
+            foreach (string exchange in exchanges)
+            {
+                foreach ((string,string) tickerAndExchange in tickersAndExchanges)
+                {
+                    if (tickerAndExchange.Item2==exchange)
+                    {
+                        tickers.Add(tickerAndExchange.Item1);
+                    }
+                }
+                res = GetBulkFundamental.GetBulkData(exchange, tickers, offset, 500).Result;
+                PrintBulkFundamentalForScreener(res, tickers,shGeneral, shEarnings, shBalance,shCashFlow, shIncomeStatement);
+                tickers.Clear();
+            }
+            MakeTable("A2", "AW" + Convert.ToString(rowGeneral), shGeneral, "Highlights", 9);
+            MakeTable("A2", "F" + Convert.ToString(rowEarningsTicker), shEarnings, "Earnings", 9);
+            MakeTable("A2", "AB" + Convert.ToString(rowBigTables), shBalance, "Balance", 9);
+            MakeTable("A2", "S" + Convert.ToString(rowBigTables), shCashFlow, "Cash Flow", 9);
+            MakeTable("A2", "Y" + Convert.ToString(rowBigTables), shIncomeStatement, "Income Statement", 9);
+            rowGeneralTicker = 3;
+            rowEarningsTicker = 3;
+            rowGeneral = 3;
+            rowEarnings = 3;
+            rowBigTables = 3;
+            rowBigTablesTicker = 3;
+        }
+        private static void PrintBulkFundamentalForScreener(Dictionary<string, BulkFundamentalData> data, List<string> tickers, Worksheet shGeneral, Worksheet shEarnings, Worksheet shBalance, Worksheet shCashFlow, Worksheet shIncomeStatement)
         {
             try
             {
                 SetNonInteractive();
-                int column = 2;
                 for (int i = 0; i<tickers.Count; i++)
                 {
-                    sh.Cells[rowTicker, 1] = tickers[i];
-                    rowTicker++;
+                    shGeneral.Cells[rowGeneralTicker, 1] = tickers[i];
+                    rowGeneralTicker++;
+                    for (int j = 0; j <4; j++)
+                    {
+                        shEarnings.Cells[rowEarningsTicker, 1] = tickers[i]; rowEarningsTicker++;
+                    }
+                    for (int k = 0; k < 8; k++)
+                    {
+                        shBalance.Cells[rowBigTablesTicker, 1] = tickers[i];
+                        shCashFlow.Cells[rowBigTablesTicker, 1] = tickers[i];
+                        shIncomeStatement.Cells[rowBigTablesTicker, 1] = tickers[i];
+                        rowBigTablesTicker++;
+                    }
                 }
+                int columns;
                 for (int i = 0; i < data.Count; i++)
                 {
+                    columns = 2;
                     BulkFundamentalData symbol = data[i.ToString()];
-                    column = PrintScreenerBulkGeneral(symbol, sh);
+                    columns=PrintScreenerBulkGeneral(symbol, shGeneral, columns);
+                    columns=PrintScreenerBulkHighlights(symbol, shGeneral, columns);
+                    columns=PrintScreenerBulkValuation(symbol, shGeneral, columns);
+                    columns=PrintScreenerBulkTechnicals(symbol, shGeneral, columns);
+                    PrintEarningsResultForScreener(symbol, shEarnings);
+                    PrintBalanceResultForScreener(symbol, shBalance);
+                    PrintCashFlowForScreener(symbol, shCashFlow);
+                    PrintIncomeStatementForScreener(symbol, shIncomeStatement);
+                    rowGeneral++;
+                    rowBigTables += 8;
                 }
-                //for (int i = 0; i < data.Count; i++)
-                //{
-                //    BulkFundamentalData symbol = data[i.ToString()];
-                //    column = PrintScreenerBulkGeneral(symbol, sh);
-                //    row = PrintBulkFundamentalsHighlights(symbol, sh.Cells[row, 1]);
-                //    row++;
-                //    row = PrintBulkFundamentalsValuation(symbol, sh.Cells[row, 1]);
-                //    row++;
-                //    row = PrintBulkFundamentalTechnicals(symbol, sh.Cells[row, 1]);
-                //    row++;
-                //    row = PrintBulkFundamentalEarnings(symbol, sh.Cells[row, 1]);
-                //    row++;
-                //    row = PrintBulkFundamentalFinancials(symbol, sh.Cells[row, 1]);
-                //}
             }
             catch
             {
@@ -2558,81 +2723,341 @@ namespace EODAddIn.BL
                 _xlsApp.Interactive = true;
             }
         }
-        static int rowBulkScreener = 3;
-        private static int PrintScreenerBulkGeneral(BulkFundamentalData data, Worksheet sh)
+        private static int PrintScreenerBulkGeneral(BulkFundamentalData data, Worksheet sh, int column)
         {
-            int column = 2;
-            sh.Cells[rowBulkScreener, column ] = data.Highlights.MarketCapitalization;
-            column++;
-
-            sh.Cells[rowBulkScreener, column ] = data.Highlights.EBITDA;
-            column++;
-
-            sh.Cells[rowBulkScreener, column ] = data.Highlights.PERatio;
-            column++;
-
-            sh.Cells[rowBulkScreener, column] = data.Highlights.PEGRatio;
-            column++;
-
-            sh.Cells[rowBulkScreener, column ] = data.Highlights.WallStreetTargetPrice;
-            column++;
-
-            sh.Cells[rowBulkScreener, column ] = data.Highlights.BookValue;
-            column++;
-
-            sh.Cells[rowBulkScreener, column] = data.Highlights.DividendShare;
-            column++;
-
-            sh.Cells[rowBulkScreener, column ] = data.Highlights.DividendYield;
-            column++;
-
-            sh.Cells[rowBulkScreener, column ] = data.Highlights.EarningsShare;
-            column++;
-
-            sh.Cells[rowBulkScreener, column ] = data.Highlights.EPSEstimateCurrentYear;
-            column++;
-
-            sh.Cells[rowBulkScreener, column ] = data.Highlights.EPSEstimateNextYear;
-            column++;
-
-            sh.Cells[rowBulkScreener, column ] = data.Highlights.EPSEstimateNextQuarter;
-            column++;
-
-            sh.Cells[rowBulkScreener, column ] = data.Highlights.MostRecentQuarter;
-            column++;
-
-            sh.Cells[rowBulkScreener, column ] = data.Highlights.ProfitMargin;
-            column++;
-
-            sh.Cells[rowBulkScreener, column ] = data.Highlights.OperatingMarginTTM;
-            column++;
-
-            sh.Cells[rowBulkScreener, column] = data.Highlights.ReturnOnAssetsTTM;
-            column++;
-
-            sh.Cells[rowBulkScreener, column] = data.Highlights.ReturnOnEquityTTM;
-            column++;
-
-            sh.Cells[rowBulkScreener, column] = data.Highlights.RevenueTTM;
-            column++;
-
-            sh.Cells[rowBulkScreener, column] = data.Highlights.RevenuePerShareTTM;
-            column++;
-
-            sh.Cells[rowBulkScreener, column] = data.Highlights.QuarterlyRevenueGrowthYOY;
-            column++;
-
-            sh.Cells[rowBulkScreener, column] = data.Highlights.GrossProfitTTM;
-            column++;
-
-            sh.Cells[rowBulkScreener, column] = data.Highlights.DilutedEpsTTM;
-            column++;
-
-            sh.Cells[rowBulkScreener, column] = data.Highlights.QuarterlyEarningsGrowthYOY;
-            column++;
-            rowBulkScreener++;
+            sh.Cells[rowGeneral, column] = data.General.Code; column++;
+            sh.Cells[rowGeneral, column] = data.General.Type; column++;
+            sh.Cells[rowGeneral, column] = data.General.Name; column++;
+            sh.Cells[rowGeneral, column] = data.General.CurrencyCode; column++;
+            sh.Cells[rowGeneral, column] = data.General.CountryName; column++;
+            sh.Cells[rowGeneral, column] = data.General.Sector; column++;
+            sh.Cells[rowGeneral, column] = data.General.Industry; column++;
+            sh.Cells[rowGeneral, column] = data.General.FullTimeEmployees; column++;
+            sh.Cells[rowGeneral, column] = data.General.Description; column++;
+            sh.Cells[rowGeneral, column] = data.General.Exchange; column++;
             return column;
         }
+        private static int PrintScreenerBulkHighlights(BulkFundamentalData data, Worksheet sh, int column)
+        {
+            sh.Cells[rowGeneral, column ] = data.Highlights.MarketCapitalization;
+            column++;
 
+            sh.Cells[rowGeneral, column ] = data.Highlights.EBITDA;
+            column++;
+
+            sh.Cells[rowGeneral, column ] = data.Highlights.PERatio;
+            column++;
+
+            sh.Cells[rowGeneral, column] = data.Highlights.PEGRatio;
+            column++;
+
+            sh.Cells[rowGeneral, column ] = data.Highlights.WallStreetTargetPrice;
+            column++;
+
+            sh.Cells[rowGeneral, column ] = data.Highlights.BookValue;
+            column++;
+
+            sh.Cells[rowGeneral, column] = data.Highlights.DividendShare;
+            column++;
+
+            sh.Cells[rowGeneral, column ] = data.Highlights.DividendYield;
+            column++;
+
+            sh.Cells[rowGeneral, column ] = data.Highlights.EarningsShare;
+            column++;
+
+            sh.Cells[rowGeneral, column ] = data.Highlights.EPSEstimateCurrentYear;
+            column++;
+
+            sh.Cells[rowGeneral, column ] = data.Highlights.EPSEstimateNextYear;
+            column++;
+
+            sh.Cells[rowGeneral, column ] = data.Highlights.EPSEstimateNextQuarter;
+            column++;
+
+            sh.Cells[rowGeneral, column ] = data.Highlights.MostRecentQuarter;
+            column++;
+
+            sh.Cells[rowGeneral, column ] = data.Highlights.ProfitMargin;
+            column++;
+
+            sh.Cells[rowGeneral, column ] = data.Highlights.OperatingMarginTTM;
+            column++;
+
+            sh.Cells[rowGeneral, column] = data.Highlights.ReturnOnAssetsTTM;
+            column++;
+
+            sh.Cells[rowGeneral, column] = data.Highlights.ReturnOnEquityTTM;
+            column++;
+
+            sh.Cells[rowGeneral, column] = data.Highlights.RevenueTTM;
+            column++;
+
+            sh.Cells[rowGeneral, column] = data.Highlights.RevenuePerShareTTM;
+            column++;
+
+            sh.Cells[rowGeneral, column] = data.Highlights.QuarterlyRevenueGrowthYOY;
+            column++;
+
+            sh.Cells[rowGeneral, column] = data.Highlights.GrossProfitTTM;
+            column++;
+
+            sh.Cells[rowGeneral, column] = data.Highlights.DilutedEpsTTM;
+            column++;
+
+            sh.Cells[rowGeneral, column] = data.Highlights.QuarterlyEarningsGrowthYOY;
+            column++;
+            return column;
+        }
+        private static int PrintScreenerBulkValuation(BulkFundamentalData data, Worksheet sh, int column)
+        {
+            sh.Cells[1, column] = "Valuation";
+            sh.Cells[1,column].Font.Bold = true;
+            sh.Cells[rowGeneral, column] = data.Valuation.TrailingPE;
+            column++;
+            sh.Cells[rowGeneral, column] = data.Valuation.ForwardPE;
+            column++;
+            sh.Cells[rowGeneral, column] = data.Valuation.PriceSalesTTM;
+            column++;
+            sh.Cells[rowGeneral, column] = data.Valuation.PriceBookMRQ;
+            column++;
+            sh.Cells[rowGeneral, column] = data.Valuation.EnterpriseValueRevenue;
+            column++;
+            sh.Cells[rowGeneral, column] = data.Valuation.EnterpriseValueEbitda;
+            column++;
+            return column;
+        }
+        private static int PrintScreenerBulkTechnicals(BulkFundamentalData data, Worksheet sh, int column)
+        {
+            sh.Cells[1, column] = "Technicals";
+            sh.Cells[column].Font.Bold = true;
+            sh.Cells[rowGeneral, column] = data.Technicals.Beta;
+            column++;
+            sh.Cells[rowGeneral, column] = data.Technicals.Week52High;
+            column++;
+            sh.Cells[rowGeneral, column] = data.Technicals.Week52Low;
+            column++;
+            sh.Cells[rowGeneral, column] = data.Technicals.Day50MA;
+            column++;
+            sh.Cells[rowGeneral, column] = data.Technicals.Day200MA;
+            column++;
+            sh.Cells[rowGeneral, column] = data.Technicals.SharesShort;
+            column++;
+            sh.Cells[rowGeneral, column] = data.Technicals.SharesShortPriorMonth;
+            column++;
+            sh.Cells[rowGeneral, column] = data.Technicals.ShortPercent;
+            column++;
+            sh.Cells[rowGeneral, column] = data.Technicals.ShortRatio;
+            column++;
+            return column;
+        }
+        private static void PrintEarningsResultForScreener(BulkFundamentalData data, Worksheet sh)
+        {
+            int column = 2;
+            for (int i = 0; i < 4; i++)
+            {
+                string key = "Last_" + i.ToString();
+                sh.Cells[rowEarnings, column] = data.Earnings[key].Date;
+                sh.Cells[rowEarnings, column + 1] = data.Earnings[key].EpsActual;
+                sh.Cells[rowEarnings, column + 2] = data.Earnings[key].EpsEstimate;
+                sh.Cells[rowEarnings, column + 3] = data.Earnings[key].EpsDifference;
+                sh.Cells[rowEarnings, column + 4] = data.Earnings[key].SurprisePercent;
+                rowEarnings++;
+            }
+        }
+        private static void PrintBalanceResultForScreener(BulkFundamentalData data, Worksheet sh)
+        {
+            int row = 1;
+            int column = 2;
+            sh.Cells[row, column + 1] = data.Financials.Balance_Sheet.Currency_symbol; row++;
+            EOD.Model.BulkFundamental.Balance_SheetData model = new EOD.Model.BulkFundamental.Balance_SheetData();
+            PropertyInfo[] properties = model.GetType().GetProperties();
+            sh.Cells[2, 1] = "Tickers";
+            foreach (var prop in properties)
+            {
+                sh.Cells[row, column] = prop.Name;
+                column++;
+            }
+            row = rowBigTables;
+            int countValues = 8;
+            object[,] val = new object[countValues, properties.Length];
+            int i = 0;
+
+            var item = data.Financials.Balance_Sheet.Quarterly_last_0;
+            val = FillRowBalanceSheet(val, item, properties, i);
+            i++;
+            item = data.Financials.Balance_Sheet.Quarterly_last_1;
+            val = FillRowBalanceSheet(val, item, properties, i);
+            i++;
+            item = data.Financials.Balance_Sheet.Quarterly_last_2;
+            val = FillRowBalanceSheet(val, item, properties, i);
+            i++;
+            item = data.Financials.Balance_Sheet.Quarterly_last_3;
+            val = FillRowBalanceSheet(val, item, properties, i);
+            i++;
+            item = data.Financials.Balance_Sheet.Yearly_last_0;
+            val = FillRowBalanceSheet(val, item, properties, i);
+            i++;
+            item = data.Financials.Balance_Sheet.Yearly_last_1;
+            val = FillRowBalanceSheet(val, item, properties, i);
+            i++;
+            item = data.Financials.Balance_Sheet.Yearly_last_2;
+            val = FillRowBalanceSheet(val, item, properties, i);
+            i++;
+            item = data.Financials.Balance_Sheet.Yearly_last_3;
+            val = FillRowBalanceSheet(val, item, properties, i);
+
+            sh.Range[sh.Cells[rowBigTables, 2], sh.Cells[rowBigTables + countValues -1, properties.Length+1]].Value = val;
+            rowBigTables = row;
+        }
+        private static void PrintCashFlowForScreener (BulkFundamentalData data, Worksheet sh)
+        {
+            int row = 1;
+            int column = 2;
+            sh.Cells[row, column + 1] = data.Financials.Cash_Flow.Currency_symbol; row++;
+            EOD.Model.BulkFundamental.Cash_FlowData model = new EOD.Model.BulkFundamental.Cash_FlowData();
+            PropertyInfo[] properties = model.GetType().GetProperties();
+            sh.Cells[2, 1] = "Tickers";
+            foreach (var prop in properties)
+            {
+                sh.Cells[row, column] = prop.Name;
+                column++;
+            }
+            row = rowBigTables;
+            int countValues = 8;
+            object[,] val = new object[countValues, properties.Length];
+            int i = 0;
+
+            var item = data.Financials.Cash_Flow.Quarterly_last_0;
+            val = FillRowCashFlow(val, item, properties, i);
+            i++;
+            item = data.Financials.Cash_Flow.Quarterly_last_1;
+            val = FillRowCashFlow(val, item, properties, i);
+            i++;
+            item = data.Financials.Cash_Flow.Quarterly_last_2;
+            val = FillRowCashFlow(val, item, properties, i);
+            i++;
+            item = data.Financials.Cash_Flow.Quarterly_last_3;
+            val = FillRowCashFlow(val, item, properties, i);
+            i++;
+            item = data.Financials.Cash_Flow.Yearly_last_0;
+            val = FillRowCashFlow(val, item, properties, i);
+            i++;
+            item = data.Financials.Cash_Flow.Yearly_last_1;
+            val = FillRowCashFlow(val, item, properties, i);
+            i++;
+            item = data.Financials.Cash_Flow.Yearly_last_2;
+            val = FillRowCashFlow(val, item, properties, i);
+            i++;
+            item = data.Financials.Cash_Flow.Yearly_last_3;
+            val = FillRowCashFlow(val, item, properties, i);
+
+            sh.Range[sh.Cells[rowBigTables, 2], sh.Cells[rowBigTables + countValues - 1, properties.Length + 1]].Value = val;
+            rowBigTables = row;
+        }
+        private static void PrintIncomeStatementForScreener(BulkFundamentalData data, Worksheet sh)
+        {
+            int row = 1;
+            int column = 2;
+            sh.Cells[row, column + 1] = data.Financials.Income_Statement.Currency_symbol; row++;
+            EOD.Model.BulkFundamental.Income_StatementData model = new EOD.Model.BulkFundamental.Income_StatementData();
+            PropertyInfo[] properties = model.GetType().GetProperties();
+            sh.Cells[2, 1] = "Tickers";
+            foreach (var prop in properties)
+            {
+                sh.Cells[row, column] = prop.Name;
+                column++;
+            }
+            row = rowBigTables;
+            int countValues = 8;
+            object[,] val = new object[countValues, properties.Length];
+            int i = 0;
+
+            var item = data.Financials.Income_Statement.Quarterly_last_0;
+            val = FillRowIncomeStatement(val, item, properties, i);
+            i++;
+            item = data.Financials.Income_Statement.Quarterly_last_1;
+            val = FillRowIncomeStatement(val, item, properties, i);
+            i++;
+            item = data.Financials.Income_Statement.Quarterly_last_2;
+            val = FillRowIncomeStatement(val, item, properties, i);
+            i++;
+            item = data.Financials.Income_Statement.Quarterly_last_3;
+            val = FillRowIncomeStatement(val, item, properties, i);
+            i++;
+            item = data.Financials.Income_Statement.Yearly_last_0;
+            val = FillRowIncomeStatement(val, item, properties, i);
+            i++;
+            item = data.Financials.Income_Statement.Yearly_last_1;
+            val = FillRowIncomeStatement(val, item, properties, i);
+            i++;
+            item = data.Financials.Income_Statement.Yearly_last_2;
+            val = FillRowIncomeStatement(val, item, properties, i);
+            i++;
+            item = data.Financials.Income_Statement.Yearly_last_3;
+            val = FillRowIncomeStatement(val, item, properties, i);
+
+            sh.Range[sh.Cells[rowBigTables, 2], sh.Cells[rowBigTables + countValues - 1, properties.Length + 1]].Value = val;
+            rowBigTables = row;
+        }
+        #endregion
+
+
+        public static void PrintScreenerHistorical(DateTime from, DateTime to, string period)
+        {
+
+            int row = 3;
+            Worksheet sh = new Worksheet();
+            sh = Globals.ThisAddIn.Application.ActiveSheet;
+            if (!CheckIsScreenerResult(sh))
+            {
+                return;
+            }
+            string screenerSheetName = sh.Name;
+
+            List < (string, string) > tickers= GetTickersAndExchangesFromScreener(sh);
+            sh=CreateScreenerHictoricalWorksheet(sh.Name);
+            foreach ((string, string) ticker in tickers)
+            {
+                List<EndOfDay> res = APIEOD.GetEOD(ticker.Item1, from, to, period);
+                foreach (EndOfDay item in res)
+                {
+                    sh.Cells[row, 1] = ticker.Item1;
+                    sh.Cells[row, 2] = item.Date;
+                    sh.Cells[row, 3] = item.Open;
+                    sh.Cells[row, 4] = item.High;
+                    sh.Cells[row, 5] = item.Low;
+                    sh.Cells[row, 6] = item.Close;
+                    sh.Cells[row, 7] = item.Adjusted_open;
+                    sh.Cells[row, 8] = item.Adjusted_high;
+                    sh.Cells[row, 9] = item.Adjusted_low;
+                    sh.Cells[row, 10] = item.Adjusted_close;
+                    sh.Cells[row, 11] = item.Volume;
+                    row++;
+                }
+            }
+            MakeTable("A2", "K" + Convert.ToString(row), sh,sh.Name, 9);
+        }
+        private static Worksheet CreateScreenerHictoricalWorksheet(string sheetName)
+        {
+            Worksheet sh = new Worksheet();
+            sh = AddSheet("Historical data for " + sheetName);
+            int column = 1;
+            int row = 1;
+            sh.Cells[row, column] = "Hictorical data"; 
+            sh.Cells[row, column].Font.Bold = true; row++;
+            sh.Cells[row, column] = "Ticker";column++;
+            sh.Cells[row, column] = "Date"; column++;
+            sh.Cells[row, column] = "Open"; column++;
+            sh.Cells[row, column] = "High"; column++;
+            sh.Cells[row, column] = "Low"; column++;
+            sh.Cells[row, column] = "Close"; column++;
+            sh.Cells[row, column] = "Adjusted open"; column++;
+            sh.Cells[row, column] = "Adjusted high"; column++;
+            sh.Cells[row, column] = "Adjusted low"; column++;
+            sh.Cells[row, column] = "Adjusted close"; column++;
+            sh.Cells[row, column] = "Volume"; column++;
+            return sh;
+        }
     }
 }

@@ -73,7 +73,7 @@ namespace EODAddIn.Forms
             this.dtpFrom.Name = "dtpFrom";
             this.dtpFrom.Size = new System.Drawing.Size(152, 20);
             this.dtpFrom.TabIndex = 5;
-            this.dtpFrom.Value = new System.DateTime(1970, 1, 1, 0, 0, 0, 0);
+            this.dtpFrom.Value = new System.DateTime(2020, 9, 17, 0, 0, 0, 0);
             // 
             // label3
             // 
@@ -90,6 +90,7 @@ namespace EODAddIn.Forms
             this.dtpTo.Name = "dtpTo";
             this.dtpTo.Size = new System.Drawing.Size(152, 20);
             this.dtpTo.TabIndex = 7;
+            this.dtpTo.Value = new System.DateTime(2022, 9, 18, 13, 37, 0, 0);
             // 
             // btnLoad
             // 
