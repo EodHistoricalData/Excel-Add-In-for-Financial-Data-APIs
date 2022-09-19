@@ -63,6 +63,7 @@ namespace EODAddIn
             this.btnCreateScreener = this.Factory.CreateRibbonButton();
             this.btnGetScreenerFundamenat = this.Factory.CreateRibbonButton();
             this.btnGetSreenerHistorical = this.Factory.CreateRibbonButton();
+            this.btnGetScreenerIntraday = this.Factory.CreateRibbonButton();
             this.btnSettings = this.Factory.CreateRibbonButton();
             this.btnSendIdea = this.Factory.CreateRibbonButton();
             this.btnCheckUpdate = this.Factory.CreateRibbonButton();
@@ -259,6 +260,7 @@ namespace EODAddIn
             this.menuScreener.Items.Add(this.btnCreateScreener);
             this.menuScreener.Items.Add(this.btnGetScreenerFundamenat);
             this.menuScreener.Items.Add(this.btnGetSreenerHistorical);
+            this.menuScreener.Items.Add(this.btnGetScreenerIntraday);
             this.menuScreener.Label = "Screener";
             this.menuScreener.Name = "menuScreener";
             this.menuScreener.ShowImage = true;
@@ -283,6 +285,13 @@ namespace EODAddIn
             this.btnGetSreenerHistorical.Name = "btnGetSreenerHistorical";
             this.btnGetSreenerHistorical.ShowImage = true;
             this.btnGetSreenerHistorical.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnGetSreenerHistorical_Click);
+            // 
+            // btnGetScreenerIntraday
+            // 
+            this.btnGetScreenerIntraday.Label = "Get intraday ";
+            this.btnGetScreenerIntraday.Name = "btnGetScreenerIntraday";
+            this.btnGetScreenerIntraday.ShowImage = true;
+            this.btnGetScreenerIntraday.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button1_Click);
             // 
             // btnSettings
             // 
@@ -378,6 +387,7 @@ namespace EODAddIn
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnGetBulk;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnGetScreenerFundamenat;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnGetSreenerHistorical;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnGetScreenerIntraday;
     }
 
     partial class ThisRibbonCollection

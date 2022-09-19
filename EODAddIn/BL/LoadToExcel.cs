@@ -2340,6 +2340,7 @@ namespace EODAddIn.BL
             return table;
         }
         #endregion
+        #region +++Screener printer++
         /// <summary>
         /// 
         /// </summary>
@@ -2449,6 +2450,7 @@ namespace EODAddIn.BL
             }
             return true;
         }
+        #endregion
         #region +++Screener Bulk Printer+++
         private static Worksheet CreateGeneralWorksheet(string sheetName)
         {
@@ -2651,6 +2653,7 @@ namespace EODAddIn.BL
             List<string> tickers = new List<string>();
             int offset = 0;
             Dictionary<string,BulkFundamentalData> res;
+            int tickersCount=0;
             foreach (string exchange in exchanges)
             {
                 foreach ((string,string) tickerAndExchange in tickersAndExchanges)
@@ -2659,6 +2662,13 @@ namespace EODAddIn.BL
                     {
                         tickers.Add(tickerAndExchange.Item1);
                     }
+                }
+                tickersCount = tickers.Count;
+                while (tickersCount>500)
+                {
+                  res = await GetBulkFundamental.GetBulkData(exchange, tickers, offset, 500);
+                  offset += 500;
+                  tickersCount--;
                 }
                 res = await GetBulkFundamental.GetBulkData(exchange, tickers, offset, 500);
                 PrintBulkFundamentalForScreener(res, tickers,shGeneral, shEarnings, shBalance,shCashFlow, shIncomeStatement);
@@ -3001,6 +3011,7 @@ namespace EODAddIn.BL
             rowBigTables = row;
         }
         #endregion
+        #region +++Screener Historical+++
         public static void PrintScreenerHistorical(DateTime from, DateTime to, string period)
         {
             try
@@ -3068,5 +3079,73 @@ namespace EODAddIn.BL
             sh.Cells[row, column] = "Volume"; column++;
             return sh;
         }
+        #endregion
+        #region +++Screener Intraday+++
+        public static void PrintScreenerIntraday (DateTime from, DateTime to, string interval)
+        {
+            try
+            {
+                SetNonInteractive();
+                int row = 3;
+                Worksheet sh = new Worksheet();
+                sh = Globals.ThisAddIn.Application.ActiveSheet;
+                if (!CheckIsScreenerResult(sh))
+                {
+                    return;
+                }
+                string screenerSheetName = sh.Name;
+
+                List<(string, string)> tickers = GetTickersAndExchangesFromScreener(sh);
+                sh = CreateScreenerIntradayWorksheet(sh.Name);
+                foreach ((string, string) ticker in tickers)
+                {
+                    List<Model.Intraday> res = APIEOD.GetIntraday(ticker.Item1, from, to, interval);
+                    foreach (Intraday item in res)
+                    {
+                        sh.Cells[row, 1] = ticker.Item1;
+                        sh.Cells[row, 2] = item.DateTime;
+                        sh.Cells[row, 3] = item.Gmtoffset;
+                        sh.Cells[row, 4] = item.DateTime;
+                        sh.Cells[row, 5] = item.Open;
+                        sh.Cells[row, 6] = item.High;
+                        sh.Cells[row, 7] = item.Low;
+                        sh.Cells[row, 8] = item.Close;
+                        sh.Cells[row, 9] = item.Volume;
+                        sh.Cells[row, 10] = item.Timestamp;
+                        row++;
+                    }
+                }
+                MakeTable("A2", "J" + Convert.ToString(row), sh, sh.Name, 9);
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                _xlsApp.Interactive = true;
+            }
+        }
+        private static Worksheet CreateScreenerIntradayWorksheet(string sheetName)
+        {
+            Worksheet sh = new Worksheet();
+            sh = AddSheet("Intraday data for " + sheetName);
+            int column = 1;
+            int row = 1;
+            sh.Cells[row, column] = "Intraday data";
+            sh.Cells[row, column].Font.Bold = true; row++;
+            sh.Cells[row, column] = "Ticker"; column++;
+            sh.Cells[row, column] = "DateTime"; column++;
+            sh.Cells[row, column] = "Gmtoffset"; column++;
+            sh.Cells[row, column] = "DateTime"; column++;
+            sh.Cells[row, column] = "Open"; column++;
+            sh.Cells[row, column] = "High"; column++;
+            sh.Cells[row, column] = "Low"; column++;
+            sh.Cells[row, column] = "Close"; column++;
+            sh.Cells[row, column] = "Volume"; column++;
+            sh.Cells[row, column] = "Timestamp"; column++;
+            return sh;
+        }
+        #endregion
     }
 }

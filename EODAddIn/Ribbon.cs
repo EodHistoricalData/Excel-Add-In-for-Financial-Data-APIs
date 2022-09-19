@@ -237,7 +237,6 @@ namespace EODAddIn
             {
                 Forms.FrmGetBulk frm = new Forms.FrmGetBulk();
                 frm.ShowDialog(new WinHwnd());
-
                 if (frm.DialogResult == System.Windows.Forms.DialogResult.OK)
                 {
                     BtnGetBulk.Label = "Processing";
@@ -303,8 +302,20 @@ namespace EODAddIn
             {
                 Forms.FrmScreenerHistorical frm = new Forms.FrmScreenerHistorical();
                 frm.ShowDialog(new WinHwnd());
+            }
+            catch (Exception ex)
+            {
+                Program.ErrorReport errorReport = new Program.ErrorReport(ex);
+                errorReport.ShowAndSend();
+            }
+        }
 
-                //LoadToExcel.PrintScreenerHistorical();
+        private void button1_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                Forms.FrmScreenerIntraday frm = new Forms.FrmScreenerIntraday();
+                frm.ShowDialog(new WinHwnd());
             }
             catch (Exception ex)
             {

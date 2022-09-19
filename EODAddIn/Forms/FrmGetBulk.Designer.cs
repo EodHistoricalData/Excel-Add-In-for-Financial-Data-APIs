@@ -114,6 +114,11 @@
             this.numLimit.Name = "numLimit";
             this.numLimit.Size = new System.Drawing.Size(79, 20);
             this.numLimit.TabIndex = 21;
+            this.numLimit.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
             // 
             // gridTickers
             // 
