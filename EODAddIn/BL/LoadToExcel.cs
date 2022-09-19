@@ -2398,7 +2398,7 @@ namespace EODAddIn.BL
                 foreach (var item in screener.Data)
                 {
                     int j = 0;
-                    val[i, j] = item.Code; j++;
+                    val[i, j] ="'"+ item.Code; j++;
                     val[i, j] = item.Name; j++;
                     val[i, j] = item.Last_Day_Data_Date; j++;
                     val[i, j] = item.Adjusted_Close; j++;
@@ -2660,7 +2660,7 @@ namespace EODAddIn.BL
                         tickers.Add(tickerAndExchange.Item1);
                     }
                 }
-                res =await  GetBulkFundamental.GetBulkData(exchange, tickers, offset, 500);
+                res = await GetBulkFundamental.GetBulkData(exchange, tickers, offset, 500);
                 PrintBulkFundamentalForScreener(res, tickers,shGeneral, shEarnings, shBalance,shCashFlow, shIncomeStatement);
                 tickers.Clear();
             }

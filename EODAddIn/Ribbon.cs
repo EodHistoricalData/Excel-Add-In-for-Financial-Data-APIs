@@ -265,7 +265,7 @@ namespace EODAddIn
             {
                 Forms.FrmScreener frm = new Forms.FrmScreener();
                 frm.ShowDialog(new WinHwnd());
-                if (frm.DialogResult == System.Windows.Forms.DialogResult.OK)
+                if (frm.DialogResult ==DialogResult.OK)
                 {
                     BtnOptions.Label = "Processing";
                     BtnOptions.Enabled = false;
