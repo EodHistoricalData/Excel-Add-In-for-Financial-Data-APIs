@@ -2627,7 +2627,7 @@ namespace EODAddIn.BL
                     break;
             }
         }
-        public  static void PrintScreenerBulk ()
+        public  static async void PrintScreenerBulk ()
         {
             Worksheet shGeneral = new Worksheet();
             Worksheet shEarnings = new Worksheet();
@@ -2660,7 +2660,7 @@ namespace EODAddIn.BL
                         tickers.Add(tickerAndExchange.Item1);
                     }
                 }
-                res = GetBulkFundamental.GetBulkData(exchange, tickers, offset, 500).Result;
+                res =await  GetBulkFundamental.GetBulkData(exchange, tickers, offset, 500);
                 PrintBulkFundamentalForScreener(res, tickers,shGeneral, shEarnings, shBalance,shCashFlow, shIncomeStatement);
                 tickers.Clear();
             }
@@ -3001,42 +3001,51 @@ namespace EODAddIn.BL
             rowBigTables = row;
         }
         #endregion
-
-
         public static void PrintScreenerHistorical(DateTime from, DateTime to, string period)
         {
-
-            int row = 3;
-            Worksheet sh = new Worksheet();
-            sh = Globals.ThisAddIn.Application.ActiveSheet;
-            if (!CheckIsScreenerResult(sh))
+            try
             {
-                return;
-            }
-            string screenerSheetName = sh.Name;
-
-            List < (string, string) > tickers= GetTickersAndExchangesFromScreener(sh);
-            sh=CreateScreenerHictoricalWorksheet(sh.Name);
-            foreach ((string, string) ticker in tickers)
-            {
-                List<EndOfDay> res = APIEOD.GetEOD(ticker.Item1, from, to, period);
-                foreach (EndOfDay item in res)
+                SetNonInteractive();
+                int row = 3;
+                Worksheet sh = new Worksheet();
+                sh = Globals.ThisAddIn.Application.ActiveSheet;
+                if (!CheckIsScreenerResult(sh))
                 {
-                    sh.Cells[row, 1] = ticker.Item1;
-                    sh.Cells[row, 2] = item.Date;
-                    sh.Cells[row, 3] = item.Open;
-                    sh.Cells[row, 4] = item.High;
-                    sh.Cells[row, 5] = item.Low;
-                    sh.Cells[row, 6] = item.Close;
-                    sh.Cells[row, 7] = item.Adjusted_open;
-                    sh.Cells[row, 8] = item.Adjusted_high;
-                    sh.Cells[row, 9] = item.Adjusted_low;
-                    sh.Cells[row, 10] = item.Adjusted_close;
-                    sh.Cells[row, 11] = item.Volume;
-                    row++;
+                    return;
                 }
+                string screenerSheetName = sh.Name;
+
+                List<(string, string)> tickers = GetTickersAndExchangesFromScreener(sh);
+                sh = CreateScreenerHictoricalWorksheet(sh.Name);
+                foreach ((string, string) ticker in tickers)
+                {
+                    List<EndOfDay> res = APIEOD.GetEOD(ticker.Item1, from, to, period);
+                    foreach (EndOfDay item in res)
+                    {
+                        sh.Cells[row, 1] = ticker.Item1;
+                        sh.Cells[row, 2] = item.Date;
+                        sh.Cells[row, 3] = item.Open;
+                        sh.Cells[row, 4] = item.High;
+                        sh.Cells[row, 5] = item.Low;
+                        sh.Cells[row, 6] = item.Close;
+                        sh.Cells[row, 7] = item.Adjusted_open;
+                        sh.Cells[row, 8] = item.Adjusted_high;
+                        sh.Cells[row, 9] = item.Adjusted_low;
+                        sh.Cells[row, 10] = item.Adjusted_close;
+                        sh.Cells[row, 11] = item.Volume;
+                        row++;
+                    }
+                }
+                MakeTable("A2", "K" + Convert.ToString(row), sh, sh.Name, 9);
             }
-            MakeTable("A2", "K" + Convert.ToString(row), sh,sh.Name, 9);
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                _xlsApp.Interactive = true;
+            }
         }
         private static Worksheet CreateScreenerHictoricalWorksheet(string sheetName)
         {
