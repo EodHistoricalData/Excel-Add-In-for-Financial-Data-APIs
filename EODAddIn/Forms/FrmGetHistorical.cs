@@ -1,4 +1,5 @@
 ﻿using EODAddIn.BL;
+using EODAddIn.BL.HistoricalPrinter;
 using EODAddIn.Program;
 using EODAddIn.Utils;
 
@@ -72,7 +73,7 @@ namespace EODAddIn.Forms
                     {
                         res.Reverse();
                     }
-                    LoadToExcel.PrintEndOfDay(res, ticker, period, chkChart.Checked);
+                    HistoricalPrinter.PrintEndOfDay(res, ticker, period, chkChart.Checked);
                 }
                 catch (APIException ex)
                 {

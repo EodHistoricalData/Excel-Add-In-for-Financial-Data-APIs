@@ -10,7 +10,7 @@ namespace EODAddIn.Program
         internal int Build;
         internal int Revision;
         /// <summary>
-        /// Версия программы текстом
+        /// Program version in text
         /// </summary>
         internal string Text { get { return $"{Major}.{Minor}.{Build}.{Revision}"; } }
         internal DateTime Date;

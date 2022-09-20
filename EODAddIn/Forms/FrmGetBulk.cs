@@ -9,17 +9,11 @@ namespace EODAddIn.Forms
     public partial class FrmGetBulk : Form
     {
         public Dictionary<string, BulkFundamentalData> Results;
-        public string Exchange = Settings.SettingsFields.BulkFundamentalExchange;
         public List<string> Tickers = Settings.SettingsFields.BulkFundamentalTickers;
-        public int Offset = Settings.SettingsFields.BulkFundamentalOffset;
-        public int Limit = Settings.SettingsFields.BulkFundamentalLimit;
 
         public FrmGetBulk()
         {
             InitializeComponent();
-            txtExchange.Text = Exchange;
-            numOffset.Value = Offset;
-            numLimit.Value = Limit;
             foreach (string ticker in Settings.SettingsFields.BulkFundamentalTickers)
             {
                 int i = gridTickers.Rows.Add();
@@ -46,13 +40,8 @@ namespace EODAddIn.Forms
 
         private void BtnLoad_Click(object sender, EventArgs e)
         {
-            if (!CheckForm()) return;
-
             try
             {
-                Exchange = txtExchange.Text;
-                Offset = (int)numOffset.Value;
-                Limit = (int)numLimit.Value;
                 Tickers.Clear();
                 foreach (DataGridViewRow row in gridTickers.Rows)
                 {
@@ -65,35 +54,10 @@ namespace EODAddIn.Forms
             {
 
             }
-
-            Settings.SettingsFields.BulkFundamentalExchange = Exchange;
             Settings.SettingsFields.BulkFundamentalTickers = Tickers;
-            Settings.SettingsFields.BulkFundamentalOffset = Offset;
-            Settings.SettingsFields.BulkFundamentalLimit = Limit;
             Settings.Save();
-            string warning = "You are going to download " + Limit + " symbols.";
-            if (Tickers.Count != 0)
-            {
-                warning = "You are going to download " + Tickers.Count + " symbols.";
-            }
-            else
-            {
-                if (Limit > 99)
-                {
-                    warning += " It might take longer.";
-                }
-            }
+            string warning = "You are going to download " + Tickers.Count + " symbols.";
             DialogResult = MessageBox.Show(warning + " Do you want to proceed?", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
-        }
-
-        private bool CheckForm()
-        {
-            if (string.IsNullOrEmpty(txtExchange.Text))
-            {
-                MessageBox.Show("Insert an exchange", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
-            return true;
         }
     }
 }

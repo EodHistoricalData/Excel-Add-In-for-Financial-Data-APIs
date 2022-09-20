@@ -5,15 +5,15 @@ using System.Text;
 namespace EODAddIn.Utils
 {
     /// <summary>
-    /// Класс для отправки и получения запросов от сторонних сервисов
+    /// Class for sending and receiving requests from third-party services
     /// </summary>
     public static class Response
     {
         /// <summary>
-        /// Отправка POST запроса
+        /// Sending a POST request
         /// </summary>
-        /// <param name="Url">Адрес</param>
-        /// <param name="Data">Параметры запроса</param>
+        /// <param name="Url">Address</param>
+        /// <param name="Data">Settings of request</param>
         /// <returns></returns>
         public static string POST(string Url, string Data)
         {
@@ -31,7 +31,7 @@ namespace EODAddIn.Utils
             WebResponse res = req.GetResponse();
             System.IO.Stream ReceiveStream = res.GetResponseStream();
             System.IO.StreamReader sr = new System.IO.StreamReader(ReceiveStream, Encoding.UTF8);
-            //Кодировка указывается в зависимости от кодировки ответа сервера
+            //The encoding is specified depending on the encoding of the server response
             char[] read = new char[256];
             int count = sr.Read(read, 0, 256);
             string Out = string.Empty;
@@ -45,12 +45,12 @@ namespace EODAddIn.Utils
         }
 
         /// <summary>
-        /// GET запрос к ресурсу
+        /// GET request to source
         /// </summary>
-        /// <param name="Url">Адрес ресурса</param>
-        /// <param name="Data">Данные</param>
+        /// <param name="Url">Source address</param>
+        /// <param name="Data">Data</param>
         /// <returns></returns>
-        /// <exception cref="APIException">Код ошибки</exception>
+        /// <exception cref="APIException">Error code</exception>
         public static string GET(string Url, string Data = "")
         {
             byte[] qwe;

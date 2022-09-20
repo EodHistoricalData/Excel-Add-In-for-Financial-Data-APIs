@@ -15,7 +15,7 @@ namespace EODAddIn.Utils
     public static class APIEOD
     {
         /// <summary>
-        /// Запрос на получение информации о пользователе
+        ///User information request
         /// </summary>
         /// <param name="api_token"></param>
         /// <returns></returns>
@@ -27,7 +27,7 @@ namespace EODAddIn.Utils
         }
 
         /// <summary>
-        /// Запрос на получение информации о пользователе
+        /// User information request
         /// </summary>
         /// <param name="api_token"></param>
         /// <returns></returns>

@@ -1,4 +1,9 @@
 ﻿using EODAddIn.BL;
+using EODAddIn.BL.BulkFundamental;
+using EODAddIn.BL.ETFPrinter;
+using EODAddIn.BL.FundamentalDataPrinter;
+using EODAddIn.BL.OptionsPrinter;
+using EODAddIn.BL.Screener;
 using EODAddIn.Model;
 using EODAddIn.Utils;
 using Microsoft.Office.Interop.Excel;
@@ -8,6 +13,7 @@ using Microsoft.Office.Tools.Ribbon;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net.NetworkInformation;
 using System.Reflection;
 using System.Windows.Forms;
 using System.Windows.Threading;
@@ -53,7 +59,7 @@ namespace EODAddIn
 
             FundamentalData res = frm.Results;
             if (res == null) return;
-            LoadToExcel.PrintEtf(res, frm.Tiker);
+            ETFPrinter.PrintEtf(res, frm.Tiker);
         }
 
         private void SplitbtnFundamental_Click(object sender, RibbonControlEventArgs e)
@@ -63,7 +69,7 @@ namespace EODAddIn
 
             Model.FundamentalData res = frm.Results;
             if (res == null) return;
-            LoadToExcel.PrintFundamentalAll(res, frm.Tiker);
+            FundamentalDataPrinter.PrintFundamentalAll(res, frm.Tiker);
 
         }
 
@@ -141,7 +147,7 @@ namespace EODAddIn
             frm.ShowDialog(new WinHwnd());
 
             FundamentalData res = frm.Results;
-            LoadToExcel.PrintFundamentalGeneral(res);
+            FundamentalDataPrinter.PrintFundamentalGeneral(res);
         }
 
         private void BtnGetHighlights_Click(object sender, RibbonControlEventArgs e)
@@ -150,7 +156,7 @@ namespace EODAddIn
             frm.ShowDialog(new WinHwnd());
 
             FundamentalData res = frm.Results;
-            LoadToExcel.PrintFundamentalHighlights(res);
+            FundamentalDataPrinter.PrintFundamentalHighlights(res);
         }
 
         private void BtnGetBalanceSheet_Click(object sender, RibbonControlEventArgs e)
@@ -159,7 +165,7 @@ namespace EODAddIn
             frm.ShowDialog(new WinHwnd());
 
             FundamentalData res = frm.Results;
-            LoadToExcel.PrintFundamentalBalanceSheet(res);
+            FundamentalDataPrinter.PrintFundamentalBalanceSheet(res);
         }
 
         private void BtnGetIncomeStatement_Click(object sender, RibbonControlEventArgs e)
@@ -168,7 +174,7 @@ namespace EODAddIn
             frm.ShowDialog(new WinHwnd());
 
             FundamentalData res = frm.Results;
-            LoadToExcel.PrintFundamentalIncomeStatement(res);
+            FundamentalDataPrinter.PrintFundamentalIncomeStatement(res);
         }
 
         private void BtnGetEarnings_Click(object sender, RibbonControlEventArgs e)
@@ -177,7 +183,7 @@ namespace EODAddIn
             frm.ShowDialog(new WinHwnd());
 
             FundamentalData res = frm.Results;
-            LoadToExcel.PrintFundamentalEarnings(res);
+            FundamentalDataPrinter.PrintFundamentalEarnings(res);
         }
 
         private void BtnGetCashFlow_Click(object sender, RibbonControlEventArgs e)
@@ -186,7 +192,7 @@ namespace EODAddIn
             frm.ShowDialog(new WinHwnd());
 
             FundamentalData res = frm.Results;
-            LoadToExcel.PrintFundamentalCashFlow(res);
+            FundamentalDataPrinter.PrintFundamentalCashFlow(res);
         }
         private void BtnFundamentalAllData_Click(object sender, RibbonControlEventArgs e)
         {
@@ -194,7 +200,7 @@ namespace EODAddIn
             frm.ShowDialog(new WinHwnd());
 
             FundamentalData res = frm.Results;
-            LoadToExcel.PrintFundamentalAll(res, frm.Tiker);
+            FundamentalDataPrinter.PrintFundamentalAll(res, frm.Tiker);
         }
 
         private void BtnGetIntradayHistoricalData_Click(object sender, RibbonControlEventArgs e)
@@ -216,7 +222,7 @@ namespace EODAddIn
                     BtnOptions.Enabled = false;
 
                     EOD.Model.OptionsData.OptionsData res = await GetOptions.GetOptionsData(frm.Ticker, frm.From, frm.To, frm.FromTrade, frm.ToTrade);
-                    LoadToExcel.PrintOptions(res, frm.Ticker);
+                    OptionsPrinter.PrintOptions(res, frm.Ticker);
                 }
             }
             catch (Exception ex)
@@ -231,19 +237,17 @@ namespace EODAddIn
             }
         }
 
-        private async void BtnGetBulk_Click(object sender, RibbonControlEventArgs e)
+        private void BtnGetBulk_Click(object sender, RibbonControlEventArgs e)
         {
             try
             {
                 Forms.FrmGetBulk frm = new Forms.FrmGetBulk();
                 frm.ShowDialog(new WinHwnd());
-                if (frm.DialogResult == System.Windows.Forms.DialogResult.OK)
+                if (frm.DialogResult ==DialogResult.OK)
                 {
                     BtnGetBulk.Label = "Processing";
                     BtnGetBulk.Enabled = false;
-
-                    Dictionary<string, EOD.Model.BulkFundamental.BulkFundamentalData> res = await GetBulkFundamental.GetBulkData(frm.Exchange, frm.Tickers, frm.Offset, frm.Limit);
-                    LoadToExcel.PrintBulkFundamentals(res);
+                    BulkFundamentalPrinter.PrintBulkFundamentals(frm.Tickers);
                 }
             }
             catch (Exception ex)
@@ -270,7 +274,7 @@ namespace EODAddIn
                     BtnOptions.Enabled = false;
 
                     var res = await APIEOD.GetScreener(frm.Filters, frm.Signals, frm.Sort, frm.Limit);
-                    LoadToExcel.PrintScreener(res);
+                    ScreneerPrinter.PrintScreener(res);
 
                     BtnOptions.Label = "Get Options";
                     BtnOptions.Enabled = true;
@@ -287,7 +291,7 @@ namespace EODAddIn
         {
             try
             {
-                LoadToExcel.PrintScreenerBulk();
+                ScreneerPrinter.PrintScreenerBulk();
             }
             catch (Exception ex)
             {

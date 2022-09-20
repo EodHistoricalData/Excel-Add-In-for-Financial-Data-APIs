@@ -7,11 +7,11 @@ namespace EODAddIn.Program
     public class SettingsFields
     {
         /// <summary>
-        /// API ключ
+        /// API key
         /// </summary>
         public string APIKey = "OeAFFmMliFG5orCUuwAKQ8l4WWFQ67YX";
         /// <summary>
-        /// Название программы
+        /// Program name
         /// </summary>
         public string AppName = "EOD Excel Plug-in";
 

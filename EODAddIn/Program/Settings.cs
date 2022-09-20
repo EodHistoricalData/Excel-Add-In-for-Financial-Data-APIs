@@ -22,7 +22,7 @@ namespace EODAddIn.Program
         }
 
         /// <summary>
-        /// Чтение настроек
+        /// Reading settings
         /// </summary>
         internal static void Read()
         {
@@ -43,7 +43,7 @@ namespace EODAddIn.Program
         }
 
         /// <summary>
-        /// Сохранение настроек
+        /// Saving settings
         /// </summary>
         internal static void Save()
         {

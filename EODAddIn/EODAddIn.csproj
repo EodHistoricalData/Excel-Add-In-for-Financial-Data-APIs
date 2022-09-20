@@ -193,7 +193,13 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="BL\LoadToExcel.cs" />
+    <Compile Include="BL\ETF\ETFPrinter.cs" />
+    <Compile Include="BL\BulkFundametnalData\FundamentalPrinter.cs" />
+    <Compile Include="BL\FundamentalData\FundametnalDataPrinter.cs" />
+    <Compile Include="BL\Historical\HistoricalPrinter.cs" />
+    <Compile Include="BL\Intraday\IntradayPrinter.cs" />
+    <Compile Include="BL\Options\OptionsPrinter.cs" />
+    <Compile Include="BL\Screener\ScreneerPrinter.cs" />
     <Compile Include="BL\UDF.cs" />
     <Compile Include="Controls\RefEdit.cs">
       <SubType>UserControl</SubType>
