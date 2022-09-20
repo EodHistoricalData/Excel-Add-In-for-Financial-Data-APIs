@@ -1,6 +1,5 @@
 ﻿using EOD.Model.OptionsData;
 using EOD;
-using EODAddIn.Model;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -12,7 +11,7 @@ namespace EODAddIn.BL.IntradayAPI
 {
     public class IntradayAPI
     {
-        public static List<Intraday> GetIntraday(string code, DateTime from, DateTime to, string interval = "5m")
+        public static List<EOD.Model.IntradayHistoricalStockPrice> GetIntraday(string code, DateTime from, DateTime to, string interval = "5m")
         {
             long unixFrom = ((DateTimeOffset)from).ToUnixTimeSeconds();
             long unixTo = ((DateTimeOffset)to).ToUnixTimeSeconds();
@@ -21,7 +20,7 @@ namespace EODAddIn.BL.IntradayAPI
             //string data = $"fmt=json&interval={interval}&from={from:yyyy-MM-dd}&to={to:yyyy-MM-dd}&api_token={Program.Program.APIKey}";
             string data = $"api_token={Program.Program.APIKey}&interval={interval}&fmt=json&from={unixFrom}&to={unixTo}";
             string s = Response.GET(url, data);
-            return JsonConvert.DeserializeObject<List<Intraday>>(s);
+            return JsonConvert.DeserializeObject<List<EOD.Model.IntradayHistoricalStockPrice>>(s);
         }
     }
 }

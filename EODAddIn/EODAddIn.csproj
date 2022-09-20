@@ -285,41 +285,6 @@
     <Compile Include="Forms\FrmSelectRange.Designer.cs">
       <DependentUpon>FrmSelectRange.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\AssetAllocation.cs" />
-    <Compile Include="Model\AssetAllocationData.cs" />
-    <Compile Include="Model\Balance_Sheet.cs" />
-    <Compile Include="Model\Balance_SheetData.cs" />
-    <Compile Include="Model\Cash_Flow.cs" />
-    <Compile Include="Model\Cash_FlowData.cs" />
-    <Compile Include="Model\Earnings.cs" />
-    <Compile Include="Model\EarningsHistoryData.cs" />
-    <Compile Include="Model\EarningsTrendData.cs" />
-    <Compile Include="Model\EndOfDay.cs" />
-    <Compile Include="Model\ETFData.cs" />
-    <Compile Include="Model\Financials.cs" />
-    <Compile Include="Model\FixedIncome.cs" />
-    <Compile Include="Model\FixedIncomeData.cs" />
-    <Compile Include="Model\FundamentalData.cs" />
-    <Compile Include="Model\General.cs" />
-    <Compile Include="Model\GrowthData.cs" />
-    <Compile Include="Model\Highlights.cs" />
-    <Compile Include="Model\HoldingData.cs" />
-    <Compile Include="Model\Income_Statement.cs" />
-    <Compile Include="Model\Income_StatementData.cs" />
-    <Compile Include="Model\Intraday.cs" />
-    <Compile Include="Model\Listing.cs" />
-    <Compile Include="Model\MarketCapitalization.cs" />
-    <Compile Include="Model\MorningStar.cs" />
-    <Compile Include="Model\Officer.cs" />
-    <Compile Include="Model\Performance.cs" />
-    <Compile Include="Model\SearchResult.cs" />
-    <Compile Include="Model\SectorWeights.cs" />
-    <Compile Include="Model\Technicals.cs" />
-    <Compile Include="Model\User.cs" />
-    <Compile Include="Model\ValuationData.cs" />
-    <Compile Include="Model\ValuationGrowthData.cs" />
-    <Compile Include="Model\WorldRegions.cs" />
-    <Compile Include="Model\WorldRegionsData.cs" />
     <Compile Include="Panels\PanelExcel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -355,7 +320,6 @@
     <Compile Include="Utils\ExcelUtils.cs" />
     <Compile Include="Utils\Response.cs" />
     <Compile Include="Utils\APIException.cs" />
-    <Compile Include="Utils\APIEOD.cs" />
     <Compile Include="Utils\WinHwnd.cs" />
     <EmbeddedResource Include="Controls\RefEdit.resx">
       <DependentUpon>RefEdit.cs</DependentUpon>

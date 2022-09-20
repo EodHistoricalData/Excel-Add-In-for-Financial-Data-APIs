@@ -1,7 +1,6 @@
 ﻿using EOD.Model;
 using EOD.Model.BulkFundamental;
 using EOD.Model.OptionsData;
-using EODAddIn.Model;
 using EODAddIn.Program;
 using EODAddIn.Utils;
 using Microsoft.Office.Interop.Excel;

@@ -66,7 +66,7 @@ namespace EODAddIn.Forms
                 tikers.Add(ticker);
                 try
                 {
-                    List<Model.Intraday> res = IntradayAPI.GetIntraday(ticker, from, to, interval);
+                    List<EOD.Model.IntradayHistoricalStockPrice> res = IntradayAPI.GetIntraday(ticker, from, to, interval);
                     if (rbtnAscOrder.Checked)
                     {
                         res.Reverse();

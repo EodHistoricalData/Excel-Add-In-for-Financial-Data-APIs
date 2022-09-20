@@ -1,7 +1,6 @@
 ﻿using EOD.Model;
 using EOD.Model.BulkFundamental;
 using EOD.Model.OptionsData;
-using EODAddIn.Model;
 using EODAddIn.Program;
 using EODAddIn.Utils;
 using Microsoft.Office.Interop.Excel;
@@ -26,7 +25,7 @@ namespace EODAddIn.BL.HistoricalPrinter
         /// <param name="ticker">Ticker</param>
         /// <param name="period">Period</param>
         /// <param name="chart"> necessity of chart</param>
-        public static void PrintEndOfDay(List<EndOfDay> endOfDays, string ticker, string period, bool chart)
+        public static void PrintEndOfDay(List<EOD.Model.HistoricalStockPrice> endOfDays, string ticker, string period, bool chart)
         {
             try
             {
@@ -51,7 +50,7 @@ namespace EODAddIn.BL.HistoricalPrinter
                 try
                 {
                     ExcelUtils.OnStart();
-                    foreach (EndOfDay item in endOfDays)
+                    foreach (EOD.Model.HistoricalStockPrice item in endOfDays)
                     {
                         r++;
                         worksheet.Cells[r, 1] = item.Date;

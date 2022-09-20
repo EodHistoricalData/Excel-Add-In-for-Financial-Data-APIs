@@ -1,15 +1,15 @@
-﻿using EODAddIn.Model;
-using EODAddIn.Utils;
-
+﻿using EODAddIn.Utils;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Security.Policy;
 using System.Windows.Forms;
 
 namespace EODAddIn.Forms
 {
     public partial class FrmSearchTiker : Form
     {
-        public SearchResult Result = new SearchResult();
+        public EOD.Model.SearchResult Result = new EOD.Model.SearchResult();
         public FrmSearchTiker()
         {
             InitializeComponent();
@@ -33,9 +33,9 @@ namespace EODAddIn.Forms
         private void TxtSearch_TextChanged(object sender, EventArgs e)
         {
             gridResult.Rows.Clear();
-            List<SearchResult> searchResults = APIEOD.Search(txtSearch.Text);
+            List<EOD.Model.SearchResult> searchResults = JsonConvert.DeserializeObject<List<EOD.Model.SearchResult>>(Response.GET($"https://eodhistoricaldata.com/api/query-search-extended/?q={txtSearch.Text}"));
 
-            foreach (SearchResult result in searchResults)
+            foreach (EOD.Model.SearchResult result in searchResults)
             {
 
                 int i = gridResult.Rows.Add();

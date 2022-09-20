@@ -1,7 +1,6 @@
 ﻿using EOD.Model;
 using EOD.Model.BulkFundamental;
 using EOD.Model.OptionsData;
-using EODAddIn.Model;
 using EODAddIn.Program;
 using EODAddIn.Utils;
 using Microsoft.Office.Interop.Excel;
@@ -27,7 +26,7 @@ namespace EODAddIn.BL.IntradayPrinter
         /// <param name="ticker">Ticker</param>
         /// <param name="period">period</param>
         /// <param name="chart">necessity of chart</param>
-        public static void PrintIntraday(List<Intraday> intraday, string ticker, string interval, bool chart)
+        public static void PrintIntraday(List<EOD.Model.IntradayHistoricalStockPrice> intraday, string ticker, string interval, bool chart)
         {
             try
             {
@@ -50,7 +49,7 @@ namespace EODAddIn.BL.IntradayPrinter
                 try
                 {
                     ExcelUtils.OnStart();
-                    foreach (Intraday item in intraday)
+                    foreach (EOD.Model.IntradayHistoricalStockPrice item in intraday)
                     {
                         r++;
                         worksheet.Cells[r, 1] = item.DateTime;

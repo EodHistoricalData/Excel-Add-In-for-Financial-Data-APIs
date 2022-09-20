@@ -69,7 +69,7 @@ namespace EODAddIn.Forms
                 try
                 {
                     //async await Task.Run(() =>});
-                    List<Model.EndOfDay> res = HistoricalAPI.GetEOD(ticker, from, to, period);
+                    List<EOD.Model.HistoricalStockPrice> res = HistoricalAPI.GetEOD(ticker, from, to, period);
                     if (rbtnAscOrder.Checked)
                     {
                         res.Reverse();

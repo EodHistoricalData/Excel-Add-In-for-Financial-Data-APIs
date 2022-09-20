@@ -5,12 +5,11 @@ using EODAddIn.BL.FundamentalDataPrinter;
 using EODAddIn.BL.OptionsAPI;
 using EODAddIn.BL.OptionsPrinter;
 using EODAddIn.BL.Screener;
-using EODAddIn.Model;
 using EODAddIn.Utils;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Excel;
 using Microsoft.Office.Tools.Ribbon;
-
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -91,8 +90,7 @@ namespace EODAddIn
 
             try
             {
-                Model.User user = APIEOD.User(key);
-                
+                EOD.Model.User user = JsonConvert.DeserializeObject<EOD.Model.User>(Response.GET("https://eodhistoricaldata.com/api/user", "api_token=" + key));
                 lblRequest.Label = user.ApiRequests?.ToString("# ##0");
                 lblRequestLeft.Label = (user.DailyRateLimit - user.ApiRequests)?.ToString("# ##0");
             }

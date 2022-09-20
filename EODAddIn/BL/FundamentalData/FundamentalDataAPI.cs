@@ -1,6 +1,5 @@
 ﻿using EOD.Model.OptionsData;
 using EOD;
-using EODAddIn.Model;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;

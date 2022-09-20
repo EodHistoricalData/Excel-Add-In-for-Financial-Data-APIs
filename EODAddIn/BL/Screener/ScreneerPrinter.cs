@@ -1,7 +1,6 @@
 ﻿using EOD.Model;
 using EOD.Model.BulkFundamental;
 using EOD.Model.OptionsData;
-using EODAddIn.Model;
 using EODAddIn.Program;
 using EODAddIn.Utils;
 using Microsoft.Office.Interop.Excel;
@@ -665,8 +664,8 @@ namespace EODAddIn.BL.Screener
                 sh = CreateScreenerHictoricalWorksheet(sh.Name);
                 foreach ((string, string) ticker in tickers)
                 {
-                    List<EndOfDay> res = HistoricalAPI.HistoricalAPI.GetEOD(ticker.Item1, from, to, period);
-                    foreach (EndOfDay item in res)
+                    List<EOD.Model.HistoricalStockPrice> res = HistoricalAPI.HistoricalAPI.GetEOD(ticker.Item1, from, to, period);
+                    foreach (EOD.Model.HistoricalStockPrice item in res)
                     {
                         sh.Cells[row, 1] = ticker.Item1;
                         sh.Cells[row, 2] = item.Date;
@@ -732,8 +731,8 @@ namespace EODAddIn.BL.Screener
                 sh = CreateScreenerIntradayWorksheet(sh.Name);
                 foreach ((string, string) ticker in tickers)
                 {
-                    List<Intraday> res = IntradayAPI.IntradayAPI.GetIntraday(ticker.Item1, from, to, interval);
-                    foreach (Intraday item in res)
+                    List<EOD.Model.IntradayHistoricalStockPrice> res = IntradayAPI.IntradayAPI.GetIntraday(ticker.Item1, from, to, interval);
+                    foreach (EOD.Model.IntradayHistoricalStockPrice item in res)
                     {
                         sh.Cells[row, 1] = ticker.Item1;
                         sh.Cells[row, 2] = item.DateTime;

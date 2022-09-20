@@ -1,7 +1,6 @@
 ﻿using EOD.Model;
 using EOD.Model.BulkFundamental;
 using EOD.Model.OptionsData;
-using EODAddIn.Model;
 using EODAddIn.Program;
 using EODAddIn.Utils;
 using Microsoft.Office.Interop.Excel;
@@ -351,7 +350,6 @@ namespace EODAddIn.BL.ETFPrinter
             row++;
 
             sh.Cells[row, column] = "Cash";
-            //EOD.Model.Fundamental.AssetAllocationETF.
             sh.Cells[row, column + 1] = data.ETF_Data.Asset_Allocation.Cash.LongPercent;
             sh.Cells[row, column + 2] = data.ETF_Data.Asset_Allocation.Cash.ShortPercent;
             sh.Cells[row, column + 3] = data.ETF_Data.Asset_Allocation.Cash.NetAssetsPercent;
@@ -485,14 +483,6 @@ namespace EODAddIn.BL.ETFPrinter
             sh.Cells[row, column + 2] = data.ETF_Data.Sector_Weights.FinancialServices.RelativeToCategory;
             row++;
 
-            //sh.Cells[row, column] = "Real Estate";
-            //sh.Cells[row, column + 1] = data.ETF_Data.Sector_Weights.RealEstate.EquityPercent;
-            //sh.Cells[row, column + 2] = data.ETF_Data.Sector_Weights.RealEstate.RelativeToCategory;
-            //row++;
-            //sh.Cells[row, column] = "Communication Services";
-            //sh.Cells[row, column + 1] = data.ETF_Data.Sector_Weights.CommunicationServices.EquityPercent;
-            //sh.Cells[row, column + 2] = data.ETF_Data.Sector_Weights.CommunicationServices.RelativeToCategory;
-            //row++;
             sh.Cells[row, column] = "Energy";
             sh.Cells[row, column + 1] = data.ETF_Data.Sector_Weights.Energy.EquityPercent;
             sh.Cells[row, column + 2] = data.ETF_Data.Sector_Weights.Energy.RelativeToCategory;
