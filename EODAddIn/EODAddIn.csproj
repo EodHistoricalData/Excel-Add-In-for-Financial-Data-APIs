@@ -285,7 +285,6 @@
     <Compile Include="Forms\FrmSelectRange.Designer.cs">
       <DependentUpon>FrmSelectRange.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\AddressData.cs" />
     <Compile Include="Model\AssetAllocation.cs" />
     <Compile Include="Model\AssetAllocationData.cs" />
     <Compile Include="Model\Balance_Sheet.cs" />

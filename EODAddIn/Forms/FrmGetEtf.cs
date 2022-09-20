@@ -8,7 +8,7 @@ namespace EODAddIn.Forms
 {
     public partial class FrmGetEtf : Form
     {
-        public Model.FundamentalData Results;
+        public EOD.Model.Fundamental.FundamentalData Results;
         public string Tiker;
 
         public FrmGetEtf()

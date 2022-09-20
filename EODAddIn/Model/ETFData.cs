@@ -28,7 +28,6 @@ namespace EODAddIn.Model
         public string TotalAssets { get; set; }
         public string Average_Mkt_Cap_Mil { get; set; }
         public MarketCapitalization Market_Capitalisation { get; set; }
-        public AssetAllocation Asset_Allocation { get; set; }
         public WorldRegions World_Regions { get; set; }
         public SectorWeights Sector_Weights { get; set; }
         public FixedIncome Fixed_Income { get; set; }

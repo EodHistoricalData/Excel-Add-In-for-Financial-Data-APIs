@@ -14,6 +14,8 @@ using System.Reflection;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 using static EODAddIn.Utils.ExcelUtils;
+using EOD;
+using EOD.Model.Fundamental;
 
 namespace EODAddIn.BL.ETFPrinter
 {
@@ -23,7 +25,7 @@ namespace EODAddIn.BL.ETFPrinter
         /// Print ETF data
         /// </summary>
         /// <param name="data"></param>
-        public static void PrintEtf(FundamentalData data, string ticker)
+        public static void PrintEtf(EOD.Model.Fundamental.FundamentalData data, string ticker)
         {
             try
             {
@@ -85,7 +87,7 @@ namespace EODAddIn.BL.ETFPrinter
         /// <param name="data"></param>
         /// <param name="range"></param>
         /// <returns></returns>
-        public static int PrintEtfGeneral(FundamentalData data, Excel.Range range)
+        public static int PrintEtfGeneral(EOD.Model.Fundamental.FundamentalData data, Excel.Range range)
         {
             Excel.Worksheet sh = range.Parent;
             int row = range.Row;
@@ -124,7 +126,7 @@ namespace EODAddIn.BL.ETFPrinter
             row++;
 
             sh.Cells[row, column] = "Category";
-            sh.Cells[row, column + 1] = data.General.Category;
+            sh.Cells[row, column + 1] = data.General.HomeCategory;
 
             return row;
         }
@@ -134,7 +136,7 @@ namespace EODAddIn.BL.ETFPrinter
         /// <param name="data"></param>
         /// <param name="range"></param>
         /// <returns></returns>
-        public static int PrintEtfTechnicals(FundamentalData data, Excel.Range range)
+        public static int PrintEtfTechnicals(EOD.Model.Fundamental.FundamentalData data, Excel.Range range)
         {
             Excel.Worksheet sh = range.Parent;
             int row = range.Row;
@@ -148,20 +150,20 @@ namespace EODAddIn.BL.ETFPrinter
             sh.Cells[row, column + 1] = data.Technicals.Beta;
             row++;
 
-            sh.Cells[row, column] = "52WeekHigh";
-            sh.Cells[row, column + 1] = data.Technicals.WeekHigh52;
+            sh.Cells[row, column] = "Week52High";
+            sh.Cells[row, column + 1] = data.Technicals.Week52High;
             row++;
 
-            sh.Cells[row, column] = "52WeekLow";
-            sh.Cells[row, column + 1] = data.Technicals.WeekLow52;
+            sh.Cells[row, column] = "Week52Low";
+            sh.Cells[row, column + 1] = data.Technicals.Week52Low;
             row++;
 
-            sh.Cells[row, column] = "50DayMA";
-            sh.Cells[row, column + 1] = data.Technicals.DayMA50;
+            sh.Cells[row, column] = "Day50MA ";
+            sh.Cells[row, column + 1] = data.Technicals.Day50MA;
             row++;
 
-            sh.Cells[row, column] = "200DayMA";
-            sh.Cells[row, column + 1] = data.Technicals.DayMA200;
+            sh.Cells[row, column] = "Day200MA ";
+            sh.Cells[row, column + 1] = data.Technicals.Day200MA;
 
             return row;
         }
@@ -171,7 +173,7 @@ namespace EODAddIn.BL.ETFPrinter
         /// <param name="data"></param>
         /// <param name="range"></param>
         /// <returns></returns>
-        public static int PrintEtfData(FundamentalData data, Excel.Range range)
+        public static int PrintEtfData(EOD.Model.Fundamental.FundamentalData data, Excel.Range range)
         {
             Excel.Worksheet sh = range.Parent;
             int row = range.Row;
@@ -307,7 +309,7 @@ namespace EODAddIn.BL.ETFPrinter
             return row;
         }
 
-        public static int PrintEtfMarketCap(FundamentalData data, Excel.Range range)
+        public static int PrintEtfMarketCap(EOD.Model.Fundamental.FundamentalData data, Excel.Range range)
         {
             Excel.Worksheet sh = range.Parent;
             int row = range.Row;
@@ -333,7 +335,7 @@ namespace EODAddIn.BL.ETFPrinter
             return row;
         }
 
-        public static int PrintEtfAssetAllocation(FundamentalData data, Excel.Range range)
+        public static int PrintEtfAssetAllocation(EOD.Model.Fundamental.FundamentalData data, Excel.Range range)
         {
             Excel.Worksheet sh = range.Parent;
             int row = range.Row;
@@ -349,21 +351,23 @@ namespace EODAddIn.BL.ETFPrinter
             row++;
 
             sh.Cells[row, column] = "Cash";
+            //EOD.Model.Fundamental.AssetAllocationETF.
             sh.Cells[row, column + 1] = data.ETF_Data.Asset_Allocation.Cash.LongPercent;
             sh.Cells[row, column + 2] = data.ETF_Data.Asset_Allocation.Cash.ShortPercent;
             sh.Cells[row, column + 3] = data.ETF_Data.Asset_Allocation.Cash.NetAssetsPercent;
             row++;
 
             sh.Cells[row, column] = "Not Classified";
+
             sh.Cells[row, column + 1] = data.ETF_Data.Asset_Allocation.NotClassified.LongPercent;
             sh.Cells[row, column + 2] = data.ETF_Data.Asset_Allocation.NotClassified.ShortPercent;
             sh.Cells[row, column + 3] = data.ETF_Data.Asset_Allocation.NotClassified.NetAssetsPercent;
             row++;
 
             sh.Cells[row, column] = "Stock non-US";
-            sh.Cells[row, column + 1] = data.ETF_Data.Asset_Allocation.StockNonUs.LongPercent;
-            sh.Cells[row, column + 2] = data.ETF_Data.Asset_Allocation.StockNonUs.ShortPercent;
-            sh.Cells[row, column + 3] = data.ETF_Data.Asset_Allocation.StockNonUs.NetAssetsPercent;
+            sh.Cells[row, column + 1] = data.ETF_Data.Asset_Allocation.StocknonUS.LongPercent;
+            sh.Cells[row, column + 2] = data.ETF_Data.Asset_Allocation.StocknonUS.ShortPercent;
+            sh.Cells[row, column + 3] = data.ETF_Data.Asset_Allocation.StocknonUS.NetAssetsPercent;
             row++;
 
             sh.Cells[row, column] = "Other";
@@ -373,9 +377,9 @@ namespace EODAddIn.BL.ETFPrinter
             row++;
 
             sh.Cells[row, column] = "Stock US";
-            sh.Cells[row, column + 1] = data.ETF_Data.Asset_Allocation.StockUs.LongPercent;
-            sh.Cells[row, column + 2] = data.ETF_Data.Asset_Allocation.StockUs.ShortPercent;
-            sh.Cells[row, column + 3] = data.ETF_Data.Asset_Allocation.StockUs.NetAssetsPercent;
+            sh.Cells[row, column + 1] = data.ETF_Data.Asset_Allocation.StockUS.LongPercent;
+            sh.Cells[row, column + 2] = data.ETF_Data.Asset_Allocation.StockUS.ShortPercent;
+            sh.Cells[row, column + 3] = data.ETF_Data.Asset_Allocation.StockUS.NetAssetsPercent;
             row++;
 
             sh.Cells[row, column] = "Bond";
@@ -386,7 +390,7 @@ namespace EODAddIn.BL.ETFPrinter
             return row;
         }
 
-        public static int PrintEtfWorldRegions(FundamentalData data, Excel.Range range)
+        public static int PrintEtfWorldRegions(EOD.Model.Fundamental.FundamentalData data, Excel.Range range)
         {
             Excel.Worksheet sh = range.Parent;
             int row = range.Row;
@@ -452,7 +456,7 @@ namespace EODAddIn.BL.ETFPrinter
             return row;
         }
 
-        public static int PrintEtfSectorWeights(FundamentalData data, Excel.Range range)
+        public static int PrintEtfSectorWeights(EOD.Model.Fundamental.FundamentalData data, Excel.Range range)
         {
             Excel.Worksheet sh = range.Parent;
             int row = range.Row;
@@ -472,8 +476,8 @@ namespace EODAddIn.BL.ETFPrinter
             row++;
 
             sh.Cells[row, column] = "Consumer Cyclicals";
-            sh.Cells[row, column + 1] = data.ETF_Data.Sector_Weights.ConsumerCyclicals.EquityPercent;
-            sh.Cells[row, column + 2] = data.ETF_Data.Sector_Weights.ConsumerCyclicals.RelativeToCategory;
+            sh.Cells[row, column + 1] = data.ETF_Data.Sector_Weights.ConsumerCyclisials.EquityPercent;
+            sh.Cells[row, column + 2] = data.ETF_Data.Sector_Weights.ConsumerCyclisials.RelativeToCategory;
             row++;
 
             sh.Cells[row, column] = "Financial Services";
@@ -481,15 +485,14 @@ namespace EODAddIn.BL.ETFPrinter
             sh.Cells[row, column + 2] = data.ETF_Data.Sector_Weights.FinancialServices.RelativeToCategory;
             row++;
 
-            sh.Cells[row, column] = "Real Estate";
-            sh.Cells[row, column + 1] = data.ETF_Data.Sector_Weights.RealEstate.EquityPercent;
-            sh.Cells[row, column + 2] = data.ETF_Data.Sector_Weights.RealEstate.RelativeToCategory;
-            row++;
-
-            sh.Cells[row, column] = "Communication Services";
-            sh.Cells[row, column + 1] = data.ETF_Data.Sector_Weights.CommunicationServices.EquityPercent;
-            sh.Cells[row, column + 2] = data.ETF_Data.Sector_Weights.CommunicationServices.RelativeToCategory;
-            row++;
+            //sh.Cells[row, column] = "Real Estate";
+            //sh.Cells[row, column + 1] = data.ETF_Data.Sector_Weights.RealEstate.EquityPercent;
+            //sh.Cells[row, column + 2] = data.ETF_Data.Sector_Weights.RealEstate.RelativeToCategory;
+            //row++;
+            //sh.Cells[row, column] = "Communication Services";
+            //sh.Cells[row, column + 1] = data.ETF_Data.Sector_Weights.CommunicationServices.EquityPercent;
+            //sh.Cells[row, column + 2] = data.ETF_Data.Sector_Weights.CommunicationServices.RelativeToCategory;
+            //row++;
             sh.Cells[row, column] = "Energy";
             sh.Cells[row, column + 1] = data.ETF_Data.Sector_Weights.Energy.EquityPercent;
             sh.Cells[row, column + 2] = data.ETF_Data.Sector_Weights.Energy.RelativeToCategory;
@@ -506,8 +509,8 @@ namespace EODAddIn.BL.ETFPrinter
             row++;
 
             sh.Cells[row, column] = "Consumer Defensive";
-            sh.Cells[row, column + 1] = data.ETF_Data.Sector_Weights.ConsumerDefensive.EquityPercent;
-            sh.Cells[row, column + 2] = data.ETF_Data.Sector_Weights.ConsumerDefensive.RelativeToCategory;
+            sh.Cells[row, column + 1] = data.ETF_Data.Sector_Weights.ConsumerDefencive.EquityPercent;
+            sh.Cells[row, column + 2] = data.ETF_Data.Sector_Weights.ConsumerDefencive.RelativeToCategory;
             row++;
 
             sh.Cells[row, column] = "Healthcare";
@@ -522,7 +525,7 @@ namespace EODAddIn.BL.ETFPrinter
             return row;
         }
 
-        public static int PrintEtfFixedIncome(FundamentalData data, Excel.Range range)
+        public static int PrintEtfFixedIncome(EOD.Model.Fundamental.FundamentalData data, Excel.Range range)
         {
             Excel.Worksheet sh = range.Parent;
             int row = range.Row;
@@ -537,28 +540,19 @@ namespace EODAddIn.BL.ETFPrinter
             row++;
 
             sh.Cells[row, column] = "EffectiveDuration";
-            sh.Cells[row, column + 1] = data.ETF_Data.Fixed_Income.EffectiveDuration.FundPercent;
-            sh.Cells[row, column + 2] = data.ETF_Data.Fixed_Income.EffectiveDuration.RelativeToCategory;
-            row++;
-
-            //sh.Cells[row, column] = "ModifiedDuration";
-            //sh.Cells[row, column + 1] = data.ETF_Data.Fixed_Income.ModifiedDuration.FundPercent;
-            //sh.Cells[row, column + 2] = data.ETF_Data.Fixed_Income.ModifiedDuration.RelativeToCategory;
-            //row++;
-
-            sh.Cells[row, column] = "EffectiveMaturity";
-            sh.Cells[row, column + 1] = data.ETF_Data.Fixed_Income.EffectiveMaturity.FundPercent;
-            sh.Cells[row, column + 2] = data.ETF_Data.Fixed_Income.EffectiveMaturity.RelativeToCategory;
-            row++;
-
-            sh.Cells[row, column] = "YieldToMaturity";
-            sh.Cells[row, column + 1] = data.ETF_Data.Fixed_Income.YieldToMaturity.FundPercent;
-            sh.Cells[row, column + 2] = data.ETF_Data.Fixed_Income.YieldToMaturity.RelativeToCategory;
-
+            sh.Cells[row+1, column] = "EffectiveMaturity";
+            sh.Cells[row+2, column] = "EffectiveMaturity";
+            sh.Cells[row+3, column] = "YieldToMaturity";
+            foreach (KeyValuePair< string, EOD.Model.Fundamental.FixedIncomeData> item in data.ETF_Data.Fixed_Income)
+            {
+                sh.Cells[row, column + 1] = item.Value.FundPercent;
+                sh.Cells[row, column + 2] = item.Value.RelativeToCategory;
+                row++;
+            }
             return row;
         }
 
-        public static int PrintEtfValuationsGrowth(FundamentalData data, Excel.Range range)
+        public static int PrintEtfValuationsGrowth(EOD.Model.Fundamental.FundamentalData data, Excel.Range range)
         {
             Excel.Worksheet sh = range.Parent;
             int row = range.Row;
@@ -576,18 +570,18 @@ namespace EODAddIn.BL.ETFPrinter
             row++;
 
             sh.Cells[row, column] = "Valuations Rates Portfolio";
-            sh.Cells[row, column + 1] = data.ETF_Data.Valuations_Growth.Valuations_Rates_Portfolio.PriceToProspectiveEarnings;
-            sh.Cells[row, column + 2] = data.ETF_Data.Valuations_Growth.Valuations_Rates_Portfolio.PriceToBook;
-            sh.Cells[row, column + 3] = data.ETF_Data.Valuations_Growth.Valuations_Rates_Portfolio.PriceToSales;
-            sh.Cells[row, column + 4] = data.ETF_Data.Valuations_Growth.Valuations_Rates_Portfolio.PriceToCashFlow;
+            sh.Cells[row, column + 1] = data.ETF_Data.Valuations_Growth.Valuations_Rates_Portfolio.PriceProspectiveEarnings;
+            sh.Cells[row, column + 2] = data.ETF_Data.Valuations_Growth.Valuations_Rates_Portfolio.PriceBook;
+            sh.Cells[row, column + 3] = data.ETF_Data.Valuations_Growth.Valuations_Rates_Portfolio.PriceSales;
+            sh.Cells[row, column + 4] = data.ETF_Data.Valuations_Growth.Valuations_Rates_Portfolio.PriceCashFlow;
             sh.Cells[row, column + 5] = data.ETF_Data.Valuations_Growth.Valuations_Rates_Portfolio.DividendYieldFactor;
             row++;
 
             sh.Cells[row, column] = "Valuations Rates To Category";
-            sh.Cells[row, column + 1] = data.ETF_Data.Valuations_Growth.Valuations_Rates_To_Category.PriceToProspectiveEarnings;
-            sh.Cells[row, column + 2] = data.ETF_Data.Valuations_Growth.Valuations_Rates_To_Category.PriceToBook;
-            sh.Cells[row, column + 3] = data.ETF_Data.Valuations_Growth.Valuations_Rates_To_Category.PriceToSales;
-            sh.Cells[row, column + 4] = data.ETF_Data.Valuations_Growth.Valuations_Rates_To_Category.PriceToCashFlow;
+            sh.Cells[row, column + 1] = data.ETF_Data.Valuations_Growth.Valuations_Rates_To_Category.PriceProspectiveEarnings;
+            sh.Cells[row, column + 2] = data.ETF_Data.Valuations_Growth.Valuations_Rates_To_Category.PriceBook;
+            sh.Cells[row, column + 3] = data.ETF_Data.Valuations_Growth.Valuations_Rates_To_Category.PriceSales;
+            sh.Cells[row, column + 4] = data.ETF_Data.Valuations_Growth.Valuations_Rates_To_Category.PriceCashFlow;
             sh.Cells[row, column + 5] = data.ETF_Data.Valuations_Growth.Valuations_Rates_To_Category.DividendYieldFactor;
             row++;
 
@@ -616,7 +610,7 @@ namespace EODAddIn.BL.ETFPrinter
             return row;
         }
 
-        public static int PrintEtfMorningStar(FundamentalData data, Excel.Range range)
+        public static int PrintEtfMorningStar(EOD.Model.Fundamental.FundamentalData data, Excel.Range range)
         {
             Excel.Worksheet sh = range.Parent;
             int row = range.Row;
@@ -640,7 +634,7 @@ namespace EODAddIn.BL.ETFPrinter
             return row;
         }
 
-        public static int PrintEtfPerformance(FundamentalData data, Excel.Range range)
+        public static int PrintEtfPerformance(EOD.Model.Fundamental.FundamentalData data, Excel.Range range)
         {
             Excel.Worksheet sh = range.Parent;
             int row = range.Row;

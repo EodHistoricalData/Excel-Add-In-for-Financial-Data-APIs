@@ -16,7 +16,7 @@ namespace EODAddIn.Forms
 {
     public partial class FrmGetFundamental : Form
     {
-        public Model.FundamentalData Results;
+        public EOD.Model.Fundamental.FundamentalData Results;
         public string Tiker;
         public string Exchange;
         public string Period;

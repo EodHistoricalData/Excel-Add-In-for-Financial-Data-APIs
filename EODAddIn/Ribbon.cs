@@ -58,7 +58,7 @@ namespace EODAddIn
             Forms.FrmGetEtf frm = new Forms.FrmGetEtf();
             frm.ShowDialog(new WinHwnd());
 
-            FundamentalData res = frm.Results;
+            EOD.Model.Fundamental.FundamentalData res = frm.Results;
             if (res == null) return;
             ETFPrinter.PrintEtf(res, frm.Tiker);
         }
@@ -68,7 +68,7 @@ namespace EODAddIn
             Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
             frm.ShowDialog(new WinHwnd());
 
-            Model.FundamentalData res = frm.Results;
+            EOD.Model.Fundamental.FundamentalData res = frm.Results;
             if (res == null) return;
             FundamentalDataPrinter.PrintFundamentalAll(res, frm.Tiker);
 
@@ -92,7 +92,7 @@ namespace EODAddIn
             try
             {
                 Model.User user = APIEOD.User(key);
-
+                
                 lblRequest.Label = user.ApiRequests?.ToString("# ##0");
                 lblRequestLeft.Label = (user.DailyRateLimit - user.ApiRequests)?.ToString("# ##0");
             }
@@ -150,7 +150,7 @@ namespace EODAddIn
             {
                 return;
             }
-            FundamentalData res = frm.Results;
+            EOD.Model.Fundamental.FundamentalData res = frm.Results;
             FundamentalDataPrinter.PrintFundamentalGeneral(res);
         }
 
@@ -162,7 +162,7 @@ namespace EODAddIn
             {
                 return;
             }
-            FundamentalData res = frm.Results;
+            EOD.Model.Fundamental.FundamentalData res = frm.Results;
             FundamentalDataPrinter.PrintFundamentalHighlights(res);
         }
 
@@ -174,7 +174,7 @@ namespace EODAddIn
             {
                 return;
             }
-            FundamentalData res = frm.Results;
+            EOD.Model.Fundamental.FundamentalData res = frm.Results;
             FundamentalDataPrinter.PrintFundamentalBalanceSheet(res);
         }
 
@@ -186,7 +186,7 @@ namespace EODAddIn
             {
                 return;
             }
-            FundamentalData res = frm.Results;
+            EOD.Model.Fundamental.FundamentalData res = frm.Results;
             FundamentalDataPrinter.PrintFundamentalIncomeStatement(res);
         }
 
@@ -198,7 +198,7 @@ namespace EODAddIn
             {
                 return;
             }
-            FundamentalData res = frm.Results;
+            EOD.Model.Fundamental.FundamentalData res = frm.Results;
             FundamentalDataPrinter.PrintFundamentalEarnings(res);
         }
 
@@ -210,7 +210,7 @@ namespace EODAddIn
             {
                 return;
             }
-            FundamentalData res = frm.Results;
+            EOD.Model.Fundamental.FundamentalData res = frm.Results;
             FundamentalDataPrinter.PrintFundamentalCashFlow(res);
         }
         private void BtnFundamentalAllData_Click(object sender, RibbonControlEventArgs e)
@@ -221,7 +221,7 @@ namespace EODAddIn
             {
                 return;
             }
-            FundamentalData res = frm.Results;
+            EOD.Model.Fundamental.FundamentalData res = frm.Results;
             FundamentalDataPrinter.PrintFundamentalAll(res, frm.Tiker);
         }
 

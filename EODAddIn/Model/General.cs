@@ -34,7 +34,6 @@ namespace EODAddIn.Model
         public bool? IsDelisted { get; set; }
         public string Description { get; set; }
         public string Address { get; set; }
-        public AddressData AddressData { get; set; }
         public string Phone { get; set; }
         public string WebURL { get; set; }
         public string LogoURL { get; set; }

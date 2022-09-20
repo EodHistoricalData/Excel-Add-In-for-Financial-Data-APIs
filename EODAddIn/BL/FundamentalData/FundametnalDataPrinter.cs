@@ -23,7 +23,7 @@ namespace EODAddIn.BL.FundamentalDataPrinter
         /// Print all Fundamenal data to worksheet
         /// </summary>
         /// <param name="data"></param>
-        public static void PrintFundamentalAll(FundamentalData data, string ticker)
+        public static void PrintFundamentalAll(EOD.Model.Fundamental.FundamentalData data, string ticker)
         {
             try
             {
@@ -91,7 +91,7 @@ namespace EODAddIn.BL.FundamentalDataPrinter
         /// Displays fundamental data on the worksheet in the active cell
         /// </summary>
         /// <param name="data">fundamental data</param>
-        public static void PrintFundamentalGeneral(FundamentalData data)
+        public static void PrintFundamentalGeneral(EOD.Model.Fundamental.FundamentalData data)
         {
             PrintFundamentalGeneral(data, Globals.ThisAddIn.Application.ActiveCell);
         }
@@ -100,7 +100,7 @@ namespace EODAddIn.BL.FundamentalDataPrinter
         ///  Displays Highlights data on the worksheet in the active cell
         /// </summary>
         /// <param name="data"></param>
-        public static void PrintFundamentalHighlights(FundamentalData data)
+        public static void PrintFundamentalHighlights(EOD.Model.Fundamental.FundamentalData data)
         {
             PrintFundamentalHighlights(data, Globals.ThisAddIn.Application.ActiveCell);
         }
@@ -109,7 +109,7 @@ namespace EODAddIn.BL.FundamentalDataPrinter
         ///Displays Earnings data on the worksheet in the active cell
         /// </summary>
         /// <param name="data"></param>
-        public static void PrintFundamentalEarnings(FundamentalData data)
+        public static void PrintFundamentalEarnings(EOD.Model.Fundamental.FundamentalData data)
         {
             PrintFundamentalData("Earnings", data.Earnings.History, data.Earnings.Trend, Globals.ThisAddIn.Application.ActiveCell, "History", "Trend");
         }
@@ -118,7 +118,7 @@ namespace EODAddIn.BL.FundamentalDataPrinter
         /// Displays Cash FLow data on the worksheet in the active cell
         /// </summary>
         /// <param name="data"></param>
-        public static void PrintFundamentalCashFlow(FundamentalData data)
+        public static void PrintFundamentalCashFlow(EOD.Model.Fundamental.FundamentalData data)
         {
             PrintFundamentalData("Cash Flow", data.Financials.Cash_Flow.Quarterly, data.Financials.Cash_Flow.Yearly, Globals.ThisAddIn.Application.ActiveCell);
         }
@@ -127,7 +127,7 @@ namespace EODAddIn.BL.FundamentalDataPrinter
         ///Displays Balance Sheet data on the worksheet in the active cell
         /// </summary>
         /// <param name="data"></param>
-        public static void PrintFundamentalBalanceSheet(FundamentalData data)
+        public static void PrintFundamentalBalanceSheet(EOD.Model.Fundamental.FundamentalData data)
         {
             PrintFundamentalData("Balance Sheet", data.Financials.Balance_Sheet.Quarterly, data.Financials.Balance_Sheet.Yearly, Globals.ThisAddIn.Application.ActiveCell);
         }
@@ -136,7 +136,7 @@ namespace EODAddIn.BL.FundamentalDataPrinter
         /// Displays Income Statement data on the worksheet in the active cell
         /// </summary>
         /// <param name="data"></param>
-        public static void PrintFundamentalIncomeStatement(FundamentalData data)
+        public static void PrintFundamentalIncomeStatement(EOD.Model.Fundamental.FundamentalData data)
         {
             PrintFundamentalData("Income Statement", data.Financials.Income_Statement.Quarterly, data.Financials.Income_Statement.Yearly, Globals.ThisAddIn.Application.ActiveCell);
         }
@@ -147,7 +147,7 @@ namespace EODAddIn.BL.FundamentalDataPrinter
         /// <param name="data">Fundamental data</param>
         /// <param name="range">The cell where printing starts</param>
         /// <returns>The number of the last involved line</returns>
-        private static int PrintFundamentalHighlights(FundamentalData data, Excel.Range range)
+        private static int PrintFundamentalHighlights(EOD.Model.Fundamental.FundamentalData data, Excel.Range range)
         {
             Excel.Worksheet sh = range.Parent;
             int row = range.Row;
@@ -207,7 +207,7 @@ namespace EODAddIn.BL.FundamentalDataPrinter
         /// <param name="data">Fundamental data</param>
         /// <param name="range">The cell where printing starts</param>
         /// <returns>The number of the last involved line</returns>
-        private static int PrintFundamentalGeneral(FundamentalData data, Excel.Range range)
+        private static int PrintFundamentalGeneral(EOD.Model.Fundamental.FundamentalData data, Excel.Range range)
         {
             Excel.Worksheet sh = range.Parent;
             int row = range.Row;
