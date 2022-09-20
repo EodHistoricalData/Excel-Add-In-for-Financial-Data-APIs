@@ -14,6 +14,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 using static EODAddIn.Utils.ExcelUtils;
+using EODAddIn.BL.BulkFundametnalData;
 
 namespace EODAddIn.BL.BulkFundamental
 {
@@ -43,7 +44,7 @@ namespace EODAddIn.BL.BulkFundamental
                             TickerForBulk.Add(tickerAndExchange.Item1);
                         }
                     }
-                    data = await GetBulkFundamental.GetBulkData(exchange, tickers, 0, 500);
+                    data = await BulkFundamentalAPI.GetBulkData(exchange, tickers, 0, 500);
                     for (int i = 0; i < data.Count; i++)
                     {
                         BulkFundamentalData symbol = data[i.ToString()];

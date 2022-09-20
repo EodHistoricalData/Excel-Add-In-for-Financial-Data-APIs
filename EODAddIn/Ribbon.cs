@@ -2,6 +2,7 @@
 using EODAddIn.BL.BulkFundamental;
 using EODAddIn.BL.ETFPrinter;
 using EODAddIn.BL.FundamentalDataPrinter;
+using EODAddIn.BL.OptionsAPI;
 using EODAddIn.BL.OptionsPrinter;
 using EODAddIn.BL.Screener;
 using EODAddIn.Model;
@@ -145,7 +146,10 @@ namespace EODAddIn
         {
             Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
             frm.ShowDialog(new WinHwnd());
-
+            if (frm.DialogResult != DialogResult.OK)
+            {
+                return;
+            }
             FundamentalData res = frm.Results;
             FundamentalDataPrinter.PrintFundamentalGeneral(res);
         }
@@ -154,7 +158,10 @@ namespace EODAddIn
         {
             Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
             frm.ShowDialog(new WinHwnd());
-
+            if (frm.DialogResult != DialogResult.OK)
+            {
+                return;
+            }
             FundamentalData res = frm.Results;
             FundamentalDataPrinter.PrintFundamentalHighlights(res);
         }
@@ -163,7 +170,10 @@ namespace EODAddIn
         {
             Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
             frm.ShowDialog(new WinHwnd());
-
+            if (frm.DialogResult != DialogResult.OK)
+            {
+                return;
+            }
             FundamentalData res = frm.Results;
             FundamentalDataPrinter.PrintFundamentalBalanceSheet(res);
         }
@@ -172,7 +182,10 @@ namespace EODAddIn
         {
             Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
             frm.ShowDialog(new WinHwnd());
-
+            if (frm.DialogResult != DialogResult.OK)
+            {
+                return;
+            }
             FundamentalData res = frm.Results;
             FundamentalDataPrinter.PrintFundamentalIncomeStatement(res);
         }
@@ -181,7 +194,10 @@ namespace EODAddIn
         {
             Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
             frm.ShowDialog(new WinHwnd());
-
+            if (frm.DialogResult != DialogResult.OK)
+            {
+                return;
+            }
             FundamentalData res = frm.Results;
             FundamentalDataPrinter.PrintFundamentalEarnings(res);
         }
@@ -190,7 +206,10 @@ namespace EODAddIn
         {
             Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
             frm.ShowDialog(new WinHwnd());
-
+            if (frm.DialogResult != DialogResult.OK)
+            {
+                return;
+            }
             FundamentalData res = frm.Results;
             FundamentalDataPrinter.PrintFundamentalCashFlow(res);
         }
@@ -198,7 +217,10 @@ namespace EODAddIn
         {
             Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
             frm.ShowDialog(new WinHwnd());
-
+            if (frm.DialogResult!= DialogResult.OK)
+            {
+                return;
+            }
             FundamentalData res = frm.Results;
             FundamentalDataPrinter.PrintFundamentalAll(res, frm.Tiker);
         }
@@ -221,7 +243,7 @@ namespace EODAddIn
                     BtnOptions.Label = "Processing";
                     BtnOptions.Enabled = false;
 
-                    EOD.Model.OptionsData.OptionsData res = await GetOptions.GetOptionsData(frm.Ticker, frm.From, frm.To, frm.FromTrade, frm.ToTrade);
+                    EOD.Model.OptionsData.OptionsData res = await OptionsAPI.GetOptionsData(frm.Ticker, frm.From, frm.To, frm.FromTrade, frm.ToTrade);
                     OptionsPrinter.PrintOptions(res, frm.Ticker);
                 }
             }
@@ -273,7 +295,7 @@ namespace EODAddIn
                     BtnOptions.Label = "Processing";
                     BtnOptions.Enabled = false;
 
-                    var res = await APIEOD.GetScreener(frm.Filters, frm.Signals, frm.Sort, frm.Limit);
+                    var res = await ScreenerAPI.GetScreener(frm.Filters, frm.Signals, frm.Sort, frm.Limit);
                     ScreneerPrinter.PrintScreener(res);
 
                     BtnOptions.Label = "Get Options";

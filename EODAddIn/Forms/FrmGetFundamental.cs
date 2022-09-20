@@ -1,4 +1,5 @@
-﻿using EODAddIn.Program;
+﻿using EODAddIn.BL.FundamentalDataAPI;
+using EODAddIn.Program;
 using EODAddIn.Utils;
 
 using System;
@@ -41,7 +42,8 @@ namespace EODAddIn.Forms
 
             try
             {
-                Results = Utils.APIEOD.GetFundamental(Tiker);
+                Results = FundamentalDataAPI.GetFundamental(Tiker);
+                DialogResult = DialogResult.OK;
             }
             catch (APIException ex)
             {

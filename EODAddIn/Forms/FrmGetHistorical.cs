@@ -1,4 +1,5 @@
 ﻿using EODAddIn.BL;
+using EODAddIn.BL.HistoricalAPI;
 using EODAddIn.BL.HistoricalPrinter;
 using EODAddIn.Program;
 using EODAddIn.Utils;
@@ -68,7 +69,7 @@ namespace EODAddIn.Forms
                 try
                 {
                     //async await Task.Run(() =>});
-                    List<Model.EndOfDay> res = APIEOD.GetEOD(ticker, from, to, period);
+                    List<Model.EndOfDay> res = HistoricalAPI.GetEOD(ticker, from, to, period);
                     if (rbtnAscOrder.Checked)
                     {
                         res.Reverse();

@@ -14,6 +14,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 using static EODAddIn.Utils.ExcelUtils;
+using EODAddIn.BL.BulkFundametnalData;
 
 namespace EODAddIn.BL.Screener
 {
@@ -27,7 +28,6 @@ namespace EODAddIn.BL.Screener
         static int rowBigTables = 3;
         static int rowBigTablesTicker = 3;
         private static Excel.Application _xlsApp = Globals.ThisAddIn.Application;
-        private static bool CreateSheet = true;
         public static void PrintScreener(EOD.Model.Screener.StockMarkerScreener screener)
         {
 
@@ -303,11 +303,11 @@ namespace EODAddIn.BL.Screener
                 tickersCount = tickers.Count;
                 while (tickersCount > 500)
                 {
-                    res = await GetBulkFundamental.GetBulkData(exchange, tickers, offset, 500);
+                    res = await BulkFundamentalAPI.GetBulkData(exchange, tickers, offset, 500);
                     offset += 500;
                     tickersCount--;
                 }
-                res = await GetBulkFundamental.GetBulkData(exchange, tickers, offset, 500);
+                res = await BulkFundamentalAPI.GetBulkData(exchange, tickers, offset, 500);
                 PrintBulkFundamentalForScreener(res, tickers, shGeneral, shEarnings, shBalance, shCashFlow, shIncomeStatement);
                 tickers.Clear();
             }
@@ -665,7 +665,7 @@ namespace EODAddIn.BL.Screener
                 sh = CreateScreenerHictoricalWorksheet(sh.Name);
                 foreach ((string, string) ticker in tickers)
                 {
-                    List<EndOfDay> res = APIEOD.GetEOD(ticker.Item1, from, to, period);
+                    List<EndOfDay> res = HistoricalAPI.HistoricalAPI.GetEOD(ticker.Item1, from, to, period);
                     foreach (EndOfDay item in res)
                     {
                         sh.Cells[row, 1] = ticker.Item1;
@@ -732,7 +732,7 @@ namespace EODAddIn.BL.Screener
                 sh = CreateScreenerIntradayWorksheet(sh.Name);
                 foreach ((string, string) ticker in tickers)
                 {
-                    List<Model.Intraday> res = APIEOD.GetIntraday(ticker.Item1, from, to, interval);
+                    List<Intraday> res = IntradayAPI.IntradayAPI.GetIntraday(ticker.Item1, from, to, interval);
                     foreach (Intraday item in res)
                     {
                         sh.Cells[row, 1] = ticker.Item1;

@@ -1,4 +1,6 @@
 ﻿using EODAddIn.BL;
+using EODAddIn.BL.IntradayAPI;
+using EODAddIn.BL.IntradayPrinter;
 using EODAddIn.Program;
 using EODAddIn.Utils;
 using MS.ProgressBar;
@@ -64,12 +66,12 @@ namespace EODAddIn.Forms
                 tikers.Add(ticker);
                 try
                 {
-                    List<Model.Intraday> res = APIEOD.GetIntraday(ticker, from, to, interval);
+                    List<Model.Intraday> res = IntradayAPI.GetIntraday(ticker, from, to, interval);
                     if (rbtnAscOrder.Checked)
                     {
                         res.Reverse();
                     }
-                    LoadToExcel.PrintIntraday(res, ticker, interval, chkChart.Checked);
+                    IntradayPrinter.PrintIntraday(res, ticker, interval, chkChart.Checked);
                 }
                 catch (APIException ex)
                 {

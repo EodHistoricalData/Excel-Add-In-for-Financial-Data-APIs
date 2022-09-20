@@ -193,12 +193,18 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="BL\BulkFundametnalData\BulkFundamentalAPI.cs" />
     <Compile Include="BL\ETF\ETFPrinter.cs" />
-    <Compile Include="BL\BulkFundametnalData\FundamentalPrinter.cs" />
+    <Compile Include="BL\BulkFundametnalData\BulkFundamentalPrinter.cs" />
+    <Compile Include="BL\FundamentalData\FundamentalDataAPI.cs" />
     <Compile Include="BL\FundamentalData\FundametnalDataPrinter.cs" />
+    <Compile Include="BL\Historical\HistoricalAPI.cs" />
     <Compile Include="BL\Historical\HistoricalPrinter.cs" />
+    <Compile Include="BL\Intraday\IntradayAPI.cs" />
     <Compile Include="BL\Intraday\IntradayPrinter.cs" />
+    <Compile Include="BL\Options\OptionsAPI.cs" />
     <Compile Include="BL\Options\OptionsPrinter.cs" />
+    <Compile Include="BL\Screener\ScreenerAPI.cs" />
     <Compile Include="BL\Screener\ScreneerPrinter.cs" />
     <Compile Include="BL\UDF.cs" />
     <Compile Include="Controls\RefEdit.cs">
@@ -348,8 +354,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utils\ExcelUtils.cs" />
-    <Compile Include="Utils\GetBulkFundamental.cs" />
-    <Compile Include="Utils\GetOptions.cs" />
     <Compile Include="Utils\Response.cs" />
     <Compile Include="Utils\APIException.cs" />
     <Compile Include="Utils\APIEOD.cs" />

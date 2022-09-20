@@ -1,4 +1,5 @@
 ﻿using EODAddIn.BL;
+using EODAddIn.BL.Screener;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -29,7 +30,7 @@ namespace EODAddIn.Forms
                     MessageBoxIcon.Error);
                 return;
             }
-            LoadToExcel.PrintScreenerHistorical(dateTimePicker1.Value,dateTimePicker2.Value, Convert.ToString(period.SelectedItem));
+            ScreneerPrinter.PrintScreenerHistorical(dateTimePicker1.Value,dateTimePicker2.Value, Convert.ToString(period.SelectedItem));
 
             Close();
         }

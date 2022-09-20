@@ -1,4 +1,6 @@
 ﻿using EODAddIn.BL;
+using EODAddIn.BL.IntradayPrinter;
+using EODAddIn.BL.Screener;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -29,7 +31,7 @@ namespace EODAddIn.Forms
                     MessageBoxIcon.Error);
                 return;
             }
-            LoadToExcel.PrintScreenerIntraday(dateTimePicker1.Value, dateTimePicker2.Value, Convert.ToString(comboBox1.SelectedItem));
+            ScreneerPrinter.PrintScreenerIntraday(dateTimePicker1.Value, dateTimePicker2.Value, Convert.ToString(comboBox1.SelectedItem));
 
             Close();
         }

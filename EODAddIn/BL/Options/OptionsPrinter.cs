@@ -23,7 +23,7 @@ namespace EODAddIn.BL.OptionsPrinter
         /// Print Options Data to a worksheet
         /// </summary>
         /// <param name="data">Данные</param>
-        public static void PrintOptions(EOD.Model.OptionsData.OptionsData data, string ticker)
+        public static void PrintOptions(OptionsData data, string ticker)
         {
             try
             {

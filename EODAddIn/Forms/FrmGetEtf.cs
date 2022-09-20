@@ -1,4 +1,5 @@
-﻿using EODAddIn.Program;
+﻿using EODAddIn.BL.FundamentalDataAPI;
+using EODAddIn.Program;
 using EODAddIn.Utils;
 using System;
 using System.Windows.Forms;
@@ -39,7 +40,7 @@ namespace EODAddIn.Forms
 
             try
             {
-                Results = APIEOD.GetFundamental(Tiker);
+                Results = FundamentalDataAPI.GetFundamental(Tiker);
                 if (Results.ETF_Data == null)
                     throw new NullReferenceException("No ETF data");
             }

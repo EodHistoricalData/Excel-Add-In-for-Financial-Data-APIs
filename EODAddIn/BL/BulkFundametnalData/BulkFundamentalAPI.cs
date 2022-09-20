@@ -7,9 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EODAddIn.Utils
+namespace EODAddIn.BL.BulkFundametnalData
 {
-    internal class GetBulkFundamental
+    internal class BulkFundamentalAPI
     {
         private static string AppName = Settings.SettingsFields.AppName;
         private static string ApiKey = Settings.SettingsFields.APIKey;
