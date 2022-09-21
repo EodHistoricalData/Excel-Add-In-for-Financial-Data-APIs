@@ -49,12 +49,12 @@ namespace EODAddIn.BL.Screener
                 object[,] val = new object[screener.Data.Count + 1, 15];
                 int i = 1;
                 val[0, 0] = "Code";
-                val[0, 1] = "Name";
-                val[0, 2] = "Last day data date";
-                val[0, 3] = "Adjusted Close";
-                val[0, 4] = "Refund 1d";
-                val[0, 5] = "Exchange";
-                val[0, 6] = "Currency symbol";
+                val[0, 1] = "Exchange";
+                val[0, 2] = "Currency symbol";
+                val[0, 3] = "Name";
+                val[0, 4] = "Last day data date";
+                val[0, 5] = "Adjusted Close";
+                val[0, 6] = "Refund 1d";
                 val[0, 7] = "Market Capitalization";
                 val[0, 8] = "Earnings Share";
                 val[0, 9] = "Dividend yield";
@@ -69,12 +69,12 @@ namespace EODAddIn.BL.Screener
                 {
                     int j = 0;
                     val[i, j] = "'" + item.Code; j++;
+                    val[i, j] = item.Exchange; j++;
+                    val[i, j] = item.Currency_Symbol; j++;
                     val[i, j] = item.Name; j++;
                     val[i, j] = item.Last_Day_Data_Date; j++;
                     val[i, j] = item.Adjusted_Close; j++;
                     val[i, j] = item.Refund_1d; j++;
-                    val[i, j] = item.Exchange; j++;
-                    val[i, j] = item.Currency_Symbol; j++;
                     val[i, j] = item.Market_Capitalization; j++;
                     val[i, j] = item.Earnings_Share; j++;
                     val[i, j] = item.Dividend_Yield; j++;
@@ -108,7 +108,7 @@ namespace EODAddIn.BL.Screener
                 return false;
             }
             string codeValue = Convert.ToString(sh.Cells[1, 1].Value);
-            string exchangeValue = Convert.ToString(sh.Cells[1, 6].Value);
+            string exchangeValue = Convert.ToString(sh.Cells[1, 2].Value);
             if (String.IsNullOrEmpty(codeValue) | String.IsNullOrEmpty(exchangeValue))
             {
                 MessageBox.Show(
@@ -119,6 +119,22 @@ namespace EODAddIn.BL.Screener
                 return false;
             }
             return true;
+        }
+        public static List<string> GetTickersFromScreener()
+        {
+            Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
+            List<string> tickers = new List<string>();
+            int i = 2;
+            string cellValue = Convert.ToString(sh.Cells[i,1].Value+"."+sh.Cells[i, 2].Value);
+            tickers.Add(cellValue);
+            i++;
+            while (sh.Cells[i, 1].Value != null)
+            {
+                cellValue = Convert.ToString(sh.Cells[i, 1].Value +"." +sh.Cells[i, 2].Value);
+                tickers.Add(cellValue);
+                i++;
+            }
+            return tickers;
         }
         private static Worksheet CreateGeneralWorksheet(string sheetName)
         {
@@ -226,52 +242,46 @@ namespace EODAddIn.BL.Screener
             sh.Cells[row, column].Font.Bold = true;
             return sh;
         }
-        private static List<(string, string)> GetTickersAndExchangesFromScreener(Worksheet sh)
+        public static Worksheet CreateScreenerHictoricalWorksheet(string sheetName)
         {
-            List<(string, string)> tickers = new List<(string, string)>();
-            int i = 2;
-            string ticker = Convert.ToString(sh.Cells[i, 1].Value) + "." + Convert.ToString(sh.Cells[i, 6].Value);
-            string excahnge = Convert.ToString(sh.Cells[i, 6].Value);
-            while (ticker != ".")
-            {
-                i++;
-                tickers.Add((ticker, excahnge));
-                ticker = Convert.ToString(sh.Cells[i, 1].Value) + "." + Convert.ToString(sh.Cells[i, 6].Value);
-                excahnge = Convert.ToString(sh.Cells[i, 6].Value);
-            }
-            return tickers;
+            Worksheet sh = new Worksheet();
+            sh = AddSheet("Historical data for " + sheetName);
+            int column = 1;
+            int row = 1;
+            sh.Cells[row, column] = "Hictorical data";
+            sh.Cells[row, column].Font.Bold = true; row++;
+            sh.Cells[row, column] = "Ticker"; column++;
+            sh.Cells[row, column] = "Date"; column++;
+            sh.Cells[row, column] = "Open"; column++;
+            sh.Cells[row, column] = "High"; column++;
+            sh.Cells[row, column] = "Low"; column++;
+            sh.Cells[row, column] = "Close"; column++;
+            sh.Cells[row, column] = "Adjusted open"; column++;
+            sh.Cells[row, column] = "Adjusted high"; column++;
+            sh.Cells[row, column] = "Adjusted low"; column++;
+            sh.Cells[row, column] = "Adjusted close"; column++;
+            sh.Cells[row, column] = "Volume"; column++;
+            return sh;
         }
-        private static List<string> GetExchangesFromScreener(Worksheet sh)
+        public static Worksheet CreateScreenerIntradayWorksheet(string sheetName)
         {
-            List<string> exchanges = new List<string>();
-            int i = 2;
-            string cellValue = Convert.ToString(sh.Cells[i, 6].Value);
-            while (cellValue != null)
-            {
-                i++;
-                if (!exchanges.Contains(cellValue))
-                {
-                    exchanges.Add(cellValue);
-                }
-                cellValue = Convert.ToString(sh.Cells[i, 6].Value);
-            }
-            return exchanges;
-        }
-        public static List<string> GetTickersFromScreener()
-        {
-            Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
-            List<string> tickers = new List<string>();
-            int i = 2;
-            string cellValue = Convert.ToString(sh.Cells[i,1].Value+"."+sh.Cells[i, 6].Value);
-            tickers.Add(cellValue);
-            i++;
-            while (sh.Cells[i, 1].Value != null)
-            {
-                cellValue = Convert.ToString(sh.Cells[i, 1].Value +"." +sh.Cells[i, 6].Value);
-                tickers.Add(cellValue);
-                i++;
-            }
-            return tickers;
+            Worksheet sh = new Worksheet();
+            sh = AddSheet("Intraday data for " + sheetName);
+            int column = 1;
+            int row = 1;
+            sh.Cells[row, column] = "Intraday data";
+            sh.Cells[row, column].Font.Bold = true; row++;
+            sh.Cells[row, column] = "Ticker"; column++;
+            sh.Cells[row, column] = "DateTime"; column++;
+            sh.Cells[row, column] = "Gmtoffset"; column++;
+            sh.Cells[row, column] = "DateTime"; column++;
+            sh.Cells[row, column] = "Open"; column++;
+            sh.Cells[row, column] = "High"; column++;
+            sh.Cells[row, column] = "Low"; column++;
+            sh.Cells[row, column] = "Close"; column++;
+            sh.Cells[row, column] = "Volume"; column++;
+            sh.Cells[row, column] = "Timestamp"; column++;
+            return sh;
         }
         public static async void PrintScreenerBulk(List<string> tickers)
         {
@@ -382,6 +392,7 @@ namespace EODAddIn.BL.Screener
         private static int PrintScreenerBulkGeneral(BulkFundamentalData data, Worksheet sh, int column)
         {
             sh.Cells[rowGeneral, column] = data.General.Code; column++;
+
             sh.Cells[rowGeneral, column] = data.General.Type; column++;
             sh.Cells[rowGeneral, column] = data.General.Name; column++;
             sh.Cells[rowGeneral, column] = data.General.CurrencyCode; column++;
@@ -669,8 +680,12 @@ namespace EODAddIn.BL.Screener
                     return;
                 }
                 string screenerSheetName = sh.Name;
-
-                List<(string, string)> tickers = GetTickersAndExchangesFromScreener(sh);
+                List<(string, string)> tickers=new List<(string, string)>();
+                foreach (string ticker in GetTickersFromScreener())
+                {
+                    string[] subs = ticker.Split('.');
+                    tickers.Add((subs[0], subs[1]));
+                }
                 sh = CreateScreenerHictoricalWorksheet(sh.Name);
                 foreach ((string, string) ticker in tickers)
                 {
@@ -702,27 +717,6 @@ namespace EODAddIn.BL.Screener
                 _xlsApp.Interactive = true;
             }
         }
-        public static Worksheet CreateScreenerHictoricalWorksheet(string sheetName)
-        {
-            Worksheet sh = new Worksheet();
-            sh = AddSheet("Historical data for " + sheetName);
-            int column = 1;
-            int row = 1;
-            sh.Cells[row, column] = "Hictorical data";
-            sh.Cells[row, column].Font.Bold = true; row++;
-            sh.Cells[row, column] = "Ticker"; column++;
-            sh.Cells[row, column] = "Date"; column++;
-            sh.Cells[row, column] = "Open"; column++;
-            sh.Cells[row, column] = "High"; column++;
-            sh.Cells[row, column] = "Low"; column++;
-            sh.Cells[row, column] = "Close"; column++;
-            sh.Cells[row, column] = "Adjusted open"; column++;
-            sh.Cells[row, column] = "Adjusted high"; column++;
-            sh.Cells[row, column] = "Adjusted low"; column++;
-            sh.Cells[row, column] = "Adjusted close"; column++;
-            sh.Cells[row, column] = "Volume"; column++;
-            return sh;
-        }
         public static void PrintScreenerIntraday(DateTime from, DateTime to, string interval)
         {
             try
@@ -737,7 +731,12 @@ namespace EODAddIn.BL.Screener
                 }
                 string screenerSheetName = sh.Name;
 
-                List<(string, string)> tickers = GetTickersAndExchangesFromScreener(sh);
+                List<(string, string)> tickers = new List<(string, string)>();
+                foreach (string ticker in GetTickersFromScreener())
+                {
+                    string[] subs = ticker.Split('.');
+                    tickers.Add((subs[0], subs[1]));
+                }
                 sh = CreateScreenerIntradayWorksheet(sh.Name);
                 foreach ((string, string) ticker in tickers)
                 {
@@ -768,25 +767,6 @@ namespace EODAddIn.BL.Screener
                 _xlsApp.Interactive = true;
             }
         }
-        public static Worksheet CreateScreenerIntradayWorksheet(string sheetName)
-        {
-            Worksheet sh = new Worksheet();
-            sh = AddSheet("Intraday data for " + sheetName);
-            int column = 1;
-            int row = 1;
-            sh.Cells[row, column] = "Intraday data";
-            sh.Cells[row, column].Font.Bold = true; row++;
-            sh.Cells[row, column] = "Ticker"; column++;
-            sh.Cells[row, column] = "DateTime"; column++;
-            sh.Cells[row, column] = "Gmtoffset"; column++;
-            sh.Cells[row, column] = "DateTime"; column++;
-            sh.Cells[row, column] = "Open"; column++;
-            sh.Cells[row, column] = "High"; column++;
-            sh.Cells[row, column] = "Low"; column++;
-            sh.Cells[row, column] = "Close"; column++;
-            sh.Cells[row, column] = "Volume"; column++;
-            sh.Cells[row, column] = "Timestamp"; column++;
-            return sh;
-        }
+
     }
 }

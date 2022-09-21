@@ -711,12 +711,23 @@ namespace EODAddIn.Forms
                 case "code":
                     field = Field.Code;
                     break;
-
+                case "exchange":
+                    field = Field.Exchange;
+                    break;
                 case "name":
                     field = Field.Name;
                     break;
-                case "exchange":
-                    field = Field.Exchange;
+                case "refund 1d":
+                    field = Field.Refund1dP;
+                    break;
+                case "market capitalization":
+                    field = Field.MarketCapitalization;
+                    break;
+                case "earnings share":
+                    field = Field.EarningsShare;
+                    break;   
+                case "dividend yield":
+                    field = Field.DividendYield;
                     break;
                 case "sector":
                     field = Field.Sector;
@@ -724,28 +735,6 @@ namespace EODAddIn.Forms
                 case "industry":
                     field = Field.Industry;
                     break;
-                case "market_capitalization":
-                    field = Field.MarketCapitalization;
-                    break;
-                case "earnings_share":
-                    field = Field.EarningsShare;
-                    break;
-                case "dividend_yield":
-                    field = Field.DividendYield;
-                    break;
-                case "refund_1d_p":
-                    field = Field.Refund1dP;
-                    break;
-                case "refund_5d_p":
-                    field = Field.Refund5dP;
-                    break;
-                case "avgvol_1d":
-                    field = Field.Refund5dP;
-                    break;
-                case "avgvol_200d":
-                    field = Field.Refund5dP;
-                    break;
-
                 default:
                     Sort = null;
                     return;

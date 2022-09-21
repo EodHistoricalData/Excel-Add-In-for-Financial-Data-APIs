@@ -211,7 +211,7 @@ namespace EODAddIn
             this.menuScreener.Items.Add(this.btnGetScreenerFundamenat);
             this.menuScreener.Items.Add(this.btnGetSreenerHistorical);
             this.menuScreener.Items.Add(this.btnGetScreenerIntraday);
-            this.menuScreener.Label = "Screener";
+            this.menuScreener.Label = "Stock Screener";
             this.menuScreener.Name = "menuScreener";
             this.menuScreener.ShowImage = true;
             // 

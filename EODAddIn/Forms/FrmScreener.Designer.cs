@@ -189,6 +189,16 @@
             // 
             this.cboSortField.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cboSortField.FormattingEnabled = true;
+            this.cboSortField.Items.AddRange(new object[] {
+            "code",
+            "exchange",
+            "name",
+            "refund 1d",
+            "market capitalization",
+            "earnings share",
+            "dividend yield",
+            "sector",
+            "industry"});
             this.cboSortField.Location = new System.Drawing.Point(69, 453);
             this.cboSortField.Name = "cboSortField";
             this.cboSortField.Size = new System.Drawing.Size(121, 21);
