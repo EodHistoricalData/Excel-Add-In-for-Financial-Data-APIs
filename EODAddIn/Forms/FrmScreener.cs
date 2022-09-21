@@ -1,4 +1,5 @@
-﻿using Microsoft.Office.Interop.Excel;
+﻿using EODAddIn.Program;
+using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -463,8 +464,32 @@ namespace EODAddIn.Forms
         public FrmScreener()
         {
             InitializeComponent();
-        }
+            cboSector.Text = Settings.SettingsFields.ScreenerSector;
+            cboIndustry.Text = Settings.SettingsFields.ScreenerIndustry;
+            txtCode.Text = Settings.SettingsFields.ScreenerCode;
+            txtName.Text = Settings.SettingsFields.ScreenerName;
+            txtExchange.Text = Settings.SettingsFields.ScreenerExchange;
+            numLimit.Value = Settings.SettingsFields.ScreenerLimit;
+            chk50d_new_hi.CheckState = Settings.SettingsFields.Screener50d_New_Hi;
+            chk50d_new_lo.CheckState = Settings.SettingsFields.Screener50d_New_Lo;
+            chk200d_new_hi.CheckState = Settings.SettingsFields.Screener200d_New_Hi;
+            chk200d_new_lo.CheckState = Settings.SettingsFields.Screener200d_New_Lo;
+            chkWallstreet_hi.CheckState = Settings.SettingsFields.ScreenerWallStreet_Hi;
+            chkWallstreet_lo.CheckState = Settings.SettingsFields.ScreenerWallStreet_Lo;
+            rbtnSortAsc.Checked = Settings.SettingsFields.ScreenerRbtnSortAsc;
+            rbtnSortDesc.Checked = Settings.SettingsFields.ScreenerRbtnSortDesc;
+            int dataGridRow=0;
+            foreach ((string,string,string) values in Settings.SettingsFields.ScreenerDataGridViewFilters)
+            {
 
+                dataGridViewFilters.Rows.Add();
+                dataGridViewFilters.Rows[dataGridRow].Cells[0].Value = values.Item1;
+                dataGridViewFilters.Rows[dataGridRow].Cells[1].Value = values.Item2;
+                dataGridViewFilters.Rows[dataGridRow].Cells[2].Value = values.Item3;
+                dataGridRow++;
+            }
+            Settings.SettingsFields.ScreenerDataGridViewFilters.Clear();
+        }
         private void dataGridViewFilters_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
             DataGridViewComboBoxCell cell = (DataGridViewComboBoxCell)dataGridViewFilters.Rows[e.RowIndex].Cells[colField.Index];
@@ -532,6 +557,30 @@ namespace EODAddIn.Forms
                 MessageBox.Show(ex.Message, "Screener error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+            Settings.SettingsFields.ScreenerSector = cboSector.Text;
+            Settings.SettingsFields.ScreenerIndustry = cboIndustry.Text;
+            Settings.SettingsFields.ScreenerCode = txtCode.Text;
+            Settings.SettingsFields.ScreenerName = txtName.Text;
+            Settings.SettingsFields.ScreenerExchange = txtExchange.Text;
+            Settings.SettingsFields.ScreenerLimit = (int)numLimit.Value;
+            Settings.SettingsFields.Screener50d_New_Lo = chk50d_new_lo.CheckState;
+            Settings.SettingsFields.Screener50d_New_Hi = chk50d_new_hi.CheckState;
+            Settings.SettingsFields.Screener200d_New_Hi = chk200d_new_hi.CheckState;
+            Settings.SettingsFields.Screener200d_New_Lo = chk200d_new_lo.CheckState;
+            Settings.SettingsFields.ScreenerBookValue_Neg = chkBookvalue_neg.CheckState;
+            Settings.SettingsFields.ScreenerBookValue_Pos = chkBookvalue_pos.CheckState;
+            Settings.SettingsFields.ScreenerWallStreet_Lo = chkWallstreet_lo.CheckState;
+            Settings.SettingsFields.ScreenerWallStreet_Hi = chkWallstreet_hi.CheckState;
+            Settings.SettingsFields.ScreenerRbtnSortAsc = rbtnSortAsc.Checked;
+            Settings.SettingsFields.ScreenerRbtnSortDesc = rbtnSortDesc.Checked;
+            for(int i = 0; i < dataGridViewFilters.Rows.Count; i++)
+            {
+                string field = dataGridViewFilters.Rows[i].Cells[0].Value.ToString() ;
+                string operation = dataGridViewFilters.Rows[i].Cells[1].Value.ToString();
+                string value = dataGridViewFilters.Rows[i].Cells[2].Value.ToString();
+                Settings.SettingsFields.ScreenerDataGridViewFilters.Add((field,operation,value));
+            }
+            Settings.Save();
         }
 
         private void SetFilteres()

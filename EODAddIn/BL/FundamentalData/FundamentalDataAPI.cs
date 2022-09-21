@@ -1,10 +1,4 @@
-﻿using EOD.Model.OptionsData;
-using EOD;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.Office.Interop.Excel;
+﻿using Newtonsoft.Json;
 using EODAddIn.Utils;
 
 namespace EODAddIn.BL.FundamentalDataAPI

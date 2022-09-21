@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Forms;
 
 namespace EODAddIn.Program
 {
@@ -35,6 +36,24 @@ namespace EODAddIn.Program
         public List<string> BulkFundamentalTickers;
         public int BulkFundamentalOffset = 0;
         public int BulkFundamentalLimit = 500;
+
+        public string ScreenerSector;
+        public string ScreenerIndustry;
+        public string ScreenerCode;
+        public string ScreenerName;
+        public string ScreenerExchange;
+        public int ScreenerLimit;
+        public CheckState Screener50d_New_Lo;
+        public CheckState Screener50d_New_Hi;
+        public CheckState Screener200d_New_Lo;
+        public CheckState Screener200d_New_Hi;
+        public CheckState ScreenerBookValue_Neg;
+        public CheckState ScreenerBookValue_Pos;
+        public CheckState ScreenerWallStreet_Lo;
+        public CheckState ScreenerWallStreet_Hi;
+        public bool ScreenerRbtnSortAsc;
+        public bool ScreenerRbtnSortDesc;
+        public List<(string, string, string)> ScreenerDataGridViewFilters;
 
         public SettingsFields()
         {

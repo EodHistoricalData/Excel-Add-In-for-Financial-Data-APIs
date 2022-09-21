@@ -1,10 +1,6 @@
-﻿using EOD.Model.OptionsData;
-using EOD;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.Office.Interop.Excel;
 using EODAddIn.Utils;
 
 namespace EODAddIn.BL.IntradayAPI

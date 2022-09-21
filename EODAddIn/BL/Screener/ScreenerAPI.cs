@@ -1,10 +1,6 @@
-﻿using EOD.Model.OptionsData;
-using EOD;
-using Newtonsoft.Json;
-using System;
+﻿using EOD;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.Office.Interop.Excel;
 
 namespace EODAddIn.BL.Screener
 {

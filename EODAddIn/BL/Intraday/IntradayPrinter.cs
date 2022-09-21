@@ -1,16 +1,9 @@
 ﻿using EOD.Model;
-using EOD.Model.BulkFundamental;
-using EOD.Model.OptionsData;
-using EODAddIn.Program;
 using EODAddIn.Utils;
 using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
-using System.Data.SqlClient;
 using System.Drawing;
-using System.Reflection;
-using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 using static EODAddIn.Utils.ExcelUtils;
 using EODAddIn.BL.Screener;
