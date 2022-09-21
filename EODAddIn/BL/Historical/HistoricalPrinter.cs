@@ -146,7 +146,7 @@ namespace EODAddIn.BL.HistoricalPrinter
             Excel.Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
             if (!isListCreated)
             {
-                sh = ScreenerPrinter.CreateScreenerHictoricalWorksheet("");
+                sh = ScreenerPrinter.CreateScreenerHictoricalWorksheet("selected tickers");
             }
             foreach (HistoricalStockPrice item in res)
             {

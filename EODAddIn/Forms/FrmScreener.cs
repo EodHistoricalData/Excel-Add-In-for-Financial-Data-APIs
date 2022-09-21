@@ -784,5 +784,24 @@ namespace EODAddIn.Forms
             }
             cboIndustry.Items.AddRange(list.Distinct().ToArray());
         }
+
+        private void btnClearFilters_Click(object sender, EventArgs e)
+        {
+            cboSector.Text = null;
+            cboIndustry.Text = null;
+            txtCode.Text = null;
+            txtName.Text = null;
+            txtExchange.Text = null;
+            numLimit.Value = 100;
+            chk50d_new_hi.CheckState = CheckState.Unchecked;
+            chk50d_new_lo.CheckState = CheckState.Unchecked;
+            chk200d_new_hi.CheckState = CheckState.Unchecked;
+            chk200d_new_lo.CheckState = CheckState.Unchecked;
+            chkWallstreet_hi.CheckState = CheckState.Unchecked;
+            chkWallstreet_lo.CheckState = CheckState.Unchecked;
+            rbtnSortAsc.Checked = true;
+            rbtnSortDesc.Checked = false;
+            dataGridViewFilters.Rows.Clear();
+        }
     }
 }

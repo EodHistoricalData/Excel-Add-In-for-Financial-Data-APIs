@@ -175,7 +175,7 @@ namespace EODAddIn.BL.IntradayPrinter
             Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
             if (!IsListCreated)
             {
-                sh = ScreenerPrinter.CreateScreenerIntradayWorksheet("");
+                sh = ScreenerPrinter.CreateScreenerIntradayWorksheet("selected tickers");
             }
             foreach (IntradayHistoricalStockPrice item in res)
             {

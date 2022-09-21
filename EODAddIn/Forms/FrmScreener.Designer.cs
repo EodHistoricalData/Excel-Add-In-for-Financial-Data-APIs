@@ -61,6 +61,7 @@
             this.label5 = new System.Windows.Forms.Label();
             this.cboSector = new System.Windows.Forms.ComboBox();
             this.cboIndustry = new System.Windows.Forms.ComboBox();
+            this.btnClearFilters = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFilters)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numLimit)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -405,11 +406,22 @@
             this.cboIndustry.Size = new System.Drawing.Size(165, 21);
             this.cboIndustry.TabIndex = 31;
             // 
+            // btnClearFilters
+            // 
+            this.btnClearFilters.Location = new System.Drawing.Point(484, 8);
+            this.btnClearFilters.Name = "btnClearFilters";
+            this.btnClearFilters.Size = new System.Drawing.Size(93, 23);
+            this.btnClearFilters.TabIndex = 32;
+            this.btnClearFilters.Text = "Clear filters\r\n";
+            this.btnClearFilters.UseVisualStyleBackColor = true;
+            this.btnClearFilters.Click += new System.EventHandler(this.btnClearFilters_Click);
+            // 
             // FrmScreener
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(605, 533);
+            this.Controls.Add(this.btnClearFilters);
             this.Controls.Add(this.cboIndustry);
             this.Controls.Add(this.cboSector);
             this.Controls.Add(this.label5);
@@ -478,5 +490,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox cboSector;
         private System.Windows.Forms.ComboBox cboIndustry;
+        private System.Windows.Forms.Button btnClearFilters;
     }
 }
