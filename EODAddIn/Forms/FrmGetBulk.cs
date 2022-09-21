@@ -10,7 +10,7 @@ namespace EODAddIn.Forms
     {
         public Dictionary<string, BulkFundamentalData> Results;
         public List<string> Tickers = Settings.SettingsFields.BulkFundamentalTickers;
-
+        public string BulkTypeOfOutput;
         public FrmGetBulk()
         {
             InitializeComponent();
@@ -49,6 +49,7 @@ namespace EODAddIn.Forms
                     string ticker = row.Cells[0].Value.ToString();
                     Tickers.Add(ticker);
                 }
+                BulkTypeOfOutput = cboTypeOfOutput.Text;
             }
             catch
             {

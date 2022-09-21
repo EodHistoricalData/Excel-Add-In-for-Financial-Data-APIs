@@ -1,6 +1,7 @@
 ﻿using EODAddIn.BL;
 using EODAddIn.BL.HistoricalAPI;
 using EODAddIn.BL.HistoricalPrinter;
+using EODAddIn.BL.IntradayPrinter;
 using EODAddIn.Program;
 using EODAddIn.Utils;
 
@@ -60,6 +61,8 @@ namespace EODAddIn.Forms
 
             List<string> tikers = new List<string>();
             Progress progress = new Progress("Load end of data", gridTickers.Rows.Count - 1);
+            int rowHistorical = 3;
+            bool isListCreated = false;
             foreach (DataGridViewRow row in gridTickers.Rows)
             {
                 if (row.Cells[0].Value == null) continue;
@@ -68,13 +71,24 @@ namespace EODAddIn.Forms
                 tikers.Add(ticker);
                 try
                 {
-                    //async await Task.Run(() =>});
                     List<EOD.Model.HistoricalStockPrice> res = HistoricalAPI.GetEOD(ticker, from, to, period);
                     if (rbtnAscOrder.Checked)
                     {
                         res.Reverse();
                     }
-                    HistoricalPrinter.PrintEndOfDay(res, ticker, period, chkChart.Checked);
+                    switch (cboTypeOfOutput.SelectedItem.ToString())
+                    {
+                        case "Separated with chart":
+                            rowHistorical = HistoricalPrinter.PrintEndOfDay(res, ticker, period, true, chkIsTable.Checked);
+                            break;
+                        case "Separated without chart":
+                            rowHistorical = HistoricalPrinter.PrintEndOfDay(res, ticker, period, false, chkIsTable.Checked);
+                            break;
+                        case "One worksheet":
+                            rowHistorical = HistoricalPrinter.PrintEndOfDaySummary(res, ticker, period, rowHistorical, isListCreated);
+                            isListCreated = true;
+                            break;
+                    }
                 }
                 catch (APIException ex)
                 {
@@ -87,6 +101,10 @@ namespace EODAddIn.Forms
                     error.ShowAndSend();
                     continue;
                 }
+            }
+            if (isListCreated && chkIsTable.Checked)
+            {
+                ExcelUtils.MakeTable("A2", "K" + rowHistorical.ToString(), Globals.ThisAddIn.Application.ActiveSheet, "Historical", 9);
             }
             progress.Finish();
             Settings.SettingsFields.EndOfDayPeriod = period;

@@ -35,13 +35,15 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.tsmiFindTicker = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiClearTicker = new System.Windows.Forms.ToolStripMenuItem();
+            this.label1 = new System.Windows.Forms.Label();
+            this.cboTypeOfOutput = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.gridTickers)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnLoad
             // 
-            this.btnLoad.Location = new System.Drawing.Point(161, 291);
+            this.btnLoad.Location = new System.Drawing.Point(161, 320);
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(75, 23);
             this.btnLoad.TabIndex = 19;
@@ -60,7 +62,7 @@
             this.gridTickers.RowHeadersVisible = false;
             this.gridTickers.RowHeadersWidth = 20;
             this.gridTickers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gridTickers.Size = new System.Drawing.Size(223, 247);
+            this.gridTickers.Size = new System.Drawing.Size(223, 234);
             this.gridTickers.TabIndex = 22;
             // 
             // Column1
@@ -96,11 +98,34 @@
             this.tsmiClearTicker.Text = "Clear list";
             this.tsmiClearTicker.Click += new System.EventHandler(this.ClearTicker_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(10, 284);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(78, 13);
+            this.label1.TabIndex = 25;
+            this.label1.Text = "Type of Output";
+            // 
+            // cboTypeOfOutput
+            // 
+            this.cboTypeOfOutput.FormattingEnabled = true;
+            this.cboTypeOfOutput.Items.AddRange(new object[] {
+            "One worksheet",
+            "Separated"});
+            this.cboTypeOfOutput.Location = new System.Drawing.Point(94, 281);
+            this.cboTypeOfOutput.Name = "cboTypeOfOutput";
+            this.cboTypeOfOutput.Size = new System.Drawing.Size(142, 21);
+            this.cboTypeOfOutput.TabIndex = 24;
+            this.cboTypeOfOutput.Text = "One worksheet";
+            // 
             // FrmGetBulk
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(248, 326);
+            this.ClientSize = new System.Drawing.Size(248, 356);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.cboTypeOfOutput);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.gridTickers);
             this.Controls.Add(this.btnLoad);
@@ -124,5 +149,7 @@
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem tsmiFindTicker;
         private System.Windows.Forms.ToolStripMenuItem tsmiClearTicker;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox cboTypeOfOutput;
     }
 }

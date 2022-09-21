@@ -14,10 +14,11 @@ using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 using static EODAddIn.Utils.ExcelUtils;
 using EODAddIn.BL.BulkFundametnalData;
+using EOD.Model.Fundamental;
 
 namespace EODAddIn.BL.Screener
 {
-    public class ScreneerPrinter
+    public class ScreenerPrinter
     {
         static int screenerCounter = 1;
         static int rowGeneral = 3;
@@ -260,55 +261,71 @@ namespace EODAddIn.BL.Screener
                     exchanges.Add(cellValue);
                 }
                 cellValue = Convert.ToString(sh.Cells[i, 6].Value);
-
             }
             return exchanges;
         }
-       
-        public static async void PrintScreenerBulk()
+        public static List<string> GetTickersFromScreener()
+        {
+            Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
+            List<string> tickers = new List<string>();
+            int i = 2;
+            string cellValue = Convert.ToString(sh.Cells[i,1].Value+"."+sh.Cells[i, 6].Value);
+            tickers.Add(cellValue);
+            i++;
+            while (sh.Cells[i, 1].Value != null)
+            {
+                cellValue = Convert.ToString(sh.Cells[i, 1].Value +"." +sh.Cells[i, 6].Value);
+                tickers.Add(cellValue);
+                i++;
+            }
+            return tickers;
+        }
+        public static async void PrintScreenerBulk(List<string> tickers)
         {
             Worksheet shGeneral = new Worksheet();
             Worksheet shEarnings = new Worksheet();
             Worksheet shBalance = new Worksheet();
             Worksheet shCashFlow = new Worksheet();
             Worksheet shIncomeStatement = new Worksheet();
-            shGeneral = Globals.ThisAddIn.Application.ActiveSheet;
-            if (!CheckIsScreenerResult(shGeneral))
-            {
-                return;
-            }
-            string screenerSheetName = shGeneral.Name;
-
-            List<(string, string)> tickersAndExchanges = GetTickersAndExchangesFromScreener(shGeneral);
-            List<string> exchanges = GetExchangesFromScreener(shGeneral);
-            shGeneral = CreateGeneralWorksheet(screenerSheetName);
-            shEarnings = CreateEarningsWorksheet(screenerSheetName);
-            shBalance = CreateBalanceWorksheet(screenerSheetName);
-            shCashFlow = CreateCashFlowWorksheet(screenerSheetName);
-            shIncomeStatement = CreateIncomeStatementWorksheet(screenerSheetName);
-            List<string> tickers = new List<string>();
-            int offset = 0;
+            List<(string, string)> tickerAndExchanges = new List<(string, string)>();
+            List<string> exchanges = new List<string>();
+            List<string> TickerForBulk = new List<string>();
             Dictionary<string, BulkFundamentalData> res;
+            int offset = 0;
             int tickersCount = 0;
+            shGeneral = Globals.ThisAddIn.Application.ActiveSheet;
+            shGeneral = CreateGeneralWorksheet("");
+            shEarnings = CreateEarningsWorksheet("");
+            shBalance = CreateBalanceWorksheet("");
+            shCashFlow = CreateCashFlowWorksheet("");
+            shIncomeStatement = CreateIncomeStatementWorksheet("");
+            foreach (string ticker in tickers)
+            {
+                string[] subs = ticker.Split('.');
+                tickerAndExchanges.Add((ticker, subs[1]));
+                if (!exchanges.Contains(subs[1]))
+                {
+                exchanges.Add(subs[1]);
+                }
+            }
             foreach (string exchange in exchanges)
             {
-                foreach ((string, string) tickerAndExchange in tickersAndExchanges)
+                foreach ((string, string) tickerAndExchange in tickerAndExchanges)
                 {
                     if (tickerAndExchange.Item2 == exchange)
                     {
-                        tickers.Add(tickerAndExchange.Item1);
+                        TickerForBulk.Add(tickerAndExchange.Item1);
                     }
                 }
-                tickersCount = tickers.Count;
                 while (tickersCount > 500)
                 {
-                    res = await BulkFundamentalAPI.GetBulkData(exchange, tickers, offset, 500);
+                    res = await BulkFundamentalAPI.GetBulkData(exchange, TickerForBulk, offset, 500);
                     offset += 500;
                     tickersCount--;
                 }
-                res = await BulkFundamentalAPI.GetBulkData(exchange, tickers, offset, 500);
-                PrintBulkFundamentalForScreener(res, tickers, shGeneral, shEarnings, shBalance, shCashFlow, shIncomeStatement);
-                tickers.Clear();
+                res = await BulkFundamentalAPI.GetBulkData(exchange, TickerForBulk, offset, 500);
+                PrintBulkFundamentalForScreener(res, TickerForBulk, shGeneral, shEarnings, shBalance, shCashFlow, shIncomeStatement);
+                TickerForBulk.Clear();
             }
             MakeTable("A2", "AW" + Convert.ToString(rowGeneral), shGeneral, "Highlights", 9);
             MakeTable("A2", "F" + Convert.ToString(rowEarningsTicker), shEarnings, "Earnings", 9);
@@ -692,7 +709,7 @@ namespace EODAddIn.BL.Screener
                 _xlsApp.Interactive = true;
             }
         }
-        private static Worksheet CreateScreenerHictoricalWorksheet(string sheetName)
+        public static Worksheet CreateScreenerHictoricalWorksheet(string sheetName)
         {
             Worksheet sh = new Worksheet();
             sh = AddSheet("Historical data for " + sheetName);
@@ -758,7 +775,7 @@ namespace EODAddIn.BL.Screener
                 _xlsApp.Interactive = true;
             }
         }
-        private static Worksheet CreateScreenerIntradayWorksheet(string sheetName)
+        public static Worksheet CreateScreenerIntradayWorksheet(string sheetName)
         {
             Worksheet sh = new Worksheet();
             sh = AddSheet("Intraday data for " + sheetName);

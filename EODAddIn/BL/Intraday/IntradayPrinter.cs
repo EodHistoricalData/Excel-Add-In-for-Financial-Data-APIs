@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 using static EODAddIn.Utils.ExcelUtils;
+using EODAddIn.BL.Screener;
 
 namespace EODAddIn.BL.IntradayPrinter
 {
@@ -26,16 +27,13 @@ namespace EODAddIn.BL.IntradayPrinter
         /// <param name="ticker">Ticker</param>
         /// <param name="period">period</param>
         /// <param name="chart">necessity of chart</param>
-        public static void PrintIntraday(List<EOD.Model.IntradayHistoricalStockPrice> intraday, string ticker, string interval, bool chart)
+        public static int PrintIntraday(List<EOD.Model.IntradayHistoricalStockPrice> intraday, string ticker, string interval, bool chart, bool isCreateTable)
         {
             try
             {
                 SetNonInteractive();
-
                 string nameSheet = $"{ticker}-{interval}";
-
                 Excel.Worksheet worksheet = AddSheet(nameSheet);
-
                 int r = 2;
                 worksheet.Cells[r, 1] = "DateTime";
                 worksheet.Cells[r, 2] = "Gmtoffset";
@@ -71,9 +69,13 @@ namespace EODAddIn.BL.IntradayPrinter
                 {
                     ExcelUtils.OnEnd();
                 }
-
-                if (!CreateSheet) return;
-                if (!chart) return;
+                if (isCreateTable)
+                {
+                    ExcelUtils.MakeTable("A2", "H" + r.ToString(), worksheet, "Intraday", 9);
+                }
+                
+                if (!CreateSheet) return r;
+                if (!chart) return r;
 
                 worksheet.Range["C2:G3"].Select();
 
@@ -130,7 +132,7 @@ namespace EODAddIn.BL.IntradayPrinter
 
 
                 int lastrow = ExcelUtils.RowsCount(worksheet);
-                if (lastrow <= 2) return;
+                if (lastrow <= 2) return r;
 
                 Excel.Range timestampRng = worksheet.Range[$"I2:I{lastrow}"];
                 Excel.Range timeRng = worksheet.Range[$"C2:C{lastrow}"];
@@ -164,6 +166,7 @@ namespace EODAddIn.BL.IntradayPrinter
 
                 shp.Left = (float)worksheet.Cells[5, 11].Left;
                 shp.Top = (float)worksheet.Cells[5, 11].Top;
+                return r;
             }
             catch
             {
@@ -173,6 +176,28 @@ namespace EODAddIn.BL.IntradayPrinter
             {
                 _xlsApp.Interactive = true;
             }
+        }
+        public static int PrintIntradaySummary(List<EOD.Model.IntradayHistoricalStockPrice> res, string ticker, string interval, int row, bool IsListCreated)
+        {
+            Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
+            if (!IsListCreated)
+            {
+                sh = ScreenerPrinter.CreateScreenerIntradayWorksheet("");
+            }
+            foreach (IntradayHistoricalStockPrice item in res)
+            {
+                sh.Cells[row, 1] = ticker;
+                sh.Cells[row, 2] = item.DateTime;
+                sh.Cells[row, 3] = item.Gmtoffset;
+                sh.Cells[row, 4] = item.Open;
+                sh.Cells[row, 5] = item.High;
+                sh.Cells[row, 6] = item.Low;
+                sh.Cells[row, 7] = item.Close;
+                sh.Cells[row, 8] = item.Volume;
+                sh.Cells[row, 9] = item.Timestamp;
+                row++;
+            }
+            return row;
         }
     }
 }

@@ -1,12 +1,14 @@
 ﻿using EODAddIn.BL;
 using EODAddIn.BL.IntradayAPI;
 using EODAddIn.BL.IntradayPrinter;
+using EODAddIn.BL.Screener;
 using EODAddIn.Program;
 using EODAddIn.Utils;
 using MS.ProgressBar;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Policy;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -49,13 +51,13 @@ namespace EODAddIn.Forms
         private void BtnLoad_Click(object sender, EventArgs e)
         {
             if (!CheckForm()) return;
-
+            bool isListCreated = false;
             string interval = cboInterval.SelectedItem.ToString().ToLower();
             DateTime from = dtpFrom.Value;
             DateTime to = dtpTo.Value;
 
             List<string> tikers = new List<string>();
-
+            int rowIntraday = 3;
             Progress progress = new Progress("Load end of data", gridTickers.Rows.Count - 1);
             foreach (DataGridViewRow row in gridTickers.Rows)
             {
@@ -71,7 +73,20 @@ namespace EODAddIn.Forms
                     {
                         res.Reverse();
                     }
-                    IntradayPrinter.PrintIntraday(res, ticker, interval, chkChart.Checked);
+                    switch (cboTypeOfOutput.SelectedItem.ToString())
+                    {
+                        case "Separated with chart":
+                            rowIntraday = IntradayPrinter.PrintIntraday(res, ticker, interval, true, chkIsTable.Checked);
+                            break;
+                        case "Separated without chart":
+                            rowIntraday=IntradayPrinter.PrintIntraday(res, ticker, interval, false, chkIsTable.Checked);
+                            break;
+                        case "One worksheet":
+                            rowIntraday=IntradayPrinter.PrintIntradaySummary(res, ticker, interval, rowIntraday,isListCreated);
+                            isListCreated = true;
+                            break;
+                    }
+
                 }
                 catch (APIException ex)
                 {
@@ -84,6 +99,10 @@ namespace EODAddIn.Forms
                     error.ShowAndSend();
                     continue;
                 }
+            }
+            if (isListCreated&&chkIsTable.Checked)
+            {
+                ExcelUtils.MakeTable("A2", "J" + rowIntraday.ToString(), Globals.ThisAddIn.Application.ActiveSheet, "Intraday", 9);
             }
             progress.Finish();
             Settings.SettingsFields.IntradayInterval = interval;
@@ -286,7 +305,5 @@ namespace EODAddIn.Forms
             }
             return dateTo;
         }
-
-      
     }
 }

@@ -5,6 +5,7 @@ using EODAddIn.BL.FundamentalDataPrinter;
 using EODAddIn.BL.OptionsAPI;
 using EODAddIn.BL.OptionsPrinter;
 using EODAddIn.BL.Screener;
+using EODAddIn.Forms;
 using EODAddIn.Utils;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Excel;
@@ -267,7 +268,16 @@ namespace EODAddIn
                 {
                     BtnGetBulk.Label = "Processing";
                     BtnGetBulk.Enabled = false;
-                    BulkFundamentalPrinter.PrintBulkFundamentals(frm.Tickers);
+                    switch (frm.BulkTypeOfOutput)
+                    {
+                        case "Separated":
+                            BulkFundamentalPrinter.PrintBulkFundamentals(frm.Tickers);
+                            break;
+                        case "One worksheet":
+                            ScreenerPrinter.PrintScreenerBulk(frm.Tickers);
+                            break;
+                    }
+
                 }
             }
             catch (Exception ex)
@@ -294,7 +304,7 @@ namespace EODAddIn
                     BtnOptions.Enabled = false;
 
                     var res = await ScreenerAPI.GetScreener(frm.Filters, frm.Signals, frm.Sort, frm.Limit);
-                    ScreneerPrinter.PrintScreener(res);
+                    ScreenerPrinter.PrintScreener(res);
 
                     BtnOptions.Label = "Get Options";
                     BtnOptions.Enabled = true;
@@ -307,11 +317,11 @@ namespace EODAddIn
             }
         }
 
-        private void btnGetScreenerFundamenat_Click(object sender, RibbonControlEventArgs e)
+        private void btnGetScreenerFundamental_Click(object sender, RibbonControlEventArgs e)
         {
             try
             {
-                ScreneerPrinter.PrintScreenerBulk();
+                ScreenerPrinter.PrintScreenerBulk(ScreenerPrinter.GetTickersFromScreener());
             }
             catch (Exception ex)
             {

@@ -205,7 +205,7 @@
     <Compile Include="BL\Options\OptionsAPI.cs" />
     <Compile Include="BL\Options\OptionsPrinter.cs" />
     <Compile Include="BL\Screener\ScreenerAPI.cs" />
-    <Compile Include="BL\Screener\ScreneerPrinter.cs" />
+    <Compile Include="BL\Screener\ScreenerPrinter.cs" />
     <Compile Include="BL\UDF.cs" />
     <Compile Include="Controls\RefEdit.cs">
       <SubType>UserControl</SubType>

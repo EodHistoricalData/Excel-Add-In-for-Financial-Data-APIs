@@ -30,7 +30,7 @@ namespace EODAddIn.Forms
                     MessageBoxIcon.Error);
                 return;
             }
-            ScreneerPrinter.PrintScreenerHistorical(dateTimePicker1.Value,dateTimePicker2.Value, Convert.ToString(period.SelectedItem));
+            ScreenerPrinter.PrintScreenerHistorical(dateTimePicker1.Value,dateTimePicker2.Value, Convert.ToString(period.SelectedItem));
 
             Close();
         }

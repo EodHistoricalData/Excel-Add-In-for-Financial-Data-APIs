@@ -13,6 +13,8 @@ using System.Reflection;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 using static EODAddIn.Utils.ExcelUtils;
+using EODAddIn.BL.Screener;
+using Microsoft.Office.Tools.Excel;
 
 namespace EODAddIn.BL.HistoricalPrinter
 {
@@ -25,17 +27,16 @@ namespace EODAddIn.BL.HistoricalPrinter
         /// <param name="ticker">Ticker</param>
         /// <param name="period">Period</param>
         /// <param name="chart"> necessity of chart</param>
-        public static void PrintEndOfDay(List<EOD.Model.HistoricalStockPrice> endOfDays, string ticker, string period, bool chart)
+        public static int PrintEndOfDay(List<EOD.Model.HistoricalStockPrice> endOfDays, string ticker, string period, bool chart, bool isCreateTable)
         {
             try
             {
                 SetNonInteractive();
-
                 string nameSheet = $"{ticker}-{period}";
+                int r = 2;
 
                 Excel.Worksheet worksheet = AddSheet(nameSheet);
-
-                int r = 2;
+                worksheet.Cells[r-1, 1] = "Historical Data";
                 worksheet.Cells[r, 1] = "Date";
                 worksheet.Cells[r, 2] = "Open";
                 worksheet.Cells[r, 3] = "High";
@@ -50,7 +51,7 @@ namespace EODAddIn.BL.HistoricalPrinter
                 try
                 {
                     ExcelUtils.OnStart();
-                    foreach (EOD.Model.HistoricalStockPrice item in endOfDays)
+                    foreach (HistoricalStockPrice item in endOfDays)
                     {
                         r++;
                         worksheet.Cells[r, 1] = item.Date;
@@ -73,9 +74,12 @@ namespace EODAddIn.BL.HistoricalPrinter
                 {
                     ExcelUtils.OnEnd();
                 }
-
-                if (!CreateSheet) return;
-                if (!chart) return;
+                if (isCreateTable)
+                {
+                    ExcelUtils.MakeTable("A2", "J" + r.ToString(), worksheet, "Intraday", 9);
+                }
+                if (!CreateSheet) return r;
+                if (!chart) return r;
 
                 worksheet.Range["A2:E3"].Select();
 
@@ -134,6 +138,7 @@ namespace EODAddIn.BL.HistoricalPrinter
                 shp.Height = 340.157480315f;
                 shp.Width = 680.3149606299f;
                 chrt.ChartTitle.Caption = worksheet.Name;
+                return r;
             }
             catch
             {
@@ -143,6 +148,31 @@ namespace EODAddIn.BL.HistoricalPrinter
             {
                 _xlsApp.Interactive = true;
             }
+        }
+
+        internal static int PrintEndOfDaySummary(List<HistoricalStockPrice> res, string ticker, string period, int row, bool isListCreated)
+        {
+            Excel.Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
+            if (!isListCreated)
+            {
+                sh = ScreenerPrinter.CreateScreenerHictoricalWorksheet("");
+            }
+            foreach (HistoricalStockPrice item in res)
+            {
+                sh.Cells[row, 1] = ticker;
+                sh.Cells[row, 2] = item.Date;
+                sh.Cells[row, 3] = item.Open;
+                sh.Cells[row, 4] = item.High;
+                sh.Cells[row, 5] = item.Low;
+                sh.Cells[row, 6] = item.Close;
+                sh.Cells[row, 7] = item.Adjusted_open;
+                sh.Cells[row, 8] = item.Adjusted_high;
+                sh.Cells[row, 9] = item.Adjusted_low;
+                sh.Cells[row, 10] = item.Adjusted_close;
+                sh.Cells[row, 11] = item.Volume;
+                row++;
+            }
+            return row;
         }
     }
 }

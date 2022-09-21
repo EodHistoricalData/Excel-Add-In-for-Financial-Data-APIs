@@ -31,7 +31,7 @@ namespace EODAddIn.Forms
                     MessageBoxIcon.Error);
                 return;
             }
-            ScreneerPrinter.PrintScreenerIntraday(dateTimePicker1.Value, dateTimePicker2.Value, Convert.ToString(comboBox1.SelectedItem));
+            ScreenerPrinter.PrintScreenerIntraday(dateTimePicker1.Value, dateTimePicker2.Value, Convert.ToString(comboBox1.SelectedItem));
 
             Close();
         }
