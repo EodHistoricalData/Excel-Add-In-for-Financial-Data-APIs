@@ -295,12 +295,13 @@ namespace EODAddIn.BL.Screener
             Dictionary<string, BulkFundamentalData> res;
             int offset = 0;
             int tickersCount = 0;
+            string sheetname = Globals.ThisAddIn.Application.ActiveSheet.name;
             shGeneral = Globals.ThisAddIn.Application.ActiveSheet;
-            shGeneral = CreateGeneralWorksheet("");
-            shEarnings = CreateEarningsWorksheet("");
-            shBalance = CreateBalanceWorksheet("");
-            shCashFlow = CreateCashFlowWorksheet("");
-            shIncomeStatement = CreateIncomeStatementWorksheet("");
+            shGeneral = CreateGeneralWorksheet(sheetname);
+            shEarnings = CreateEarningsWorksheet(sheetname);
+            shBalance = CreateBalanceWorksheet(sheetname);
+            shCashFlow = CreateCashFlowWorksheet(sheetname);
+            shIncomeStatement = CreateIncomeStatementWorksheet(sheetname);
             foreach (string ticker in tickers)
             {
                 string[] subs = ticker.Split('.');

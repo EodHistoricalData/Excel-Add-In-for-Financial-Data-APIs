@@ -42,7 +42,7 @@ namespace EODAddIn.Program
         public string ScreenerCode;
         public string ScreenerName;
         public string ScreenerExchange;
-        public int ScreenerLimit;
+        public int ScreenerLimit=100;
         public CheckState Screener50d_New_Lo;
         public CheckState Screener50d_New_Hi;
         public CheckState Screener200d_New_Lo;
