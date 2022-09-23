@@ -52,16 +52,19 @@ namespace EODAddIn.Forms
         private void BtnLoad_Click(object sender, EventArgs e)
         {
             if (!CheckForm()) return;
-            Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
-            if (sh.UsedRange.Value != null)
+            if (cboTypeOfOutput.SelectedItem.ToString()== "One worksheet")
             {
-                MessageBox.Show(
-                "Select empty worksheet",
-                "Error",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Warning
-            );
-                return;
+                Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
+                if (sh.UsedRange.Value != null)
+                {
+                    MessageBox.Show(
+                    "Select empty worksheet",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                    return;
+                }
             }
             bool isSummary = false;
             string interval = cboInterval.SelectedItem.ToString().ToLower();
