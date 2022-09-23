@@ -162,18 +162,6 @@
         AABJRU5ErkJggg==
 </value>
   </data>
-  <data name="tsmiLoadTickers.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAY5JREFUOE+F
-        k1tLAkEUx+fTVFLURyn6CGE31BfXF2OtEWfNF4PyodLsInhdlcjUQukhCOrNhyLo5gdIyEiUUpk84wq7
-        02h/+MEw5/zPcM6eRSKZQ7LJlsSKPU0OAEscK0tHzgktPFzLCdeMlFEufOWdz73bMN2/O2TA2VcO1B0Z
-        UjSf4Gkt3ShbFM+7i1vVgWkY7qL/bTUmz2m2vuBlkfmp9sLg76HISmRtSrMjJKVIiU8C3hs1hijmyHjz
-        zGyOyCboT5Q0qsBmKVBfCMvjyJrEXv3A9IwqsNvzWGOYILtKwqIEYFQBQEqSEJJUEhIFgf8K2FVPEMHC
-        8C3kHgv0unpDv74bDDjDnT4HWrDFNzxs6/ghxiop2vxp0oFa7RaNV1RDAV95+4MNEdRb10t9EMjen9F2
-        t0073Q49fTg3xAApS3LMDIL1hOXgk0rPVwz+Huf9r4vHrknN3hesp6gID5gt0fVZzWYUrKcjrRRgSWBI
-        AxOcoWcpTQp/XhYJhgO/MHxiwJrAZDHoHNPCOiH0CwSwUaKV9t55AAAAAElFTkSuQmCC
-</value>
-  </data>
   <data name="tsmiFromTxt.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAQdJREFUOE9j
@@ -192,6 +180,18 @@
         yIDP379CWUQacPfFQyjr//+rj2//P3jtFJRHpAFn7l7+v/nsvv9XHt/6v+fSUagoBBBlAAjcfv7g/4ID
         a6E8BCDKgB+/fv5fcmjD/10XD4NdgQwIGgDTDKJB4NSdi2AaBgga8Pz9K7hmbICgAYQAVgPwZSZ0DFIL
         1YYAeLMzGgaphehiYAAAEjRxGetW2qEAAAAASUVORK5CYII=
+</value>
+  </data>
+  <data name="tsmiLoadTickers.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAY5JREFUOE+F
+        k1tLAkEUx+fTVFLURyn6CGE31BfXF2OtEWfNF4PyodLsInhdlcjUQukhCOrNhyLo5gdIyEiUUpk84wq7
+        02h/+MEw5/zPcM6eRSKZQ7LJlsSKPU0OAEscK0tHzgktPFzLCdeMlFEufOWdz73bMN2/O2TA2VcO1B0Z
+        UjSf4Gkt3ShbFM+7i1vVgWkY7qL/bTUmz2m2vuBlkfmp9sLg76HISmRtSrMjJKVIiU8C3hs1hijmyHjz
+        zGyOyCboT5Q0qsBmKVBfCMvjyJrEXv3A9IwqsNvzWGOYILtKwqIEYFQBQEqSEJJUEhIFgf8K2FVPEMHC
+        8C3kHgv0unpDv74bDDjDnT4HWrDFNzxs6/ghxiop2vxp0oFa7RaNV1RDAV95+4MNEdRb10t9EMjen9F2
+        t0073Q49fTg3xAApS3LMDIL1hOXgk0rPVwz+Huf9r4vHrknN3hesp6gID5gt0fVZzWYUrKcjrRRgSWBI
+        AxOcoWcpTQp/XhYJhgO/MHxiwJrAZDHoHNPCOiH0CwSwUaKV9t55AAAAAElFTkSuQmCC
 </value>
   </data>
   <data name="tsmiClearTicker.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

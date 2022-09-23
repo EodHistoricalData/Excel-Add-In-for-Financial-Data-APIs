@@ -445,7 +445,7 @@
             this.Controls.Add(this.dataGridViewFilters);
             this.Name = "FrmScreener";
             this.ShowIcon = false;
-            this.Text = "New screener";
+            this.Text = "                                ";
             this.Load += new System.EventHandler(this.FrmScreener_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFilters)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numLimit)).EndInit();

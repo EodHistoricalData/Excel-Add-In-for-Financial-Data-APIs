@@ -141,13 +141,24 @@ namespace EODAddIn.BL.HistoricalPrinter
             }
         }
 
-        internal static int PrintEndOfDaySummary(List<HistoricalStockPrice> res, string ticker, string period, int row, bool isListCreated)
+        public static int PrintEndOfDaySummary(List<HistoricalStockPrice> res, string ticker, string period, int row)
         {
             Excel.Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
-            if (!isListCreated)
-            {
-                sh = ScreenerPrinter.CreateScreenerHictoricalWorksheet("selected tickers");
-            }
+            int c = 1;
+            int r = 1;
+            sh.Cells[r, c] = "Hictorical data";
+            sh.Cells[r, c].Font.Bold = true; r++;
+            sh.Cells[r, c] = "Ticker"; c++;
+            sh.Cells[r, c] = "Date"; c++;
+            sh.Cells[r, c] = "Open"; c++;
+            sh.Cells[r, c] = "High"; c++;
+            sh.Cells[r, c] = "Low"; c++;
+            sh.Cells[r, c] = "Close"; c++;
+            sh.Cells[r, c] = "Adjusted open"; c++;
+            sh.Cells[r, c] = "Adjusted high"; c++;
+            sh.Cells[r, c] = "Adjusted low"; c++;
+            sh.Cells[r, c] = "Adjusted close"; c++;
+            sh.Cells[r, c] = "Volume"; c++;
             foreach (HistoricalStockPrice item in res)
             {
                 sh.Cells[row, 1] = ticker;

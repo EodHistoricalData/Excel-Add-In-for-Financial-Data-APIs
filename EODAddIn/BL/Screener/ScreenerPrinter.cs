@@ -96,7 +96,7 @@ namespace EODAddIn.BL.Screener
             }
 
         }
-        private static bool CheckIsScreenerResult(Worksheet sh)
+        public static bool CheckIsScreenerResult(Worksheet sh)
         {
             if (!(Globals.ThisAddIn.Application.ActiveSheet is Worksheet sh1))
             {
@@ -274,17 +274,16 @@ namespace EODAddIn.BL.Screener
             sh.Cells[row, column] = "Ticker"; column++;
             sh.Cells[row, column] = "DateTime"; column++;
             sh.Cells[row, column] = "Gmtoffset"; column++;
-            sh.Cells[row, column] = "DateTime"; column++;
             sh.Cells[row, column] = "Open"; column++;
             sh.Cells[row, column] = "High"; column++;
             sh.Cells[row, column] = "Low"; column++;
             sh.Cells[row, column] = "Close"; column++;
             sh.Cells[row, column] = "Volume"; column++;
-            sh.Cells[row, column] = "Timestamp"; column++;
             return sh;
         }
         public static async void PrintScreenerBulk(List<string> tickers)
         {
+
             Worksheet shGeneral = new Worksheet();
             Worksheet shEarnings = new Worksheet();
             Worksheet shBalance = new Worksheet();

@@ -257,6 +257,8 @@ namespace EODAddIn.Forms
             // 
             // chkIsTable
             // 
+            this.chkIsTable.Checked = true;
+            this.chkIsTable.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkIsTable.Location = new System.Drawing.Point(12, 382);
             this.chkIsTable.Name = "chkIsTable";
             this.chkIsTable.RightToLeft = System.Windows.Forms.RightToLeft.Yes;

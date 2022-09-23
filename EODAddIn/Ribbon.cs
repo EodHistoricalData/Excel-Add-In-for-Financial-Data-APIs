@@ -277,7 +277,6 @@ namespace EODAddIn
                             ScreenerPrinter.PrintScreenerBulk(frm.Tickers);
                             break;
                     }
-
                 }
             }
             catch (Exception ex)
@@ -321,6 +320,10 @@ namespace EODAddIn
         {
             try
             {
+               if (!  ScreenerPrinter.CheckIsScreenerResult(Globals.ThisAddIn.Application.ActiveSheet))
+                {
+                    return;
+                }
                 ScreenerPrinter.PrintScreenerBulk(ScreenerPrinter.GetTickersFromScreener());
             }
             catch (Exception ex)

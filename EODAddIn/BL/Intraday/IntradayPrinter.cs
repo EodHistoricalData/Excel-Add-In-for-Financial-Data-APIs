@@ -170,13 +170,22 @@ namespace EODAddIn.BL.IntradayPrinter
                 _xlsApp.Interactive = true;
             }
         }
-        public static int PrintIntradaySummary(List<EOD.Model.IntradayHistoricalStockPrice> res, string ticker, string interval, int row, bool IsListCreated)
+        public static int PrintIntradaySummary(List<EOD.Model.IntradayHistoricalStockPrice> res, string ticker, string interval, int row)
         {
             Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
-            if (!IsListCreated)
-            {
-                sh = ScreenerPrinter.CreateScreenerIntradayWorksheet("selected tickers");
-            }
+            int c = 1;
+            int r = 1;
+            sh.Cells[r, c] = "Intraday data";
+            sh.Cells[r, c].Font.Bold = true; r++;
+            sh.Cells[r, c] = "Ticker"; c++;
+            sh.Cells[r, c] = "DateTime"; c++;
+            sh.Cells[r, c] = "Gmtoffset"; c++;
+            sh.Cells[r, c] = "Open"; c++;
+            sh.Cells[r, c] = "High"; c++;
+            sh.Cells[r, c] = "Low"; c++;
+            sh.Cells[r, c] = "Close"; c++;
+            sh.Cells[r, c] = "Volume";c++;
+            sh.Cells[r, c] = "TimeStamp";
             foreach (IntradayHistoricalStockPrice item in res)
             {
                 sh.Cells[row, 1] = ticker;

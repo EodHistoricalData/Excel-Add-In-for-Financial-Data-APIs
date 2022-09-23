@@ -54,15 +54,24 @@ namespace EODAddIn.Forms
         private void BtnLoad_Click(object sender, EventArgs e)
         {
             if (!CheckForm()) return;
-
+            Excel.Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
+            if (sh.UsedRange.Value != null)
+            {
+                MessageBox.Show(
+                "Select empty worksheet",
+                "Error",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Warning
+            );
+                return;
+            }
+            bool isSummary = false;
             string period = cboPeriod.SelectedItem.ToString().ToLower().Substring(0, 1);
             DateTime from = dtpFrom.Value;
             DateTime to = dtpTo.Value;
-
             List<string> tikers = new List<string>();
-            Progress progress = new Progress("Load end of data", gridTickers.Rows.Count - 1);
             int rowHistorical = 3;
-            bool isListCreated = false;
+            Progress progress = new Progress("Load end of data", gridTickers.Rows.Count - 1);
             foreach (DataGridViewRow row in gridTickers.Rows)
             {
                 if (row.Cells[0].Value == null) continue;
@@ -85,8 +94,8 @@ namespace EODAddIn.Forms
                             rowHistorical = HistoricalPrinter.PrintEndOfDay(res, ticker, period, false, chkIsTable.Checked);
                             break;
                         case "One worksheet":
-                            rowHistorical = HistoricalPrinter.PrintEndOfDaySummary(res, ticker, period, rowHistorical, isListCreated);
-                            isListCreated = true;
+                            rowHistorical = HistoricalPrinter.PrintEndOfDaySummary(res, ticker, period, rowHistorical);
+                            isSummary = true;
                             break;
                     }
                 }
@@ -102,7 +111,7 @@ namespace EODAddIn.Forms
                     continue;
                 }
             }
-            if (isListCreated && chkIsTable.Checked)
+            if (isSummary && chkIsTable.Checked)
             {
                 ExcelUtils.MakeTable("A2", "K" + rowHistorical.ToString(), Globals.ThisAddIn.Application.ActiveSheet, "Historical", 9);
             }
