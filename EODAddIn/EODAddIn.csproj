@@ -432,7 +432,7 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>63DB2ED7AF8EEC86BA5D219581A574BB88CEA2C9</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>0E50C74D3CC2A690CCBFE35F3CDD50161E861B91</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>icon.ico</ApplicationIcon>

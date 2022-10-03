@@ -2,7 +2,7 @@
 ; Основные переменные установщика
 ; -------------------------------------------------------------------------------------------------------------------------------------------------
 #define AppName      "EODAddIn"                                              
-#define AppPublisher "Micro-Solution LLC"
+#define AppPublisher "LLC Micro-Solution"
 #define AppURL       "https://eodhistoricaldata.com"
 #define AppGUI       "954b1976-5920-420c-86b4-ee520daf33b1"
 
@@ -20,20 +20,20 @@
 ; Настройка NetFramework 
 ; -------------------------------------------------------------------------------------------------------------------------------------------------
 #define NeedNetFramework 1                                                   ; 0/1
-#define NetFrameworkVerName "4.5"
+#define NetFrameworkVerName "4.8"
 ;Название файла установщика нужной версии NetFramework. Должен лежать в SetupPath
-#define NetFrameworkFileSetup "dotNetFx45_Full_setup.exe"                         ; 4.5
+#define NetFrameworkFileSetup "ndp48-web.exe"                         ; 4.5
 ;#define NetFrameworkSetup "NDP472-KB4054530-x86-x64-AllOS-ENU.exe"           ; 4.7.2  Full
 
 ; -------------------------------------------------------------------------------------------------------------------------------------------------
 ; Подписывание программы
 ; -------------------------------------------------------------------------------------------------------------------------------------------------
-#define SignTool    "C:\Program Files (x86)\Windows Kits\10\bin\10.0.20348.0\x64\signtool.exe"
+#define SignTool    "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22000.0\x64\signtool.exe"
 #define SingNameSSL AppPublisher ; Имя сертификата
 
 [Setup]
 ;Подписывание кода
-;SignTool=byparam {#SignTool} sign /a /n $q{#SingNameSSL}$q /t http://timestamp.comodoca.com/authenticode /d $q{#AppName}$q $f
+SignTool=byparam {#SignTool} sign /a /fd SHA256 /n $q{#SingNameSSL}$q /t http://timestamp.comodoca.com/authenticode  /d $q{#AppName}$q $f
 
 ;Использовать сгенерируемый VS GUI
 AppId            = {{{#AppGUI}}
@@ -221,4 +221,4 @@ function  InitializeUninstall(): Boolean;
   end;
 
 [Run]
-Filename: {tmp}\{#NetFrameworkFileSetup}; Parameters: "/q:a /c:""install /l /q"""; Check: not IsDotNetDetected; StatusMsg: Microsoft Framework 4.5 is installed. Please wait...
+Filename: {tmp}\{#NetFrameworkFileSetup}; Parameters: "/q:a /c:""install /l /q"""; Check: not IsDotNetDetected; StatusMsg: Microsoft Framework 4.8 is installed. Please wait...

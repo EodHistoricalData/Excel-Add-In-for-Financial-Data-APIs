@@ -360,5 +360,30 @@ namespace EODAddIn
                 errorReport.ShowAndSend();
             }
         }
+
+        private void BtnListOfExchanges_Click(object sender, RibbonControlEventArgs e)
+        {
+
+        }
+
+        private void BtnListOfCRYPTOCurrencies_Click(object sender, RibbonControlEventArgs e)
+        {
+
+        }
+
+        private void BtnListOfFutures_Click(object sender, RibbonControlEventArgs e)
+        {
+
+        }
+
+        private void BtnListOfForexCurrencies_Click(object sender, RibbonControlEventArgs e)
+        {
+
+        }
+
+        private void BtnListOfIndices_Click(object sender, RibbonControlEventArgs e)
+        {
+
+        }
     }
 }
