@@ -54,6 +54,7 @@ namespace EODAddIn.Program
         public bool ScreenerRbtnSortAsc;
         public bool ScreenerRbtnSortDesc;
         public List<(string, string, string)> ScreenerDataGridViewFilters;
+        public bool IsInfoShowed;
 
         public SettingsFields()
         {

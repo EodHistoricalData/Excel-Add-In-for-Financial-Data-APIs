@@ -1,4 +1,5 @@
 ﻿using EODAddIn.BL;
+using EODAddIn.Program;
 using System;
 using System.IO;
 
@@ -10,7 +11,9 @@ namespace EODAddIn
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
             Program.Program.Run();
-
+            EODAddIn.Panels.PanelInfo panel = new Panels.PanelInfo(); // add to settings save 
+            panel.ShowPanel();
+            Settings.SettingsFields.IsInfoShowed = true;
             string filename = Path.Combine(Program.Program.UserFolder, "EODAddIn.xla");
             if (!File.Exists(filename))
             {

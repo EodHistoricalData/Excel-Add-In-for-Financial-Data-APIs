@@ -21,14 +21,7 @@ namespace EODAddIn.Program
         internal const string UrlCompany = "https://eodhistoricaldata.com?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin";
         internal const string UrlRegister = "https://eodhistoricaldata.com/register?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin";
         internal const string UrlKey = "https://eodhistoricaldata.com/cp/settings?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin";
-        internal const string UrlPrice = "https://eodhistoricaldata.com/pricing?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin";
-        
-        internal const string UrlListSupportedExchanges = "https://eodhistoricaldata.com/financial-apis/list-supported-exchanges?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin";
-        internal const string UrlListSupportedExchanges = "https://eodhistoricaldata.com/financial-apis/list-supported-exchanges?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin";
-        internal const string UrlListSupportedExchanges = "https://eodhistoricaldata.com/financial-apis/list-supported-exchanges?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin";
-        internal const string UrlListSupportedExchanges = "https://eodhistoricaldata.com/financial-apis/list-supported-exchanges?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin";
-        internal const string UrlListSupportedExchanges = "https://eodhistoricaldata.com/financial-apis/list-supported-exchanges?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin";
-        
+        internal const string UrlPrice = "https://eodhistoricaldata.com/pricing?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin"; 
         internal const string UrlUpdate = "https://eodhistoricaldata.com/excel-plugin-updates.xml";
 
         /// <summary>
