@@ -43,8 +43,8 @@ namespace EODAddIn
 
         private void BtnSettings_Click(object sender, RibbonControlEventArgs e)
         {
-            Program.FrmAPIKey frm = new Program.FrmAPIKey();
-            frm.ShowDialog();
+            EODAddIn.Panels.PanelInfo panel = new Panels.PanelInfo();
+            panel.ShowPanel();
         }
 
         private void GetHistorical_Click(object sender, RibbonControlEventArgs e)
@@ -387,12 +387,6 @@ namespace EODAddIn
         private void BtnListOfIndices_Click(object sender, RibbonControlEventArgs e)
         {
             System.Diagnostics.Process.Start("https://eodhistoricaldata.com/financial-apis/list-supported-indices/?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
-        }
-
-        private void btnInfo_Click(object sender, RibbonControlEventArgs e)
-        {
-            EODAddIn.Panels.PanelInfo panel = new Panels.PanelInfo();
-            panel.ShowPanel();
         }
     }
 }

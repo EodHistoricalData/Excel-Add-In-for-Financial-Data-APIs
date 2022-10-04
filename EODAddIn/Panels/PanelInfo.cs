@@ -60,7 +60,8 @@ namespace EODAddIn.Panels
             if (CustomTaskPanel != null)
             {
                 CustomTaskPanel.Visible = true;
-                CustomTaskPanel.Width = 404;
+                CustomTaskPanel.Width = 405
+                    ;
             }
         }
 
@@ -96,7 +97,9 @@ namespace EODAddIn.Panels
 
         private void btnDocumentation_Click(object sender, System.EventArgs e)
         {
-            System.Diagnostics.Process.Start("https://eodhistoricaldata.com/financial-academy/ready-to-go-solution/excel-add-in/");
+        
+            System.Diagnostics.Process.Start("https://eodhistoricaldata.com/financial-apis/excel-financial-add-in-fundamentals-end-of-day-charts/?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
+
         }
 
         private void btnPrivacyPolicy_Click(object sender, System.EventArgs e)
@@ -132,10 +135,14 @@ namespace EODAddIn.Panels
             }
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
+        private void btnHide_Click(object sender, EventArgs e)
         {
             CustomTaskPanel.Visible = false;
         }
 
+        private void btnHowTo_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://eodhistoricaldata.com/financial-academy/ready-to-go-solution/excel-add-in?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
+        }
     }
 }

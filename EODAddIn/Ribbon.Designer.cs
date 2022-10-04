@@ -75,7 +75,6 @@ namespace EODAddIn
             this.btnCheckUpdate = this.Factory.CreateRibbonButton();
             this.btnErrorMessage = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
-            this.btnInfo = this.Factory.CreateRibbonButton();
             this.tabMain.SuspendLayout();
             this.grpMain.SuspendLayout();
             this.group1.SuspendLayout();
@@ -344,7 +343,7 @@ namespace EODAddIn
             // 
             this.btnSettings.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.btnSettings.Image = ((System.Drawing.Image)(resources.GetObject("btnSettings.Image")));
-            this.btnSettings.Label = "Set API key";
+            this.btnSettings.Label = "Settings";
             this.btnSettings.Name = "btnSettings";
             this.btnSettings.ShowImage = true;
             this.btnSettings.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSettings_Click);
@@ -355,7 +354,6 @@ namespace EODAddIn
             this.grpAbout.Items.Add(this.btnCheckUpdate);
             this.grpAbout.Items.Add(this.btnErrorMessage);
             this.grpAbout.Items.Add(this.btnAbout);
-            this.grpAbout.Items.Add(this.btnInfo);
             this.grpAbout.Label = "About";
             this.grpAbout.Name = "grpAbout";
             // 
@@ -391,12 +389,6 @@ namespace EODAddIn
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.ShowImage = true;
             this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnAbout_Click);
-            // 
-            // btnInfo
-            // 
-            this.btnInfo.Label = "Info about AddIn";
-            this.btnInfo.Name = "btnInfo";
-            this.btnInfo.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnInfo_Click);
             // 
             // Ribbon
             // 
@@ -457,7 +449,6 @@ namespace EODAddIn
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnListOfFutures;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnListOfForexCurrencies;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnListOfIndices;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnInfo;
     }
 
     partial class ThisRibbonCollection

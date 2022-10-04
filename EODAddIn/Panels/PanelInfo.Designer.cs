@@ -32,24 +32,26 @@ namespace EODAddIn.Panels
             this.label6 = new System.Windows.Forms.Label();
             this.btnErrorReport = new System.Windows.Forms.Button();
             this.btnSendAnIdea = new System.Windows.Forms.Button();
-            this.btnClose = new System.Windows.Forms.Button();
-            this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
+            this.btnHide = new System.Windows.Forms.Button();
+            this.btnHowTo = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // label1
             // 
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.75F);
             this.label1.Location = new System.Drawing.Point(12, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(395, 180);
+            this.label1.Size = new System.Drawing.Size(349, 180);
             this.label1.TabIndex = 0;
             this.label1.Text = resources.GetString("label1.Text");
             // 
             // label2
             // 
             this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label2.Location = new System.Drawing.Point(9, 189);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(227, 26);
+            this.label2.Size = new System.Drawing.Size(258, 30);
             this.label2.TabIndex = 1;
             this.label2.Text = "To start uploading data directly into your Excel:\r\n1. Register or Login to Get AP" +
     "I Key";
@@ -58,7 +60,7 @@ namespace EODAddIn.Panels
             // 
             this.btnRegister.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(182)))), ((int)(((byte)(214)))));
             this.btnRegister.ForeColor = System.Drawing.Color.White;
-            this.btnRegister.Location = new System.Drawing.Point(9, 218);
+            this.btnRegister.Location = new System.Drawing.Point(15, 232);
             this.btnRegister.Name = "btnRegister";
             this.btnRegister.Size = new System.Drawing.Size(92, 41);
             this.btnRegister.TabIndex = 2;
@@ -70,7 +72,7 @@ namespace EODAddIn.Panels
             // 
             this.btnLogin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(182)))), ((int)(((byte)(214)))));
             this.btnLogin.ForeColor = System.Drawing.Color.White;
-            this.btnLogin.Location = new System.Drawing.Point(107, 218);
+            this.btnLogin.Location = new System.Drawing.Point(113, 232);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(92, 41);
             this.btnLogin.TabIndex = 3;
@@ -81,9 +83,10 @@ namespace EODAddIn.Panels
             // label3
             // 
             this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label3.Location = new System.Drawing.Point(9, 276);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(133, 13);
+            this.label3.Size = new System.Drawing.Size(148, 15);
             this.label3.TabIndex = 4;
             this.label3.Text = "2. Insert your API Key here";
             // 
@@ -91,7 +94,7 @@ namespace EODAddIn.Panels
             // 
             this.btnAPIkey.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(182)))), ((int)(((byte)(214)))));
             this.btnAPIkey.ForeColor = System.Drawing.Color.White;
-            this.btnAPIkey.Location = new System.Drawing.Point(9, 292);
+            this.btnAPIkey.Location = new System.Drawing.Point(15, 294);
             this.btnAPIkey.Name = "btnAPIkey";
             this.btnAPIkey.Size = new System.Drawing.Size(92, 41);
             this.btnAPIkey.TabIndex = 5;
@@ -102,9 +105,10 @@ namespace EODAddIn.Panels
             // label4
             // 
             this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label4.Location = new System.Drawing.Point(9, 349);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(236, 39);
+            this.label4.Size = new System.Drawing.Size(267, 45);
             this.label4.TabIndex = 6;
             this.label4.Text = "3. Choose the subscription type which will cover \r\nyour needs from the pricing pl" +
     "ans page\r\n\r\n";
@@ -113,7 +117,7 @@ namespace EODAddIn.Panels
             // 
             this.btnUpgragePackages.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(182)))), ((int)(((byte)(214)))));
             this.btnUpgragePackages.ForeColor = System.Drawing.Color.White;
-            this.btnUpgragePackages.Location = new System.Drawing.Point(9, 391);
+            this.btnUpgragePackages.Location = new System.Drawing.Point(15, 388);
             this.btnUpgragePackages.Name = "btnUpgragePackages";
             this.btnUpgragePackages.Size = new System.Drawing.Size(147, 41);
             this.btnUpgragePackages.TabIndex = 7;
@@ -124,9 +128,10 @@ namespace EODAddIn.Panels
             // label5
             // 
             this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label5.Location = new System.Drawing.Point(9, 447);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(118, 13);
+            this.label5.Size = new System.Drawing.Size(135, 15);
             this.label5.TabIndex = 8;
             this.label5.Text = "4. Read documentation\r\n";
             // 
@@ -134,7 +139,7 @@ namespace EODAddIn.Panels
             // 
             this.btnDocumentation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(182)))), ((int)(((byte)(214)))));
             this.btnDocumentation.ForeColor = System.Drawing.Color.White;
-            this.btnDocumentation.Location = new System.Drawing.Point(12, 472);
+            this.btnDocumentation.Location = new System.Drawing.Point(15, 465);
             this.btnDocumentation.Name = "btnDocumentation";
             this.btnDocumentation.Size = new System.Drawing.Size(124, 41);
             this.btnDocumentation.TabIndex = 9;
@@ -146,9 +151,9 @@ namespace EODAddIn.Panels
             // 
             this.btnPrivacyPolicy.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(182)))), ((int)(((byte)(214)))));
             this.btnPrivacyPolicy.ForeColor = System.Drawing.Color.White;
-            this.btnPrivacyPolicy.Location = new System.Drawing.Point(12, 650);
+            this.btnPrivacyPolicy.Location = new System.Drawing.Point(15, 627);
             this.btnPrivacyPolicy.Name = "btnPrivacyPolicy";
-            this.btnPrivacyPolicy.Size = new System.Drawing.Size(104, 31);
+            this.btnPrivacyPolicy.Size = new System.Drawing.Size(109, 41);
             this.btnPrivacyPolicy.TabIndex = 10;
             this.btnPrivacyPolicy.Text = "Privacy Policy";
             this.btnPrivacyPolicy.UseVisualStyleBackColor = false;
@@ -157,20 +162,21 @@ namespace EODAddIn.Panels
             // label6
             // 
             this.label6.AutoSize = true;
+            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.label6.Location = new System.Drawing.Point(12, 532);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(281, 39);
+            this.label6.Size = new System.Drawing.Size(315, 45);
             this.label6.TabIndex = 11;
-            this.label6.Text = "If you need any other data for equities,\r\n funds or ETFs or you have ideas or sug" +
-    "gestions of how to\r\n improve our Excel Financial Add-In, send us an email.\r\n";
+            this.label6.Text = "If you need any other data for equities,\r\nfunds or ETFs or you have ideas or sugg" +
+    "estions of how to\r\nimprove our Excel Financial Add-In, send us an email.\r\n";
             // 
             // btnErrorReport
             // 
             this.btnErrorReport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(182)))), ((int)(((byte)(214)))));
             this.btnErrorReport.ForeColor = System.Drawing.Color.White;
-            this.btnErrorReport.Location = new System.Drawing.Point(128, 589);
+            this.btnErrorReport.Location = new System.Drawing.Point(157, 580);
             this.btnErrorReport.Name = "btnErrorReport";
-            this.btnErrorReport.Size = new System.Drawing.Size(92, 41);
+            this.btnErrorReport.Size = new System.Drawing.Size(124, 41);
             this.btnErrorReport.TabIndex = 12;
             this.btnErrorReport.Text = "ERROR REPORT";
             this.btnErrorReport.UseVisualStyleBackColor = false;
@@ -180,37 +186,42 @@ namespace EODAddIn.Panels
             // 
             this.btnSendAnIdea.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(182)))), ((int)(((byte)(214)))));
             this.btnSendAnIdea.ForeColor = System.Drawing.Color.White;
-            this.btnSendAnIdea.Location = new System.Drawing.Point(15, 589);
+            this.btnSendAnIdea.Location = new System.Drawing.Point(15, 580);
             this.btnSendAnIdea.Name = "btnSendAnIdea";
-            this.btnSendAnIdea.Size = new System.Drawing.Size(89, 41);
+            this.btnSendAnIdea.Size = new System.Drawing.Size(112, 41);
             this.btnSendAnIdea.TabIndex = 13;
             this.btnSendAnIdea.Text = "SEND AN IDEA";
             this.btnSendAnIdea.UseVisualStyleBackColor = false;
             this.btnSendAnIdea.Click += new System.EventHandler(this.btnSendAnIdea_Click);
             // 
-            // btnClose
+            // btnHide
             // 
-            this.btnClose.Location = new System.Drawing.Point(223, 650);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(79, 38);
-            this.btnClose.TabIndex = 14;
-            this.btnClose.Text = "CLOSE";
-            this.btnClose.UseVisualStyleBackColor = true;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
+            this.btnHide.BackColor = System.Drawing.Color.White;
+            this.btnHide.Location = new System.Drawing.Point(287, 628);
+            this.btnHide.Name = "btnHide";
+            this.btnHide.Size = new System.Drawing.Size(74, 38);
+            this.btnHide.TabIndex = 14;
+            this.btnHide.Text = "HIDE";
+            this.btnHide.UseVisualStyleBackColor = false;
+            this.btnHide.Click += new System.EventHandler(this.btnHide_Click);
             // 
-            // vScrollBar1
+            // btnHowTo
             // 
-            this.vScrollBar1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.vScrollBar1.Location = new System.Drawing.Point(407, 0);
-            this.vScrollBar1.Name = "vScrollBar1";
-            this.vScrollBar1.Size = new System.Drawing.Size(17, 701);
-            this.vScrollBar1.TabIndex = 15;
+            this.btnHowTo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(182)))), ((int)(((byte)(214)))));
+            this.btnHowTo.ForeColor = System.Drawing.Color.White;
+            this.btnHowTo.Location = new System.Drawing.Point(157, 465);
+            this.btnHowTo.Name = "btnHowTo";
+            this.btnHowTo.Size = new System.Drawing.Size(124, 41);
+            this.btnHowTo.TabIndex = 16;
+            this.btnHowTo.Text = "HOW TO USE";
+            this.btnHowTo.UseVisualStyleBackColor = false;
+            this.btnHowTo.Click += new System.EventHandler(this.btnHowTo_Click);
             // 
             // PanelInfo
             // 
             this.AutoScroll = true;
-            this.Controls.Add(this.vScrollBar1);
-            this.Controls.Add(this.btnClose);
+            this.Controls.Add(this.btnHowTo);
+            this.Controls.Add(this.btnHide);
             this.Controls.Add(this.btnSendAnIdea);
             this.Controls.Add(this.btnErrorReport);
             this.Controls.Add(this.label6);
@@ -226,7 +237,7 @@ namespace EODAddIn.Panels
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "PanelInfo";
-            this.Size = new System.Drawing.Size(340, 701);
+            this.Size = new System.Drawing.Size(373, 667);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -248,7 +259,7 @@ namespace EODAddIn.Panels
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Button btnErrorReport;
         private System.Windows.Forms.Button btnSendAnIdea;
-        private System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.VScrollBar vScrollBar1;
+        private System.Windows.Forms.Button btnHide;
+        private System.Windows.Forms.Button btnHowTo;
     }
 }
