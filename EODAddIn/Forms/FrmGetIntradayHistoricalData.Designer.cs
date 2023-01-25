@@ -122,6 +122,8 @@ namespace EODAddIn.Forms
             this.cboInterval.Items.AddRange(new object[] {
             "1m",
             "5m",
+            "15m",
+            "30m",
             "1h"});
             this.cboInterval.Location = new System.Drawing.Point(86, 245);
             this.cboInterval.Name = "cboInterval";

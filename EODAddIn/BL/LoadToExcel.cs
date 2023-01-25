@@ -192,13 +192,21 @@ namespace EODAddIn.BL
         /// <param name="ticker">Тикер</param>
         /// <param name="period">Период</param>
         /// <param name="chart">Необходимость построения диаграммы</param>
-        public static void PrintIntraday(List<Intraday> intraday, string ticker, string interval, bool chart)
+        public static void PrintIntraday(List<Intraday> intraday, string ticker, string interval, bool chart, int period)
         {
             try
             {
                 SetNonInteractive();
 
-                string nameSheet = $"{ticker}-{interval}";
+                string nameSheet;
+                if (period == 0)
+                {
+                    nameSheet = $"{ticker}-{interval}";
+                }
+                else
+                {
+                    nameSheet = $"{ticker}-{period}m";
+                }
 
                 Excel.Worksheet worksheet = AddSheet(nameSheet);
 

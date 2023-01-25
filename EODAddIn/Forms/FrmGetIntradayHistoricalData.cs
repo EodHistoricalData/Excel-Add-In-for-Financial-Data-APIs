@@ -1,10 +1,12 @@
 ﻿using EODAddIn.BL;
+using EODAddIn.Model;
 using EODAddIn.Program;
 using EODAddIn.Utils;
 using MS.ProgressBar;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -49,6 +51,26 @@ namespace EODAddIn.Forms
             if (!CheckForm()) return;
 
             string interval = cboInterval.SelectedItem.ToString().ToLower();
+            int period = 0;
+            switch (interval)
+            {
+                case "15m":
+                    {
+                        period = 15;
+                        interval = "5m";
+                        break;
+                    }
+                case "30m":
+                    {
+                        period = 30;
+                        interval = "5m";
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
+            }
             DateTime from = dtpFrom.Value;
             DateTime to = dtpTo.Value;
 
@@ -69,7 +91,24 @@ namespace EODAddIn.Forms
                     {
                         res.Reverse();
                     }
-                    LoadToExcel.PrintIntraday(res, ticker, interval, chkChart.Checked);
+                    switch (period)
+                    {
+                        case 15:
+                            {
+                                res = CollapseRows(res, 15);
+                                break;
+                            }
+                        case 30:
+                            {
+                                res = CollapseRows(res, 30);
+                                break;
+                            }
+                        default:
+                            {
+                                break;
+                            }
+                    }
+                    LoadToExcel.PrintIntraday(res, ticker, interval, chkChart.Checked, period);
                 }
                 catch (APIException ex)
                 {
@@ -91,6 +130,44 @@ namespace EODAddIn.Forms
             Settings.Save();
 
             Close();
+        }
+
+        private List<Intraday> CollapseRows(List<Intraday> res, int v)
+        {
+            List<Intraday> temp= new List<Intraday>();
+            List<Intraday> collapsed= new List<Intraday>();
+            int count = 0;
+            int max = v / 5;
+            foreach (Intraday row in res)
+            {
+                temp.Add(row);
+                count++;
+                if (count == max)
+                {
+                    double? open = temp[0].Open;
+                    double? close = temp[count - 1].Close;
+                    double? high = temp.Max(x => x.High);
+                    double? low = temp.Min(x => x.Low);
+                    decimal? volume = temp.Sum(x => x.Volume);
+                    DateTime? date = temp[0].DateTime;
+                    long? timestamp = temp[0].Timestamp;
+                    double? gmtoffset = temp[0].Gmtoffset;
+                    collapsed.Add(new Intraday()
+                    {
+                        Open = open,
+                        Close = close,
+                        High = high,
+                        Low = low,
+                        Volume = volume,
+                        DateTime = date,
+                        Gmtoffset = gmtoffset,
+                        Timestamp = timestamp
+                    });
+                    count = 0;
+                    temp.Clear();
+                }
+            }
+            return collapsed;
         }
 
         private bool CheckForm()
@@ -248,7 +325,7 @@ namespace EODAddIn.Forms
                     break;
             }
 
-            return  selectedDateRange<=possibleDateRange ;
+            return selectedDateRange <= possibleDateRange;
         }
         private DateTime GetPossibleDateFrom(DateTime dateTo)
         {
@@ -285,6 +362,6 @@ namespace EODAddIn.Forms
             return dateTo;
         }
 
-      
+
     }
 }
