@@ -124,8 +124,8 @@
   -->
   <ItemGroup>
     <Reference Include="Accessibility" />
-    <Reference Include="EODHistoricalData.Wrapper, Version=1.2.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EODHistoricalData.Wrapper.1.2.2\lib\netstandard2.0\EODHistoricalData.Wrapper.dll</HintPath>
+    <Reference Include="EODHistoricalData.Wrapper, Version=1.2.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EODHistoricalData.Wrapper.1.2.8\lib\netstandard2.0\EODHistoricalData.Wrapper.dll</HintPath>
     </Reference>
     <Reference Include="MS.ProgressBar, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -206,6 +206,12 @@
     </Compile>
     <Compile Include="Controls\SearchControl.Designer.cs">
       <DependentUpon>SearchControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmGetBulkEod.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmGetBulkEod.Designer.cs">
+      <DependentUpon>FrmGetBulkEod.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FrmGetEtf.cs">
       <SubType>Form</SubType>
@@ -318,6 +324,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utils\ExcelUtils.cs" />
+    <Compile Include="Utils\GetBulkEod.cs" />
     <Compile Include="Utils\GetOptions.cs" />
     <Compile Include="Utils\Response.cs" />
     <Compile Include="Utils\APIException.cs" />
@@ -328,6 +335,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\SearchControl.resx">
       <DependentUpon>SearchControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmGetBulkEod.resx">
+      <DependentUpon>FrmGetBulkEod.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmGetEtf.resx">
       <DependentUpon>FrmGetEtf.cs</DependentUpon>
