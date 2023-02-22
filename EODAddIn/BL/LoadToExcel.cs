@@ -1,4 +1,5 @@
-﻿using EODAddIn.Model;
+﻿using EOD.Model;
+using EODAddIn.Model;
 using EODAddIn.Program;
 using EODAddIn.Utils;
 
@@ -6,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Reflection;
-
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace EODAddIn.BL
@@ -346,6 +346,59 @@ namespace EODAddIn.BL
             finally
             {
                 _xlsApp.Interactive = true;
+            }
+        }
+
+        public static void PrintBulkEod(List<EOD.Model.Bulks.Bulk> data, string exchange, DateTime date, string tickers, string type)
+        {
+            try
+            {
+                type = type == "" ? "end-of-day" : type;
+                string sheetName = exchange + " Bulk (" + type + ")";
+
+                Excel.Worksheet worksheet = AddSheet(sheetName);
+                int row = 1;
+                int column = 1;
+
+                ExcelUtils.OnStart();
+
+                worksheet.Cells[row, column] = exchange;
+                worksheet.Cells[row, column + 1] = tickers;
+                worksheet.Cells[row, column + 2] = date;
+                row++;
+                // header
+                worksheet.Cells[row, column] = "Code";
+                worksheet.Cells[row, column + 1] = "Exchange_Short_Name";
+                worksheet.Cells[row, column + 2] = "Date";
+                worksheet.Cells[row, column + 3] = "Open";
+                worksheet.Cells[row, column + 4] = "High";
+                worksheet.Cells[row, column + 5] = "Low";
+                worksheet.Cells[row, column + 6] = "Close";
+                worksheet.Cells[row, column + 7] = "Adjusted_Close";
+                worksheet.Cells[row, column + 8] = "Volume";
+                row++;
+                // data
+                foreach (EOD.Model.Bulks.Bulk item in data)
+                {
+                    worksheet.Cells[row, column] = item.Code;
+                    worksheet.Cells[row, column + 1] = item.Exchange_Short_Name;
+                    worksheet.Cells[row, column + 2] = item.Date;
+                    worksheet.Cells[row, column + 3] = item.Open;
+                    worksheet.Cells[row, column + 4] = item.High;
+                    worksheet.Cells[row, column + 5] = item.Low;
+                    worksheet.Cells[row, column + 6] = item.Close;
+                    worksheet.Cells[row, column + 7] = item.Adjusted_Close;
+                    worksheet.Cells[row, column + 8] = item.Volume;
+                    row++;
+                }
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                ExcelUtils.OnEnd();
             }
         }
 

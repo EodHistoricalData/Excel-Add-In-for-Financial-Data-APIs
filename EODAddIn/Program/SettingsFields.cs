@@ -31,6 +31,11 @@ namespace EODAddIn.Program
 
         public string OptionsTicker;
 
+        public string BulkEodExchange;
+        public string BulkEodType;
+        public DateTime BulkEodDate;
+        public List<string> BulkEodSymbols;
+
         public SettingsFields()
         {
 

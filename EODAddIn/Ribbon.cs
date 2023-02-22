@@ -1,10 +1,12 @@
-﻿using EODAddIn.BL;
+﻿using EOD.Model.Bulks;
+using EODAddIn.BL;
 using EODAddIn.Model;
 using EODAddIn.Utils;
 
 using Microsoft.Office.Tools.Ribbon;
 
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Windows.Threading;
 
@@ -221,6 +223,48 @@ namespace EODAddIn
             {
                 Program.ErrorReport errorReport = new Program.ErrorReport(ex);
                 errorReport.ShowAndSend();
+            }
+        }
+
+        private async void BtnBulkEod_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                Forms.FrmGetBulkEod frm = new Forms.FrmGetBulkEod();
+                frm.ShowDialog(new WinHwnd());
+
+                if (frm.DialogResult == System.Windows.Forms.DialogResult.OK)
+                {
+                    string exchange = frm.Exchange;
+                    string type = null;
+                    switch (frm.Type)
+                    {
+                        case "end-of-day":
+                            break;
+                        case "":
+                            break;
+                        default:
+                            type = frm.Type;
+                            break;
+                    }
+                    DateTime date = frm.Date;
+                    string tickers = string.Join(",", frm.Tickers);
+                    BtnBulkEod.Label = "Processing";
+                    BtnBulkEod.Enabled = false;
+
+                    List<Bulk> res = await GetBulkEod.GetBulkEodData(exchange, type, date, tickers);
+                    LoadToExcel.PrintBulkEod(res, exchange, date, tickers, type);
+                }
+            }
+            catch (Exception ex)
+            {
+                Program.ErrorReport errorReport = new Program.ErrorReport(ex);
+                errorReport.ShowAndSend();
+            }
+            finally
+            {
+                BtnBulkEod.Label = "Get Bulk Eod";
+                BtnBulkEod.Enabled = true;
             }
         }
     }
