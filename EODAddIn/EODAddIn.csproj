@@ -124,15 +124,15 @@
   -->
   <ItemGroup>
     <Reference Include="Accessibility" />
-    <Reference Include="EODHistoricalData.Wrapper, Version=1.2.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EODHistoricalData.Wrapper.1.2.5\lib\netstandard2.0\EODHistoricalData.Wrapper.dll</HintPath>
+    <Reference Include="EODHistoricalData.Wrapper, Version=1.2.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EODHistoricalData.Wrapper.1.2.9\lib\netstandard2.0\EODHistoricalData.Wrapper.dll</HintPath>
     </Reference>
     <Reference Include="MS.ProgressBar, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>dll\MS.ProgressBar.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -193,6 +193,8 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="BL\BulkEod\BulkEodPrinter.cs" />
+    <Compile Include="BL\BulkEod\GetBulkEod.cs" />
     <Compile Include="BL\BulkFundametnalData\BulkFundamentalAPI.cs" />
     <Compile Include="BL\ETF\ETFPrinter.cs" />
     <Compile Include="BL\BulkFundametnalData\BulkFundamentalPrinter.cs" />
@@ -218,6 +220,12 @@
     </Compile>
     <Compile Include="Controls\SearchControl.Designer.cs">
       <DependentUpon>SearchControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmGetBulkEod.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmGetBulkEod.designer.cs">
+      <DependentUpon>FrmGetBulkEod.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FrmScreenerIntraday.cs">
       <SubType>Form</SubType>
@@ -333,6 +341,9 @@
     <EmbeddedResource Include="Controls\SearchControl.resx">
       <DependentUpon>SearchControl.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmGetBulkEod.resx">
+      <DependentUpon>FrmGetBulkEod.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmScreenerHistorical.resx">
       <DependentUpon>FrmScreenerHistorical.cs</DependentUpon>
     </EmbeddedResource>
@@ -427,8 +438,11 @@
     <Content Include="icon.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\button-80.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -441,7 +455,7 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>63DB2ED7AF8EEC86BA5D219581A574BB88CEA2C9</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>2B4AC0AF43EBFE6F466A5F0503A29B31E733CBDF</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>icon.ico</ApplicationIcon>

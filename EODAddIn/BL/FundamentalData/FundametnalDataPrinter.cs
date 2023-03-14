@@ -245,8 +245,8 @@ namespace EODAddIn.BL.FundamentalDataPrinter
         }
 
         private static int PrintFundamentalData<T, U>(string nameData,
-                                                    Dictionary<DateTime, T> dataTable1,
-                                                    Dictionary<DateTime, U> dataTable2,
+                                                    Dictionary<string, T> dataTable1,
+                                                    Dictionary<string, U> dataTable2,
                                                     Excel.Range range,
                                                     string dataTable1Name = "Quarterly",
                                                     string dataTable2Name = "Yearly")

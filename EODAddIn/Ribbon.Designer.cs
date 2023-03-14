@@ -75,6 +75,7 @@ namespace EODAddIn
             this.btnCheckUpdate = this.Factory.CreateRibbonButton();
             this.btnErrorMessage = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
+            this.BtnBulkEod = this.Factory.CreateRibbonButton();
             this.tabMain.SuspendLayout();
             this.grpMain.SuspendLayout();
             this.group1.SuspendLayout();
@@ -96,6 +97,7 @@ namespace EODAddIn
             this.grpMain.Items.Add(this.splitbtnFundamental);
             this.grpMain.Items.Add(this.BtnGetEtf);
             this.grpMain.Items.Add(this.BtnOptions);
+            this.grpMain.Items.Add(this.BtnBulkEod);
             this.grpMain.Items.Add(this.menuScreener);
             this.grpMain.Items.Add(this.menuAvailableDataFeeds);
             this.grpMain.Label = "Commands";
@@ -390,6 +392,15 @@ namespace EODAddIn
             this.btnAbout.ShowImage = true;
             this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnAbout_Click);
             // 
+            // BtnBulkEod
+            // 
+            this.BtnBulkEod.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.BtnBulkEod.Image = global::EODAddIn.Properties.Resources.button_80;
+            this.BtnBulkEod.Label = "Get Bulk EOD data";
+            this.BtnBulkEod.Name = "BtnBulkEod";
+            this.BtnBulkEod.ShowImage = true;
+            this.BtnBulkEod.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnBulkEod_Click);
+            // 
             // Ribbon
             // 
             this.Name = "Ribbon";
@@ -449,6 +460,7 @@ namespace EODAddIn
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnListOfFutures;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnListOfForexCurrencies;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnListOfIndices;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnBulkEod;
     }
 
     partial class ThisRibbonCollection

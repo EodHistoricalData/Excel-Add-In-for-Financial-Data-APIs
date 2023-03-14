@@ -56,6 +56,11 @@ namespace EODAddIn.Program
         public List<(string, string, string)> ScreenerDataGridViewFilters;
         public bool IsInfoShowed;
 
+        public string BulkEodExchange;
+        public string BulkEodType;
+        public DateTime BulkEodDate;
+        public List<string> BulkEodSymbols;
+
         public SettingsFields()
         {
 
