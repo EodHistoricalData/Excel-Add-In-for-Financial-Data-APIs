@@ -71,7 +71,7 @@ namespace EODAddIn.Forms
             // 
             // dtpFrom
             // 
-            this.dtpFrom.CustomFormat = "dd.MM.yyyy HH:mm:ss";
+            this.dtpFrom.CustomFormat = "dd.MM.yyyy HH:mm";
             this.dtpFrom.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtpFrom.Location = new System.Drawing.Point(86, 273);
             this.dtpFrom.Name = "dtpFrom";
@@ -91,7 +91,7 @@ namespace EODAddIn.Forms
             // 
             // dtpTo
             // 
-            this.dtpTo.CustomFormat = "dd.MM.yyyy HH:mm:ss";
+            this.dtpTo.CustomFormat = "dd.MM.yyyy HH:mm";
             this.dtpTo.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtpTo.Location = new System.Drawing.Point(86, 299);
             this.dtpTo.Name = "dtpTo";
