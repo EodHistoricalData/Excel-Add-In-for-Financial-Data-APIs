@@ -14,7 +14,6 @@ namespace EODAddIn.Forms
 {
     public partial class FrmGetOptions : Form
     {
-        public OptionsData Results;
         public string Ticker = Settings.SettingsFields.OptionsTicker;
         public DateTime From;
         public DateTime To;
