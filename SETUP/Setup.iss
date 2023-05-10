@@ -35,6 +35,7 @@
 ;Подписывание кода
 SignTool=byparam {#SignTool} sign /a /fd SHA256 /n $q{#SingNameSSL}$q /t http://timestamp.comodoca.com/authenticode  /d $q{#AppName}$q $f
 
+
 ;Использовать сгенерируемый VS GUI
 AppId            = {{{#AppGUI}}
 AppName          = {#AppName}

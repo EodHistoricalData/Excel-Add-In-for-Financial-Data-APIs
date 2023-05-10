@@ -455,7 +455,7 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>2B4AC0AF43EBFE6F466A5F0503A29B31E733CBDF</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>0E50C74D3CC2A690CCBFE35F3CDD50161E861B91</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>icon.ico</ApplicationIcon>
