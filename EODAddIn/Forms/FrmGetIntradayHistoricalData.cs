@@ -1,12 +1,16 @@
 ﻿using EODAddIn.BL;
-using EODAddIn.Model;
+using EODAddIn.BL.IntradayAPI;
+using EODAddIn.BL.IntradayPrinter;
+using EODAddIn.BL.Screener;
 using EODAddIn.Program;
 using EODAddIn.Utils;
+using Microsoft.Office.Interop.Excel;
 using MS.ProgressBar;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Policy;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -49,7 +53,21 @@ namespace EODAddIn.Forms
         private void BtnLoad_Click(object sender, EventArgs e)
         {
             if (!CheckForm()) return;
-
+            if (cboTypeOfOutput.SelectedItem.ToString() == "One worksheet")
+            {
+                Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
+                if (sh.UsedRange.Value != null)
+                {
+                    MessageBox.Show(
+                    "Select empty worksheet",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                    return;
+                }
+            }
+            bool isSummary = false;
             string interval = cboInterval.SelectedItem.ToString().ToLower();
             int period = 0;
             switch (interval)
@@ -73,20 +91,18 @@ namespace EODAddIn.Forms
             }
             DateTime from = dtpFrom.Value;
             DateTime to = dtpTo.Value;
-
             List<string> tikers = new List<string>();
-
+            int rowIntraday = 3;
             Progress progress = new Progress("Load end of data", gridTickers.Rows.Count - 1);
             foreach (DataGridViewRow row in gridTickers.Rows)
             {
                 if (row.Cells[0].Value == null) continue;
                 progress.TaskStart(row.Cells[0].Value?.ToString(), 1);
-
                 string ticker = row.Cells[0].Value.ToString();
                 tikers.Add(ticker);
                 try
                 {
-                    List<Model.Intraday> res = APIEOD.GetIntraday(ticker, from, to, interval);
+                    List<EOD.Model.IntradayHistoricalStockPrice> res = IntradayAPI.GetIntraday(ticker, from, to, interval);
                     if (rbtnAscOrder.Checked)
                     {
                         res.Reverse();
@@ -96,11 +112,13 @@ namespace EODAddIn.Forms
                         case 15:
                             {
                                 res = CollapseRows(res, 15);
+                                interval = "15m";
                                 break;
                             }
                         case 30:
                             {
                                 res = CollapseRows(res, 30);
+                                interval = "30m";
                                 break;
                             }
                         default:
@@ -108,7 +126,19 @@ namespace EODAddIn.Forms
                                 break;
                             }
                     }
-                    LoadToExcel.PrintIntraday(res, ticker, interval, chkChart.Checked, period);
+                    switch (cboTypeOfOutput.SelectedItem.ToString())
+                    {
+                        case "Separated with chart":
+                            rowIntraday = IntradayPrinter.PrintIntraday(res, ticker, interval, true, chkIsTable.Checked);
+                            break;
+                        case "Separated without chart":
+                            rowIntraday = IntradayPrinter.PrintIntraday(res, ticker, interval, false, chkIsTable.Checked);
+                            break;
+                        case "One worksheet":
+                            rowIntraday = IntradayPrinter.PrintIntradaySummary(res, ticker, interval, rowIntraday);
+                            isSummary = true;
+                            break;
+                    }
                 }
                 catch (APIException ex)
                 {
@@ -122,6 +152,10 @@ namespace EODAddIn.Forms
                     continue;
                 }
             }
+            if (isSummary && chkIsTable.Checked)
+            {
+                ExcelUtils.MakeTable("A2", "J" + rowIntraday.ToString(), Globals.ThisAddIn.Application.ActiveSheet, "Intraday", 9);
+            }
             progress.Finish();
             Settings.SettingsFields.IntradayInterval = interval;
             Settings.SettingsFields.IntradayTo = to;
@@ -130,44 +164,6 @@ namespace EODAddIn.Forms
             Settings.Save();
 
             Close();
-        }
-
-        private List<Intraday> CollapseRows(List<Intraday> res, int v)
-        {
-            List<Intraday> temp= new List<Intraday>();
-            List<Intraday> collapsed= new List<Intraday>();
-            int count = 0;
-            int max = v / 5;
-            foreach (Intraday row in res)
-            {
-                temp.Add(row);
-                count++;
-                if (count == max)
-                {
-                    double? open = temp[0].Open;
-                    double? close = temp[count - 1].Close;
-                    double? high = temp.Max(x => x.High);
-                    double? low = temp.Min(x => x.Low);
-                    decimal? volume = temp.Sum(x => x.Volume);
-                    DateTime? date = temp[0].DateTime;
-                    long? timestamp = temp[0].Timestamp;
-                    double? gmtoffset = temp[0].Gmtoffset;
-                    collapsed.Add(new Intraday()
-                    {
-                        Open = open,
-                        Close = close,
-                        High = high,
-                        Low = low,
-                        Volume = volume,
-                        DateTime = date,
-                        Gmtoffset = gmtoffset,
-                        Timestamp = timestamp
-                    });
-                    count = 0;
-                    temp.Clear();
-                }
-            }
-            return collapsed;
         }
 
         private bool CheckForm()
@@ -205,6 +201,44 @@ namespace EODAddIn.Forms
                 return false;
             }
             return true;
+        }
+
+        private List<EOD.Model.IntradayHistoricalStockPrice> CollapseRows(List<EOD.Model.IntradayHistoricalStockPrice> res, int v)
+        {
+            List<EOD.Model.IntradayHistoricalStockPrice> temp = new List<EOD.Model.IntradayHistoricalStockPrice>();
+            List<EOD.Model.IntradayHistoricalStockPrice> collapsed = new List<EOD.Model.IntradayHistoricalStockPrice>();
+            int count = 0;
+            int max = v / 5;
+            foreach (EOD.Model.IntradayHistoricalStockPrice row in res)
+            {
+                temp.Add(row);
+                count++;
+                if (count == max)
+                {
+                    double? open = temp[0].Open;
+                    double? close = temp[count - 1].Close;
+                    double? high = temp.Max(x => x.High);
+                    double? low = temp.Min(x => x.Low);
+                    decimal? volume = temp.Sum(x => x.Volume);
+                    DateTime? date = temp[0].DateTime;
+                    long? timestamp = temp[0].Timestamp;
+                    double? gmtoffset = temp[0].Gmtoffset;
+                    collapsed.Add(new EOD.Model.IntradayHistoricalStockPrice()
+                    {
+                        Open = open,
+                        Close = close,
+                        High = high,
+                        Low = low,
+                        Volume = volume,
+                        DateTime = date,
+                        Gmtoffset = gmtoffset,
+                        Timestamp = timestamp
+                    });
+                    count = 0;
+                    temp.Clear();
+                }
+            }
+            return collapsed;
         }
 
         private void ClearTicker_Click(object sender, EventArgs e)
@@ -361,7 +395,5 @@ namespace EODAddIn.Forms
             }
             return dateTo;
         }
-
-
     }
 }

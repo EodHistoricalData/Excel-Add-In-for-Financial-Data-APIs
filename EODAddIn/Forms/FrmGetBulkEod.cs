@@ -26,7 +26,7 @@ namespace EODAddIn.Forms
         {
             InitializeComponent();
             tbExchange.Text = Exchange;
-            cboType.SelectedText = Type;
+            cboType.SelectedValue = Type;
             if (Date < dtpDate.MinDate)
             {
                 dtpDate.Value = dtpDate.MinDate;
@@ -47,7 +47,7 @@ namespace EODAddIn.Forms
             if (!CheckForm()) return;
 
             Exchange = tbExchange.Text;
-            Type = cboType.SelectedText;
+            Type = cboType.SelectedItem.ToString();
             Date = dtpDate.Value;
             Tickers.Clear();
 

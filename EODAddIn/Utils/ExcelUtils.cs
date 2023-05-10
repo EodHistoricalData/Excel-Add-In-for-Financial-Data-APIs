@@ -1,12 +1,14 @@
-﻿using Microsoft.Office.Interop.Excel;
-
+﻿using EODAddIn.Program;
+using Microsoft.Office.Interop.Excel;
 using System;
-
+using System.Reflection;
 using Form = System.Windows.Forms;
 namespace EODAddIn.Utils
 {
     static class ExcelUtils
     {
+        public static Application _xlsApp = Globals.ThisAddIn.Application;
+        public static bool CreateSheet=true;
 
         public static void OnStart()
         {
@@ -67,7 +69,7 @@ namespace EODAddIn.Utils
         }
 
         /// <summary>
-        /// Определение количества строк на листе
+        /// Counting the number of rows on a worksheet
         /// </summary>
         /// <param name="worksheet"></param>
         /// <returns></returns>
@@ -77,7 +79,7 @@ namespace EODAddIn.Utils
         }
 
         /// <summary>
-        /// Определение количества столбцов на листе
+        /// Counting the number of columns on a worksheet
         /// </summary>
         /// <param name="worksheet"></param>
         /// <returns></returns>
@@ -94,9 +96,9 @@ namespace EODAddIn.Utils
         }
 
         /// <summary>
-        /// Определение типа выделенного диапазона
+        /// Determining the type of the selected range
         /// </summary>
-        /// <param name="selection">Объект Application.Selection</param>
+        /// <param name="selection">Object of Application.Selection</param>
         /// <returns>Range or Shape or Null</returns>
         public static SelectionType TypeName(dynamic selection)
         {
@@ -112,10 +114,10 @@ namespace EODAddIn.Utils
         }
 
         /// <summary>
-        /// Ищет в указанном диапазоне ячеек все видимые ячейки с формулами
+        /// Search in a selected range of cells with formulas
         /// </summary>
-        /// <param name="range">Исходный диапазон ячеек</param>
-        /// <returns>Видимые ячейки с формулами. Null если таких ячеек нет. Также выдает сообщение об ошибке если невозможно получить range по причине COM</returns>
+        /// <param name="range">Cell Range</param>
+        /// <returns>Visible cells with formulas. Null if there are no such cells. It also throws an error message if range cannot be obtained for the reason COM</returns>
         public static Range GetVisibleFormulas(Range range)
         {
             Application application = Globals.ThisAddIn.Application;
@@ -125,7 +127,7 @@ namespace EODAddIn.Utils
                 range = application.ActiveCell;
                 if (!range.HasFormula)
                 {
-                    Form.MessageBox.Show("Формулы в указанном диапазоне отсутствуют", "Выберите диапазон", Form.MessageBoxButtons.OK, Form.MessageBoxIcon.Information);
+                    Form.MessageBox.Show("No formulas in selected range", "Select Range", Form.MessageBoxButtons.OK, Form.MessageBoxIcon.Information);
                     return null;
                 }
             }
@@ -138,7 +140,7 @@ namespace EODAddIn.Utils
                 }
                 catch (Exception ex)
                 {
-                    Form.MessageBox.Show(ex.Message, "Выберите диапазон", Form.MessageBoxButtons.OK, Form.MessageBoxIcon.Warning);
+                    Form.MessageBox.Show(ex.Message, "Select Range", Form.MessageBoxButtons.OK, Form.MessageBoxIcon.Warning);
                     return null;
                 }
             }
@@ -146,10 +148,10 @@ namespace EODAddIn.Utils
         }
 
         /// <summary>
-        /// Ищет в указанном диапазоне ячеек все видимые текстовые ячейки
+        /// Search in a selected range of cells with text
         /// </summary>
-        /// <param name="range">Исходный диапазон ячеек</param>
-        /// <returns>Видимые текстовые ячейки. Null если таких ячеек нет. Также выдает сообщение об ошибке если невозможно получить range по причине COM</returns>
+        /// <param name="range">Cell Range</param>
+        /// <returns>Visible cells with text. Null если таких ячеек нет. Null if there are no such cells. It also throws an error message if range cannot be obtained for the reason COM</returns>
         public static Range GetVisibleConstants(Range range)
         {
             Application application = Globals.ThisAddIn.Application;
@@ -159,8 +161,8 @@ namespace EODAddIn.Utils
                 range = application.ActiveCell;
                 if (range.HasFormula)
                 {
-                    Form.MessageBox.Show("Текстовые ячейки в указанном диапазоне отсутствуют",
-                            "Выберите диапазон", Form.MessageBoxButtons.OK, Form.MessageBoxIcon.Information);
+                    Form.MessageBox.Show("No text cells in specified range",
+                            "Select Range", Form.MessageBoxButtons.OK, Form.MessageBoxIcon.Information);
                     return null;
                 }
             }
@@ -173,7 +175,7 @@ namespace EODAddIn.Utils
                 }
                 catch (Exception ex)
                 {
-                    Form.MessageBox.Show(ex.Message, "Выберите диапазон", Form.MessageBoxButtons.OK, Form.MessageBoxIcon.Warning);
+                    Form.MessageBox.Show(ex.Message, "Select Range", Form.MessageBoxButtons.OK, Form.MessageBoxIcon.Warning);
                     return null;
                 }
             }
@@ -181,16 +183,16 @@ namespace EODAddIn.Utils
         }
 
         /// <summary>
-        /// Сообщение о невозможности отменить данное действие
+        /// Message about the impossibility to undo this action
         /// </summary>
         /// <returns>DialogResult Yes/No</returns>
         public static Form.DialogResult MessageConfirmAction()
         {
-            return Form.MessageBox.Show("Данное действие невозможно отменить\nУверены, что хотите продолжить", "Подтвердите действие", Form.MessageBoxButtons.YesNo, Form.MessageBoxIcon.Question);
+            return Form.MessageBox.Show("This action cannot be undone\nAre you sure you want to continue?", "Confirm", Form.MessageBoxButtons.YesNo, Form.MessageBoxIcon.Question);
         }
 
         /// <summary>
-        /// Сообщение о том, что не выделен диапазон ячеек
+        ///Message that a range of cells is not selected
         /// </summary>
         /// <returns></returns>
         public static bool MessageIfNoRange()
@@ -198,8 +200,8 @@ namespace EODAddIn.Utils
             Application application = Globals.ThisAddIn.Application;
             if (ExcelUtils.TypeName(application.Selection) != SelectionType.Range)
             {
-                Form.MessageBox.Show("Необходимо выделить диапазон ячеек",
-                    "Выделите диапазон ячеек", Form.MessageBoxButtons.OK, Form.MessageBoxIcon.Information);
+                Form.MessageBox.Show("Select a range of cells",
+                    "Select a range of cells", Form.MessageBoxButtons.OK, Form.MessageBoxIcon.Information);
                 return true;
             }
             return false;
@@ -222,6 +224,115 @@ namespace EODAddIn.Utils
             {
                 application.DisplayAlerts = true;
             }
+        }
+
+        public static void MakeTable(string start, string end, Worksheet sh, string tableName, int tableStyle)
+        {
+            var range = sh.get_Range(start, end);
+            ListObject tbl = sh.ListObjects.AddEx(
+                SourceType: XlListObjectSourceType.xlSrcRange,
+                Source: range
+                );
+            tbl.Name = tableName;
+            switch (tableStyle)
+            {
+                case 1:
+                    tbl.TableStyle = "TableStyleLight1";
+                    break;
+                case 2:
+                    tbl.TableStyle = "TableStyleLight2";
+                    break;
+                case 3:
+                    tbl.TableStyle = "TableStyleLight3";
+                    break;
+                case 4:
+                    tbl.TableStyle = "TableStyleLight4";
+                    break;
+                case 5:
+                    tbl.TableStyle = "TableStyleLight5";
+                    break;
+                case 6:
+                    tbl.TableStyle = "TableStyleLight6";
+                    break;
+                case 7:
+                    tbl.TableStyle = "TableStyleLight7";
+                    break;
+                case 8:
+                    tbl.TableStyle = "TableStyleLight8";
+                    break;
+                default:
+                    tbl.TableStyle = "TableStyleLight9";
+                    break;
+            }
+        }
+
+        public static void SetNonInteractive()
+        {
+            while (_xlsApp.Interactive)
+            {
+                try
+                {
+                    _xlsApp.Interactive = false;
+                }
+                catch { }
+            }
+        }
+
+        public static Worksheet AddSheet(string nameSheet)
+        {
+            Worksheet worksheet = null;
+            try
+            {
+                if (ExcelUtils.SheetExists(nameSheet))
+                {
+                    worksheet = Globals.ThisAddIn.Application.Worksheets[nameSheet];
+                    int maxrow = ExcelUtils.RowsCount(worksheet);
+                    worksheet.Range[$"A1:AZ{maxrow}"].ClearContents();
+                    CreateSheet = false;
+                }
+                else
+                {
+                    worksheet = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Add();
+                    worksheet.Name = nameSheet;
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorReport errorReport = new ErrorReport(ex);
+                errorReport.MessageToUser("Can't create a worksheet.");
+            }
+            return worksheet;
+        }
+
+        public static object[,] FillRowBalanceSheet(object[,] table, EOD.Model.BulkFundamental.Balance_SheetData item, PropertyInfo[] properties, int i)
+        {
+            int j = 0;
+            foreach (var prop in properties)
+            {
+                table[i, j] = prop.GetValue(item);
+                j++;
+            }
+            return table;
+        }
+        public static object[,] FillRowCashFlow(object[,] table, EOD.Model.BulkFundamental.Cash_FlowData item, PropertyInfo[] properties, int i)
+        {
+            int j = 0;
+            foreach (var prop in properties)
+            {
+                table[i, j] = prop.GetValue(item);
+                j++;
+            }
+            return table;
+        }
+        public static object[,] FillRowIncomeStatement(object[,] table, EOD.Model.BulkFundamental.Income_StatementData item, PropertyInfo[] properties, int i)
+        {
+            int j = 0;
+            foreach (var prop in properties)
+            {
+                table[i, j] = prop.GetValue(item);
+                j++;
+            }
+            return table;
         }
     }
 }

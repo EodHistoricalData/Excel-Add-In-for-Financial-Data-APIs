@@ -49,10 +49,12 @@ namespace EODAddIn.Forms
             this.tsmiFromTxt = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiFromExcel = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiClearTicker = new System.Windows.Forms.ToolStripMenuItem();
-            this.chkChart = new System.Windows.Forms.CheckBox();
             this.order_label = new System.Windows.Forms.Label();
             this.rbtnDescOrder = new System.Windows.Forms.RadioButton();
             this.rbtnAscOrder = new System.Windows.Forms.RadioButton();
+            this.chkIsTable = new System.Windows.Forms.CheckBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.cboTypeOfOutput = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.gridTickers)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -73,7 +75,7 @@ namespace EODAddIn.Forms
             this.dtpFrom.Name = "dtpFrom";
             this.dtpFrom.Size = new System.Drawing.Size(152, 20);
             this.dtpFrom.TabIndex = 5;
-            this.dtpFrom.Value = new System.DateTime(1970, 1, 1, 0, 0, 0, 0);
+            this.dtpFrom.Value = new System.DateTime(2020, 9, 17, 0, 0, 0, 0);
             // 
             // label3
             // 
@@ -90,10 +92,11 @@ namespace EODAddIn.Forms
             this.dtpTo.Name = "dtpTo";
             this.dtpTo.Size = new System.Drawing.Size(152, 20);
             this.dtpTo.TabIndex = 7;
+            this.dtpTo.Value = new System.DateTime(2022, 9, 18, 13, 37, 0, 0);
             // 
             // btnLoad
             // 
-            this.btnLoad.Location = new System.Drawing.Point(163, 376);
+            this.btnLoad.Location = new System.Drawing.Point(163, 414);
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(75, 23);
             this.btnLoad.TabIndex = 8;
@@ -221,21 +224,10 @@ namespace EODAddIn.Forms
             this.tsmiClearTicker.Text = "Clear list";
             this.tsmiClearTicker.Click += new System.EventHandler(this.ClearTicker_Click);
             // 
-            // chkChart
-            // 
-            this.chkChart.Location = new System.Drawing.Point(12, 325);
-            this.chkChart.Name = "chkChart";
-            this.chkChart.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.chkChart.Size = new System.Drawing.Size(88, 24);
-            this.chkChart.TabIndex = 9;
-            this.chkChart.Text = "Chart";
-            this.chkChart.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.chkChart.UseVisualStyleBackColor = true;
-            // 
             // order_label
             // 
             this.order_label.AutoSize = true;
-            this.order_label.Location = new System.Drawing.Point(12, 352);
+            this.order_label.Location = new System.Drawing.Point(12, 330);
             this.order_label.Name = "order_label";
             this.order_label.Size = new System.Drawing.Size(33, 13);
             this.order_label.TabIndex = 10;
@@ -245,7 +237,7 @@ namespace EODAddIn.Forms
             // 
             this.rbtnDescOrder.AutoSize = true;
             this.rbtnDescOrder.Checked = true;
-            this.rbtnDescOrder.Location = new System.Drawing.Point(86, 350);
+            this.rbtnDescOrder.Location = new System.Drawing.Point(86, 328);
             this.rbtnDescOrder.Name = "rbtnDescOrder";
             this.rbtnDescOrder.Size = new System.Drawing.Size(50, 17);
             this.rbtnDescOrder.TabIndex = 11;
@@ -256,22 +248,59 @@ namespace EODAddIn.Forms
             // rbtnAscOrder
             // 
             this.rbtnAscOrder.AutoSize = true;
-            this.rbtnAscOrder.Location = new System.Drawing.Point(142, 350);
+            this.rbtnAscOrder.Location = new System.Drawing.Point(142, 328);
             this.rbtnAscOrder.Name = "rbtnAscOrder";
             this.rbtnAscOrder.Size = new System.Drawing.Size(43, 17);
             this.rbtnAscOrder.TabIndex = 12;
             this.rbtnAscOrder.Text = "Asc";
             this.rbtnAscOrder.UseVisualStyleBackColor = true;
             // 
+            // chkIsTable
+            // 
+            this.chkIsTable.Checked = true;
+            this.chkIsTable.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkIsTable.Location = new System.Drawing.Point(12, 382);
+            this.chkIsTable.Name = "chkIsTable";
+            this.chkIsTable.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.chkIsTable.Size = new System.Drawing.Size(99, 33);
+            this.chkIsTable.TabIndex = 23;
+            this.chkIsTable.Text = "Smart Table";
+            this.chkIsTable.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkIsTable.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(12, 358);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(78, 13);
+            this.label1.TabIndex = 22;
+            this.label1.Text = "Type of Output";
+            // 
+            // cboTypeOfOutput
+            // 
+            this.cboTypeOfOutput.FormattingEnabled = true;
+            this.cboTypeOfOutput.Items.AddRange(new object[] {
+            "One worksheet",
+            "Separated with chart",
+            "Separated without chart"});
+            this.cboTypeOfOutput.Location = new System.Drawing.Point(96, 355);
+            this.cboTypeOfOutput.Name = "cboTypeOfOutput";
+            this.cboTypeOfOutput.Size = new System.Drawing.Size(142, 21);
+            this.cboTypeOfOutput.TabIndex = 21;
+            this.cboTypeOfOutput.Text = "One worksheet";
+            // 
             // FrmGetHistorical
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(250, 411);
+            this.ClientSize = new System.Drawing.Size(250, 449);
+            this.Controls.Add(this.chkIsTable);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.cboTypeOfOutput);
             this.Controls.Add(this.rbtnAscOrder);
             this.Controls.Add(this.rbtnDescOrder);
             this.Controls.Add(this.order_label);
-            this.Controls.Add(this.chkChart);
             this.Controls.Add(this.gridTickers);
             this.Controls.Add(this.cboPeriod);
             this.Controls.Add(this.label5);
@@ -316,9 +345,11 @@ namespace EODAddIn.Forms
         private System.Windows.Forms.ToolStripMenuItem tsmiLoadTickers;
         private System.Windows.Forms.ToolStripMenuItem tsmiFromTxt;
         private System.Windows.Forms.ToolStripMenuItem tsmiFromExcel;
-        private System.Windows.Forms.CheckBox chkChart;
         private System.Windows.Forms.Label order_label;
         private System.Windows.Forms.RadioButton rbtnDescOrder;
         private System.Windows.Forms.RadioButton rbtnAscOrder;
+        private System.Windows.Forms.CheckBox chkIsTable;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.ComboBox cboTypeOfOutput;
     }
 }

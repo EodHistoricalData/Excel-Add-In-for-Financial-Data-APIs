@@ -124,15 +124,15 @@
   -->
   <ItemGroup>
     <Reference Include="Accessibility" />
-    <Reference Include="EODHistoricalData.Wrapper, Version=1.2.8.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EODHistoricalData.Wrapper.1.2.8\lib\netstandard2.0\EODHistoricalData.Wrapper.dll</HintPath>
+    <Reference Include="EODHistoricalData.Wrapper, Version=1.2.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EODHistoricalData.Wrapper.1.2.9\lib\netstandard2.0\EODHistoricalData.Wrapper.dll</HintPath>
     </Reference>
     <Reference Include="MS.ProgressBar, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>dll\MS.ProgressBar.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -193,7 +193,21 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="BL\LoadToExcel.cs" />
+    <Compile Include="BL\BulkEod\BulkEodPrinter.cs" />
+    <Compile Include="BL\BulkEod\GetBulkEod.cs" />
+    <Compile Include="BL\BulkFundametnalData\BulkFundamentalAPI.cs" />
+    <Compile Include="BL\ETF\ETFPrinter.cs" />
+    <Compile Include="BL\BulkFundametnalData\BulkFundamentalPrinter.cs" />
+    <Compile Include="BL\FundamentalData\FundamentalDataAPI.cs" />
+    <Compile Include="BL\FundamentalData\FundametnalDataPrinter.cs" />
+    <Compile Include="BL\Historical\HistoricalAPI.cs" />
+    <Compile Include="BL\Historical\HistoricalPrinter.cs" />
+    <Compile Include="BL\Intraday\IntradayAPI.cs" />
+    <Compile Include="BL\Intraday\IntradayPrinter.cs" />
+    <Compile Include="BL\Options\OptionsAPI.cs" />
+    <Compile Include="BL\Options\OptionsPrinter.cs" />
+    <Compile Include="BL\Screener\ScreenerAPI.cs" />
+    <Compile Include="BL\Screener\ScreenerPrinter.cs" />
     <Compile Include="BL\UDF.cs" />
     <Compile Include="Controls\RefEdit.cs">
       <SubType>UserControl</SubType>
@@ -210,8 +224,26 @@
     <Compile Include="Forms\FrmGetBulkEod.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\FrmGetBulkEod.Designer.cs">
+    <Compile Include="Forms\FrmGetBulkEod.designer.cs">
       <DependentUpon>FrmGetBulkEod.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmScreenerIntraday.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmScreenerIntraday.Designer.cs">
+      <DependentUpon>FrmScreenerIntraday.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmScreenerHistorical.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmScreenerHistorical.Designer.cs">
+      <DependentUpon>FrmScreenerHistorical.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmGetBulk.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmGetBulk.Designer.cs">
+      <DependentUpon>FrmGetBulk.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FrmGetEtf.cs">
       <SubType>Form</SubType>
@@ -243,6 +275,12 @@
     <Compile Include="Forms\FrmGetOptions.Designer.cs">
       <DependentUpon>FrmGetOptions.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FrmScreener.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmScreener.Designer.cs">
+      <DependentUpon>FrmScreener.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmSearchTiker.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -255,42 +293,12 @@
     <Compile Include="Forms\FrmSelectRange.Designer.cs">
       <DependentUpon>FrmSelectRange.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\AddressData.cs" />
-    <Compile Include="Model\AssetAllocation.cs" />
-    <Compile Include="Model\AssetAllocationData.cs" />
-    <Compile Include="Model\Balance_Sheet.cs" />
-    <Compile Include="Model\Balance_SheetData.cs" />
-    <Compile Include="Model\Cash_Flow.cs" />
-    <Compile Include="Model\Cash_FlowData.cs" />
-    <Compile Include="Model\Earnings.cs" />
-    <Compile Include="Model\EarningsHistoryData.cs" />
-    <Compile Include="Model\EarningsTrendData.cs" />
-    <Compile Include="Model\EndOfDay.cs" />
-    <Compile Include="Model\ETFData.cs" />
-    <Compile Include="Model\Financials.cs" />
-    <Compile Include="Model\FixedIncome.cs" />
-    <Compile Include="Model\FixedIncomeData.cs" />
-    <Compile Include="Model\FundamentalData.cs" />
-    <Compile Include="Model\General.cs" />
-    <Compile Include="Model\GrowthData.cs" />
-    <Compile Include="Model\Highlights.cs" />
-    <Compile Include="Model\HoldingData.cs" />
-    <Compile Include="Model\Income_Statement.cs" />
-    <Compile Include="Model\Income_StatementData.cs" />
-    <Compile Include="Model\Intraday.cs" />
-    <Compile Include="Model\Listing.cs" />
-    <Compile Include="Model\MarketCapitalization.cs" />
-    <Compile Include="Model\MorningStar.cs" />
-    <Compile Include="Model\Officer.cs" />
-    <Compile Include="Model\Performance.cs" />
-    <Compile Include="Model\SearchResult.cs" />
-    <Compile Include="Model\SectorWeights.cs" />
-    <Compile Include="Model\Technicals.cs" />
-    <Compile Include="Model\User.cs" />
-    <Compile Include="Model\ValuationData.cs" />
-    <Compile Include="Model\ValuationGrowthData.cs" />
-    <Compile Include="Model\WorldRegions.cs" />
-    <Compile Include="Model\WorldRegionsData.cs" />
+    <Compile Include="Panels\PanelInfo.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Panels\PanelInfo.Designer.cs">
+      <DependentUpon>PanelInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Panels\PanelExcel.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -324,11 +332,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Utils\ExcelUtils.cs" />
-    <Compile Include="Utils\GetBulkEod.cs" />
-    <Compile Include="Utils\GetOptions.cs" />
     <Compile Include="Utils\Response.cs" />
     <Compile Include="Utils\APIException.cs" />
-    <Compile Include="Utils\APIEOD.cs" />
     <Compile Include="Utils\WinHwnd.cs" />
     <EmbeddedResource Include="Controls\RefEdit.resx">
       <DependentUpon>RefEdit.cs</DependentUpon>
@@ -338,6 +343,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmGetBulkEod.resx">
       <DependentUpon>FrmGetBulkEod.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmScreenerHistorical.resx">
+      <DependentUpon>FrmScreenerHistorical.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmGetBulk.resx">
+      <DependentUpon>FrmGetBulk.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmGetEtf.resx">
       <DependentUpon>FrmGetEtf.cs</DependentUpon>
@@ -354,11 +365,20 @@
     <EmbeddedResource Include="Forms\FrmGetOptions.resx">
       <DependentUpon>FrmGetOptions.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmScreener.resx">
+      <DependentUpon>FrmScreener.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmScreenerIntraday.resx">
+      <DependentUpon>FrmScreenerIntraday.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmSearchTiker.resx">
       <DependentUpon>FrmSearchTiker.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmSelectRange.resx">
       <DependentUpon>FrmSelectRange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Panels\PanelInfo.resx">
+      <DependentUpon>PanelInfo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Program\FormUpdateList.resx">
       <DependentUpon>FormUpdateList.cs</DependentUpon>
@@ -383,6 +403,7 @@
       <DependentUpon>Ribbon.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="EODAddIn.xla">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -417,8 +438,11 @@
     <Content Include="icon.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\button-80.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -431,7 +455,7 @@
     </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>A39B55A4E01FFC62DFADAFD4C2F39222553AD3A9</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>0E50C74D3CC2A690CCBFE35F3CDD50161E861B91</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>icon.ico</ApplicationIcon>

@@ -1,6 +1,7 @@
 ﻿using EODAddIn.Utils;
-
+using Newtonsoft.Json;
 using System;
+using System.Security.Policy;
 using System.Windows.Forms;
 
 namespace EODAddIn.Program
@@ -22,7 +23,7 @@ namespace EODAddIn.Program
         {
             try
             {
-                Model.User user = APIEOD.User(txtAPI.Text);
+                EOD.Model.User user = JsonConvert.DeserializeObject<EOD.Model.User>(Response.GET("https://eodhistoricaldata.com/api/user", "api_token=" + txtAPI.Text));
                 Program.SaveAPI(txtAPI.Text);
                 MessageBox.Show("API key saved", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Close();
@@ -59,7 +60,7 @@ namespace EODAddIn.Program
 
         private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start(Program.UrlCompany);
+            System.Diagnostics.Process.Start(Program.UrlRegister);
         }
     }
 }

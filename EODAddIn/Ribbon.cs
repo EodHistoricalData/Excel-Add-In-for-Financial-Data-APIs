@@ -1,14 +1,26 @@
 ﻿using EOD.Model.Bulks;
 using EODAddIn.BL;
-using EODAddIn.Model;
+using EODAddIn.BL.BulkFundamental;
+using EODAddIn.BL.ETFPrinter;
+using EODAddIn.BL.FundamentalDataPrinter;
+using EODAddIn.BL.OptionsAPI;
+using EODAddIn.BL.OptionsPrinter;
+using EODAddIn.BL.Screener;
+using EODAddIn.BL.BulkEod;
+using EODAddIn.Forms;
 using EODAddIn.Utils;
-
+using Microsoft.Office.Interop.Excel;
+using Microsoft.Office.Tools.Excel;
 using Microsoft.Office.Tools.Ribbon;
-
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Net.NetworkInformation;
+using System.Reflection;
+using System.Windows.Forms;
 using System.Windows.Threading;
+using Worksheet = Microsoft.Office.Interop.Excel.Worksheet;
 
 namespace EODAddIn
 {
@@ -33,8 +45,8 @@ namespace EODAddIn
 
         private void BtnSettings_Click(object sender, RibbonControlEventArgs e)
         {
-            Program.FrmAPIKey frm = new Program.FrmAPIKey();
-            frm.ShowDialog();
+            EODAddIn.Panels.PanelInfo panel = new Panels.PanelInfo();
+            panel.ShowPanel();
         }
 
         private void GetHistorical_Click(object sender, RibbonControlEventArgs e)
@@ -48,9 +60,9 @@ namespace EODAddIn
             Forms.FrmGetEtf frm = new Forms.FrmGetEtf();
             frm.ShowDialog(new WinHwnd());
 
-            FundamentalData res = frm.Results;
+            EOD.Model.Fundamental.FundamentalData res = frm.Results;
             if (res == null) return;
-            LoadToExcel.PrintEtf(res, frm.Tiker);
+            ETFPrinter.PrintEtf(res, frm.Tiker);
         }
 
         private void SplitbtnFundamental_Click(object sender, RibbonControlEventArgs e)
@@ -58,9 +70,9 @@ namespace EODAddIn
             Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
             frm.ShowDialog(new WinHwnd());
 
-            Model.FundamentalData res = frm.Results;
+            EOD.Model.Fundamental.FundamentalData res = frm.Results;
             if (res == null) return;
-            LoadToExcel.PrintFundamentalAll(res, frm.Tiker);
+            FundamentalDataPrinter.PrintFundamentalAll(res, frm.Tiker);
 
         }
 
@@ -81,8 +93,7 @@ namespace EODAddIn
 
             try
             {
-                Model.User user = APIEOD.User(key);
-
+                EOD.Model.User user = JsonConvert.DeserializeObject<EOD.Model.User>(Response.GET("https://eodhistoricaldata.com/api/user", "api_token=" + key));
                 lblRequest.Label = user.ApiRequests?.ToString("# ##0");
                 lblRequestLeft.Label = (user.DailyRateLimit - user.ApiRequests)?.ToString("# ##0");
             }
@@ -129,69 +140,89 @@ namespace EODAddIn
                 Program.ErrorReport errorReport = new Program.ErrorReport(ex);
                 errorReport.ShowAndSend();
             }
-
         }
 
         private void BtnGetGeneral_Click(object sender, RibbonControlEventArgs e)
         {
             Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
             frm.ShowDialog(new WinHwnd());
-
-            FundamentalData res = frm.Results;
-            LoadToExcel.PrintFundamentalGeneral(res);
+            if (frm.DialogResult != DialogResult.OK)
+            {
+                return;
+            }
+            EOD.Model.Fundamental.FundamentalData res = frm.Results;
+            FundamentalDataPrinter.PrintFundamentalGeneral(res);
         }
 
         private void BtnGetHighlights_Click(object sender, RibbonControlEventArgs e)
         {
             Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
             frm.ShowDialog(new WinHwnd());
-
-            FundamentalData res = frm.Results;
-            LoadToExcel.PrintFundamentalHighlights(res);
+            if (frm.DialogResult != DialogResult.OK)
+            {
+                return;
+            }
+            EOD.Model.Fundamental.FundamentalData res = frm.Results;
+            FundamentalDataPrinter.PrintFundamentalHighlights(res);
         }
 
         private void BtnGetBalanceSheet_Click(object sender, RibbonControlEventArgs e)
         {
             Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
             frm.ShowDialog(new WinHwnd());
-
-            FundamentalData res = frm.Results;
-            LoadToExcel.PrintFundamentalBalanceSheet(res);
+            if (frm.DialogResult != DialogResult.OK)
+            {
+                return;
+            }
+            EOD.Model.Fundamental.FundamentalData res = frm.Results;
+            FundamentalDataPrinter.PrintFundamentalBalanceSheet(res);
         }
 
         private void BtnGetIncomeStatement_Click(object sender, RibbonControlEventArgs e)
         {
             Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
             frm.ShowDialog(new WinHwnd());
-
-            FundamentalData res = frm.Results;
-            LoadToExcel.PrintFundamentalIncomeStatement(res);
+            if (frm.DialogResult != DialogResult.OK)
+            {
+                return;
+            }
+            EOD.Model.Fundamental.FundamentalData res = frm.Results;
+            FundamentalDataPrinter.PrintFundamentalIncomeStatement(res);
         }
 
         private void BtnGetEarnings_Click(object sender, RibbonControlEventArgs e)
         {
             Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
             frm.ShowDialog(new WinHwnd());
-
-            FundamentalData res = frm.Results;
-            LoadToExcel.PrintFundamentalEarnings(res);
+            if (frm.DialogResult != DialogResult.OK)
+            {
+                return;
+            }
+            EOD.Model.Fundamental.FundamentalData res = frm.Results;
+            FundamentalDataPrinter.PrintFundamentalEarnings(res);
         }
 
         private void BtnGetCashFlow_Click(object sender, RibbonControlEventArgs e)
         {
             Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
             frm.ShowDialog(new WinHwnd());
-
-            FundamentalData res = frm.Results;
-            LoadToExcel.PrintFundamentalCashFlow(res);
+            if (frm.DialogResult != DialogResult.OK)
+            {
+                return;
+            }
+            EOD.Model.Fundamental.FundamentalData res = frm.Results;
+            FundamentalDataPrinter.PrintFundamentalCashFlow(res);
         }
         private void BtnFundamentalAllData_Click(object sender, RibbonControlEventArgs e)
         {
             Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
             frm.ShowDialog(new WinHwnd());
-
-            FundamentalData res = frm.Results;
-            LoadToExcel.PrintFundamentalAll(res, frm.Tiker);
+            if (frm.DialogResult!= DialogResult.OK)
+            {
+                return;
+            }
+            EOD.Model.Fundamental.FundamentalData res = frm.Results;
+            FundamentalDataPrinter.PrintFundamentalAll(res, frm.Tiker);
         }
 
         private void BtnGetIntradayHistoricalData_Click(object sender, RibbonControlEventArgs e)
@@ -212,8 +243,68 @@ namespace EODAddIn
                     BtnOptions.Label = "Processing";
                     BtnOptions.Enabled = false;
 
-                    EOD.Model.OptionsData.OptionsData res = await GetOptions.GetOptionsData(frm.Ticker, frm.From, frm.To, frm.FromTrade, frm.ToTrade);
-                    LoadToExcel.PrintOptions(res, frm.Ticker);
+                    EOD.Model.OptionsData.OptionsData res = await OptionsAPI.GetOptionsData(frm.Ticker, frm.From, frm.To, frm.FromTrade, frm.ToTrade);
+                    OptionsPrinter.PrintOptions(res, frm.Ticker);
+                }
+            }
+            catch (Exception ex)
+            {
+                Program.ErrorReport errorReport = new Program.ErrorReport(ex);
+                errorReport.ShowAndSend();
+            }
+            finally
+            {
+                BtnOptions.Label = "Get Options";
+                BtnOptions.Enabled = true;
+            }
+        }
+
+        private void BtnGetBulk_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                Forms.FrmGetBulk frm = new Forms.FrmGetBulk();
+                frm.ShowDialog(new WinHwnd());
+                if (frm.DialogResult ==DialogResult.OK)
+                {
+                    BtnGetBulk.Label = "Processing";
+                    BtnGetBulk.Enabled = false;
+                    switch (frm.BulkTypeOfOutput)
+                    {
+                        case "Separated":
+                            BulkFundamentalPrinter.PrintBulkFundamentals(frm.Tickers);
+                            break;
+                        case "One worksheet":
+                            ScreenerPrinter.PrintScreenerBulk(frm.Tickers);
+                            break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Program.ErrorReport errorReport = new Program.ErrorReport(ex);
+                errorReport.ShowAndSend();
+            }
+            finally
+            {
+                BtnGetBulk.Label = "Bulk Fundamentals";
+                BtnGetBulk.Enabled = true;
+            }
+        }
+
+        private async void btnCreateScreener_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                Forms.FrmScreener frm = new Forms.FrmScreener();
+                frm.ShowDialog(new WinHwnd());
+                if (frm.DialogResult ==DialogResult.OK)
+                {
+                    BtnOptions.Label = "Processing";
+                    BtnOptions.Enabled = false;
+
+                    var res = await ScreenerAPI.GetScreener(frm.Filters, frm.Signals, frm.Sort, frm.Limit);
+                    ScreenerPrinter.PrintScreener(res);
 
                     BtnOptions.Label = "Get Options";
                     BtnOptions.Enabled = true;
@@ -226,6 +317,80 @@ namespace EODAddIn
             }
         }
 
+        private void btnGetScreenerFundamental_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+               if (!  ScreenerPrinter.CheckIsScreenerResult(Globals.ThisAddIn.Application.ActiveSheet))
+                {
+                    return;
+                }
+                ScreenerPrinter.PrintScreenerBulk(ScreenerPrinter.GetTickersFromScreener());
+            }
+            catch (Exception ex)
+            {
+                Program.ErrorReport errorReport = new Program.ErrorReport(ex);
+                errorReport.ShowAndSend();
+            }
+        }
+
+        private void btnGetSreenerHistorical_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                Forms.FrmScreenerHistorical frm = new Forms.FrmScreenerHistorical();
+                frm.ShowDialog(new WinHwnd());
+            }
+            catch (Exception ex)
+            {
+                Program.ErrorReport errorReport = new Program.ErrorReport(ex);
+                errorReport.ShowAndSend();
+            }
+        }
+
+        private void button1_Click(object sender, RibbonControlEventArgs e)
+        {
+            try
+            {
+                Forms.FrmScreenerIntraday frm = new Forms.FrmScreenerIntraday();
+                frm.ShowDialog(new WinHwnd());
+            }
+            catch (Exception ex)
+            {
+                Program.ErrorReport errorReport = new Program.ErrorReport(ex);
+                errorReport.ShowAndSend();
+            }
+        }
+
+        private void BtnListOfExchanges_Click(object sender, RibbonControlEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://eodhistoricaldata.com/financial-apis/list-supported-exchanges/?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
+
+        }
+
+        private void BtnListOfCRYPTOCurrencies_Click(object sender, RibbonControlEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://eodhistoricaldata.com/financial-apis/list-supported-crypto-currencies/?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
+        
+        }
+
+        private void BtnListOfFutures_Click(object sender, RibbonControlEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://eodhistoricaldata.com/financial-apis/list-supported-futures-commodities/?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
+        
+        }
+
+        private void BtnListOfForexCurrencies_Click(object sender, RibbonControlEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://eodhistoricaldata.com/financial-apis/list-supported-forex-currencies/?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
+        
+        }
+
+        private void BtnListOfIndices_Click(object sender, RibbonControlEventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://eodhistoricaldata.com/financial-apis/list-supported-indices/?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
+        }
+
         private async void BtnBulkEod_Click(object sender, RibbonControlEventArgs e)
         {
             try
@@ -233,7 +398,7 @@ namespace EODAddIn
                 Forms.FrmGetBulkEod frm = new Forms.FrmGetBulkEod();
                 frm.ShowDialog(new WinHwnd());
 
-                if (frm.DialogResult == System.Windows.Forms.DialogResult.OK)
+                if (frm.DialogResult == DialogResult.OK)
                 {
                     string exchange = frm.Exchange;
                     string type = null;
@@ -253,7 +418,7 @@ namespace EODAddIn
                     BtnBulkEod.Enabled = false;
 
                     List<Bulk> res = await GetBulkEod.GetBulkEodData(exchange, type, date, tickers);
-                    LoadToExcel.PrintBulkEod(res, exchange, date, tickers, type);
+                    BulkEodPrinter.PrintBulkEod(res, exchange, date, tickers, type);
                 }
             }
             catch (Exception ex)

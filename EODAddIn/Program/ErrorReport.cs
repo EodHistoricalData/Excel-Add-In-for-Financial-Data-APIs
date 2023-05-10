@@ -7,7 +7,7 @@ using System.Windows.Forms;
 namespace EODAddIn.Program
 {
     /// <summary>
-    /// Класс отображения ошибок пользователю
+    /// Class for displaying errors to the user
     /// </summary>
     public class ErrorReport
     {
@@ -15,7 +15,7 @@ namespace EODAddIn.Program
         private const string Url = "https://micro-solution.ru/api/programs/error-report.php";
 
         /// <summary>
-        /// Конструктор новой ошибки
+        /// New error constructor
         /// </summary>
         /// <param name="ex"></param>
         public ErrorReport(Exception ex)
@@ -24,7 +24,7 @@ namespace EODAddIn.Program
         }
 
         /// <summary>
-        /// Сообщение пользователю (без отправки на сервер)
+        /// Message to the user (without sending to the server)
         /// </summary>
         /// <param name="messageAdd"></param>
         public void MessageToUser(string messageAdd = "")
@@ -33,7 +33,7 @@ namespace EODAddIn.Program
         }
 
         /// <summary>
-        /// Отображение сообщения об ошибке пользователю и отправка сообщения
+        /// Show an error message to the user and send the message to the server
         /// </summary>
         public void ShowAndSend()
         {
@@ -44,7 +44,7 @@ namespace EODAddIn.Program
         }
 
         /// <summary>
-        /// Отправка сообщения об ошибке на сервер
+        /// Sending an error message to the server
         /// </summary>
         public void Send()
         {

@@ -13,28 +13,30 @@ namespace EODAddIn.Program
     public static class Program
     {
         /// <summary>
-        /// Название программы
+        /// Program name
         /// </summary>
         internal const string ProgramName = "EOD Excel Add-In";
         internal const string CompanyName = "EODHistoricalData";
-        internal const string UrlCompany = "https://eodhistoricaldata.com";
-        internal const string UrlKey = "https://eodhistoricaldata.com/cp/settings";
-        internal const string UrlPrice = "https://eodhistoricaldata.com/pricing";
+        
+        internal const string UrlCompany = "https://eodhistoricaldata.com?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin";
+        internal const string UrlRegister = "https://eodhistoricaldata.com/register?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin";
+        internal const string UrlKey = "https://eodhistoricaldata.com/cp/settings?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin";
+        internal const string UrlPrice = "https://eodhistoricaldata.com/pricing?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin"; 
         internal const string UrlUpdate = "https://eodhistoricaldata.com/excel-plugin-updates.xml";
 
         /// <summary>
-        /// Папка пользователя
+        /// User folder
         /// </summary>
         public static string UserFolder => Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), CompanyName, ProgramName);
 
         /// <summary>
-        /// Версия программы
+        /// Program version
         /// </summary>
         internal static Version Version { get; private set; }
 
 
         /// <summary>
-        /// Ключ активации программы
+        /// Program Activation Key
         /// </summary>
         internal static string APIKey
         {
@@ -47,7 +49,7 @@ namespace EODAddIn.Program
         }
 
         /// <summary>
-        /// Идентификатор компьютера пользователя
+        /// User computer ID
         /// </summary>
         internal static string UserHash
         {
@@ -68,7 +70,7 @@ namespace EODAddIn.Program
         }
 
         /// <summary>
-        /// Получение хэшкода компьютера пользователя
+        /// Getting the hashcode of the user's PC
         /// </summary>
         /// <returns></returns>
         private static string GetHash()
@@ -113,10 +115,10 @@ namespace EODAddIn.Program
 
 
         /// <summary>
-        /// Проверка наличия обнвлений
+        /// Check for updates
         /// </summary>
         /// <returns></returns>
-        /// <exception cref="System.Net.WebException">Ошибка подключения</exception>
+        /// <exception cref="System.Net.WebException">Connection error</exception>
         private static bool CheckUpdate()
         {
             try
@@ -132,10 +134,10 @@ namespace EODAddIn.Program
         }
 
         /// <summary>
-        /// Получение истории обновлений
+        /// Get update history
         /// </summary>
         /// <returns></returns>
-        /// <exception cref="System.Net.WebException">Ошибка подключения</exception>
+        /// <exception cref="System.Net.WebException">Connection error</exception>
         private static List<Version> GetVersions()
         {
             List<Version> versions = new List<Version>();
@@ -176,7 +178,7 @@ namespace EODAddIn.Program
         }
 
         /// <summary>
-        /// Проверка обновления и предложение обновиться
+        /// Check for updates and offer to update
         /// </summary>
         private static void DoYouWantUpdate()
         {
@@ -197,7 +199,7 @@ namespace EODAddIn.Program
         }
 
         /// <summary>
-        /// Проверка обновлений в отдельном потоке
+        /// Check for updates in a separate thread
         /// </summary>
         public static void Run()
         {
@@ -213,10 +215,10 @@ namespace EODAddIn.Program
         }
 
         /// <summary>
-        /// Получение списка последних изменений
+        ///Get a list of recent changes
         /// </summary>
         /// <returns></returns>
-        /// <exception cref="System.Net.WebException">Ошибка подключения</exception>
+        /// <exception cref="System.Net.WebException">Connection error</exception>
         internal static List<Version> GetVersionNews()
         {
             List<Version> versions;
@@ -242,7 +244,7 @@ namespace EODAddIn.Program
         }
 
         /// <summary>
-        /// Проверка обновления и вызов формы изменений м возможностью запустить обновление
+        /// Update check and open change form with option to trigger update
         /// </summary>
         public static void CheckUpdates()
         {

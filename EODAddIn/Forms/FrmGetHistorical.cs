@@ -1,4 +1,7 @@
 ﻿using EODAddIn.BL;
+using EODAddIn.BL.HistoricalAPI;
+using EODAddIn.BL.HistoricalPrinter;
+using EODAddIn.BL.IntradayPrinter;
 using EODAddIn.Program;
 using EODAddIn.Utils;
 
@@ -51,12 +54,26 @@ namespace EODAddIn.Forms
         private void BtnLoad_Click(object sender, EventArgs e)
         {
             if (!CheckForm()) return;
-
+            if (cboTypeOfOutput.SelectedItem.ToString() == "One worksheet")
+            {
+                Excel.Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
+                if (sh.UsedRange.Value != null)
+                {
+                    MessageBox.Show(
+                    "Select empty worksheet",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+                    return;
+                }
+            }
+            bool isSummary = false;
             string period = cboPeriod.SelectedItem.ToString().ToLower().Substring(0, 1);
             DateTime from = dtpFrom.Value;
             DateTime to = dtpTo.Value;
-
             List<string> tikers = new List<string>();
+            int rowHistorical = 3;
             Progress progress = new Progress("Load end of data", gridTickers.Rows.Count - 1);
             foreach (DataGridViewRow row in gridTickers.Rows)
             {
@@ -66,13 +83,24 @@ namespace EODAddIn.Forms
                 tikers.Add(ticker);
                 try
                 {
-                    //async await Task.Run(() =>});
-                    List<Model.EndOfDay> res = APIEOD.GetEOD(ticker, from, to, period);
+                    List<EOD.Model.HistoricalStockPrice> res = HistoricalAPI.GetEOD(ticker, from, to, period);
                     if (rbtnAscOrder.Checked)
                     {
                         res.Reverse();
                     }
-                    LoadToExcel.PrintEndOfDay(res, ticker, period, chkChart.Checked);
+                    switch (cboTypeOfOutput.SelectedItem.ToString())
+                    {
+                        case "Separated with chart":
+                            rowHistorical = HistoricalPrinter.PrintEndOfDay(res, ticker, period, true, chkIsTable.Checked);
+                            break;
+                        case "Separated without chart":
+                            rowHistorical = HistoricalPrinter.PrintEndOfDay(res, ticker, period, false, chkIsTable.Checked);
+                            break;
+                        case "One worksheet":
+                            rowHistorical = HistoricalPrinter.PrintEndOfDaySummary(res, ticker, period, rowHistorical);
+                            isSummary = true;
+                            break;
+                    }
                 }
                 catch (APIException ex)
                 {
@@ -85,6 +113,10 @@ namespace EODAddIn.Forms
                     error.ShowAndSend();
                     continue;
                 }
+            }
+            if (isSummary && chkIsTable.Checked)
+            {
+                ExcelUtils.MakeTable("A2", "K" + rowHistorical.ToString(), Globals.ThisAddIn.Application.ActiveSheet, "Historical", 9);
             }
             progress.Finish();
             Settings.SettingsFields.EndOfDayPeriod = period;
