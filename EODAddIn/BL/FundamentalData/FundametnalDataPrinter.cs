@@ -285,7 +285,7 @@ namespace EODAddIn.BL.FundamentalDataPrinter
         /// <param name="range">target cell</param>
         /// <param name="data">Table data</param>
         /// <param name="properties">Property List</param>
-        private static void PrintTablePeriod<T>(string periodName, Excel.Range range, Dictionary<DateTime, T> data)
+        private static void PrintTablePeriod<T>(string periodName, Excel.Range range, Dictionary<string, T> data)
             where T : class, new()
         {
             Excel.Worksheet sh = range.Parent;
