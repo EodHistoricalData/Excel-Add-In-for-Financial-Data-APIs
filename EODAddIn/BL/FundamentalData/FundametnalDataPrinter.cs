@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Reflection;
 using Excel = Microsoft.Office.Interop.Excel;
 using static EODAddIn.Utils.ExcelUtils;
+using EOD.Model.Fundamental;
+using Microsoft.Office.Interop.Excel;
 
 namespace EODAddIn.BL.FundamentalDataPrinter
 {
@@ -37,6 +39,13 @@ namespace EODAddIn.BL.FundamentalDataPrinter
 
                 int row = 1;
                 int startGroup1 = 2;
+
+                if (data.Statistics != null)
+                {
+                    // crypto
+                    PrintCrypto(data, sh);
+                    return;
+                }
 
                 row = PrintFundamentalGeneral(data, sh.Cells[row, 1]);
                 row++;
@@ -324,5 +333,64 @@ namespace EODAddIn.BL.FundamentalDataPrinter
             sh.Range[sh.Cells[row, range.Column], sh.Cells[row + countValues - 1, column - 1]].Value = val;
         }
 
+        private static void PrintCrypto(FundamentalData data, Worksheet worksheet)
+        {
+            int row = 1;
+            Type myType = data.GetType();
+            IList<PropertyInfo> props = new List<PropertyInfo>(myType.GetProperties());
+
+            foreach (PropertyInfo prop in props)
+            {
+                object propValue = prop.GetValue(data, null);
+                switch (prop.Name)
+                {
+                    case "General":
+                        row = PrintVerticalTable(prop.Name, propValue, worksheet.Cells[row, 1]);
+                        row++;
+                        break;
+                    case "Statistics":
+                        row = PrintVerticalTable(prop.Name, propValue, worksheet.Cells[row, 1]);
+                        row++;
+                        break;
+                }
+            }
+        }
+
+        private static int PrintVerticalTable(string name, object data, Range range)
+        {
+            Worksheet worksheet = range.Parent;
+            int row = range.Row;
+            int column = range.Column;
+
+            // print header
+            worksheet.Cells[row, column] = name;
+            worksheet.Cells[row, column].Font.Bold = true;
+            row++;
+
+            // collect table values
+            Type myType = data.GetType();
+            IList<PropertyInfo> props = new List<PropertyInfo>(myType.GetProperties());
+            List<(string, object)> pairs = new List<(string, object)>();
+            foreach (PropertyInfo prop in props)
+            {
+                object propValue = prop.GetValue(data, null);
+                if (propValue == null) continue;
+                pairs.Add((prop.Name, propValue));
+            }
+            object[,] array = new object[pairs.Count, 2];
+            for (int i = 0; i < pairs.Count; i++)
+            {
+                array[i, 0] = pairs[i].Item1;
+                array[i, 1] = pairs[i].Item2;
+            }
+            // print table
+            Range c1 = (Range)worksheet.Cells[row, 1];
+            row += pairs.Count - 1;
+            Range c2 = (Range)worksheet.Cells[row, 2];
+            Range table = worksheet.get_Range(c1, c2);
+            table.Value = array;
+
+            return row;
+        }
     }
 }
