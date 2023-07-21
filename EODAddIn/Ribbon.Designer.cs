@@ -51,6 +51,7 @@ namespace EODAddIn
             this.BtnGetBulk = this.Factory.CreateRibbonButton();
             this.BtnGetEtf = this.Factory.CreateRibbonButton();
             this.BtnOptions = this.Factory.CreateRibbonButton();
+            this.BtnBulkEod = this.Factory.CreateRibbonButton();
             this.menuScreener = this.Factory.CreateRibbonMenu();
             this.btnCreateScreener = this.Factory.CreateRibbonButton();
             this.btnGetScreenerFundamenat = this.Factory.CreateRibbonButton();
@@ -75,7 +76,6 @@ namespace EODAddIn
             this.btnCheckUpdate = this.Factory.CreateRibbonButton();
             this.btnErrorMessage = this.Factory.CreateRibbonButton();
             this.btnAbout = this.Factory.CreateRibbonButton();
-            this.BtnBulkEod = this.Factory.CreateRibbonButton();
             this.tabMain.SuspendLayout();
             this.grpMain.SuspendLayout();
             this.group1.SuspendLayout();
@@ -211,6 +211,15 @@ namespace EODAddIn
             this.BtnOptions.Name = "BtnOptions";
             this.BtnOptions.ShowImage = true;
             this.BtnOptions.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnOptions_Click);
+            // 
+            // BtnBulkEod
+            // 
+            this.BtnBulkEod.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.BtnBulkEod.Image = global::EODAddIn.Properties.Resources.button_80;
+            this.BtnBulkEod.Label = "Get Bulk EOD data";
+            this.BtnBulkEod.Name = "BtnBulkEod";
+            this.BtnBulkEod.ShowImage = true;
+            this.BtnBulkEod.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnBulkEod_Click);
             // 
             // menuScreener
             // 
@@ -391,15 +400,6 @@ namespace EODAddIn
             this.btnAbout.Name = "btnAbout";
             this.btnAbout.ShowImage = true;
             this.btnAbout.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnAbout_Click);
-            // 
-            // BtnBulkEod
-            // 
-            this.BtnBulkEod.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.BtnBulkEod.Image = global::EODAddIn.Properties.Resources.button_80;
-            this.BtnBulkEod.Label = "Get Bulk EOD data";
-            this.BtnBulkEod.Name = "BtnBulkEod";
-            this.BtnBulkEod.ShowImage = true;
-            this.BtnBulkEod.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnBulkEod_Click);
             // 
             // Ribbon
             // 

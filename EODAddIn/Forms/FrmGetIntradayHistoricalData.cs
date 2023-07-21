@@ -26,17 +26,23 @@ namespace EODAddIn.Forms
             /*  5m,1h,1m  */
             switch (Settings.SettingsFields.IntradayInterval)
             {
-                case "5m":
+                case "1m":
                     cboInterval.SelectedIndex = 0;
                     break;
-                case "1h":
+                case "5m":
                     cboInterval.SelectedIndex = 1;
                     break;
-                case "1m":
+                case "15m":
                     cboInterval.SelectedIndex = 2;
                     break;
+                case "30m":
+                    cboInterval.SelectedIndex = 3;
+                    break;
+                case "1h":
+                    cboInterval.SelectedIndex = 4;
+                    break;
                 default:
-                    cboInterval.SelectedIndex = 0;
+                    cboInterval.SelectedIndex = -1;
                     break;
             }
 
@@ -249,7 +255,14 @@ namespace EODAddIn.Forms
         private void TsmiDeleteRowDataGrid_Click(object sender, EventArgs e)
         {
             if (gridTickers.SelectedRows.Count == 0) return;
-            gridTickers.Rows.Remove(gridTickers.SelectedRows[0]);
+            try
+            {
+                gridTickers.Rows.Remove(gridTickers.SelectedRows[0]);
+            }
+            catch
+            {
+
+            }
         }
 
         private void TsmiFindTicker_Click(object sender, EventArgs e)
@@ -348,13 +361,15 @@ namespace EODAddIn.Forms
             double possibleDateRange;
             switch (cboInterval.SelectedIndex)
             {
-                case 1: //"1h":
+                case 4:
                     possibleDateRange = TimeSpan.FromDays(7200).TotalSeconds;
                     break;
-                case 2: //"1m":
+                case 0:
                     possibleDateRange = TimeSpan.FromDays(120).TotalSeconds;
                     break;
-                default: // 0 - "5m"
+                case -1:
+                    return true;
+                default:
                     possibleDateRange = TimeSpan.FromDays(600).TotalSeconds;
                     break;
             }
@@ -366,13 +381,13 @@ namespace EODAddIn.Forms
             DateTime dateFrom;
             switch (cboInterval.SelectedIndex)
             {
-                case 1: //"1h":
+                case 4:
                     dateFrom = dateTo.AddSeconds(-TimeSpan.FromDays(7200).TotalSeconds);
                     break;
-                case 2: //"1m":
+                case 0:
                     dateFrom = dateTo.AddSeconds(-TimeSpan.FromDays(120).TotalSeconds);
                     break;
-                default: // 0 - "5m"
+                default:
                     dateFrom = dateTo.AddSeconds(-TimeSpan.FromDays(600).TotalSeconds);
                     break;
             }
@@ -383,13 +398,13 @@ namespace EODAddIn.Forms
             DateTime dateTo;
             switch (cboInterval.SelectedIndex)
             {
-                case 1: //"1h":
+                case 4:
                     dateTo = dateFrom.AddSeconds(TimeSpan.FromDays(7200).TotalSeconds);
                     break;
-                case 2: //"1m":
+                case 0:
                     dateTo = dateFrom.AddSeconds(TimeSpan.FromDays(120).TotalSeconds);
                     break;
-                default: // 0 - "5m"
+                default:
                     dateTo = dateFrom.AddSeconds(TimeSpan.FromDays(600).TotalSeconds);
                     break;
             }
