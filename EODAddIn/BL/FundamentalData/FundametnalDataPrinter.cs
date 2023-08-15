@@ -6,6 +6,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 using static EODAddIn.Utils.ExcelUtils;
 using EOD.Model.Fundamental;
 using Microsoft.Office.Interop.Excel;
+using EOD.Model.BulkFundamental;
 
 namespace EODAddIn.BL.FundamentalDataPrinter
 {
@@ -15,7 +16,7 @@ namespace EODAddIn.BL.FundamentalDataPrinter
         /// Print all Fundamenal data to worksheet
         /// </summary>
         /// <param name="data"></param>
-        public static void PrintFundamentalAll(EOD.Model.Fundamental.FundamentalData data, string ticker)
+        public static void PrintFundamentalAll(FundamentalData data, string ticker)
         {
             try
             {
@@ -23,12 +24,12 @@ namespace EODAddIn.BL.FundamentalDataPrinter
 
                 string nameSheet = $"{ticker}-Fundamentals";
 
-                Excel.Worksheet sh = AddSheet(nameSheet);
+                Worksheet sh = AddSheet(nameSheet);
 
-                if (ExcelUtils.SheetExists(nameSheet))
+                if (SheetExists(nameSheet))
                 {
                     sh = Globals.ThisAddIn.Application.Worksheets[nameSheet];
-                    int maxrow = ExcelUtils.RowsCount(sh);
+                    int maxrow = RowsCount(sh);
                     sh.Range[$"A1:Z{maxrow}"].ClearContents();
                 }
                 else
@@ -38,7 +39,6 @@ namespace EODAddIn.BL.FundamentalDataPrinter
                 }
 
                 int row = 1;
-                int startGroup1 = 2;
 
                 if (data.Statistics != null)
                 {
@@ -47,9 +47,25 @@ namespace EODAddIn.BL.FundamentalDataPrinter
                     return;
                 }
 
-                row = PrintFundamentalGeneral(data, sh.Cells[row, 1]);
-                row++;
+                int startGroup1 = 2;
+                Type myType = data.GetType();
+                IList<PropertyInfo> props = new List<PropertyInfo>(myType.GetProperties());
 
+                foreach (PropertyInfo prop in props)
+                {
+                    object propValue = prop.GetValue(data, null);
+                    switch (prop.Name)
+                    {
+                        case "General":
+                            row = Printer.PrintVerticalTable(prop.Name, propValue, sh.Cells[row, 1]);
+                            row++;
+                            break;
+                    }
+                }
+
+                //row = PrintFundamentalGeneral(data, sh.Cells[row, 1]);
+                //row++;
+                row--;
                 sh.Rows[$"{startGroup1}:{row}"].Group();
                 row++;
 
@@ -72,7 +88,7 @@ namespace EODAddIn.BL.FundamentalDataPrinter
 
 
                 sh.Outline.AutomaticStyles = false;
-                sh.Outline.SummaryRow = Excel.XlSummaryRow.xlSummaryAbove;
+                sh.Outline.SummaryRow = XlSummaryRow.xlSummaryAbove;
 
                 sh.Outline.ShowLevels(1);
             }
@@ -206,9 +222,9 @@ namespace EODAddIn.BL.FundamentalDataPrinter
         /// <param name="data">Fundamental data</param>
         /// <param name="range">The cell where printing starts</param>
         /// <returns>The number of the last involved line</returns>
-        private static int PrintFundamentalGeneral(EOD.Model.Fundamental.FundamentalData data, Excel.Range range)
+        private static int PrintFundamentalGeneral(FundamentalData data, Range range)
         {
-            Excel.Worksheet sh = range.Parent;
+            Worksheet sh = range.Parent;
             int row = range.Row;
             int column = range.Column;
 
@@ -256,7 +272,7 @@ namespace EODAddIn.BL.FundamentalDataPrinter
         private static int PrintFundamentalData<T, U>(string nameData,
                                                     Dictionary<string, T> dataTable1,
                                                     Dictionary<string, U> dataTable2,
-                                                    Excel.Range range,
+                                                    Range range,
                                                     string dataTable1Name = "Quarterly",
                                                     string dataTable2Name = "Yearly")
              where T : class
@@ -294,7 +310,7 @@ namespace EODAddIn.BL.FundamentalDataPrinter
         /// <param name="range">target cell</param>
         /// <param name="data">Table data</param>
         /// <param name="properties">Property List</param>
-        private static void PrintTablePeriod<T>(string periodName, Excel.Range range, Dictionary<string, T> data)
+        private static void PrintTablePeriod<T>(string periodName, Range range, Dictionary<string, T> data)
             where T : class, new()
         {
             Excel.Worksheet sh = range.Parent;
@@ -345,52 +361,15 @@ namespace EODAddIn.BL.FundamentalDataPrinter
                 switch (prop.Name)
                 {
                     case "General":
-                        row = PrintVerticalTable(prop.Name, propValue, worksheet.Cells[row, 1]);
+                        row = Printer.PrintVerticalTable(prop.Name, propValue, worksheet.Cells[row, 1]);
                         row++;
                         break;
                     case "Statistics":
-                        row = PrintVerticalTable(prop.Name, propValue, worksheet.Cells[row, 1]);
+                        row = Printer.PrintVerticalTable(prop.Name, propValue, worksheet.Cells[row, 1]);
                         row++;
                         break;
                 }
             }
-        }
-
-        private static int PrintVerticalTable(string name, object data, Range range)
-        {
-            Worksheet worksheet = range.Parent;
-            int row = range.Row;
-            int column = range.Column;
-
-            // print header
-            worksheet.Cells[row, column] = name;
-            worksheet.Cells[row, column].Font.Bold = true;
-            row++;
-
-            // collect table values
-            Type myType = data.GetType();
-            IList<PropertyInfo> props = new List<PropertyInfo>(myType.GetProperties());
-            List<(string, object)> pairs = new List<(string, object)>();
-            foreach (PropertyInfo prop in props)
-            {
-                object propValue = prop.GetValue(data, null);
-                if (propValue == null) continue;
-                pairs.Add((prop.Name, propValue));
-            }
-            object[,] array = new object[pairs.Count, 2];
-            for (int i = 0; i < pairs.Count; i++)
-            {
-                array[i, 0] = pairs[i].Item1;
-                array[i, 1] = pairs[i].Item2;
-            }
-            // print table
-            Range c1 = (Range)worksheet.Cells[row, 1];
-            row += pairs.Count - 1;
-            Range c2 = (Range)worksheet.Cells[row, 2];
-            Range table = worksheet.get_Range(c1, c2);
-            table.Value = array;
-
-            return row;
         }
     }
 }

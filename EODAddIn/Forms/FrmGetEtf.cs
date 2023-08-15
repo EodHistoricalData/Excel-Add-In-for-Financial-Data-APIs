@@ -33,14 +33,14 @@ namespace EODAddIn.Forms
             return true;
         }
 
-        private void BtnLoad_Click(object sender, EventArgs e)
+        private async void BtnLoad_Click(object sender, EventArgs e)
         {
             if (!CheckForm()) return;
             Tiker = txtCode.Text;
 
             try
             {
-                Results = FundamentalDataAPI.GetFundamental(Tiker);
+                Results = await FundamentalDataAPI.GetFundamentalData(Tiker);
                 if (Results.ETF_Data == null)
                     throw new NullReferenceException("No ETF data");
             }

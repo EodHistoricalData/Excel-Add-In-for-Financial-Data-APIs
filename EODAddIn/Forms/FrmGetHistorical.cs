@@ -1,7 +1,6 @@
-﻿using EODAddIn.BL;
+﻿using EOD.Model;
 using EODAddIn.BL.HistoricalAPI;
 using EODAddIn.BL.HistoricalPrinter;
-using EODAddIn.BL.IntradayPrinter;
 using EODAddIn.Program;
 using EODAddIn.Utils;
 
@@ -10,7 +9,6 @@ using MS.ProgressBar;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using Excel = Microsoft.Office.Interop.Excel;
@@ -51,7 +49,7 @@ namespace EODAddIn.Forms
             }
         }
 
-        private void BtnLoad_Click(object sender, EventArgs e)
+        private async void BtnLoad_Click(object sender, EventArgs e)
         {
             if (!CheckForm()) return;
             if (cboTypeOfOutput.SelectedItem.ToString() == "One worksheet")
@@ -83,7 +81,7 @@ namespace EODAddIn.Forms
                 tikers.Add(ticker);
                 try
                 {
-                    List<EOD.Model.HistoricalStockPrice> res = HistoricalAPI.GetEOD(ticker, from, to, period);
+                    List<HistoricalStockPrice> res = await HistoricalAPI.GetHistoricalStockPrice(ticker, from, to, period);
                     if (rbtnAscOrder.Checked)
                     {
                         res.Reverse();
