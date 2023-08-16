@@ -6,6 +6,7 @@ using System.Drawing;
 using Excel = Microsoft.Office.Interop.Excel;
 using static EODAddIn.Utils.ExcelUtils;
 using EODAddIn.BL.Screener;
+using System.Reflection;
 
 namespace EODAddIn.BL.HistoricalPrinter
 {
@@ -18,7 +19,7 @@ namespace EODAddIn.BL.HistoricalPrinter
         /// <param name="ticker">Ticker</param>
         /// <param name="period">Period</param>
         /// <param name="chart"> necessity of chart</param>
-        public static int PrintEndOfDay(List<EOD.Model.HistoricalStockPrice> endOfDays, string ticker, string period, bool chart, bool isCreateTable)
+        public static int PrintEndOfDay(List<HistoricalStockPrice> endOfDays, string ticker, string period, bool chart, bool isCreateTable)
         {
             try
             {
@@ -27,35 +28,38 @@ namespace EODAddIn.BL.HistoricalPrinter
                 int r = 2;
 
                 Excel.Worksheet worksheet = AddSheet(nameSheet);
-                worksheet.Cells[r-1, 1] = "Historical Data";
-                worksheet.Cells[r, 1] = "Date";
-                worksheet.Cells[r, 2] = "Open";
-                worksheet.Cells[r, 3] = "High";
-                worksheet.Cells[r, 4] = "Low";
-                worksheet.Cells[r, 5] = "Close";
-                worksheet.Cells[r, 6] = "Adjusted_open";
-                worksheet.Cells[r, 7] = "Adjusted_high";
-                worksheet.Cells[r, 8] = "Adjusted_lowe";
-                worksheet.Cells[r, 9] = "Adjusted_close";
-                worksheet.Cells[r, 10] = "Volume";
+                worksheet.Cells[r - 1, 1] = "Historical Data";
 
+                object[,] table = new object[endOfDays.Count + 1, 10];
+                table[0, 0] = "Date";
+                table[0, 1] = "Open";
+                table[0, 2] = "High";
+                table[0, 3] = "Low";
+                table[0, 4] = "Close";
+                table[0, 5] = "Adjusted_open";
+                table[0, 6] = "Adjusted_high";
+                table[0, 7] = "Adjusted_lowe";
+                table[0, 8] = "Adjusted_close";
+                table[0, 9] = "Volume";
                 try
                 {
-                    ExcelUtils.OnStart();
+                    OnStart();
+                    int i = 0;
                     foreach (HistoricalStockPrice item in endOfDays)
                     {
-                        r++;
-                        worksheet.Cells[r, 1] = item.Date;
-                        worksheet.Cells[r, 2] = item.Open;
-                        worksheet.Cells[r, 3] = item.High;
-                        worksheet.Cells[r, 4] = item.Low;
-                        worksheet.Cells[r, 5] = item.Close;
-                        worksheet.Cells[r, 6] = item.Adjusted_open;
-                        worksheet.Cells[r, 7] = item.Adjusted_high;
-                        worksheet.Cells[r, 8] = item.Adjusted_low;
-                        worksheet.Cells[r, 9] = item.Adjusted_close;
-                        worksheet.Cells[r, 10] = item.Volume;
+                        i++;
+                        table[i, 0] = item.Date;
+                        table[i, 1] = item.Open;
+                        table[i, 2] = item.High;
+                        table[i, 3] = item.Low;
+                        table[i, 4] = item.Close;
+                        table[i, 5] = item.Adjusted_open;
+                        table[i, 6] = item.Adjusted_high;
+                        table[i, 7] = item.Adjusted_low;
+                        table[i, 8] = item.Adjusted_close;
+                        table[i, 9] = item.Volume;
                     }
+                    r = Printer.PrintHorisontalTable(worksheet.Cells[2, 1], table);
                 }
                 catch (Exception)
                 {
@@ -63,11 +67,11 @@ namespace EODAddIn.BL.HistoricalPrinter
                 }
                 finally
                 {
-                    ExcelUtils.OnEnd();
+                    OnEnd();
                 }
                 if (isCreateTable)
                 {
-                    ExcelUtils.MakeTable("A2", "J" + r.ToString(), worksheet, "Intraday", 9);
+                    MakeTable("A2", "J" + (r - 1).ToString(), worksheet, "Intraday", 9);
                 }
                 if (!CreateSheet) return r;
                 if (!chart) return r;

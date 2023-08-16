@@ -3,13 +3,6 @@ using EODAddIn.Program;
 using EODAddIn.Utils;
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace EODAddIn.Forms
@@ -34,7 +27,7 @@ namespace EODAddIn.Forms
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void BtnLoad_Click(object sender, EventArgs e)
+        private async void BtnLoad_Click(object sender, EventArgs e)
         {
             if (!CheckForm()) return; 
 
@@ -42,7 +35,7 @@ namespace EODAddIn.Forms
 
             try
             {
-                Results = FundamentalDataAPI.GetFundamental(Tiker);
+                Results = await FundamentalDataAPI.GetFundamentalData(Tiker);
                 DialogResult = DialogResult.OK;
             }
             catch (APIException ex)
@@ -56,9 +49,9 @@ namespace EODAddIn.Forms
                 error.ShowAndSend();
                 return;
             }
-            
-            Program.Settings.SettingsFields.FundamentalTicker = Tiker;
-            Program.Settings.Save();
+
+            Settings.SettingsFields.FundamentalTicker = Tiker;
+            Settings.Save();
             Close();
         }
 
