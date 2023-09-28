@@ -41,20 +41,20 @@ namespace EODAddIn.Forms
             this.gridTickers = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.findTickerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiDeleteRowDataGrid = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.tsmiFindTicker = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiLoadTickers = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiFromTxt = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiFromExcel = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiClearTicker = new System.Windows.Forms.ToolStripMenuItem();
             this.order_label = new System.Windows.Forms.Label();
             this.rbtnDescOrder = new System.Windows.Forms.RadioButton();
             this.rbtnAscOrder = new System.Windows.Forms.RadioButton();
             this.chkIsTable = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.cboTypeOfOutput = new System.Windows.Forms.ComboBox();
+            this.findTickerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiDeleteRowDataGrid = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiFindTicker = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiLoadTickers = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiFromTxt = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiFromExcel = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiClearTicker = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.gridTickers)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -73,7 +73,7 @@ namespace EODAddIn.Forms
             // 
             this.dtpFrom.Location = new System.Drawing.Point(86, 273);
             this.dtpFrom.Name = "dtpFrom";
-            this.dtpFrom.Size = new System.Drawing.Size(152, 20);
+            this.dtpFrom.Size = new System.Drawing.Size(171, 20);
             this.dtpFrom.TabIndex = 5;
             this.dtpFrom.Value = new System.DateTime(2020, 9, 17, 0, 0, 0, 0);
             // 
@@ -90,13 +90,13 @@ namespace EODAddIn.Forms
             // 
             this.dtpTo.Location = new System.Drawing.Point(86, 299);
             this.dtpTo.Name = "dtpTo";
-            this.dtpTo.Size = new System.Drawing.Size(152, 20);
+            this.dtpTo.Size = new System.Drawing.Size(171, 20);
             this.dtpTo.TabIndex = 7;
             this.dtpTo.Value = new System.DateTime(2022, 9, 18, 13, 37, 0, 0);
             // 
             // btnLoad
             // 
-            this.btnLoad.Location = new System.Drawing.Point(163, 414);
+            this.btnLoad.Location = new System.Drawing.Point(182, 414);
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(75, 23);
             this.btnLoad.TabIndex = 8;
@@ -122,7 +122,7 @@ namespace EODAddIn.Forms
             "monthly"});
             this.cboPeriod.Location = new System.Drawing.Point(86, 245);
             this.cboPeriod.Name = "cboPeriod";
-            this.cboPeriod.Size = new System.Drawing.Size(152, 21);
+            this.cboPeriod.Size = new System.Drawing.Size(171, 21);
             this.cboPeriod.TabIndex = 3;
             // 
             // gridTickers
@@ -137,7 +137,7 @@ namespace EODAddIn.Forms
             this.gridTickers.RowHeadersVisible = false;
             this.gridTickers.RowHeadersWidth = 20;
             this.gridTickers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gridTickers.Size = new System.Drawing.Size(223, 209);
+            this.gridTickers.Size = new System.Drawing.Size(242, 209);
             this.gridTickers.TabIndex = 1;
             // 
             // Column1
@@ -152,23 +152,7 @@ namespace EODAddIn.Forms
             this.findTickerToolStripMenuItem,
             this.tsmiDeleteRowDataGrid});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(130, 48);
-            // 
-            // findTickerToolStripMenuItem
-            // 
-            this.findTickerToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("findTickerToolStripMenuItem.Image")));
-            this.findTickerToolStripMenuItem.Name = "findTickerToolStripMenuItem";
-            this.findTickerToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
-            this.findTickerToolStripMenuItem.Text = "Find ticker";
-            this.findTickerToolStripMenuItem.Click += new System.EventHandler(this.TsmiFindTicker_Click);
-            // 
-            // tsmiDeleteRowDataGrid
-            // 
-            this.tsmiDeleteRowDataGrid.Image = ((System.Drawing.Image)(resources.GetObject("tsmiDeleteRowDataGrid.Image")));
-            this.tsmiDeleteRowDataGrid.Name = "tsmiDeleteRowDataGrid";
-            this.tsmiDeleteRowDataGrid.Size = new System.Drawing.Size(129, 22);
-            this.tsmiDeleteRowDataGrid.Text = "Delete";
-            this.tsmiDeleteRowDataGrid.Click += new System.EventHandler(this.TsmiDeleteRowDataGrid_Click);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(136, 48);
             // 
             // menuStrip1
             // 
@@ -178,51 +162,9 @@ namespace EODAddIn.Forms
             this.tsmiClearTicker});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(250, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(269, 25);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
-            // 
-            // tsmiFindTicker
-            // 
-            this.tsmiFindTicker.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFindTicker.Image")));
-            this.tsmiFindTicker.Name = "tsmiFindTicker";
-            this.tsmiFindTicker.Size = new System.Drawing.Size(90, 20);
-            this.tsmiFindTicker.Text = "Find ticker";
-            this.tsmiFindTicker.Click += new System.EventHandler(this.TsmiFindTicker_Click);
-            // 
-            // tsmiLoadTickers
-            // 
-            this.tsmiLoadTickers.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiFromTxt,
-            this.tsmiFromExcel});
-            this.tsmiLoadTickers.Image = ((System.Drawing.Image)(resources.GetObject("tsmiLoadTickers.Image")));
-            this.tsmiLoadTickers.Name = "tsmiLoadTickers";
-            this.tsmiLoadTickers.Size = new System.Drawing.Size(71, 20);
-            this.tsmiLoadTickers.Text = "Import";
-            // 
-            // tsmiFromTxt
-            // 
-            this.tsmiFromTxt.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFromTxt.Image")));
-            this.tsmiFromTxt.Name = "tsmiFromTxt";
-            this.tsmiFromTxt.Size = new System.Drawing.Size(165, 22);
-            this.tsmiFromTxt.Text = "From file txt";
-            this.tsmiFromTxt.Click += new System.EventHandler(this.TsmiFromTxt_Click);
-            // 
-            // tsmiFromExcel
-            // 
-            this.tsmiFromExcel.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFromExcel.Image")));
-            this.tsmiFromExcel.Name = "tsmiFromExcel";
-            this.tsmiFromExcel.Size = new System.Drawing.Size(165, 22);
-            this.tsmiFromExcel.Text = "From Excel range";
-            this.tsmiFromExcel.Click += new System.EventHandler(this.TsmiFromExcel_Click);
-            // 
-            // tsmiClearTicker
-            // 
-            this.tsmiClearTicker.Image = ((System.Drawing.Image)(resources.GetObject("tsmiClearTicker.Image")));
-            this.tsmiClearTicker.Name = "tsmiClearTicker";
-            this.tsmiClearTicker.Size = new System.Drawing.Size(80, 20);
-            this.tsmiClearTicker.Text = "Clear list";
-            this.tsmiClearTicker.Click += new System.EventHandler(this.ClearTicker_Click);
             // 
             // order_label
             // 
@@ -286,15 +228,73 @@ namespace EODAddIn.Forms
             "Separated without chart"});
             this.cboTypeOfOutput.Location = new System.Drawing.Point(96, 355);
             this.cboTypeOfOutput.Name = "cboTypeOfOutput";
-            this.cboTypeOfOutput.Size = new System.Drawing.Size(142, 21);
+            this.cboTypeOfOutput.Size = new System.Drawing.Size(161, 21);
             this.cboTypeOfOutput.TabIndex = 21;
             this.cboTypeOfOutput.Text = "One worksheet";
+            // 
+            // findTickerToolStripMenuItem
+            // 
+            this.findTickerToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("findTickerToolStripMenuItem.Image")));
+            this.findTickerToolStripMenuItem.Name = "findTickerToolStripMenuItem";
+            this.findTickerToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.findTickerToolStripMenuItem.Text = "Find ticker";
+            this.findTickerToolStripMenuItem.Click += new System.EventHandler(this.TsmiFindTicker_Click);
+            // 
+            // tsmiDeleteRowDataGrid
+            // 
+            this.tsmiDeleteRowDataGrid.Image = ((System.Drawing.Image)(resources.GetObject("tsmiDeleteRowDataGrid.Image")));
+            this.tsmiDeleteRowDataGrid.Name = "tsmiDeleteRowDataGrid";
+            this.tsmiDeleteRowDataGrid.Size = new System.Drawing.Size(135, 22);
+            this.tsmiDeleteRowDataGrid.Text = "Delete";
+            this.tsmiDeleteRowDataGrid.Click += new System.EventHandler(this.TsmiDeleteRowDataGrid_Click);
+            // 
+            // tsmiFindTicker
+            // 
+            this.tsmiFindTicker.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFindTicker.Image")));
+            this.tsmiFindTicker.Name = "tsmiFindTicker";
+            this.tsmiFindTicker.Size = new System.Drawing.Size(95, 21);
+            this.tsmiFindTicker.Text = "Find ticker";
+            this.tsmiFindTicker.Click += new System.EventHandler(this.TsmiFindTicker_Click);
+            // 
+            // tsmiLoadTickers
+            // 
+            this.tsmiLoadTickers.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiFromTxt,
+            this.tsmiFromExcel});
+            this.tsmiLoadTickers.Image = ((System.Drawing.Image)(resources.GetObject("tsmiLoadTickers.Image")));
+            this.tsmiLoadTickers.Name = "tsmiLoadTickers";
+            this.tsmiLoadTickers.Size = new System.Drawing.Size(75, 21);
+            this.tsmiLoadTickers.Text = "Import";
+            // 
+            // tsmiFromTxt
+            // 
+            this.tsmiFromTxt.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFromTxt.Image")));
+            this.tsmiFromTxt.Name = "tsmiFromTxt";
+            this.tsmiFromTxt.Size = new System.Drawing.Size(177, 22);
+            this.tsmiFromTxt.Text = "From file txt";
+            this.tsmiFromTxt.Click += new System.EventHandler(this.TsmiFromTxt_Click);
+            // 
+            // tsmiFromExcel
+            // 
+            this.tsmiFromExcel.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFromExcel.Image")));
+            this.tsmiFromExcel.Name = "tsmiFromExcel";
+            this.tsmiFromExcel.Size = new System.Drawing.Size(177, 22);
+            this.tsmiFromExcel.Text = "From Excel range";
+            this.tsmiFromExcel.Click += new System.EventHandler(this.TsmiFromExcel_Click);
+            // 
+            // tsmiClearTicker
+            // 
+            this.tsmiClearTicker.Image = ((System.Drawing.Image)(resources.GetObject("tsmiClearTicker.Image")));
+            this.tsmiClearTicker.Name = "tsmiClearTicker";
+            this.tsmiClearTicker.Size = new System.Drawing.Size(86, 21);
+            this.tsmiClearTicker.Text = "Clear list";
+            this.tsmiClearTicker.Click += new System.EventHandler(this.ClearTicker_Click);
             // 
             // FrmGetHistorical
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(250, 449);
+            this.ClientSize = new System.Drawing.Size(269, 449);
             this.Controls.Add(this.chkIsTable);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cboTypeOfOutput);

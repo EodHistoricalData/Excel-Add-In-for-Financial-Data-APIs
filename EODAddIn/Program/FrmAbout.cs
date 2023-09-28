@@ -9,7 +9,7 @@ namespace EODAddIn.Program
         {
             InitializeComponent();
             lblVersion.Text = Program.Version.Text;
-            lnkSite.Text = "https://eodhistoricaldata.com";
+            lnkSite.Text = "https://eodhd.com";
             lblProgramName.Text = Program.ProgramName;
         }
 

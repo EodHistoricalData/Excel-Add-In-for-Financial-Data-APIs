@@ -100,7 +100,7 @@ namespace EODAddIn.Program
             this.linkLabel1.Size = new System.Drawing.Size(193, 24);
             this.linkLabel1.TabIndex = 33;
             this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "eodhistoricaldata.com";
+            this.linkLabel1.Text = "eodhd.com";
             this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
             // 
             // label2

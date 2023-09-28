@@ -52,6 +52,7 @@ namespace EODAddIn
             this.BtnGetEtf = this.Factory.CreateRibbonButton();
             this.BtnOptions = this.Factory.CreateRibbonButton();
             this.BtnBulkEod = this.Factory.CreateRibbonButton();
+            this.btnTechnicals = this.Factory.CreateRibbonButton();
             this.menuScreener = this.Factory.CreateRibbonMenu();
             this.btnCreateScreener = this.Factory.CreateRibbonButton();
             this.btnGetScreenerFundamenat = this.Factory.CreateRibbonButton();
@@ -98,6 +99,7 @@ namespace EODAddIn
             this.grpMain.Items.Add(this.BtnGetEtf);
             this.grpMain.Items.Add(this.BtnOptions);
             this.grpMain.Items.Add(this.BtnBulkEod);
+            this.grpMain.Items.Add(this.btnTechnicals);
             this.grpMain.Items.Add(this.menuScreener);
             this.grpMain.Items.Add(this.menuAvailableDataFeeds);
             this.grpMain.Label = "Commands";
@@ -220,6 +222,15 @@ namespace EODAddIn
             this.BtnBulkEod.Name = "BtnBulkEod";
             this.BtnBulkEod.ShowImage = true;
             this.BtnBulkEod.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnBulkEod_Click);
+            // 
+            // btnTechnicals
+            // 
+            this.btnTechnicals.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.btnTechnicals.Image = ((System.Drawing.Image)(resources.GetObject("btnTechnicals.Image")));
+            this.btnTechnicals.Label = "Get Technicals";
+            this.btnTechnicals.Name = "btnTechnicals";
+            this.btnTechnicals.ShowImage = true;
+            this.btnTechnicals.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnTechnicals_Click);
             // 
             // menuScreener
             // 
@@ -461,6 +472,7 @@ namespace EODAddIn
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnListOfForexCurrencies;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnListOfIndices;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnBulkEod;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnTechnicals;
     }
 
     partial class ThisRibbonCollection
