@@ -69,7 +69,7 @@ namespace EODAddIn.Program
             this.lnkSite.Size = new System.Drawing.Size(151, 13);
             this.lnkSite.TabIndex = 18;
             this.lnkSite.TabStop = true;
-            this.lnkSite.Text = "https://eodhistoricaldata.com/";
+            this.lnkSite.Text = "https://eodhd.com/";
             this.lnkSite.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LnkSite_LinkClicked);
             // 
             // label2

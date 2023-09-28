@@ -61,6 +61,11 @@ namespace EODAddIn.Program
         public DateTime BulkEodDate;
         public List<string> BulkEodSymbols;
 
+        public List<string> TechnicalsTickers;
+        public DateTime TechnicalsFrom;
+        public DateTime TechnicalsTo;
+        public int TechnicalsFunctionId;
+
         public SettingsFields()
         {
 

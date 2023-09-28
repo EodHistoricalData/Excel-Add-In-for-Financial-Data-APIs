@@ -120,7 +120,7 @@ namespace EODAddIn.Forms
             Settings.SettingsFields.EndOfDayPeriod = period;
             Settings.SettingsFields.EndOfDayTo = to;
             Settings.SettingsFields.EndOfDayFrom = from;
-            Settings.SettingsFields.EndOfDayTickers = tikers;
+            Settings.SettingsFields.TechnicalsTickers = tikers;
             Settings.Save();
 
             Close();

@@ -9,10 +9,12 @@ namespace EODAddIn.Utils
     {
         public static Application _xlsApp = Globals.ThisAddIn.Application;
         public static bool CreateSheet=true;
+        private static XlCalculation Calculation = XlCalculation.xlCalculationAutomatic;
 
         public static void OnStart()
         {
             Application app = Globals.ThisAddIn.Application;
+            Calculation = app.Calculation;
             app.ScreenUpdating = false;
             app.Calculation = XlCalculation.xlCalculationManual;
         }
@@ -21,7 +23,7 @@ namespace EODAddIn.Utils
         {
             Application app = Globals.ThisAddIn.Application;
             app.ScreenUpdating = true;
-            app.Calculation = XlCalculation.xlCalculationAutomatic;
+            app.Calculation = Calculation;
         }
 
         public static bool IsRange(string rangeAddress)

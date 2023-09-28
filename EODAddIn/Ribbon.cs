@@ -364,31 +364,31 @@ namespace EODAddIn
 
         private void BtnListOfExchanges_Click(object sender, RibbonControlEventArgs e)
         {
-            System.Diagnostics.Process.Start("https://eodhistoricaldata.com/financial-apis/list-supported-exchanges/?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
+            System.Diagnostics.Process.Start("https://eodhd.com/financial-apis/list-supported-exchanges/?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
 
         }
 
         private void BtnListOfCRYPTOCurrencies_Click(object sender, RibbonControlEventArgs e)
         {
-            System.Diagnostics.Process.Start("https://eodhistoricaldata.com/financial-apis/list-supported-crypto-currencies/?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
+            System.Diagnostics.Process.Start("https://eodhd.com/financial-apis/list-supported-crypto-currencies/?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
         
         }
 
         private void BtnListOfFutures_Click(object sender, RibbonControlEventArgs e)
         {
-            System.Diagnostics.Process.Start("https://eodhistoricaldata.com/financial-apis/list-supported-futures-commodities/?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
+            System.Diagnostics.Process.Start("https://eodhd.com/financial-apis/list-supported-futures-commodities/?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
         
         }
 
         private void BtnListOfForexCurrencies_Click(object sender, RibbonControlEventArgs e)
         {
-            System.Diagnostics.Process.Start("https://eodhistoricaldata.com/financial-apis/list-supported-forex-currencies/?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
+            System.Diagnostics.Process.Start("https://eodhd.com/financial-apis/list-supported-forex-currencies/?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
         
         }
 
         private void BtnListOfIndices_Click(object sender, RibbonControlEventArgs e)
         {
-            System.Diagnostics.Process.Start("https://eodhistoricaldata.com/financial-apis/list-supported-indices/?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
+            System.Diagnostics.Process.Start("https://eodhd.com/financial-apis/list-supported-indices/?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
         }
 
         private async void BtnBulkEod_Click(object sender, RibbonControlEventArgs e)
@@ -431,6 +431,12 @@ namespace EODAddIn
                 BtnBulkEod.Label = "Get Bulk Eod";
                 BtnBulkEod.Enabled = true;
             }
+        }
+
+        private void BtnTechnicals_Click(object sender, RibbonControlEventArgs e)
+        {
+            FrmGetTechnicals frm = new FrmGetTechnicals();
+            frm.ShowDialog(new WinHwnd());
         }
     }
 }
