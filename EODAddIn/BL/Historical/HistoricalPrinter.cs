@@ -150,7 +150,7 @@ namespace EODAddIn.BL.HistoricalPrinter
             Excel.Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
             int c = 1;
             int r = 1;
-            sh.Cells[r, c] = "Hictorical data";
+            sh.Cells[r, c] = "Historical data";
             sh.Cells[r, c].Font.Bold = true; r++;
             sh.Cells[r, c] = "Ticker"; c++;
             sh.Cells[r, c] = "Date"; c++;

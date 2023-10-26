@@ -1,26 +1,22 @@
 ﻿using EOD.Model.Bulks;
-using EODAddIn.BL;
+using EODAddIn.BL.BulkEod;
 using EODAddIn.BL.BulkFundamental;
 using EODAddIn.BL.ETFPrinter;
 using EODAddIn.BL.FundamentalDataPrinter;
 using EODAddIn.BL.OptionsAPI;
 using EODAddIn.BL.OptionsPrinter;
 using EODAddIn.BL.Screener;
-using EODAddIn.BL.BulkEod;
 using EODAddIn.Forms;
 using EODAddIn.Utils;
-using Microsoft.Office.Interop.Excel;
-using Microsoft.Office.Tools.Excel;
+using Microsoft.Office.Core;
 using Microsoft.Office.Tools.Ribbon;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Net.NetworkInformation;
-using System.Reflection;
+using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Threading;
-using Worksheet = Microsoft.Office.Interop.Excel.Worksheet;
 
 namespace EODAddIn
 {
@@ -45,8 +41,17 @@ namespace EODAddIn
 
         private void BtnSettings_Click(object sender, RibbonControlEventArgs e)
         {
-            EODAddIn.Panels.PanelInfo panel = new Panels.PanelInfo();
-            panel.ShowPanel();
+            var panels = Globals.ThisAddIn.CustomTaskPanes;
+            var panel = panels.FirstOrDefault(p => p.Title == "Info");
+            if (panel == null)
+            {
+                var panelInfo = new Panels.PanelInfo();
+                panelInfo.ShowPanel();
+            }
+            else
+            {
+                panel.Visible = panel.Visible ? false : true;
+            }
         }
 
         private void GetHistorical_Click(object sender, RibbonControlEventArgs e)
@@ -217,7 +222,7 @@ namespace EODAddIn
         {
             Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
             frm.ShowDialog(new WinHwnd());
-            if (frm.DialogResult!= DialogResult.OK)
+            if (frm.DialogResult != DialogResult.OK)
             {
                 return;
             }
@@ -265,7 +270,7 @@ namespace EODAddIn
             {
                 Forms.FrmGetBulk frm = new Forms.FrmGetBulk();
                 frm.ShowDialog(new WinHwnd());
-                if (frm.DialogResult ==DialogResult.OK)
+                if (frm.DialogResult == DialogResult.OK)
                 {
                     BtnGetBulk.Label = "Processing";
                     BtnGetBulk.Enabled = false;
@@ -298,7 +303,7 @@ namespace EODAddIn
             {
                 Forms.FrmScreener frm = new Forms.FrmScreener();
                 frm.ShowDialog(new WinHwnd());
-                if (frm.DialogResult ==DialogResult.OK)
+                if (frm.DialogResult == DialogResult.OK)
                 {
                     BtnOptions.Label = "Processing";
                     BtnOptions.Enabled = false;
@@ -321,7 +326,7 @@ namespace EODAddIn
         {
             try
             {
-               if (!  ScreenerPrinter.CheckIsScreenerResult(Globals.ThisAddIn.Application.ActiveSheet))
+                if (!ScreenerPrinter.CheckIsScreenerResult(Globals.ThisAddIn.Application.ActiveSheet))
                 {
                     return;
                 }
@@ -371,19 +376,19 @@ namespace EODAddIn
         private void BtnListOfCRYPTOCurrencies_Click(object sender, RibbonControlEventArgs e)
         {
             System.Diagnostics.Process.Start("https://eodhd.com/financial-apis/list-supported-crypto-currencies/?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
-        
+
         }
 
         private void BtnListOfFutures_Click(object sender, RibbonControlEventArgs e)
         {
             System.Diagnostics.Process.Start("https://eodhd.com/financial-apis/list-supported-futures-commodities/?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
-        
+
         }
 
         private void BtnListOfForexCurrencies_Click(object sender, RibbonControlEventArgs e)
         {
             System.Diagnostics.Process.Start("https://eodhd.com/financial-apis/list-supported-forex-currencies/?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
-        
+
         }
 
         private void BtnListOfIndices_Click(object sender, RibbonControlEventArgs e)
