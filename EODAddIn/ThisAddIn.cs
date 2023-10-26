@@ -11,8 +11,11 @@ namespace EODAddIn
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
             Program.Program.Run();
-            EODAddIn.Panels.PanelInfo panel = new Panels.PanelInfo(); // add to settings save 
-            panel.ShowPanel();
+            if (!Settings.SettingsFields.IsInfoShowed)
+            {
+                Panels.PanelInfo panel = new Panels.PanelInfo(); // add to settings save 
+                panel.ShowPanel();
+            }
             Settings.SettingsFields.IsInfoShowed = true;
             string filename = Path.Combine(Program.Program.UserFolder, "EODAddIn.xla");
             if (!File.Exists(filename))
@@ -40,7 +43,7 @@ namespace EODAddIn
                     Directory.Delete(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Program.Program.CompanyName, "EOD Excel Plagin"));
                 }
             }
-            catch (System.Exception)
+            catch (Exception)
             {
 
             }
@@ -71,7 +74,7 @@ namespace EODAddIn
             this.Startup += new System.EventHandler(ThisAddIn_Startup);
             this.Shutdown += new System.EventHandler(ThisAddIn_Shutdown);
         }
-        
+
         #endregion
     }
 }

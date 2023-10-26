@@ -49,7 +49,6 @@ namespace EODAddIn.Panels
             this.Dock = DockStyle.Fill;
             Title = "Info";
             CustomTaskPanel = Globals.ThisAddIn.CustomTaskPanes.Add(this, Title);
-            
         }
 
         /// <summary>
@@ -60,8 +59,7 @@ namespace EODAddIn.Panels
             if (CustomTaskPanel != null)
             {
                 CustomTaskPanel.Visible = true;
-                CustomTaskPanel.Width = 405
-                    ;
+                CustomTaskPanel.Width = 405;
             }
         }
 
@@ -76,12 +74,12 @@ namespace EODAddIn.Panels
         //System.Diagnostics.Process.Start("https://eodhd.com/financial-apis/list-supported-exchanges/?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
         private void btnRegister_Click(object sender, System.EventArgs e)
         {
-            System.Diagnostics.Process.Start("https://eodhd.com/register?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
+            Process.Start("https://eodhd.com/register?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
         }
 
         private void btnLogin_Click(object sender, System.EventArgs e)
         {
-            System.Diagnostics.Process.Start("https://eodhd.com/login?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
+            Process.Start("https://eodhd.com/login?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
         }
 
         private void btnAPIkey_Click(object sender, System.EventArgs e)
@@ -92,26 +90,26 @@ namespace EODAddIn.Panels
 
         private void btnUpgragePackages_Click(object sender, System.EventArgs e)
         {
-            System.Diagnostics.Process.Start("https://eodhd.com/pricing?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
+            Process.Start("https://eodhd.com/pricing?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
         }
 
         private void btnDocumentation_Click(object sender, System.EventArgs e)
         {
         
-            System.Diagnostics.Process.Start("https://eodhd.com/financial-apis/excel-financial-add-in-fundamentals-end-of-day-charts/?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
+            Process.Start("https://eodhd.com/financial-apis/excel-financial-add-in-fundamentals-end-of-day-charts/?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
 
         }
 
         private void btnPrivacyPolicy_Click(object sender, System.EventArgs e)
         {
-            System.Diagnostics.Process.Start("https://eodhd.com/financial-apis/privacy-policy?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
+            Process.Start("https://eodhd.com/financial-apis/privacy-policy?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
         }
 
         private void btnSendAnIdea_Click(object sender, System.EventArgs e)
         {
             try
             {
-                System.Diagnostics.Process.Start("mailto:support@eodhistoricaldata.com" +
+                Process.Start("mailto:support@eodhistoricaldata.com" +
                           "?subject=Proposal for Excel AddIn ver. " + Program.Program.Version.Text);
             }
             catch (Exception ex)
