@@ -57,7 +57,7 @@ namespace EODAddIn
         private void GetHistorical_Click(object sender, RibbonControlEventArgs e)
         {
             Forms.FrmGetHistorical frm = new Forms.FrmGetHistorical();
-            frm.ShowDialog(new WinHwnd());
+            frm.Show(new WinHwnd());
         }
 
         private void GetEtf_Click(object sender, RibbonControlEventArgs e)
@@ -233,7 +233,7 @@ namespace EODAddIn
         private void BtnGetIntradayHistoricalData_Click(object sender, RibbonControlEventArgs e)
         {
             Forms.FrmGetIntradayHistoricalData frm = new Forms.FrmGetIntradayHistoricalData();
-            frm.ShowDialog(new WinHwnd());
+            frm.Show(new WinHwnd());
         }
 
         private async void BtnOptions_Click(object sender, RibbonControlEventArgs e)
@@ -269,7 +269,7 @@ namespace EODAddIn
             try
             {
                 Forms.FrmGetBulk frm = new Forms.FrmGetBulk();
-                frm.ShowDialog(new WinHwnd());
+                frm.Show(new WinHwnd());
                 if (frm.DialogResult == DialogResult.OK)
                 {
                     BtnGetBulk.Label = "Processing";
@@ -441,7 +441,7 @@ namespace EODAddIn
         private void BtnTechnicals_Click(object sender, RibbonControlEventArgs e)
         {
             FrmGetTechnicals frm = new FrmGetTechnicals();
-            frm.ShowDialog(new WinHwnd());
+            frm.Show(new WinHwnd());
         }
     }
 }
