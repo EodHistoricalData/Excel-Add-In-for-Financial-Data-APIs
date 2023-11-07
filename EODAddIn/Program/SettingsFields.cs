@@ -10,7 +10,7 @@ namespace EODAddIn.Program
         /// <summary>
         /// API key
         /// </summary>
-        public string APIKey = "OeAFFmMliFG5orCUuwAKQ8l4WWFQ67YX";
+        public string APIKey = "demo";
         /// <summary>
         /// Program name
         /// </summary>
@@ -62,8 +62,8 @@ namespace EODAddIn.Program
         public List<string> BulkEodSymbols;
 
         public List<string> TechnicalsTickers;
-        public DateTime TechnicalsFrom;
-        public DateTime TechnicalsTo;
+        public DateTime TechnicalsFrom = new DateTime(2020, 1, 1);
+        public DateTime TechnicalsTo = DateTime.Today;
         public int TechnicalsFunctionId;
 
         public SettingsFields()
