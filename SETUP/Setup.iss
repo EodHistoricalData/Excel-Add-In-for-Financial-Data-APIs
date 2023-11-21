@@ -1,42 +1,42 @@
 ; -------------------------------------------------------------------------------------------------------------------------------------------------
-; Основные переменные установщика
+; ГЋГ±Г­Г®ГўГ­Г»ГҐ ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г»ГҐ ГіГ±ГІГ Г­Г®ГўГ№ГЁГЄГ 
 ; -------------------------------------------------------------------------------------------------------------------------------------------------
 #define AppName      "EODAddIn"                                              
 #define AppPublisher "LLC Micro-Solution"
-#define AppURL       "https://eodhistoricaldata.com"
+#define AppURL       "https://eodhd.com"
 #define AppGUI       "954b1976-5920-420c-86b4-ee520daf33b1"
 
 #define ProjectPath  "..\"
 #define SetupPath    ProjectPath + "Setup\"                        
 
-#define FilesPath    ProjectPath + "EODAddIn\bin\Release\"                  ; Папка с файлами, которые необходимо упаковать
-#define ReleasePath  SetupPath + "Release\"                                 ; Выходная папка
-#define AppIco       FilesPath + "icon.ico"                     ; Файл с иконкой
+#define FilesPath    ProjectPath + "EODAddIn\bin\Release\"                  ; ГЏГ ГЇГЄГ  Г± ГґГ Г©Г«Г Г¬ГЁ, ГЄГ®ГІГ®Г°Г»ГҐ Г­ГҐГ®ГЎГµГ®Г¤ГЁГ¬Г® ГіГЇГ ГЄГ®ГўГ ГІГј
+#define ReleasePath  SetupPath + "Release\"                                 ; Г‚Г»ГµГ®Г¤Г­Г Гї ГЇГ ГЇГЄГ 
+#define AppIco       FilesPath + "icon.ico"                     ; Г”Г Г©Г« Г± ГЁГЄГ®Г­ГЄГ®Г©
 
-#define AppVersion   GetFileVersion(FilesPath+AppName+'.dll')               ; Версия программы
+#define AppVersion   GetFileVersion(FilesPath+AppName+'.dll')               ; Г‚ГҐГ°Г±ГЁГї ГЇГ°Г®ГЈГ°Г Г¬Г¬Г»
 #define TypeAddIn    "Excel"                                                 ; Word or Excel
 
 ; -------------------------------------------------------------------------------------------------------------------------------------------------
-; Настройка NetFramework 
+; ГЌГ Г±ГІГ°Г®Г©ГЄГ  NetFramework 
 ; -------------------------------------------------------------------------------------------------------------------------------------------------
 #define NeedNetFramework 1                                                   ; 0/1
 #define NetFrameworkVerName "4.8"
-;Название файла установщика нужной версии NetFramework. Должен лежать в SetupPath
+;ГЌГ Г§ГўГ Г­ГЁГҐ ГґГ Г©Г«Г  ГіГ±ГІГ Г­Г®ГўГ№ГЁГЄГ  Г­ГіГ¦Г­Г®Г© ГўГҐГ°Г±ГЁГЁ NetFramework. Г„Г®Г«Г¦ГҐГ­ Г«ГҐГ¦Г ГІГј Гў SetupPath
 #define NetFrameworkFileSetup "ndp48-web.exe"                         ; 4.5
 ;#define NetFrameworkSetup "NDP472-KB4054530-x86-x64-AllOS-ENU.exe"           ; 4.7.2  Full
 
 ; -------------------------------------------------------------------------------------------------------------------------------------------------
-; Подписывание программы
+; ГЏГ®Г¤ГЇГЁГ±Г»ГўГ Г­ГЁГҐ ГЇГ°Г®ГЈГ°Г Г¬Г¬Г»
 ; -------------------------------------------------------------------------------------------------------------------------------------------------
 #define SignTool    "C:\Program Files (x86)\Windows Kits\10\bin\10.0.22000.0\x64\signtool.exe"
-#define SingNameSSL AppPublisher ; Имя сертификата
+#define SingNameSSL AppPublisher ; Г€Г¬Гї Г±ГҐГ°ГІГЁГґГЁГЄГ ГІГ 
 
 [Setup]
-;Подписывание кода
+;ГЏГ®Г¤ГЇГЁГ±Г»ГўГ Г­ГЁГҐ ГЄГ®Г¤Г 
 SignTool=byparam {#SignTool} sign /a /fd SHA256 /n $q{#SingNameSSL}$q /t http://timestamp.comodoca.com/authenticode  /d $q{#AppName}$q $f
 
 
-;Использовать сгенерируемый VS GUI
+;Г€Г±ГЇГ®Г«ГјГ§Г®ГўГ ГІГј Г±ГЈГҐГ­ГҐГ°ГЁГ°ГіГҐГ¬Г»Г© VS GUI
 AppId            = {{{#AppGUI}}
 AppName          = {#AppName}
 AppVersion       = {#AppVersion}
@@ -52,12 +52,12 @@ UninstallDisplayIcon ={#AppIco}
 UninstallDisplayName ={#AppName}
 AllowNoIcons         = yes
 
-;Файл лицензионного соглашения при необходимости
+;Г”Г Г©Г« Г«ГЁГ¶ГҐГ­Г§ГЁГ®Г­Г­Г®ГЈГ® Г±Г®ГЈГ«Г ГёГҐГ­ГЁГї ГЇГ°ГЁ Г­ГҐГ®ГЎГµГ®Г¤ГЁГ¬Г®Г±ГІГЁ
 LicenseFile = {#ProjectPath}License
 
 PrivilegesRequired=none
 
-; Результат компиляции установщика
+; ГђГҐГ§ГіГ«ГјГІГ ГІ ГЄГ®Г¬ГЇГЁГ«ГїГ¶ГЁГЁ ГіГ±ГІГ Г­Г®ГўГ№ГЁГЄГ 
 OutputDir            = {#ReleasePath}
 OutputBaseFilename   = Setup{#AppName}
 SetupIconFile        = {#AppIco}
@@ -121,7 +121,7 @@ Root: HKLM; Subkey: "Software\WOW6432Node\Microsoft\Office\{#TypeAddIn}\Addins\{
 
 //function GetVersionNumbers(const Filename: String; var VersionMS, VersionLS: Cardinal): Boolean;
 
-// Получение номера версии фрейсворка в регисте
+// ГЏГ®Г«ГіГ·ГҐГ­ГЁГҐ Г­Г®Г¬ГҐГ°Г  ГўГҐГ°Г±ГЁГЁ ГґГ°ГҐГ©Г±ГўГ®Г°ГЄГ  Гў Г°ГҐГЈГЁГ±ГІГҐ
 function GetFrameworkVer(const AppName: String): cardinal;
   begin
     Result := 0;
@@ -141,16 +141,16 @@ function GetFrameworkVer(const AppName: String): cardinal;
 
 function IsDotNetDetected(): boolean;
   var 
-    reg_key: string; // Просматриваемый подраздел системного реестра
+    reg_key: string; // ГЏГ°Г®Г±Г¬Г ГІГ°ГЁГўГ ГҐГ¬Г»Г© ГЇГ®Г¤Г°Г Г§Г¤ГҐГ« Г±ГЁГ±ГІГҐГ¬Г­Г®ГЈГ® Г°ГҐГҐГ±ГІГ°Г 
     full_key: string;
-    success: boolean; // Флаг наличия запрашиваемой версии .NET
-    release_number: cardinal; // Номер релиза для версии 4.5.x
+    success: boolean; // Г”Г«Г ГЈ Г­Г Г«ГЁГ·ГЁГї Г§Г ГЇГ°Г ГёГЁГўГ ГҐГ¬Г®Г© ГўГҐГ°Г±ГЁГЁ .NET
+    release_number: cardinal; // ГЌГ®Г¬ГҐГ° Г°ГҐГ«ГЁГ§Г  Г¤Г«Гї ГўГҐГ°Г±ГЁГЁ 4.5.x
     sub_key: string;
   begin
     success := false;
     reg_key := 'SOFTWARE\Microsoft\NET Framework Setup\NDP\';
     
-    // версия 4.5 и выше
+    // ГўГҐГ°Г±ГЁГї 4.5 ГЁ ГўГ»ГёГҐ
     sub_key := 'v4\Full';
     full_key := reg_key + sub_key;
     success := RegQueryDWordValue(HKLM, full_key, 'Release', release_number);
@@ -159,7 +159,7 @@ function IsDotNetDetected(): boolean;
   end;
 
 
-// Поиск запущенного приложения
+// ГЏГ®ГЁГ±ГЄ Г§Г ГЇГіГ№ГҐГ­Г­Г®ГЈГ® ГЇГ°ГЁГ«Г®Г¦ГҐГ­ГЁГї
 function FindApp(const AppName: String): Boolean;
   var
     WMIService:    Variant;
@@ -186,19 +186,19 @@ function GetNameApp(const TypeAddIn: String): String;
   end;
 
 
- //Callback-функция, вызываемая при инициализации установки
+ //Callback-ГґГіГ­ГЄГ¶ГЁГї, ГўГ»Г§Г»ГўГ ГҐГ¬Г Гї ГЇГ°ГЁ ГЁГ­ГЁГ¶ГЁГ Г«ГЁГ§Г Г¶ГЁГЁ ГіГ±ГІГ Г­Г®ГўГЄГЁ
 procedure InitializeWizard();
   begin
-      // Действия перед установкой
+      // Г„ГҐГ©Г±ГІГўГЁГї ГЇГҐГ°ГҐГ¤ ГіГ±ГІГ Г­Г®ГўГЄГ®Г©
   end;
 
 
-// После нажатия кнопок далее
+// ГЏГ®Г±Г«ГҐ Г­Г Г¦Г ГІГЁГї ГЄГ­Г®ГЇГ®ГЄ Г¤Г Г«ГҐГҐ
 function NextButtonClick(CurPageID: Integer): Boolean;
   begin
     Result := True;
 
-    // После приветствия
+    // ГЏГ®Г±Г«ГҐ ГЇГ°ГЁГўГҐГІГ±ГІГўГЁГї
     case CurPageID of wpWelcome:
       if (FindApp(GetNameApp('{#TypeAddIn}'))) then
       begin
@@ -209,7 +209,7 @@ function NextButtonClick(CurPageID: Integer): Boolean;
 
   end;
 
-// Перед стартом деинсталляции
+// ГЏГҐГ°ГҐГ¤ Г±ГІГ Г°ГІГ®Г¬ Г¤ГҐГЁГ­Г±ГІГ Г«Г«ГїГ¶ГЁГЁ
 function  InitializeUninstall(): Boolean;
   begin
     Result := True;
