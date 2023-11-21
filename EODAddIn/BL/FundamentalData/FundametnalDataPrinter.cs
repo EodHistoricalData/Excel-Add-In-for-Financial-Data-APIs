@@ -48,23 +48,23 @@ namespace EODAddIn.BL.FundamentalDataPrinter
                 }
 
                 int startGroup1 = 2;
-                Type myType = data.GetType();
-                IList<PropertyInfo> props = new List<PropertyInfo>(myType.GetProperties());
+                //Type myType = data.GetType();
+                //IList<PropertyInfo> props = new List<PropertyInfo>(myType.GetProperties());
 
-                foreach (PropertyInfo prop in props)
-                {
-                    object propValue = prop.GetValue(data, null);
-                    switch (prop.Name)
-                    {
-                        case "General":
-                            row = Printer.PrintVerticalTable(prop.Name, propValue, sh.Cells[row, 1]);
-                            row++;
-                            break;
-                    }
-                }
+                //foreach (PropertyInfo prop in props)
+                //{
+                //    object propValue = prop.GetValue(data, null);
+                //    switch (prop.Name)
+                //    {
+                //        case "General":
+                //            row = Printer.PrintVerticalTable(prop.Name, propValue, sh.Cells[row, 1]);
+                //            row++;
+                //            break;
+                //    }
+                //}
 
-                //row = PrintFundamentalGeneral(data, sh.Cells[row, 1]);
-                //row++;
+                row = PrintFundamentalGeneral(data, sh.Cells[row, 1]);
+                row++;
                 row--;
                 sh.Rows[$"{startGroup1}:{row}"].Group();
                 row++;
