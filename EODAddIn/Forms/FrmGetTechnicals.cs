@@ -42,8 +42,8 @@ namespace EODAddIn.Forms
             InitializeComponent();
 
             cboFunction.SelectedIndex = Settings.SettingsFields.TechnicalsFunctionId;
-            dtpFrom.Value = Settings.SettingsFields.TechnicalsFrom;
-            dtpTo.Value = Settings.SettingsFields.TechnicalsTo;
+            dtpFrom.Value = Settings.SettingsFields.TechnicalsFrom != DateTime.MinValue ? Settings.SettingsFields.TechnicalsFrom : new DateTime(2020, 1, 1);
+            dtpTo.Value = Settings.SettingsFields.TechnicalsTo != DateTime.MinValue ? Settings.SettingsFields.TechnicalsTo : DateTime.Today;
 
             foreach (string ticker in Settings.SettingsFields.TechnicalsTickers)
             {
