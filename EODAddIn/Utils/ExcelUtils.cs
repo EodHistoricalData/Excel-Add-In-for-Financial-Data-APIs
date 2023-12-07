@@ -1,4 +1,6 @@
-﻿using EODAddIn.Program;
+﻿using EOD;
+using EOD.Model.Fundamental;
+using EODAddIn.Program;
 using Microsoft.Office.Interop.Excel;
 using System;
 using System.Reflection;
@@ -8,22 +10,21 @@ namespace EODAddIn.Utils
     static class ExcelUtils
     {
         public static Application _xlsApp = Globals.ThisAddIn.Application;
-        public static bool CreateSheet=true;
+        public static bool CreateSheet = true;
         private static XlCalculation Calculation = XlCalculation.xlCalculationAutomatic;
 
         public static void OnStart()
         {
             Application app = Globals.ThisAddIn.Application;
-            Calculation = app.Calculation;
-            app.ScreenUpdating = false;
-            app.Calculation = XlCalculation.xlCalculationManual;
+            Calculation = _xlsApp.Calculation;
+            _xlsApp.ScreenUpdating = false;
+            _xlsApp.Calculation = XlCalculation.xlCalculationManual;
         }
 
         public static void OnEnd()
         {
-            Application app = Globals.ThisAddIn.Application;
-            app.ScreenUpdating = true;
-            app.Calculation = Calculation;
+            _xlsApp.ScreenUpdating = true;
+            _xlsApp.Calculation = Calculation;
         }
 
         public static bool IsRange(string rangeAddress)
@@ -280,6 +281,15 @@ namespace EODAddIn.Utils
             }
         }
 
+        public static void SetInteractive()
+        {
+            try
+            {
+                _xlsApp.Interactive = true;
+            }
+            catch { }
+        }
+
         public static Worksheet AddSheet(string nameSheet)
         {
             Worksheet worksheet = null;
@@ -335,6 +345,27 @@ namespace EODAddIn.Utils
                 j++;
             }
             return table;
+        }
+
+        public static void AddXmlPart(string xmlString)
+        {
+            Application application = Globals.ThisAddIn.Application;
+            Workbook workbook = application.ActiveWorkbook;
+            workbook.CustomXMLParts.Add(xmlString);
+        }
+
+        public static Microsoft.Office.Core.CustomXMLParts GetXmlPart()
+        {
+            Application application = Globals.ThisAddIn.Application;
+            Workbook workbook = application.ActiveWorkbook;
+            return workbook.CustomXMLParts;
+        }
+
+        public static void SaveWorkbook()
+        {
+            Application application = Globals.ThisAddIn.Application;
+            Workbook workbook = application.ActiveWorkbook;
+            workbook.Save();
         }
     }
 }

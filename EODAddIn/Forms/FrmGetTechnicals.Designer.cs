@@ -110,6 +110,7 @@
             this.tsmiClearTicker.Name = "tsmiClearTicker";
             this.tsmiClearTicker.Size = new System.Drawing.Size(86, 21);
             this.tsmiClearTicker.Text = "Clear list";
+            this.tsmiClearTicker.Click += new System.EventHandler(this.ClearTicker_Click);
             // 
             // gridTickers
             // 

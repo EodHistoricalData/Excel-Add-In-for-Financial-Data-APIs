@@ -1,12 +1,9 @@
-﻿using EOD.Model;
-using EODAddIn.Utils;
+﻿using EODAddIn.Utils;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
-using Excel = Microsoft.Office.Interop.Excel;
-using static EODAddIn.Utils.ExcelUtils;
-using EODAddIn.BL.Screener;
 using System.Windows.Forms;
+using static EODAddIn.Utils.ExcelUtils;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace EODAddIn.BL.BulkEod
 {
@@ -28,7 +25,7 @@ namespace EODAddIn.BL.BulkEod
                 int row = 1;
                 int column = 1;
 
-                ExcelUtils.OnStart();
+                OnStart();
 
                 switch (type)
                 {
@@ -119,7 +116,7 @@ namespace EODAddIn.BL.BulkEod
             }
             finally
             {
-                ExcelUtils.OnEnd();
+                OnEnd();
             }
         }
     }

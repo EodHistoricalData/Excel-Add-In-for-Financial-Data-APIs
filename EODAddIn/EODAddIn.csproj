@@ -124,8 +124,8 @@
   -->
   <ItemGroup>
     <Reference Include="Accessibility" />
-    <Reference Include="EODHistoricalData.Wrapper, Version=1.3.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EODHistoricalData.Wrapper.1.3.1\lib\netstandard2.0\EODHistoricalData.Wrapper.dll</HintPath>
+    <Reference Include="EODHistoricalData.Wrapper, Version=1.3.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EODHistoricalData.Wrapper.1.3.2\lib\netstandard2.0\EODHistoricalData.Wrapper.dll</HintPath>
     </Reference>
     <Reference Include="MS.ProgressBar, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -204,6 +204,8 @@
     <Compile Include="BL\Historical\HistoricalPrinter.cs" />
     <Compile Include="BL\Intraday\IntradayAPI.cs" />
     <Compile Include="BL\Intraday\IntradayPrinter.cs" />
+    <Compile Include="BL\Live\LiveDownloader.cs" />
+    <Compile Include="BL\Live\ExchangeDownloadRules.cs" />
     <Compile Include="BL\Options\OptionsAPI.cs" />
     <Compile Include="BL\Options\OptionsPrinter.cs" />
     <Compile Include="BL\Printer.cs" />
@@ -230,11 +232,23 @@
     <Compile Include="Forms\FrmGetBulkEod.designer.cs">
       <DependentUpon>FrmGetBulkEod.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FrmGetLive.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmGetLive.Designer.cs">
+      <DependentUpon>FrmGetLive.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmGetTechnicals.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\FrmGetTechnicals.Designer.cs">
       <DependentUpon>FrmGetTechnicals.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmLiveFilters.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmLiveFilters.Designer.cs">
+      <DependentUpon>FrmLiveFilters.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FrmScreenerIntraday.cs">
       <SubType>Form</SubType>
@@ -302,6 +316,12 @@
     <Compile Include="Forms\FrmSelectRange.Designer.cs">
       <DependentUpon>FrmSelectRange.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\LiveDownloaderDispatcher.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LiveDownloaderDispatcher.Designer.cs">
+      <DependentUpon>LiveDownloaderDispatcher.cs</DependentUpon>
+    </Compile>
     <Compile Include="Panels\PanelInfo.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -353,8 +373,14 @@
     <EmbeddedResource Include="Forms\FrmGetBulkEod.resx">
       <DependentUpon>FrmGetBulkEod.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmGetLive.resx">
+      <DependentUpon>FrmGetLive.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmGetTechnicals.resx">
       <DependentUpon>FrmGetTechnicals.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmLiveFilters.resx">
+      <DependentUpon>FrmLiveFilters.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmScreenerHistorical.resx">
       <DependentUpon>FrmScreenerHistorical.cs</DependentUpon>
@@ -388,6 +414,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmSelectRange.resx">
       <DependentUpon>FrmSelectRange.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LiveDownloaderDispatcher.resx">
+      <DependentUpon>LiveDownloaderDispatcher.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Panels\PanelInfo.resx">
       <DependentUpon>PanelInfo.cs</DependentUpon>
@@ -450,6 +479,9 @@
     <Content Include="icon.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="Resources\greenStatus.png" />
+    <Resource Include="Resources\redStatus.png" />
+    <Resource Include="Resources\yellowStatus.png" />
     <None Include="Resources\button-80.png" />
   </ItemGroup>
   <ItemGroup>

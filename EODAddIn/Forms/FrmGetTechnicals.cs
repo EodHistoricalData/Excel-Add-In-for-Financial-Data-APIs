@@ -275,5 +275,10 @@ namespace EODAddIn.Forms
             }
             return true;
         }
+
+        private void ClearTicker_Click(object sender, EventArgs e)
+        {
+            gridTickers.Rows.Clear();
+        }
     }
 }

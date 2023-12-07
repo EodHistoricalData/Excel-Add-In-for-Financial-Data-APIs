@@ -163,7 +163,7 @@ namespace EODAddIn.Panels
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label6.Location = new System.Drawing.Point(12, 532);
+            this.label6.Location = new System.Drawing.Point(9, 518);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(315, 45);
             this.label6.TabIndex = 11;
@@ -197,7 +197,7 @@ namespace EODAddIn.Panels
             // btnHide
             // 
             this.btnHide.BackColor = System.Drawing.Color.White;
-            this.btnHide.Location = new System.Drawing.Point(287, 628);
+            this.btnHide.Location = new System.Drawing.Point(202, 627);
             this.btnHide.Name = "btnHide";
             this.btnHide.Size = new System.Drawing.Size(74, 38);
             this.btnHide.TabIndex = 14;
@@ -237,7 +237,7 @@ namespace EODAddIn.Panels
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "PanelInfo";
-            this.Size = new System.Drawing.Size(373, 667);
+            this.Size = new System.Drawing.Size(339, 633);
             this.ResumeLayout(false);
             this.PerformLayout();
 

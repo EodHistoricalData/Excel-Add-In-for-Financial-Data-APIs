@@ -3,18 +3,21 @@ using EODAddIn.BL.BulkEod;
 using EODAddIn.BL.BulkFundamental;
 using EODAddIn.BL.ETFPrinter;
 using EODAddIn.BL.FundamentalDataPrinter;
+using EODAddIn.BL.Live;
 using EODAddIn.BL.OptionsAPI;
 using EODAddIn.BL.OptionsPrinter;
 using EODAddIn.BL.Screener;
 using EODAddIn.Forms;
 using EODAddIn.Utils;
 using Microsoft.Office.Core;
+using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Threading;
 
@@ -24,6 +27,10 @@ namespace EODAddIn
     {
 
         private DispatcherTimer timer = null;
+
+        private Dictionary<LiveDownloader, CustomXMLPart> LiveDownloaders = new Dictionary<LiveDownloader, CustomXMLPart>();
+        private Dictionary<LiveDownloader, CancellationTokenSource> CancellationTokens = new Dictionary<LiveDownloader, CancellationTokenSource>();
+        private bool DispatcherIsOpened = false;
 
         private void Ribbon_Load(object sender, RibbonUIEventArgs e)
         {
@@ -442,6 +449,38 @@ namespace EODAddIn
         {
             FrmGetTechnicals frm = new FrmGetTechnicals();
             frm.Show(new WinHwnd());
+        }
+
+        private void BtnGetLive_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (DispatcherIsOpened)
+            {
+
+            }
+            else
+            {
+                if (LiveDownloaders.Count == 0)
+                {
+                    LiveDownloaderDispatcher frm = new LiveDownloaderDispatcher();
+                    frm.FormClosing += Frm_FormClosing;
+                    frm.Show(new WinHwnd());
+                }
+                else
+                {
+                    LiveDownloaderDispatcher frm = new LiveDownloaderDispatcher(LiveDownloaders, CancellationTokens);
+                    frm.FormClosing += Frm_FormClosing;
+                    frm.Show(new WinHwnd());
+                }
+                DispatcherIsOpened = true;
+            }
+        }
+
+        private void Frm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            LiveDownloaderDispatcher frm = (LiveDownloaderDispatcher)sender;
+            LiveDownloaders = frm.GetDownloaders();
+            CancellationTokens = frm.GetTokens();
+            DispatcherIsOpened = false;
         }
     }
 }

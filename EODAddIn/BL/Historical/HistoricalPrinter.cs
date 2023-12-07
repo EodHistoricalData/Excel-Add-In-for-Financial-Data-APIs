@@ -1,12 +1,9 @@
 ﻿using EOD.Model;
-using EODAddIn.Utils;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
-using Excel = Microsoft.Office.Interop.Excel;
 using static EODAddIn.Utils.ExcelUtils;
-using EODAddIn.BL.Screener;
-using System.Reflection;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace EODAddIn.BL.HistoricalPrinter
 {
