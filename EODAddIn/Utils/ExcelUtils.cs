@@ -269,6 +269,45 @@ namespace EODAddIn.Utils
             }
         }
 
+        public static void MakeTable(Range range, Worksheet sh, string tableName, int tableStyle)
+        {
+            ListObject tbl = sh.ListObjects.AddEx(
+                SourceType: XlListObjectSourceType.xlSrcRange,
+                Source: range
+                );
+            tbl.Name = tableName;
+            switch (tableStyle)
+            {
+                case 1:
+                    tbl.TableStyle = "TableStyleLight1";
+                    break;
+                case 2:
+                    tbl.TableStyle = "TableStyleLight2";
+                    break;
+                case 3:
+                    tbl.TableStyle = "TableStyleLight3";
+                    break;
+                case 4:
+                    tbl.TableStyle = "TableStyleLight4";
+                    break;
+                case 5:
+                    tbl.TableStyle = "TableStyleLight5";
+                    break;
+                case 6:
+                    tbl.TableStyle = "TableStyleLight6";
+                    break;
+                case 7:
+                    tbl.TableStyle = "TableStyleLight7";
+                    break;
+                case 8:
+                    tbl.TableStyle = "TableStyleLight8";
+                    break;
+                default:
+                    tbl.TableStyle = "TableStyleLight9";
+                    break;
+            }
+        }
+
         public static void SetNonInteractive()
         {
             while (_xlsApp.Interactive)

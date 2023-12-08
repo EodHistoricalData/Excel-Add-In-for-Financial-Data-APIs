@@ -116,7 +116,6 @@ namespace EODAddIn.Forms
         {
             List<(string, bool)> pairs = new List<(string, bool)>
             {
-                { ("Code", true) },
                 { ("Timestamp", true) },
                 { ("Gmtoffset", true) },
                 { ("Open", true) },
@@ -137,31 +136,49 @@ namespace EODAddIn.Forms
             {
                 return;
             }
-            int interval = Convert.ToInt32(NudInterval.Value);
-            bool smart = chkIsTable.Checked;
-            List<(string, string)> tickers = GetTickers();
-            int output = cboTypeOfOutput.SelectedIndex;
-
-            int i = 1;
-            string downloaderName;
-            do
+            try
             {
-                downloaderName = "Live Downloader " + i;
-                if (Settings.SettingsFields.LiveDownloaderNames.Contains(downloaderName))
+                int interval = Convert.ToInt32(NudInterval.Value);
+                bool smart = chkIsTable.Checked;
+                List<(string, string)> tickers = GetTickers();
+                int output = cboTypeOfOutput.SelectedIndex;
+                List<(string, string)> wsNames = new List<(string, string)>();
+                int i = 1;
+                string downloaderName;
+                do
                 {
-                    i++;
+                    downloaderName = "Live Downloader " + i;
+                    if (Settings.SettingsFields.LiveDownloaderNames.Contains(downloaderName))
+                    {
+                        i++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                while (true);
+                if (output == 0)
+                {
+                    wsNames.Add(("", downloaderName));
                 }
                 else
                 {
-                    break;
+                    foreach (var ticker in tickers)
+                    {
+                        string tickerStr = ticker.Item1 + "." + ticker.Item2;
+                        wsNames.Add((tickerStr, downloaderName + " " + tickerStr));
+                    }
                 }
+                LiveDownloader = new LiveDownloader(tickers, interval, output, smart, Filters, downloaderName, wsNames);
+                Settings.SettingsFields.LiveDownloaderNames.Add(downloaderName);
+                Settings.Save();
+                Close();
             }
-            while (true);
-
-            Settings.SettingsFields.LiveDownloaderNames.Add(downloaderName);
-            Settings.Save();
-            LiveDownloader = new LiveDownloader(tickers, interval, output, smart, Filters, downloaderName);
-            Close();
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private List<(string, string)> GetTickers()

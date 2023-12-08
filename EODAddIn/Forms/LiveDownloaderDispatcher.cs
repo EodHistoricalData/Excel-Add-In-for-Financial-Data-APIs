@@ -8,6 +8,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using System.Web.UI;
 using System.Windows.Forms;
 using System.Xml;
 using System.Xml.Serialization;
@@ -19,15 +20,12 @@ namespace EODAddIn.Forms
     {
         private Dictionary<LiveDownloader, CustomXMLPart> LiveDownloaders = new Dictionary<LiveDownloader, CustomXMLPart>();
         private Dictionary<LiveDownloader, CancellationTokenSource> CancellationTokenSources = new Dictionary<LiveDownloader, CancellationTokenSource>();
-        delegate void Download();
-        Download _download;
+        private delegate void Download();
+        private Download _download;
 
         readonly Bitmap Greenbmp = new Bitmap(Properties.Resources.greenStatus);
         readonly Bitmap Redbmp = new Bitmap(Properties.Resources.redStatus);
         readonly Bitmap Yellowbmp = new Bitmap(Properties.Resources.yellowStatus);
-
-        delegate void StatusHandler(bool? status);
-        event StatusHandler StatusChanged;
 
         public LiveDownloaderDispatcher()
         {
@@ -112,10 +110,14 @@ namespace EODAddIn.Forms
                 finally
                 {
                     if (liveDownloader != null)
-                    {
                         LiveDownloaders.Add(liveDownloader, item);
-                    }
                 }
+            }
+
+            foreach (var pair in LiveDownloaders)
+            {
+                if (pair.Key.IsActive == true)
+                    StartDowloader(pair.Key);
             }
             UpdateGrid();
         }
@@ -141,30 +143,31 @@ namespace EODAddIn.Forms
                         bmp = Redbmp;
                     }
                 }
-                int i = gridDownloaders.Rows.Add(downloader.Key.Name, downloader.Key.GetTickers(), bmp);
-                //downloader.Key.OnStatusChanged += Downloader_OnStatusChanged;
+                int i = gridDownloaders.Rows.Add(downloader.Key.Name, downloader.Key.GetTickers(), downloader.Key.Interval, bmp);
+                downloader.Key.OnStatusChanged += Downloader_OnStatusChanged;
             }
         }
 
-        private void Downloader_OnStatusChanged(LiveDownloader sender)
+        private void Downloader_OnStatusChanged(object sender, EventArgs e)
         {
+            var downloader = (LiveDownloader)sender;
             foreach (DataGridViewRow row in gridDownloaders.Rows)
             {
-                if (row.Cells[0].Value.ToString() == sender.Name)
+                if (row.Cells[0].Value?.ToString() == downloader.Name)
                 {
-                    if (sender.IsActive == null)
+                    if (downloader.IsActive == null)
                     {
-                        row.Cells[2].Value = Yellowbmp;
+                        row.Cells[3].Value = Yellowbmp;
                     }
                     else
                     {
-                        if ((bool)sender.IsActive)
+                        if ((bool)downloader.IsActive)
                         {
-                            row.Cells[2].Value = Greenbmp;
+                            row.Cells[3].Value = Greenbmp;
                         }
                         else
                         {
-                            row.Cells[2].Value = Redbmp;
+                            row.Cells[3].Value = Redbmp;
                         }
                     }
 
@@ -178,55 +181,41 @@ namespace EODAddIn.Forms
 
             // delete downloader click
             if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn &&
-                e.RowIndex >= 0 && e.ColumnIndex == 5 && senderGrid.Rows[e.RowIndex].Cells[0].Value != null)
+                e.RowIndex >= 0 && e.ColumnIndex == 6 && senderGrid.Rows[e.RowIndex].Cells[0].Value != null)
             {
                 string downloaderName = senderGrid.Rows[e.RowIndex].Cells[0].Value.ToString();
                 if (!string.IsNullOrEmpty(downloaderName))
                 {
                     var downloader = LiveDownloaders.Keys.FirstOrDefault(x => x.Name == downloaderName);
 
-                    if (CancellationTokenSources.ContainsKey(downloader))
-                    {
-                        CancellationTokenSources[downloader].Cancel();
-                        CancellationTokenSources.Remove(downloader);
-                    }
                     if (downloader != null)
                     {
-                        LiveDownloaders[downloader].Delete();
+                        DeleteDownloder(downloader);
+                        CancellationTokenSources.Remove(downloader);
                         LiveDownloaders.Remove(downloader);
-                        senderGrid.Rows.RemoveAt(e.RowIndex);
                     }
                 }
             }
             // start
             if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn &&
-                e.RowIndex >= 0 && e.ColumnIndex == 3 && senderGrid.Rows[e.RowIndex].Cells[0].Value != null)
+                e.RowIndex >= 0 && e.ColumnIndex == 4 && senderGrid.Rows[e.RowIndex].Cells[0].Value != null)
             {
                 string downloaderName = senderGrid.Rows[e.RowIndex].Cells[0].Value.ToString();
                 var downloader = LiveDownloaders.Keys.First(x => x.Name == downloaderName);
                 if (downloader != null)
                 {
-                    CancellationTokenSource src = new CancellationTokenSource();
-                    LiveDownloaders.First(x => x.Key == downloader).Key.IsActive = true;
-                    senderGrid.Rows[e.RowIndex].Cells[2].Value = Greenbmp;
-                    CancellationTokenSources.Add(downloader, src);
-
-                    async void Live() => await downloader.RequestAndPrint(src.Token);
-                    _download = Live;
-                    _download.Invoke();
+                    StartDowloader(downloader);
                 }
             }
             // stop
             if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn &&
-                e.RowIndex >= 0 && e.ColumnIndex == 4 && senderGrid.Rows[e.RowIndex].Cells[0].Value != null)
+                e.RowIndex >= 0 && e.ColumnIndex == 5 && senderGrid.Rows[e.RowIndex].Cells[0].Value != null)
             {
                 string downloaderName = senderGrid.Rows[e.RowIndex].Cells[0].Value.ToString();
                 var downloader = LiveDownloaders.Keys.First(x => x.Name == downloaderName);
                 if (downloader != null && CancellationTokenSources.ContainsKey(downloader))
                 {
-                    LiveDownloaders.First(x => x.Key == downloader).Key.IsActive = false;
-                    senderGrid.Rows[e.RowIndex].Cells[2].Value = Redbmp;
-                    CancellationTokenSources[downloader].Cancel();
+                    StopDownloader(downloader);
                     CancellationTokenSources.Remove(downloader);
                 }
             }
@@ -245,6 +234,66 @@ namespace EODAddIn.Forms
             }
             Settings.SettingsFields.LiveDownloaderNames = downloaderNames;
             Settings.Save();
+        }
+
+        private void StartAll_Click(object sender, EventArgs e)
+        {
+            foreach (var pair in LiveDownloaders)
+                StartDowloader(pair.Key);
+        }
+
+        private void StopAll_Click(object sender, EventArgs e)
+        {
+            foreach (var pair in CancellationTokenSources)
+                StopDownloader(pair.Key);
+
+            CancellationTokenSources.Clear();
+        }
+
+        private void DeleteAll_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Are you sure you want to delete all Live Downloaders",
+                "Confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+
+            if (result == DialogResult.OK)
+            {
+                foreach (var pair in LiveDownloaders)
+                    DeleteDownloder(pair.Key);
+
+                CancellationTokenSources.Clear();
+                LiveDownloaders.Clear();
+            }
+        }
+
+        private void StartDowloader(LiveDownloader downloader)
+        {
+            CancellationTokenSource src = new CancellationTokenSource();
+            CancellationTokenSources.Add(downloader, src);
+
+            async void Live() => await downloader.RequestAndPrint(src.Token);
+            _download = Live;
+            _download.Invoke();
+        }
+
+        private void StopDownloader(LiveDownloader downloader)
+        {
+            CancellationTokenSources[downloader].Cancel();
+        }
+
+        private void DeleteDownloder(LiveDownloader downloader)
+        {
+            if (CancellationTokenSources.ContainsKey(downloader))
+            {
+                CancellationTokenSources[downloader].Cancel();
+            }
+
+            LiveDownloaders[downloader].Delete();
+
+            foreach (DataGridViewRow row in gridDownloaders.Rows)
+            {
+                if (row.Cells[0].Value.ToString() == downloader.Name)
+                    gridDownloaders.Rows.Remove(row);
+            }
         }
     }
 }

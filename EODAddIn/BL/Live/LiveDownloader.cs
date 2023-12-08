@@ -7,6 +7,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using WinForms = System.Windows.Forms;
 using static EODAddIn.Utils.ExcelUtils;
 
 namespace EODAddIn.BL.Live
@@ -24,16 +25,17 @@ namespace EODAddIn.BL.Live
         public bool Smart { get; set; }
         public List<ExchangeDownloadRules> Rules { get; set; } = new List<ExchangeDownloadRules>();
         public string Name { get; set; }
+        private static SemaphoreSlim SemaphoreSlim = new SemaphoreSlim(1, 1);
 
-        //public delegate void StatusHandler(LiveDownloader sender);
-        //public event StatusHandler OnStatusChanged;
+        public delegate void StatusHandler(object sender, EventArgs e);
+        public event StatusHandler OnStatusChanged;
         public bool? IsActive
         {
             get => isActive;
             set
             {
                 isActive = value;
-                //OnStatusChanged(this);
+                OnStatusChanged?.Invoke(this, EventArgs.Empty);
             }
         }
         private bool? isActive = false;
@@ -43,16 +45,16 @@ namespace EODAddIn.BL.Live
         {
 
         }
-        public LiveDownloader(List<(string, string)> tickers, int interval, int output, bool smart, List<(string, bool)> filters, string name)
+        public LiveDownloader(List<(string, string)> tickers, int interval, int output, bool smart, List<(string, bool)> filters, string name, List<(string, string)> wsNames)
         {
             Tickers = tickers;
+            CreateRules();
             Interval = interval;
             Output = output;
             Smart = smart;
             Filters = filters;
             Name = name;
-            CreateRules();
-            IsActive = false;
+            WsNames = wsNames;
         }
 
         private void CreateRules()
@@ -61,9 +63,16 @@ namespace EODAddIn.BL.Live
             var exchanges = Tickers.GroupBy(x => x.Item2);
             foreach (var exchange in exchanges)
             {
-                var details = api.GetExchangeDetailsAsync(exchange.Key).Result;
-                var rules = new ExchangeDownloadRules(details);
-                Rules.Add(rules);
+                try
+                {
+                    var details = api.GetExchangeDetailsAsync(exchange.Key).Result;
+                    var rules = new ExchangeDownloadRules(details);
+                    Rules.Add(rules);
+                }
+                catch
+                {
+                    throw new Exception("It was not possible to download an exchange working hours for one or more tickers. Please check that the ticker list is correct.");
+                }
             }
         }
 
@@ -79,11 +88,13 @@ namespace EODAddIn.BL.Live
 
         internal async Task RequestAndPrint(CancellationToken token)
         {
+            bool first = true;
             while (true)
             {
                 if (token.IsCancellationRequested) break;
                 try
                 {
+                    IsActive = true;
                     List<string> tickers = new List<string>();
                     var exchanges = Tickers.GroupBy(x => x.Item2);
                     foreach (var exchange in exchanges)
@@ -97,9 +108,17 @@ namespace EODAddIn.BL.Live
                         }
                         else
                         {
+                            if (first)
+                            {
+                                foreach (var code in exchange)
+                                {
+                                    tickers.Add(code.Item1 + "." + code.Item2);
+                                }
+                            }
                             IsActive = null;
                         }
                     }
+                    first = false;
                     if (tickers.Count != 0)
                     {
                         string firstTicker = tickers[0];
@@ -114,7 +133,16 @@ namespace EODAddIn.BL.Live
                             var result = await API.GetLiveStockPricesAsync(firstTicker, tickers);
                             list = result;
                         }
-                        PrintLive(list, tickers);
+                        try
+                        {
+                            await SemaphoreSlim.WaitAsync();
+                            PrintLive(list, tickers);
+                        }
+                        catch { }
+                        finally
+                        {
+                            SemaphoreSlim.Release();
+                        }
                     }
                     await Task.Delay(TimeSpan.FromMinutes(Interval), token);
                 }
@@ -134,7 +162,7 @@ namespace EODAddIn.BL.Live
         {
             try
             {
-                //OnStart();
+                OnStart();
                 SetNonInteractive();
                 Application excel = Globals.ThisAddIn.Application;
                 Dictionary<string, Worksheet> targetWSs = new Dictionary<string, Worksheet>();
@@ -213,10 +241,12 @@ namespace EODAddIn.BL.Live
             {
                 // = 1 ws
                 Worksheet targetWS = targetWSs[""];
-                if (targetWS.Cells[1, 1].Value != null)
+                string sheetName = targetWS.Name;
+                Range usedRange = targetWS.UsedRange;
+                int rows = usedRange.Rows.Count;
+                if (rows > 1)
                 {
                     //old - need to seek for row
-                    Range usedRange = targetWS.UsedRange;
                     foreach (var dataRow in data)
                     {
                         bool found = false;
@@ -236,6 +266,7 @@ namespace EODAddIn.BL.Live
                         }
                         if (!found)
                         {
+                            usedRange = targetWS.UsedRange;
                             targetWS.Cells[usedRange.Rows.Count + 1, 1] = dataRow.Code;
                             for (int col = 2; col <= usedRange.Columns.Count; col++)
                             {
@@ -275,6 +306,11 @@ namespace EODAddIn.BL.Live
                     }
                     Range tableRange = targetWS.Range[targetWS.Cells[1, 1], targetWS.Cells[table.GetLength(0), table.GetLength(1)]];
                     tableRange.Value = table;
+
+                    if (Smart)
+                    {
+                        MakeTable(tableRange, targetWS, Name, 1);
+                    }
                 }
             }
             else
@@ -286,8 +322,10 @@ namespace EODAddIn.BL.Live
                     Worksheet targetWS = item.Value;
                     var dataRow = data.Find(x => x.Code == ticker);
                     var props = Filters.Where(x => x.Item2 == true).Select(x => x.Item1).ToList();
-                    Range firstCell = targetWS.Cells[1, 1];
-                    if (firstCell.Value != null)
+                    string sheetName = targetWS.Name;
+                    Range usedRange = targetWS.UsedRange;
+                    int rows = usedRange.Rows.Count;
+                    if (rows > 1)
                     {
                         //old - need to move second row down
                         Range secondRow = targetWS.Cells[2, 1].EntireRow;
@@ -311,6 +349,11 @@ namespace EODAddIn.BL.Live
                         }
                         Range tableRange = targetWS.Range[targetWS.Cells[1, 1], targetWS.Cells[table.GetLength(0), table.GetLength(1)]];
                         tableRange.Value = table;
+
+                        if (Smart)
+                        {
+                            MakeTable(tableRange, targetWS, Name, 1);
+                        }
                     }
                 }
             }
@@ -323,7 +366,7 @@ namespace EODAddIn.BL.Live
         /// <returns></returns>
         private bool CheckWorkTime(string key)
         {
-            var rule = Rules.Find(x => x.Exchange == key);
+            var rule = Rules.Find(x => x.Exchange == key.ToUpper());
             DateTime utc = DateTime.UtcNow;
             DateTime stockNow = utc.AddHours(rule.Gtmoffset);
             bool isHoliday = rule.Holidays.Contains(stockNow.Date);

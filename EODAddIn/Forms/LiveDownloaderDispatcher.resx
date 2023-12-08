@@ -123,6 +123,9 @@
   <metadata name="Column2.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
+  <metadata name="Column7.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>True</value>
+  </metadata>
   <metadata name="Column6.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
@@ -139,10 +142,10 @@
     <value>17, 17</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="tsmiFindTicker.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="tsmiStartAll.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
-        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAA69AAAOvQFH+5CtAAAAB3RJ
+        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAA68AAAOvAGVvHJJAAAAB3RJ
         TUUH5wEeDwULq8ridgAAAU1JREFUaEPVk0tKQ1EQBbO07MQFCNmEAzfnwIHgNgI6y+Amb3Agz1OJ73M/
         3YOCpCC364AeSimpQZkJlJlAmQkTP2+v5fL1cfs491ExcX45loksQ0xoQJYhJv4OEFGHmKD4e6INMUHR
         RJQhJij2GaOHmKDIJYwaYoLi1tB7iAmK2kKvISYoZg+th5igiBq0GmKCjtek9hATdLQFtYaYoGMt2TvE
@@ -152,10 +155,10 @@
         AABJRU5ErkJggg==
 </value>
   </data>
-  <data name="tsmiLoadTickers.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="tsmiStopAll.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6
-        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAA69AAAOvQFH+5CtAAAAB3RJ
+        JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAACXBIWXMAAA68AAAOvAGVvHJJAAAAB3RJ
         TUUH5wEeDwYTk4sp4wAAAR1JREFUaEPVzrFtBFAQAtErzZ24/+w6+BYheAqYDV4AEhKf995pWF6C5SVY
         XvKv+P7+PLP9WyFoZLJ/KwSNTPZvhaCRyf6tEDQy2b8VgkYm+7dC0Mhk/1YIGpns3wpBI5P9WyFoZLJ/
         KwSNTPZvhaCRyf6tEDQy2b8VgkYm+7dC0Mhk/1YIGpns3wpBI5P9WyFoZLJ/KwSNTPZvhaCRyf6tEDQy
@@ -164,7 +167,7 @@
         /AGn3DCpfOeRGgAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="tsmiClearTicker.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="tsmiDeleteAll.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABGdBTUEAALGPC/xhBQAAA1NJREFUaEPt
         WUtv00AQjngdOPI48fgDnFDwurlFtiniwDECwZEzZwpIPKWUOyBA/AQEHGiRAIn/ACo/ANoTbZFoHOPQ

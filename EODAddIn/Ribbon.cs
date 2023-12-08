@@ -9,8 +9,9 @@ using EODAddIn.BL.OptionsPrinter;
 using EODAddIn.BL.Screener;
 using EODAddIn.Forms;
 using EODAddIn.Utils;
+using static EODAddIn.Utils.ExcelUtils;
 using Microsoft.Office.Core;
-using Microsoft.Office.Interop.Excel;
+using Excel = Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
 using Newtonsoft.Json;
 using System;
@@ -20,17 +21,22 @@ using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Threading;
+using System.IO;
+using System.Xml.Serialization;
+using Microsoft.Office.Interop.Excel;
 
 namespace EODAddIn
 {
     public partial class Ribbon
     {
-
+        private Excel.Application _xlapp;
         private DispatcherTimer timer = null;
 
         private Dictionary<LiveDownloader, CustomXMLPart> LiveDownloaders = new Dictionary<LiveDownloader, CustomXMLPart>();
-        private Dictionary<LiveDownloader, CancellationTokenSource> CancellationTokens = new Dictionary<LiveDownloader, CancellationTokenSource>();
+        private Dictionary<LiveDownloader, CancellationTokenSource> CancellationTokenSources = new Dictionary<LiveDownloader, CancellationTokenSource>();
         private bool DispatcherIsOpened = false;
+        private delegate void Download();
+        private Download _download;
 
         private void Ribbon_Load(object sender, RibbonUIEventArgs e)
         {
@@ -38,6 +44,9 @@ namespace EODAddIn
             timer.Tick += new EventHandler(UpdateRequests);
             timer.Interval = new TimeSpan(0, 0, 0, 20, 0);
             timer.Start();
+
+            _xlapp = Globals.ThisAddIn.Application;
+            _xlapp.WorkbookOpen += Xlapp_WorkbookOpen;
         }
 
         private void BtnAbout_Click(object sender, RibbonControlEventArgs e)
@@ -467,7 +476,7 @@ namespace EODAddIn
                 }
                 else
                 {
-                    LiveDownloaderDispatcher frm = new LiveDownloaderDispatcher(LiveDownloaders, CancellationTokens);
+                    LiveDownloaderDispatcher frm = new LiveDownloaderDispatcher(LiveDownloaders, CancellationTokenSources);
                     frm.FormClosing += Frm_FormClosing;
                     frm.Show(new WinHwnd());
                 }
@@ -475,11 +484,53 @@ namespace EODAddIn
             }
         }
 
+        private void Xlapp_WorkbookOpen(Excel.Workbook Wb)
+        {
+            var xml = GetXmlPart();
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(LiveDownloader));
+            foreach (CustomXMLPart item in xml)
+            {
+                LiveDownloader liveDownloader = null;
+                try
+                {
+                    using (TextReader reader = new StringReader(item.XML))
+                    {
+                        liveDownloader = xmlSerializer.Deserialize(reader) as LiveDownloader;
+                    }
+                }
+                catch
+                {
+
+                }
+                finally
+                {
+                    if (liveDownloader != null)
+                        LiveDownloaders.Add(liveDownloader, item);
+                }
+            }
+
+            foreach (var pair in LiveDownloaders)
+            {
+                if (pair.Key.IsActive == true)
+                    StartDowloader(pair.Key);
+            }
+        }
+
+        private void StartDowloader(LiveDownloader downloader)
+        {
+            CancellationTokenSource src = new CancellationTokenSource();
+            CancellationTokenSources.Add(downloader, src);
+
+            async void Live() => await downloader.RequestAndPrint(src.Token);
+            _download = Live;
+            _download.Invoke();
+        }
+
         private void Frm_FormClosing(object sender, FormClosingEventArgs e)
         {
             LiveDownloaderDispatcher frm = (LiveDownloaderDispatcher)sender;
             LiveDownloaders = frm.GetDownloaders();
-            CancellationTokens = frm.GetTokens();
+            CancellationTokenSources = frm.GetTokens();
             DispatcherIsOpened = false;
         }
     }

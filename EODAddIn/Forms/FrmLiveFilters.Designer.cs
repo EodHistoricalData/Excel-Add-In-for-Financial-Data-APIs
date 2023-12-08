@@ -37,7 +37,6 @@
             // 
             this.ClbFilters.FormattingEnabled = true;
             this.ClbFilters.Items.AddRange(new object[] {
-            "Code",
             "Timestamp",
             "Gmtoffset",
             "Open",
@@ -50,12 +49,12 @@
             "Change_p"});
             this.ClbFilters.Location = new System.Drawing.Point(13, 13);
             this.ClbFilters.Name = "ClbFilters";
-            this.ClbFilters.Size = new System.Drawing.Size(184, 169);
+            this.ClbFilters.Size = new System.Drawing.Size(184, 154);
             this.ClbFilters.TabIndex = 0;
             // 
             // BtnOk
             // 
-            this.BtnOk.Location = new System.Drawing.Point(122, 203);
+            this.BtnOk.Location = new System.Drawing.Point(122, 173);
             this.BtnOk.Name = "BtnOk";
             this.BtnOk.Size = new System.Drawing.Size(75, 35);
             this.BtnOk.TabIndex = 1;
@@ -65,7 +64,7 @@
             // 
             // BtnCancel
             // 
-            this.BtnCancel.Location = new System.Drawing.Point(13, 203);
+            this.BtnCancel.Location = new System.Drawing.Point(12, 173);
             this.BtnCancel.Name = "BtnCancel";
             this.BtnCancel.Size = new System.Drawing.Size(75, 35);
             this.BtnCancel.TabIndex = 2;
@@ -77,7 +76,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(209, 251);
+            this.ClientSize = new System.Drawing.Size(209, 222);
             this.Controls.Add(this.BtnCancel);
             this.Controls.Add(this.BtnOk);
             this.Controls.Add(this.ClbFilters);
