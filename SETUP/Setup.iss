@@ -2,7 +2,7 @@
 ; Îñíîâíûå ïåðåìåííûå óñòàíîâùèêà
 ; -------------------------------------------------------------------------------------------------------------------------------------------------
 #define AppName      "EODAddIn"                                              
-#define AppPublisher "LLC Micro-Solution"
+#define AppPublisher "Micro-Solution LLC"
 #define AppURL       "https://eodhd.com"
 #define AppGUI       "954b1976-5920-420c-86b4-ee520daf33b1"
 
