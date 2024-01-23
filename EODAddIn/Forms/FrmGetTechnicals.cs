@@ -278,7 +278,7 @@ namespace EODAddIn.Forms
 
         private void ClearTicker_Click(object sender, EventArgs e)
         {
-            gridTickers.Rows.Clear();
+            gridTickers.Rows.Clear(); 
         }
     }
 }

@@ -271,7 +271,7 @@ namespace EODAddIn
             // 
             // btnGetSreenerHistorical
             // 
-            this.btnGetSreenerHistorical.Label = "Get hictorical";
+            this.btnGetSreenerHistorical.Label = "Get historical";
             this.btnGetSreenerHistorical.Name = "btnGetSreenerHistorical";
             this.btnGetSreenerHistorical.ShowImage = true;
             this.btnGetSreenerHistorical.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnGetSreenerHistorical_Click);
