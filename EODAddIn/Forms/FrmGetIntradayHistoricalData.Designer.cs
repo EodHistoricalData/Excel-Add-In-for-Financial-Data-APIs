@@ -73,7 +73,7 @@ namespace EODAddIn.Forms
             // 
             this.dtpFrom.CustomFormat = "dd.MM.yyyy HH:mm";
             this.dtpFrom.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpFrom.Location = new System.Drawing.Point(86, 273);
+            this.dtpFrom.Location = new System.Drawing.Point(120, 275);
             this.dtpFrom.Name = "dtpFrom";
             this.dtpFrom.Size = new System.Drawing.Size(152, 20);
             this.dtpFrom.TabIndex = 5;
@@ -93,7 +93,7 @@ namespace EODAddIn.Forms
             // 
             this.dtpTo.CustomFormat = "dd.MM.yyyy HH:mm";
             this.dtpTo.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpTo.Location = new System.Drawing.Point(86, 299);
+            this.dtpTo.Location = new System.Drawing.Point(120, 301);
             this.dtpTo.Name = "dtpTo";
             this.dtpTo.Size = new System.Drawing.Size(152, 20);
             this.dtpTo.TabIndex = 7;
@@ -101,7 +101,7 @@ namespace EODAddIn.Forms
             // 
             // btnLoad
             // 
-            this.btnLoad.Location = new System.Drawing.Point(163, 425);
+            this.btnLoad.Location = new System.Drawing.Point(197, 416);
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(75, 23);
             this.btnLoad.TabIndex = 8;
@@ -127,7 +127,7 @@ namespace EODAddIn.Forms
             "15m",
             "30m",
             "1h"});
-            this.cboInterval.Location = new System.Drawing.Point(86, 245);
+            this.cboInterval.Location = new System.Drawing.Point(120, 247);
             this.cboInterval.Name = "cboInterval";
             this.cboInterval.Size = new System.Drawing.Size(152, 21);
             this.cboInterval.TabIndex = 3;
@@ -135,17 +135,19 @@ namespace EODAddIn.Forms
             // 
             // gridTickers
             // 
+            this.gridTickers.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.gridTickers.BackgroundColor = System.Drawing.SystemColors.Window;
             this.gridTickers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gridTickers.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1});
             this.gridTickers.ContextMenuStrip = this.contextMenuStrip1;
-            this.gridTickers.Location = new System.Drawing.Point(15, 30);
+            this.gridTickers.Location = new System.Drawing.Point(12, 27);
             this.gridTickers.Name = "gridTickers";
             this.gridTickers.RowHeadersVisible = false;
             this.gridTickers.RowHeadersWidth = 20;
             this.gridTickers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gridTickers.Size = new System.Drawing.Size(223, 209);
+            this.gridTickers.Size = new System.Drawing.Size(260, 209);
             this.gridTickers.TabIndex = 1;
             // 
             // Column1
@@ -160,13 +162,13 @@ namespace EODAddIn.Forms
             this.findTickerToolStripMenuItem,
             this.tsmiDeleteRowDataGrid});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(136, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(130, 48);
             // 
             // findTickerToolStripMenuItem
             // 
             this.findTickerToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("findTickerToolStripMenuItem.Image")));
             this.findTickerToolStripMenuItem.Name = "findTickerToolStripMenuItem";
-            this.findTickerToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.findTickerToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
             this.findTickerToolStripMenuItem.Text = "Find ticker";
             this.findTickerToolStripMenuItem.Click += new System.EventHandler(this.TsmiFindTicker_Click);
             // 
@@ -174,7 +176,7 @@ namespace EODAddIn.Forms
             // 
             this.tsmiDeleteRowDataGrid.Image = ((System.Drawing.Image)(resources.GetObject("tsmiDeleteRowDataGrid.Image")));
             this.tsmiDeleteRowDataGrid.Name = "tsmiDeleteRowDataGrid";
-            this.tsmiDeleteRowDataGrid.Size = new System.Drawing.Size(135, 22);
+            this.tsmiDeleteRowDataGrid.Size = new System.Drawing.Size(129, 22);
             this.tsmiDeleteRowDataGrid.Text = "Delete";
             this.tsmiDeleteRowDataGrid.Click += new System.EventHandler(this.TsmiDeleteRowDataGrid_Click);
             // 
@@ -186,7 +188,7 @@ namespace EODAddIn.Forms
             this.tsmiClearTicker});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(265, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(284, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -194,7 +196,7 @@ namespace EODAddIn.Forms
             // 
             this.tsmiFindTicker.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFindTicker.Image")));
             this.tsmiFindTicker.Name = "tsmiFindTicker";
-            this.tsmiFindTicker.Size = new System.Drawing.Size(95, 21);
+            this.tsmiFindTicker.Size = new System.Drawing.Size(90, 20);
             this.tsmiFindTicker.Text = "Find ticker";
             this.tsmiFindTicker.Click += new System.EventHandler(this.TsmiFindTicker_Click);
             // 
@@ -205,14 +207,14 @@ namespace EODAddIn.Forms
             this.tsmiFromExcel});
             this.tsmiLoadTickers.Image = ((System.Drawing.Image)(resources.GetObject("tsmiLoadTickers.Image")));
             this.tsmiLoadTickers.Name = "tsmiLoadTickers";
-            this.tsmiLoadTickers.Size = new System.Drawing.Size(75, 21);
+            this.tsmiLoadTickers.Size = new System.Drawing.Size(71, 20);
             this.tsmiLoadTickers.Text = "Import";
             // 
             // tsmiFromTxt
             // 
             this.tsmiFromTxt.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFromTxt.Image")));
             this.tsmiFromTxt.Name = "tsmiFromTxt";
-            this.tsmiFromTxt.Size = new System.Drawing.Size(180, 22);
+            this.tsmiFromTxt.Size = new System.Drawing.Size(165, 22);
             this.tsmiFromTxt.Text = "From file txt";
             this.tsmiFromTxt.Click += new System.EventHandler(this.TsmiFromTxt_Click);
             // 
@@ -220,7 +222,7 @@ namespace EODAddIn.Forms
             // 
             this.tsmiFromExcel.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFromExcel.Image")));
             this.tsmiFromExcel.Name = "tsmiFromExcel";
-            this.tsmiFromExcel.Size = new System.Drawing.Size(180, 22);
+            this.tsmiFromExcel.Size = new System.Drawing.Size(165, 22);
             this.tsmiFromExcel.Text = "From Excel range";
             this.tsmiFromExcel.Click += new System.EventHandler(this.TsmiFromExcel_Click);
             // 
@@ -228,14 +230,14 @@ namespace EODAddIn.Forms
             // 
             this.tsmiClearTicker.Image = ((System.Drawing.Image)(resources.GetObject("tsmiClearTicker.Image")));
             this.tsmiClearTicker.Name = "tsmiClearTicker";
-            this.tsmiClearTicker.Size = new System.Drawing.Size(86, 21);
+            this.tsmiClearTicker.Size = new System.Drawing.Size(80, 20);
             this.tsmiClearTicker.Text = "Clear list";
             this.tsmiClearTicker.Click += new System.EventHandler(this.ClearTicker_Click);
             // 
             // rbtnAscOrder
             // 
             this.rbtnAscOrder.AutoSize = true;
-            this.rbtnAscOrder.Location = new System.Drawing.Point(142, 332);
+            this.rbtnAscOrder.Location = new System.Drawing.Point(176, 334);
             this.rbtnAscOrder.Name = "rbtnAscOrder";
             this.rbtnAscOrder.Size = new System.Drawing.Size(43, 17);
             this.rbtnAscOrder.TabIndex = 15;
@@ -246,7 +248,7 @@ namespace EODAddIn.Forms
             // 
             this.rbtnDescOrder.AutoSize = true;
             this.rbtnDescOrder.Checked = true;
-            this.rbtnDescOrder.Location = new System.Drawing.Point(86, 332);
+            this.rbtnDescOrder.Location = new System.Drawing.Point(120, 334);
             this.rbtnDescOrder.Name = "rbtnDescOrder";
             this.rbtnDescOrder.Size = new System.Drawing.Size(50, 17);
             this.rbtnDescOrder.TabIndex = 14;
@@ -270,7 +272,7 @@ namespace EODAddIn.Forms
             "One worksheet",
             "Separated with chart",
             "Separated without chart"});
-            this.cboTypeOfOutput.Location = new System.Drawing.Point(96, 361);
+            this.cboTypeOfOutput.Location = new System.Drawing.Point(120, 363);
             this.cboTypeOfOutput.Name = "cboTypeOfOutput";
             this.cboTypeOfOutput.Size = new System.Drawing.Size(142, 21);
             this.cboTypeOfOutput.TabIndex = 18;
@@ -279,7 +281,7 @@ namespace EODAddIn.Forms
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 364);
+            this.label1.Location = new System.Drawing.Point(12, 366);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(78, 13);
             this.label1.TabIndex = 19;
@@ -289,10 +291,10 @@ namespace EODAddIn.Forms
             // 
             this.chkIsTable.Checked = true;
             this.chkIsTable.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkIsTable.Location = new System.Drawing.Point(12, 388);
+            this.chkIsTable.Location = new System.Drawing.Point(15, 390);
             this.chkIsTable.Name = "chkIsTable";
             this.chkIsTable.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.chkIsTable.Size = new System.Drawing.Size(99, 33);
+            this.chkIsTable.Size = new System.Drawing.Size(123, 33);
             this.chkIsTable.TabIndex = 20;
             this.chkIsTable.Text = "Smart Table";
             this.chkIsTable.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -302,7 +304,7 @@ namespace EODAddIn.Forms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(265, 460);
+            this.ClientSize = new System.Drawing.Size(284, 446);
             this.Controls.Add(this.chkIsTable);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cboTypeOfOutput);

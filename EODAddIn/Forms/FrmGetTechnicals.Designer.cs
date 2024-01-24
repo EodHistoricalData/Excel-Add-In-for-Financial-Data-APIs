@@ -69,7 +69,7 @@
             this.tsmiClearTicker});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(314, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(284, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -77,7 +77,7 @@
             // 
             this.tsmiFindTicker.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFindTicker.Image")));
             this.tsmiFindTicker.Name = "tsmiFindTicker";
-            this.tsmiFindTicker.Size = new System.Drawing.Size(95, 21);
+            this.tsmiFindTicker.Size = new System.Drawing.Size(90, 20);
             this.tsmiFindTicker.Text = "Find ticker";
             // 
             // tsmiLoadTickers
@@ -87,43 +87,45 @@
             this.tsmiFromExcel});
             this.tsmiLoadTickers.Image = ((System.Drawing.Image)(resources.GetObject("tsmiLoadTickers.Image")));
             this.tsmiLoadTickers.Name = "tsmiLoadTickers";
-            this.tsmiLoadTickers.Size = new System.Drawing.Size(75, 21);
+            this.tsmiLoadTickers.Size = new System.Drawing.Size(71, 20);
             this.tsmiLoadTickers.Text = "Import";
             // 
             // tsmiFromTxt
             // 
             this.tsmiFromTxt.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFromTxt.Image")));
             this.tsmiFromTxt.Name = "tsmiFromTxt";
-            this.tsmiFromTxt.Size = new System.Drawing.Size(177, 22);
+            this.tsmiFromTxt.Size = new System.Drawing.Size(165, 22);
             this.tsmiFromTxt.Text = "From file txt";
             // 
             // tsmiFromExcel
             // 
             this.tsmiFromExcel.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFromExcel.Image")));
             this.tsmiFromExcel.Name = "tsmiFromExcel";
-            this.tsmiFromExcel.Size = new System.Drawing.Size(177, 22);
+            this.tsmiFromExcel.Size = new System.Drawing.Size(165, 22);
             this.tsmiFromExcel.Text = "From Excel range";
             // 
             // tsmiClearTicker
             // 
             this.tsmiClearTicker.Image = ((System.Drawing.Image)(resources.GetObject("tsmiClearTicker.Image")));
             this.tsmiClearTicker.Name = "tsmiClearTicker";
-            this.tsmiClearTicker.Size = new System.Drawing.Size(86, 21);
+            this.tsmiClearTicker.Size = new System.Drawing.Size(80, 20);
             this.tsmiClearTicker.Text = "Clear list";
             this.tsmiClearTicker.Click += new System.EventHandler(this.ClearTicker_Click);
             // 
             // gridTickers
             // 
+            this.gridTickers.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.gridTickers.BackgroundColor = System.Drawing.SystemColors.Window;
             this.gridTickers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gridTickers.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1});
-            this.gridTickers.Location = new System.Drawing.Point(12, 28);
+            this.gridTickers.Location = new System.Drawing.Point(12, 27);
             this.gridTickers.Name = "gridTickers";
             this.gridTickers.RowHeadersVisible = false;
             this.gridTickers.RowHeadersWidth = 20;
             this.gridTickers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gridTickers.Size = new System.Drawing.Size(279, 152);
+            this.gridTickers.Size = new System.Drawing.Size(260, 152);
             this.gridTickers.TabIndex = 2;
             // 
             // Column1
@@ -188,7 +190,7 @@
             "Parabolic SAR"});
             this.cboFunction.Location = new System.Drawing.Point(120, 269);
             this.cboFunction.Name = "cboFunction";
-            this.cboFunction.Size = new System.Drawing.Size(171, 21);
+            this.cboFunction.Size = new System.Drawing.Size(152, 21);
             this.cboFunction.TabIndex = 14;
             this.cboFunction.SelectedIndexChanged += new System.EventHandler(this.CboFunction_SelectedIndexChanged);
             // 
@@ -205,7 +207,7 @@
             // 
             this.dtpTo.Location = new System.Drawing.Point(120, 212);
             this.dtpTo.Name = "dtpTo";
-            this.dtpTo.Size = new System.Drawing.Size(171, 20);
+            this.dtpTo.Size = new System.Drawing.Size(152, 20);
             this.dtpTo.TabIndex = 18;
             this.dtpTo.Value = new System.DateTime(2022, 9, 18, 13, 37, 0, 0);
             // 
@@ -222,7 +224,7 @@
             // 
             this.dtpFrom.Location = new System.Drawing.Point(120, 186);
             this.dtpFrom.Name = "dtpFrom";
-            this.dtpFrom.Size = new System.Drawing.Size(171, 20);
+            this.dtpFrom.Size = new System.Drawing.Size(152, 20);
             this.dtpFrom.TabIndex = 16;
             this.dtpFrom.Value = new System.DateTime(2020, 9, 17, 0, 0, 0, 0);
             // 
@@ -244,7 +246,7 @@
             "Monthly"});
             this.cboAggPeriod.Location = new System.Drawing.Point(207, 297);
             this.cboAggPeriod.Name = "cboAggPeriod";
-            this.cboAggPeriod.Size = new System.Drawing.Size(84, 21);
+            this.cboAggPeriod.Size = new System.Drawing.Size(65, 21);
             this.cboAggPeriod.TabIndex = 23;
             this.cboAggPeriod.Visible = false;
             // 
@@ -296,7 +298,7 @@
             "Separated without chart"});
             this.cboTypeOfOutput.Location = new System.Drawing.Point(120, 382);
             this.cboTypeOfOutput.Name = "cboTypeOfOutput";
-            this.cboTypeOfOutput.Size = new System.Drawing.Size(171, 21);
+            this.cboTypeOfOutput.Size = new System.Drawing.Size(152, 21);
             this.cboTypeOfOutput.TabIndex = 28;
             this.cboTypeOfOutput.Text = "One worksheet";
             // 
@@ -304,21 +306,21 @@
             // 
             this.tbSecondOption.Location = new System.Drawing.Point(207, 324);
             this.tbSecondOption.Name = "tbSecondOption";
-            this.tbSecondOption.Size = new System.Drawing.Size(84, 20);
+            this.tbSecondOption.Size = new System.Drawing.Size(65, 20);
             this.tbSecondOption.TabIndex = 30;
             // 
             // tbThirdOption
             // 
             this.tbThirdOption.Location = new System.Drawing.Point(207, 350);
             this.tbThirdOption.Name = "tbThirdOption";
-            this.tbThirdOption.Size = new System.Drawing.Size(84, 20);
+            this.tbThirdOption.Size = new System.Drawing.Size(65, 20);
             this.tbThirdOption.TabIndex = 31;
             // 
             // tbFirstOption
             // 
             this.tbFirstOption.Location = new System.Drawing.Point(207, 298);
             this.tbFirstOption.Name = "tbFirstOption";
-            this.tbFirstOption.Size = new System.Drawing.Size(84, 20);
+            this.tbFirstOption.Size = new System.Drawing.Size(65, 20);
             this.tbFirstOption.TabIndex = 32;
             // 
             // chkIsTable
@@ -328,7 +330,7 @@
             this.chkIsTable.Location = new System.Drawing.Point(12, 401);
             this.chkIsTable.Name = "chkIsTable";
             this.chkIsTable.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.chkIsTable.Size = new System.Drawing.Size(99, 33);
+            this.chkIsTable.Size = new System.Drawing.Size(122, 33);
             this.chkIsTable.TabIndex = 34;
             this.chkIsTable.Text = "Smart Table";
             this.chkIsTable.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -336,7 +338,7 @@
             // 
             // btnLoad
             // 
-            this.btnLoad.Location = new System.Drawing.Point(207, 436);
+            this.btnLoad.Location = new System.Drawing.Point(188, 437);
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(84, 23);
             this.btnLoad.TabIndex = 33;
@@ -348,7 +350,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(314, 481);
+            this.ClientSize = new System.Drawing.Size(284, 467);
             this.Controls.Add(this.chkIsTable);
             this.Controls.Add(this.btnLoad);
             this.Controls.Add(this.tbFirstOption);

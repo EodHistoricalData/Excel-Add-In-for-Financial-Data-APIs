@@ -43,7 +43,7 @@
             // 
             // btnLoad
             // 
-            this.btnLoad.Location = new System.Drawing.Point(161, 320);
+            this.btnLoad.Location = new System.Drawing.Point(197, 321);
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(75, 23);
             this.btnLoad.TabIndex = 19;
@@ -53,16 +53,18 @@
             // 
             // gridTickers
             // 
+            this.gridTickers.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.gridTickers.BackgroundColor = System.Drawing.SystemColors.Window;
             this.gridTickers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gridTickers.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1});
-            this.gridTickers.Location = new System.Drawing.Point(13, 38);
+            this.gridTickers.Location = new System.Drawing.Point(12, 27);
             this.gridTickers.Name = "gridTickers";
             this.gridTickers.RowHeadersVisible = false;
             this.gridTickers.RowHeadersWidth = 20;
             this.gridTickers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gridTickers.Size = new System.Drawing.Size(223, 234);
+            this.gridTickers.Size = new System.Drawing.Size(260, 234);
             this.gridTickers.TabIndex = 22;
             // 
             // Column1
@@ -78,7 +80,7 @@
             this.tsmiClearTicker});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(248, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(284, 24);
             this.menuStrip1.TabIndex = 23;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -113,9 +115,9 @@
             this.cboTypeOfOutput.Items.AddRange(new object[] {
             "One worksheet",
             "Separated"});
-            this.cboTypeOfOutput.Location = new System.Drawing.Point(94, 281);
+            this.cboTypeOfOutput.Location = new System.Drawing.Point(109, 281);
             this.cboTypeOfOutput.Name = "cboTypeOfOutput";
-            this.cboTypeOfOutput.Size = new System.Drawing.Size(142, 21);
+            this.cboTypeOfOutput.Size = new System.Drawing.Size(163, 21);
             this.cboTypeOfOutput.TabIndex = 24;
             this.cboTypeOfOutput.Text = "One worksheet";
             // 
@@ -123,7 +125,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(248, 356);
+            this.ClientSize = new System.Drawing.Size(284, 356);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cboTypeOfOutput);
             this.Controls.Add(this.menuStrip1);

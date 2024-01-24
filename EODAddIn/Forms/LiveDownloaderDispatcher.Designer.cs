@@ -29,6 +29,9 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LiveDownloaderDispatcher));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
             this.gridDownloaders = new System.Windows.Forms.DataGridView();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.tsmiStartAll = new System.Windows.Forms.ToolStripMenuItem();
@@ -81,7 +84,7 @@
             this.tsmiDeleteAll});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(672, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(672, 24);
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -89,7 +92,7 @@
             // 
             this.tsmiStartAll.Image = ((System.Drawing.Image)(resources.GetObject("tsmiStartAll.Image")));
             this.tsmiStartAll.Name = "tsmiStartAll";
-            this.tsmiStartAll.Size = new System.Drawing.Size(80, 21);
+            this.tsmiStartAll.Size = new System.Drawing.Size(74, 20);
             this.tsmiStartAll.Text = "Start all";
             this.tsmiStartAll.Click += new System.EventHandler(this.StartAll_Click);
             // 
@@ -97,7 +100,7 @@
             // 
             this.tsmiStopAll.Image = ((System.Drawing.Image)(resources.GetObject("tsmiStopAll.Image")));
             this.tsmiStopAll.Name = "tsmiStopAll";
-            this.tsmiStopAll.Size = new System.Drawing.Size(80, 21);
+            this.tsmiStopAll.Size = new System.Drawing.Size(74, 20);
             this.tsmiStopAll.Text = "Stop all";
             this.tsmiStopAll.Click += new System.EventHandler(this.StopAll_Click);
             // 
@@ -105,7 +108,7 @@
             // 
             this.tsmiDeleteAll.Image = ((System.Drawing.Image)(resources.GetObject("tsmiDeleteAll.Image")));
             this.tsmiDeleteAll.Name = "tsmiDeleteAll";
-            this.tsmiDeleteAll.Size = new System.Drawing.Size(90, 21);
+            this.tsmiDeleteAll.Size = new System.Drawing.Size(83, 20);
             this.tsmiDeleteAll.Text = "Delete all";
             this.tsmiDeleteAll.Click += new System.EventHandler(this.DeleteAll_Click);
             // 
@@ -133,7 +136,6 @@
             this.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Column2.HeaderText = "Tickers";
             this.Column2.Name = "Column2";
-            this.Column2.ReadOnly = true;
             this.Column2.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
@@ -141,48 +143,63 @@
             // 
             this.Column7.HeaderText = "Interval";
             this.Column7.Name = "Column7";
-            this.Column7.ReadOnly = true;
             this.Column7.Width = 50;
             // 
             // Column6
             // 
             this.Column6.HeaderText = "Status";
             this.Column6.Name = "Column6";
-            this.Column6.ReadOnly = true;
             this.Column6.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.Column6.Width = 45;
             // 
             // Column3
             // 
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.Column3.DefaultCellStyle = dataGridViewCellStyle7;
             this.Column3.HeaderText = "Start";
             this.Column3.Name = "Column3";
-            this.Column3.ReadOnly = true;
             this.Column3.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.Column3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            this.Column3.Text = "";
+            this.Column3.UseColumnTextForButtonValue = true;
             this.Column3.Width = 36;
             // 
             // Column4
             // 
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.Yellow;
+            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.Yellow;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.Color.Yellow;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.Color.Yellow;
+            this.Column4.DefaultCellStyle = dataGridViewCellStyle8;
             this.Column4.HeaderText = "Stop";
             this.Column4.Name = "Column4";
-            this.Column4.ReadOnly = true;
             this.Column4.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.Column4.Width = 36;
             // 
             // Column5
             // 
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle9.BackColor = System.Drawing.Color.Red;
+            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.Red;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.Color.Red;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.Color.Red;
+            this.Column5.DefaultCellStyle = dataGridViewCellStyle9;
             this.Column5.HeaderText = "Delete";
             this.Column5.Name = "Column5";
-            this.Column5.ReadOnly = true;
             this.Column5.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.Column5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            this.Column5.Text = "x";
+            this.Column5.Text = "";
             this.Column5.Width = 45;
             // 
             // LiveDownloaderDispatcher
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(672, 408);
             this.Controls.Add(this.BtnAdd);
             this.Controls.Add(this.menuStrip1);

@@ -142,5 +142,10 @@ namespace EODAddIn.Panels
         {
             System.Diagnostics.Process.Start("https://eodhd.com/financial-academy/ready-to-go-solution/excel-add-in?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
         }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

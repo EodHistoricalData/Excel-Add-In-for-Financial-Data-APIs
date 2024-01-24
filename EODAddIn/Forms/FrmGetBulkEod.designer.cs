@@ -56,7 +56,7 @@
             this.tsmiClearTicker});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(263, 25);
+            this.menuStrip1.Size = new System.Drawing.Size(284, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -64,7 +64,7 @@
             // 
             this.tsmiFindTicker.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFindTicker.Image")));
             this.tsmiFindTicker.Name = "tsmiFindTicker";
-            this.tsmiFindTicker.Size = new System.Drawing.Size(95, 21);
+            this.tsmiFindTicker.Size = new System.Drawing.Size(90, 20);
             this.tsmiFindTicker.Text = "Find ticker";
             // 
             // tsmiLoadTickers
@@ -74,33 +74,33 @@
             this.tsmiFromExcel});
             this.tsmiLoadTickers.Image = ((System.Drawing.Image)(resources.GetObject("tsmiLoadTickers.Image")));
             this.tsmiLoadTickers.Name = "tsmiLoadTickers";
-            this.tsmiLoadTickers.Size = new System.Drawing.Size(75, 21);
+            this.tsmiLoadTickers.Size = new System.Drawing.Size(71, 20);
             this.tsmiLoadTickers.Text = "Import";
             // 
             // tsmiFromTxt
             // 
             this.tsmiFromTxt.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFromTxt.Image")));
             this.tsmiFromTxt.Name = "tsmiFromTxt";
-            this.tsmiFromTxt.Size = new System.Drawing.Size(177, 22);
+            this.tsmiFromTxt.Size = new System.Drawing.Size(165, 22);
             this.tsmiFromTxt.Text = "From file txt";
             // 
             // tsmiFromExcel
             // 
             this.tsmiFromExcel.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFromExcel.Image")));
             this.tsmiFromExcel.Name = "tsmiFromExcel";
-            this.tsmiFromExcel.Size = new System.Drawing.Size(177, 22);
+            this.tsmiFromExcel.Size = new System.Drawing.Size(165, 22);
             this.tsmiFromExcel.Text = "From Excel range";
             // 
             // tsmiClearTicker
             // 
             this.tsmiClearTicker.Image = ((System.Drawing.Image)(resources.GetObject("tsmiClearTicker.Image")));
             this.tsmiClearTicker.Name = "tsmiClearTicker";
-            this.tsmiClearTicker.Size = new System.Drawing.Size(86, 21);
+            this.tsmiClearTicker.Size = new System.Drawing.Size(80, 20);
             this.tsmiClearTicker.Text = "Clear list";
             // 
             // dtpDate
             // 
-            this.dtpDate.Location = new System.Drawing.Point(86, 293);
+            this.dtpDate.Location = new System.Drawing.Point(108, 296);
             this.dtpDate.MaxDate = new System.DateTime(2200, 12, 31, 0, 0, 0, 0);
             this.dtpDate.MinDate = new System.DateTime(1970, 1, 1, 0, 0, 0, 0);
             this.dtpDate.Name = "dtpDate";
@@ -111,7 +111,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 297);
+            this.label2.Location = new System.Drawing.Point(14, 302);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(30, 13);
             this.label2.TabIndex = 8;
@@ -119,16 +119,18 @@
             // 
             // gridTickers
             // 
+            this.gridTickers.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.gridTickers.BackgroundColor = System.Drawing.SystemColors.Window;
             this.gridTickers.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.gridTickers.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Column1});
-            this.gridTickers.Location = new System.Drawing.Point(12, 28);
+            this.gridTickers.Location = new System.Drawing.Point(12, 27);
             this.gridTickers.Name = "gridTickers";
             this.gridTickers.RowHeadersVisible = false;
             this.gridTickers.RowHeadersWidth = 20;
             this.gridTickers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gridTickers.Size = new System.Drawing.Size(238, 209);
+            this.gridTickers.Size = new System.Drawing.Size(260, 209);
             this.gridTickers.TabIndex = 12;
             // 
             // Column1
@@ -139,7 +141,7 @@
             // 
             // BtnGet
             // 
-            this.BtnGet.Location = new System.Drawing.Point(175, 345);
+            this.BtnGet.Location = new System.Drawing.Point(197, 334);
             this.BtnGet.Name = "BtnGet";
             this.BtnGet.Size = new System.Drawing.Size(75, 23);
             this.BtnGet.TabIndex = 13;
@@ -150,7 +152,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 244);
+            this.label1.Location = new System.Drawing.Point(14, 247);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(55, 13);
             this.label1.TabIndex = 14;
@@ -158,7 +160,7 @@
             // 
             // tbExchange
             // 
-            this.tbExchange.Location = new System.Drawing.Point(86, 241);
+            this.tbExchange.Location = new System.Drawing.Point(108, 244);
             this.tbExchange.Name = "tbExchange";
             this.tbExchange.Size = new System.Drawing.Size(164, 20);
             this.tbExchange.TabIndex = 15;
@@ -166,7 +168,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(13, 270);
+            this.label4.Location = new System.Drawing.Point(13, 273);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(31, 13);
             this.label4.TabIndex = 16;
@@ -179,7 +181,7 @@
             "end-of-day data",
             "splits",
             "dividends"});
-            this.cboType.Location = new System.Drawing.Point(86, 267);
+            this.cboType.Location = new System.Drawing.Point(108, 270);
             this.cboType.Name = "cboType";
             this.cboType.Size = new System.Drawing.Size(164, 21);
             this.cboType.TabIndex = 17;
@@ -188,7 +190,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(263, 379);
+            this.ClientSize = new System.Drawing.Size(284, 366);
             this.Controls.Add(this.cboType);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.tbExchange);

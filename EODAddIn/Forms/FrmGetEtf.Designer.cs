@@ -39,7 +39,7 @@
             // 
             // btnLoad
             // 
-            this.btnLoad.Location = new System.Drawing.Point(150, 64);
+            this.btnLoad.Location = new System.Drawing.Point(197, 58);
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(75, 23);
             this.btnLoad.TabIndex = 10;
@@ -49,15 +49,15 @@
             // 
             // txtCode
             // 
-            this.txtCode.Location = new System.Drawing.Point(73, 38);
+            this.txtCode.Location = new System.Drawing.Point(80, 32);
             this.txtCode.Name = "txtCode";
-            this.txtCode.Size = new System.Drawing.Size(152, 20);
+            this.txtCode.Size = new System.Drawing.Size(192, 20);
             this.txtCode.TabIndex = 9;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 41);
+            this.label1.Location = new System.Drawing.Point(12, 35);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(37, 13);
             this.label1.TabIndex = 8;
@@ -69,7 +69,7 @@
             this.tsmiFindTicker});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(243, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(284, 24);
             this.menuStrip1.TabIndex = 11;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -85,7 +85,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(243, 102);
+            this.ClientSize = new System.Drawing.Size(284, 88);
             this.Controls.Add(this.btnLoad);
             this.Controls.Add(this.txtCode);
             this.Controls.Add(this.label1);

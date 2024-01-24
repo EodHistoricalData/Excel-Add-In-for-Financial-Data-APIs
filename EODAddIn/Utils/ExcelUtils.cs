@@ -397,6 +397,7 @@ namespace EODAddIn.Utils
         {
             Application application = Globals.ThisAddIn.Application;
             Workbook workbook = application.ActiveWorkbook;
+            if (workbook == null) return null;
             return workbook.CustomXMLParts;
         }
 

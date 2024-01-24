@@ -38,18 +38,22 @@ namespace EODAddIn.Panels
             // 
             // label1
             // 
+            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.75F);
-            this.label1.Location = new System.Drawing.Point(12, 9);
+            this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(349, 180);
+            this.label1.Padding = new System.Windows.Forms.Padding(5);
+            this.label1.Size = new System.Drawing.Size(354, 182);
             this.label1.TabIndex = 0;
             this.label1.Text = resources.GetString("label1.Text");
+            this.label1.Click += new System.EventHandler(this.label1_Click);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label2.Location = new System.Drawing.Point(9, 189);
+            this.label2.Location = new System.Drawing.Point(13, 191);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(258, 30);
             this.label2.TabIndex = 1;
@@ -60,7 +64,7 @@ namespace EODAddIn.Panels
             // 
             this.btnRegister.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(182)))), ((int)(((byte)(214)))));
             this.btnRegister.ForeColor = System.Drawing.Color.White;
-            this.btnRegister.Location = new System.Drawing.Point(15, 232);
+            this.btnRegister.Location = new System.Drawing.Point(25, 224);
             this.btnRegister.Name = "btnRegister";
             this.btnRegister.Size = new System.Drawing.Size(92, 41);
             this.btnRegister.TabIndex = 2;
@@ -72,7 +76,7 @@ namespace EODAddIn.Panels
             // 
             this.btnLogin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(182)))), ((int)(((byte)(214)))));
             this.btnLogin.ForeColor = System.Drawing.Color.White;
-            this.btnLogin.Location = new System.Drawing.Point(113, 232);
+            this.btnLogin.Location = new System.Drawing.Point(123, 224);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(92, 41);
             this.btnLogin.TabIndex = 3;
@@ -84,7 +88,7 @@ namespace EODAddIn.Panels
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label3.Location = new System.Drawing.Point(9, 276);
+            this.label3.Location = new System.Drawing.Point(13, 285);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(148, 15);
             this.label3.TabIndex = 4;
@@ -94,7 +98,7 @@ namespace EODAddIn.Panels
             // 
             this.btnAPIkey.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(182)))), ((int)(((byte)(214)))));
             this.btnAPIkey.ForeColor = System.Drawing.Color.White;
-            this.btnAPIkey.Location = new System.Drawing.Point(15, 294);
+            this.btnAPIkey.Location = new System.Drawing.Point(25, 303);
             this.btnAPIkey.Name = "btnAPIkey";
             this.btnAPIkey.Size = new System.Drawing.Size(92, 41);
             this.btnAPIkey.TabIndex = 5;
@@ -106,7 +110,7 @@ namespace EODAddIn.Panels
             // 
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label4.Location = new System.Drawing.Point(9, 349);
+            this.label4.Location = new System.Drawing.Point(13, 363);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(267, 45);
             this.label4.TabIndex = 6;
@@ -117,7 +121,7 @@ namespace EODAddIn.Panels
             // 
             this.btnUpgragePackages.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(182)))), ((int)(((byte)(214)))));
             this.btnUpgragePackages.ForeColor = System.Drawing.Color.White;
-            this.btnUpgragePackages.Location = new System.Drawing.Point(15, 388);
+            this.btnUpgragePackages.Location = new System.Drawing.Point(25, 400);
             this.btnUpgragePackages.Name = "btnUpgragePackages";
             this.btnUpgragePackages.Size = new System.Drawing.Size(147, 41);
             this.btnUpgragePackages.TabIndex = 7;
@@ -129,7 +133,7 @@ namespace EODAddIn.Panels
             // 
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label5.Location = new System.Drawing.Point(9, 447);
+            this.label5.Location = new System.Drawing.Point(13, 463);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(135, 15);
             this.label5.TabIndex = 8;
@@ -139,7 +143,7 @@ namespace EODAddIn.Panels
             // 
             this.btnDocumentation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(182)))), ((int)(((byte)(214)))));
             this.btnDocumentation.ForeColor = System.Drawing.Color.White;
-            this.btnDocumentation.Location = new System.Drawing.Point(15, 465);
+            this.btnDocumentation.Location = new System.Drawing.Point(25, 481);
             this.btnDocumentation.Name = "btnDocumentation";
             this.btnDocumentation.Size = new System.Drawing.Size(124, 41);
             this.btnDocumentation.TabIndex = 9;
@@ -151,7 +155,7 @@ namespace EODAddIn.Panels
             // 
             this.btnPrivacyPolicy.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(182)))), ((int)(((byte)(214)))));
             this.btnPrivacyPolicy.ForeColor = System.Drawing.Color.White;
-            this.btnPrivacyPolicy.Location = new System.Drawing.Point(15, 627);
+            this.btnPrivacyPolicy.Location = new System.Drawing.Point(8, 669);
             this.btnPrivacyPolicy.Name = "btnPrivacyPolicy";
             this.btnPrivacyPolicy.Size = new System.Drawing.Size(109, 41);
             this.btnPrivacyPolicy.TabIndex = 10;
@@ -163,7 +167,7 @@ namespace EODAddIn.Panels
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label6.Location = new System.Drawing.Point(9, 518);
+            this.label6.Location = new System.Drawing.Point(13, 548);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(315, 45);
             this.label6.TabIndex = 11;
@@ -174,7 +178,7 @@ namespace EODAddIn.Panels
             // 
             this.btnErrorReport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(182)))), ((int)(((byte)(214)))));
             this.btnErrorReport.ForeColor = System.Drawing.Color.White;
-            this.btnErrorReport.Location = new System.Drawing.Point(157, 580);
+            this.btnErrorReport.Location = new System.Drawing.Point(156, 604);
             this.btnErrorReport.Name = "btnErrorReport";
             this.btnErrorReport.Size = new System.Drawing.Size(124, 41);
             this.btnErrorReport.TabIndex = 12;
@@ -186,7 +190,7 @@ namespace EODAddIn.Panels
             // 
             this.btnSendAnIdea.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(182)))), ((int)(((byte)(214)))));
             this.btnSendAnIdea.ForeColor = System.Drawing.Color.White;
-            this.btnSendAnIdea.Location = new System.Drawing.Point(15, 580);
+            this.btnSendAnIdea.Location = new System.Drawing.Point(25, 604);
             this.btnSendAnIdea.Name = "btnSendAnIdea";
             this.btnSendAnIdea.Size = new System.Drawing.Size(112, 41);
             this.btnSendAnIdea.TabIndex = 13;
@@ -197,7 +201,7 @@ namespace EODAddIn.Panels
             // btnHide
             // 
             this.btnHide.BackColor = System.Drawing.Color.White;
-            this.btnHide.Location = new System.Drawing.Point(202, 627);
+            this.btnHide.Location = new System.Drawing.Point(254, 669);
             this.btnHide.Name = "btnHide";
             this.btnHide.Size = new System.Drawing.Size(74, 38);
             this.btnHide.TabIndex = 14;
@@ -209,7 +213,7 @@ namespace EODAddIn.Panels
             // 
             this.btnHowTo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(182)))), ((int)(((byte)(214)))));
             this.btnHowTo.ForeColor = System.Drawing.Color.White;
-            this.btnHowTo.Location = new System.Drawing.Point(157, 465);
+            this.btnHowTo.Location = new System.Drawing.Point(167, 481);
             this.btnHowTo.Name = "btnHowTo";
             this.btnHowTo.Size = new System.Drawing.Size(124, 41);
             this.btnHowTo.TabIndex = 16;
@@ -219,6 +223,8 @@ namespace EODAddIn.Panels
             // 
             // PanelInfo
             // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoScroll = true;
             this.Controls.Add(this.btnHowTo);
             this.Controls.Add(this.btnHide);
@@ -237,7 +243,7 @@ namespace EODAddIn.Panels
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "PanelInfo";
-            this.Size = new System.Drawing.Size(339, 633);
+            this.Size = new System.Drawing.Size(367, 722);
             this.ResumeLayout(false);
             this.PerformLayout();
 

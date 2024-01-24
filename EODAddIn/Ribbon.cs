@@ -488,6 +488,7 @@ namespace EODAddIn
         {
             var xml = GetXmlPart();
             XmlSerializer xmlSerializer = new XmlSerializer(typeof(LiveDownloader));
+            if (xml == null) return;
             foreach (CustomXMLPart item in xml)
             {
                 LiveDownloader liveDownloader = null;
