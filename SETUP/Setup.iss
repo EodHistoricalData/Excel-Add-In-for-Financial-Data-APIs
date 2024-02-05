@@ -59,7 +59,7 @@ PrivilegesRequired=none
 
 ; Ðåçóëüòàò êîìïèëÿöèè óñòàíîâùèêà
 OutputDir            = {#ReleasePath}
-OutputBaseFilename   = Setup{#AppName}
+OutputBaseFilename   = Setup{#AppName} ver.{#AppVersion}
 SetupIconFile        = {#AppIco}
 Compression          = lzma
 SolidCompression     = yes

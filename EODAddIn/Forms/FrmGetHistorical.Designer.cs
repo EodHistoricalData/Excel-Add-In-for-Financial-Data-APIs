@@ -206,7 +206,7 @@ namespace EODAddIn.Forms
             // 
             this.tsmiFromTxt.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFromTxt.Image")));
             this.tsmiFromTxt.Name = "tsmiFromTxt";
-            this.tsmiFromTxt.Size = new System.Drawing.Size(165, 22);
+            this.tsmiFromTxt.Size = new System.Drawing.Size(180, 22);
             this.tsmiFromTxt.Text = "From file txt";
             this.tsmiFromTxt.Click += new System.EventHandler(this.TsmiFromTxt_Click);
             // 
@@ -214,7 +214,7 @@ namespace EODAddIn.Forms
             // 
             this.tsmiFromExcel.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFromExcel.Image")));
             this.tsmiFromExcel.Name = "tsmiFromExcel";
-            this.tsmiFromExcel.Size = new System.Drawing.Size(165, 22);
+            this.tsmiFromExcel.Size = new System.Drawing.Size(180, 22);
             this.tsmiFromExcel.Text = "From Excel range";
             this.tsmiFromExcel.Click += new System.EventHandler(this.TsmiFromExcel_Click);
             // 
@@ -261,7 +261,7 @@ namespace EODAddIn.Forms
             // 
             this.chkIsTable.Checked = true;
             this.chkIsTable.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkIsTable.Location = new System.Drawing.Point(12, 384);
+            this.chkIsTable.Location = new System.Drawing.Point(15, 384);
             this.chkIsTable.Name = "chkIsTable";
             this.chkIsTable.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.chkIsTable.Size = new System.Drawing.Size(105, 33);

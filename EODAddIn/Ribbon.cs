@@ -24,6 +24,7 @@ using System.Windows.Threading;
 using System.IO;
 using System.Xml.Serialization;
 using Microsoft.Office.Interop.Excel;
+using EODAddIn.View.Forms;
 
 namespace EODAddIn
 {
@@ -70,11 +71,7 @@ namespace EODAddIn
             }
         }
 
-        private void GetHistorical_Click(object sender, RibbonControlEventArgs e)
-        {
-            Forms.FrmGetHistorical frm = new Forms.FrmGetHistorical();
-            frm.Show(new WinHwnd());
-        }
+        private void GetHistorical_Click(object sender, RibbonControlEventArgs e) => FormShower.FrmGetHistoricalShow();
 
         private void GetEtf_Click(object sender, RibbonControlEventArgs e)
         {
@@ -246,11 +243,8 @@ namespace EODAddIn
             FundamentalDataPrinter.PrintFundamentalAll(res, frm.Tiker);
         }
 
-        private void BtnGetIntradayHistoricalData_Click(object sender, RibbonControlEventArgs e)
-        {
-            Forms.FrmGetIntradayHistoricalData frm = new Forms.FrmGetIntradayHistoricalData();
-            frm.Show(new WinHwnd());
-        }
+        private void BtnGetIntradayHistoricalData_Click(object sender, RibbonControlEventArgs e) => FormShower.FrmGetIntradayHistoricalDataShow();
+
 
         private async void BtnOptions_Click(object sender, RibbonControlEventArgs e)
         {
@@ -285,7 +279,7 @@ namespace EODAddIn
             try
             {
                 Forms.FrmGetBulk frm = new Forms.FrmGetBulk();
-                frm.Show(new WinHwnd());
+                frm.ShowDialog(new WinHwnd());
                 if (frm.DialogResult == DialogResult.OK)
                 {
                     BtnGetBulk.Label = "Processing";
@@ -454,11 +448,7 @@ namespace EODAddIn
             }
         }
 
-        private void BtnTechnicals_Click(object sender, RibbonControlEventArgs e)
-        {
-            FrmGetTechnicals frm = new FrmGetTechnicals();
-            frm.Show(new WinHwnd());
-        }
+        private void BtnTechnicals_Click(object sender, RibbonControlEventArgs e) => FormShower.FrmGetTechnicalsShow();
 
         private void BtnGetLive_Click(object sender, RibbonControlEventArgs e)
         {
@@ -472,13 +462,13 @@ namespace EODAddIn
                 {
                     LiveDownloaderDispatcher frm = new LiveDownloaderDispatcher();
                     frm.FormClosing += Frm_FormClosing;
-                    frm.Show(new WinHwnd());
+                    frm.ShowDialog(new WinHwnd());
                 }
                 else
                 {
                     LiveDownloaderDispatcher frm = new LiveDownloaderDispatcher(LiveDownloaders, CancellationTokenSources);
                     frm.FormClosing += Frm_FormClosing;
-                    frm.Show(new WinHwnd());
+                    frm.ShowDialog(new WinHwnd());
                 }
                 DispatcherIsOpened = true;
             }

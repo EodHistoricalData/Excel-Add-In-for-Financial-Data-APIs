@@ -8,10 +8,14 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+
+using Excel = Microsoft.Office.Interop.Excel;
+
 
 namespace EODAddIn.Forms
 {
@@ -70,6 +74,73 @@ namespace EODAddIn.Forms
         private bool CheckForm()
         {
             return true;
+        }
+
+        private void tsmiFindTicker_Click(object sender, EventArgs e)
+        {
+            FrmSearchTiker frm = new FrmSearchTiker();
+            frm.ShowDialog();
+
+            if (frm.Result.Code == null) return;
+
+            int i = gridTickers.Rows.Add();
+
+            gridTickers.Rows[i].Cells[0].Value = $"{frm.Result.Code}.{frm.Result.Exchange}";
+        }
+
+        private void tsmiClearTicker_Click(object sender, EventArgs e)
+        {
+            gridTickers.Rows.Clear();
+        }
+
+        private void tsmiFromTxt_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "txt files (*.txt)|*.txt";
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string filePath = openFileDialog.FileName;
+
+                    using (StreamReader fstream = new StreamReader(filePath))
+                    {
+                        while (!fstream.EndOfStream)
+                        {
+                            string text = fstream.ReadLine();
+                            int i = gridTickers.Rows.Add();
+                            gridTickers.Rows[i].Cells[0].Value = text;
+                        }
+                        fstream.Close();
+                    }
+                }
+            }
+        }
+
+        private void tsmiFromExcel_Click(object sender, EventArgs e)
+        {
+            FrmSelectRange frm = new FrmSelectRange();
+            frm.Show(new WinHwnd());
+            frm.FormClosing += FrmSelectRangeClosing;
+        }
+
+        private void FrmSelectRangeClosing(object sender, FormClosingEventArgs e)
+        {
+            FrmSelectRange frm = (FrmSelectRange)sender;
+            if (ExcelUtils.IsRange(frm.RangeAddress))
+            {
+                Excel.Range range = Globals.ThisAddIn.Application.Range[frm.RangeAddress];
+
+                foreach (Excel.Range cell in range)
+                {
+                    string txt = cell.Text;
+                    if (!string.IsNullOrEmpty(txt))
+                    {
+                        int i = gridTickers.Rows.Add();
+                        gridTickers.Rows[i].Cells[0].Value = cell.Text;
+                    }
+                }
+            }
         }
     }
 }

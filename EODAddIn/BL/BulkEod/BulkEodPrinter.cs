@@ -1,8 +1,11 @@
 ﻿using EODAddIn.Utils;
+
 using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+
 using static EODAddIn.Utils.ExcelUtils;
+
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace EODAddIn.BL.BulkEod
@@ -56,6 +59,8 @@ namespace EODAddIn.BL.BulkEod
                                 worksheet.Cells[row, column + 8] = item.Volume;
                                 row++;
                             }
+
+                            worksheet.UsedRange.EntireColumn.AutoFit();
                             break;
                         }
                     case "splits":
@@ -75,6 +80,7 @@ namespace EODAddIn.BL.BulkEod
                                 worksheet.Cells[row, column + 3] = item.Split;
                                 row++;
                             }
+                            worksheet.UsedRange.EntireColumn.AutoFit();
                             break;
                         }
                     case "dividends":
@@ -106,6 +112,7 @@ namespace EODAddIn.BL.BulkEod
                                 worksheet.Cells[row, column + 9] = item.UnadjustedValue;
                                 row++;
                             }
+                            worksheet.UsedRange.EntireColumn.AutoFit();
                             break;
                         }
                 }

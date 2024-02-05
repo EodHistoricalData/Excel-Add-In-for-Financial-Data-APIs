@@ -79,6 +79,7 @@
             this.tsmiFindTicker.Name = "tsmiFindTicker";
             this.tsmiFindTicker.Size = new System.Drawing.Size(90, 20);
             this.tsmiFindTicker.Text = "Find ticker";
+            this.tsmiFindTicker.Click += new System.EventHandler(this.tsmiFindTicker_Click);
             // 
             // tsmiLoadTickers
             // 
@@ -94,15 +95,17 @@
             // 
             this.tsmiFromTxt.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFromTxt.Image")));
             this.tsmiFromTxt.Name = "tsmiFromTxt";
-            this.tsmiFromTxt.Size = new System.Drawing.Size(165, 22);
+            this.tsmiFromTxt.Size = new System.Drawing.Size(180, 22);
             this.tsmiFromTxt.Text = "From file txt";
+            this.tsmiFromTxt.Click += new System.EventHandler(this.tsmiFromTxt_Click);
             // 
             // tsmiFromExcel
             // 
             this.tsmiFromExcel.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFromExcel.Image")));
             this.tsmiFromExcel.Name = "tsmiFromExcel";
-            this.tsmiFromExcel.Size = new System.Drawing.Size(165, 22);
+            this.tsmiFromExcel.Size = new System.Drawing.Size(180, 22);
             this.tsmiFromExcel.Text = "From Excel range";
+            this.tsmiFromExcel.Click += new System.EventHandler(this.tsmiFromExcel_Click);
             // 
             // tsmiClearTicker
             // 
@@ -327,7 +330,7 @@
             // 
             this.chkIsTable.Checked = true;
             this.chkIsTable.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkIsTable.Location = new System.Drawing.Point(12, 401);
+            this.chkIsTable.Location = new System.Drawing.Point(12, 409);
             this.chkIsTable.Name = "chkIsTable";
             this.chkIsTable.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.chkIsTable.Size = new System.Drawing.Size(122, 33);

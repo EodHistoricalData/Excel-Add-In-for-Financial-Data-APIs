@@ -58,6 +58,7 @@ namespace EODAddIn.BL.ETFPrinter
                 sh.Outline.SummaryRow = Excel.XlSummaryRow.xlSummaryAbove;
 
                 sh.Outline.ShowLevels(1);
+                sh.UsedRange.EntireColumn.AutoFit();
             }
             catch
             {

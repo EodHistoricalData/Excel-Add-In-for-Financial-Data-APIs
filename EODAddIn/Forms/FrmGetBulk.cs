@@ -57,8 +57,8 @@ namespace EODAddIn.Forms
             }
             Settings.SettingsFields.BulkFundamentalTickers = Tickers;
             Settings.Save();
-            string warning = "You are going to download " + Tickers.Count + " symbols.";
-            DialogResult = MessageBox.Show(warning + " Do you want to proceed?", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+            //string warning = "You are going to download " + Tickers.Count + " symbols.";
+            DialogResult =  DialogResult.OK;
         }
     }
 }

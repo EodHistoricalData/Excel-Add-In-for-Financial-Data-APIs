@@ -57,6 +57,7 @@ namespace EODAddIn.BL.HistoricalPrinter
                         table[i, 9] = item.Volume;
                     }
                     r = Printer.PrintHorisontalTable(worksheet.Cells[2, 1], table);
+
                 }
                 catch (Exception)
                 {
@@ -175,6 +176,7 @@ namespace EODAddIn.BL.HistoricalPrinter
                 sh.Cells[row, 11] = item.Volume;
                 row++;
             }
+            sh.UsedRange.EntireColumn.AutoFit();
             return row;
         }
     }

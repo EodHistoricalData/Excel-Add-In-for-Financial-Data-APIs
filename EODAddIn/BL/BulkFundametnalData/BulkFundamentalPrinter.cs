@@ -54,6 +54,7 @@ namespace EODAddIn.BL.BulkFundamental
                         row = PrintBulkFundamentalEarnings(symbol, sh.Cells[row, 1]);
                         row++;
                         row = PrintBulkFundamentalFinancials(symbol, sh.Cells[row, 1]);
+
                     }
                 }
             }
@@ -399,6 +400,7 @@ namespace EODAddIn.BL.BulkFundamental
 
             row = PrintBulkFundamentalIncomeStatement(data, sh.Cells[row, 1]);
 
+            
             return row;
         }
         private static int PrintBulkFundamentalBalanceSheet(BulkFundamentalData data, Excel.Range range)

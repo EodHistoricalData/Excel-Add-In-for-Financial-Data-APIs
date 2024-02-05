@@ -199,6 +199,7 @@ namespace EODAddIn.BL.IntradayPrinter
                 sh.Cells[row, 9] = item.Timestamp;
                 row++;
             }
+            sh.UsedRange.EntireColumn.AutoFit();
             return row;
         }
     }

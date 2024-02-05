@@ -89,7 +89,7 @@ namespace EODAddIn.BL.FundamentalDataPrinter
 
                 sh.Outline.AutomaticStyles = false;
                 sh.Outline.SummaryRow = XlSummaryRow.xlSummaryAbove;
-
+                sh.UsedRange.EntireColumn.AutoFit();
                 sh.Outline.ShowLevels(1);
             }
             catch

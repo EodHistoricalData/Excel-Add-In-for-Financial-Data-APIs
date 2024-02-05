@@ -6,6 +6,7 @@ using EODHistoricalData.Wrapper.Model.TechnicalIndicators;
 using MS.ProgressBar;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
 using static EOD.API;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -43,7 +44,7 @@ namespace EODAddIn.Forms
 
             cboFunction.SelectedIndex = Settings.SettingsFields.TechnicalsFunctionId;
             dtpFrom.Value = Settings.SettingsFields.TechnicalsFrom != DateTime.MinValue ? Settings.SettingsFields.TechnicalsFrom : new DateTime(2020, 1, 1);
-            dtpTo.Value = Settings.SettingsFields.TechnicalsTo != DateTime.MinValue ? Settings.SettingsFields.TechnicalsTo : DateTime.Today;
+            dtpTo.Value =  DateTime.Today;
 
             foreach (string ticker in Settings.SettingsFields.TechnicalsTickers)
             {
@@ -279,6 +280,68 @@ namespace EODAddIn.Forms
         private void ClearTicker_Click(object sender, EventArgs e)
         {
             gridTickers.Rows.Clear(); 
+        }
+
+        private void tsmiFindTicker_Click(object sender, EventArgs e)
+        {
+            FrmSearchTiker frm = new FrmSearchTiker();
+            frm.ShowDialog();
+
+            if (frm.Result.Code == null) return;
+
+            int i = gridTickers.Rows.Add();
+
+            gridTickers.Rows[i].Cells[0].Value = $"{frm.Result.Code}.{frm.Result.Exchange}";
+        }
+
+        private void tsmiFromTxt_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "txt files (*.txt)|*.txt";
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string filePath = openFileDialog.FileName;
+
+                    using (StreamReader fstream = new StreamReader(filePath))
+                    {
+                        while (!fstream.EndOfStream)
+                        {
+                            string text = fstream.ReadLine();
+                            int i = gridTickers.Rows.Add();
+                            gridTickers.Rows[i].Cells[0].Value = text;
+                        }
+                        fstream.Close();
+                    }
+                }
+            }
+        }
+
+        private void tsmiFromExcel_Click(object sender, EventArgs e)
+        {
+            FrmSelectRange frm = new FrmSelectRange();
+            frm.Show(new WinHwnd());
+            frm.FormClosing += FrmSelectRangeClosing;
+        }
+
+        private void FrmSelectRangeClosing(object sender, FormClosingEventArgs e)
+        {
+            FrmSelectRange frm = (FrmSelectRange)sender;
+            if (ExcelUtils.IsRange(frm.RangeAddress))
+            {
+                Excel.Range range = Globals.ThisAddIn.Application.Range[frm.RangeAddress];
+
+                foreach (Excel.Range cell in range)
+                {
+                    string txt = cell.Text;
+                    if (!string.IsNullOrEmpty(txt))
+                    {
+                        int i = gridTickers.Rows.Add();
+                        gridTickers.Rows[i].Cells[0].Value = cell.Text;
+                    }
+                }
+            }
         }
     }
 }

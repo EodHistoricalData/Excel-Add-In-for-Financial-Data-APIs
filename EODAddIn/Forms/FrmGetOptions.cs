@@ -24,8 +24,8 @@ namespace EODAddIn.Forms
         {
             InitializeComponent();
             txtCode.Text = Ticker;
-            dtpFrom.Value = DateTime.Today;
-            dtpTo.Value = new DateTime(2100, 1, 1);
+            dtpFrom.Value = DateTime.Today.AddMonths(-3);
+            dtpTo.Value = DateTime.Today;
             dtpFromTrade.Enabled = false;
             dtpToTrade.Enabled = false;
         }
@@ -88,6 +88,16 @@ namespace EODAddIn.Forms
                 return false;
             }
             return true;
+        }
+
+        private void tsmiFindTicker_Click(object sender, EventArgs e)
+        {
+            FrmSearchTiker frm = new FrmSearchTiker();
+            frm.ShowDialog();
+
+            if (frm.Result.Code == null) return;
+
+            txtCode.Text = $"{frm.Result.Code}.{frm.Result.Exchange}";
         }
     }
 }

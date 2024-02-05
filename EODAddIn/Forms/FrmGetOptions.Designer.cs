@@ -105,6 +105,7 @@
             this.tsmiFindTicker.Name = "tsmiFindTicker";
             this.tsmiFindTicker.Size = new System.Drawing.Size(90, 20);
             this.tsmiFindTicker.Text = "Find ticker";
+            this.tsmiFindTicker.Click += new System.EventHandler(this.tsmiFindTicker_Click);
             // 
             // dtpToTrade
             // 

@@ -47,7 +47,7 @@ namespace EODAddIn.BL
             Range c2 = (Range)worksheet.Cells[row, 2];
             Range table = worksheet.get_Range(c1, c2);
             table.Value = array;
-
+            table.EntireColumn.AutoFit();
             return row;
         }
 
@@ -66,6 +66,7 @@ namespace EODAddIn.BL
             Range lastCell = worksheet.Cells[row + rows - 1, columns];
             Range rng = worksheet.get_Range(firstCell, lastCell);
             rng.Value = array;
+            rng.EntireColumn.AutoFit();
             return row + rows;
         }
     }

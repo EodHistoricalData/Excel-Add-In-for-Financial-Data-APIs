@@ -201,7 +201,7 @@
             // BtnCreate
             // 
             this.BtnCreate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnCreate.Location = new System.Drawing.Point(189, 66);
+            this.BtnCreate.Location = new System.Drawing.Point(188, 66);
             this.BtnCreate.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
             this.BtnCreate.MinimumSize = new System.Drawing.Size(75, 23);
             this.BtnCreate.Name = "BtnCreate";
@@ -217,7 +217,7 @@
             this.BtnFilters.Location = new System.Drawing.Point(3, 21);
             this.BtnFilters.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.BtnFilters.Name = "BtnFilters";
-            this.BtnFilters.Size = new System.Drawing.Size(78, 23);
+            this.BtnFilters.Size = new System.Drawing.Size(77, 23);
             this.BtnFilters.TabIndex = 31;
             this.BtnFilters.Text = "Filters";
             this.BtnFilters.UseVisualStyleBackColor = true;
@@ -229,7 +229,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.LblFilters.AutoSize = true;
-            this.LblFilters.Location = new System.Drawing.Point(87, 3);
+            this.LblFilters.Location = new System.Drawing.Point(86, 3);
             this.LblFilters.Margin = new System.Windows.Forms.Padding(3);
             this.LblFilters.MaximumSize = new System.Drawing.Size(155, 0);
             this.LblFilters.Name = "LblFilters";
@@ -279,7 +279,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 71.59091F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 28.40909F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(267, 92);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(266, 92);
             this.tableLayoutPanel1.TabIndex = 33;
             // 
             // FrmGetLive

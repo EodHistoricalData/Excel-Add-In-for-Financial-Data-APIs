@@ -59,7 +59,7 @@ namespace EODAddIn.BL.OptionsPrinter
 
                 sh.Outline.AutomaticStyles = false;
                 sh.Outline.SummaryRow = Excel.XlSummaryRow.xlSummaryAbove;
-
+                sh.UsedRange.EntireColumn.AutoFit();
                 sh.Outline.ShowLevels(2);
             }
             catch

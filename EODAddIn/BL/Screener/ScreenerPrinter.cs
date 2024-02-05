@@ -85,6 +85,7 @@ namespace EODAddIn.BL.Screener
                 sh.Range[sh.Cells[1, 1], sh.Cells[screener.Data.Count, 15]].Value = val;
                 string endpoint = "L" + Convert.ToString(i - 1);
                 MakeTable("A1", endpoint, sh, "Screener result", 9);
+                sh.UsedRange.EntireColumn.AutoFit();
             }
             catch
             {

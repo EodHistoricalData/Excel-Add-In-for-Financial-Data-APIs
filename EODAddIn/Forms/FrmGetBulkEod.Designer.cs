@@ -66,6 +66,7 @@
             this.tsmiFindTicker.Name = "tsmiFindTicker";
             this.tsmiFindTicker.Size = new System.Drawing.Size(90, 20);
             this.tsmiFindTicker.Text = "Find ticker";
+            this.tsmiFindTicker.Click += new System.EventHandler(this.tsmiFindTicker_Click);
             // 
             // tsmiLoadTickers
             // 
@@ -81,15 +82,17 @@
             // 
             this.tsmiFromTxt.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFromTxt.Image")));
             this.tsmiFromTxt.Name = "tsmiFromTxt";
-            this.tsmiFromTxt.Size = new System.Drawing.Size(165, 22);
+            this.tsmiFromTxt.Size = new System.Drawing.Size(180, 22);
             this.tsmiFromTxt.Text = "From file txt";
+            this.tsmiFromTxt.Click += new System.EventHandler(this.tsmiFromTxt_Click);
             // 
             // tsmiFromExcel
             // 
             this.tsmiFromExcel.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFromExcel.Image")));
             this.tsmiFromExcel.Name = "tsmiFromExcel";
-            this.tsmiFromExcel.Size = new System.Drawing.Size(165, 22);
+            this.tsmiFromExcel.Size = new System.Drawing.Size(180, 22);
             this.tsmiFromExcel.Text = "From Excel range";
+            this.tsmiFromExcel.Click += new System.EventHandler(this.tsmiFromExcel_Click);
             // 
             // tsmiClearTicker
             // 
@@ -97,6 +100,7 @@
             this.tsmiClearTicker.Name = "tsmiClearTicker";
             this.tsmiClearTicker.Size = new System.Drawing.Size(80, 20);
             this.tsmiClearTicker.Text = "Clear list";
+            this.tsmiClearTicker.Click += new System.EventHandler(this.tsmiClearTicker_Click);
             // 
             // dtpDate
             // 
