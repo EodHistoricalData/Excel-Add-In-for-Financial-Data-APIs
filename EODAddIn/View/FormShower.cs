@@ -45,12 +45,43 @@ namespace EODAddIn.View.Forms
                 {
                     form = _forms[key];
                     form.Activate();
-
                 }
                 else
                 {
                     form = (Form)Activator.CreateInstance(formType);
                     _forms.Add(key, form);
+                    form.FormClosed += Form_FormClosed;
+                    form.Show(new WinHwnd());
+                }
+            }
+            catch (ViewException ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                new ErrorReport(ex).ShowAndSend();
+            }
+        }
+
+        public static void FrmShow(Form form)
+        {
+            try
+            {
+                string key = Globals.ThisAddIn.Application.Hwnd.ToString() + form.GetType().Name;
+                if (_forms.Count > 0)
+                {
+                    form = _forms.First().Value;
+                    form.Activate();
+                    return;
+                }
+                if (_forms.ContainsKey(key))
+                {
+                    form = _forms[key];
+                    form.Activate();
+                }
+                else
+                {
                     form.FormClosed += Form_FormClosed;
                     form.Show(new WinHwnd());
                 }

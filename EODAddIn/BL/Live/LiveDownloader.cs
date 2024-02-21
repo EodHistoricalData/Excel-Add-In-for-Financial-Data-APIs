@@ -372,6 +372,10 @@ namespace EODAddIn.BL.Live
         {
             var rule = Rules.Find(x => x.Exchange == key.ToUpper());
             DateTime utc = DateTime.UtcNow;
+            if (rule == null)
+            {
+                return true;
+            }
             DateTime stockNow = utc.AddHours(rule.Gtmoffset);
             bool isHoliday = rule.Holidays.Contains(stockNow.Date);
             bool isWorkDay = rule.DaysofWeek.Contains(stockNow.ToString("ddd", new CultureInfo("en-GB")));

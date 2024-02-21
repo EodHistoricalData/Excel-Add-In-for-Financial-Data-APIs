@@ -41,10 +41,10 @@
             this.Column4 = new System.Windows.Forms.DataGridViewButtonColumn();
             this.Column5 = new System.Windows.Forms.DataGridViewButtonColumn();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiStartAll = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiStopAll = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiDeleteAll = new System.Windows.Forms.ToolStripMenuItem();
-            this.BtnAdd = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.gridDownloaders)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -121,6 +121,7 @@
             this.Column3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.Column3.Text = "";
             this.Column3.UseColumnTextForButtonValue = true;
+            this.Column3.Visible = false;
             this.Column3.Width = 50;
             // 
             // Column4
@@ -135,6 +136,7 @@
             this.Column4.MinimumWidth = 50;
             this.Column4.Name = "Column4";
             this.Column4.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Column4.Visible = false;
             this.Column4.Width = 50;
             // 
             // Column5
@@ -151,11 +153,13 @@
             this.Column5.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.Column5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.Column5.Text = "";
+            this.Column5.Visible = false;
             this.Column5.Width = 50;
             // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addToolStripMenuItem,
             this.tsmiStartAll,
             this.tsmiStopAll,
             this.tsmiDeleteAll});
@@ -165,46 +169,43 @@
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
             // 
+            // addToolStripMenuItem
+            // 
+            this.addToolStripMenuItem.Image = global::EODAddIn.Properties.Resources.icons8_add_16;
+            this.addToolStripMenuItem.Name = "addToolStripMenuItem";
+            this.addToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
+            this.addToolStripMenuItem.Text = "Add";
+            this.addToolStripMenuItem.Click += new System.EventHandler(this.AddToolStripMenuItem_Click);
+            // 
             // tsmiStartAll
             // 
             this.tsmiStartAll.Image = ((System.Drawing.Image)(resources.GetObject("tsmiStartAll.Image")));
             this.tsmiStartAll.Name = "tsmiStartAll";
-            this.tsmiStartAll.Size = new System.Drawing.Size(74, 20);
-            this.tsmiStartAll.Text = "Start all";
+            this.tsmiStartAll.Size = new System.Drawing.Size(59, 20);
+            this.tsmiStartAll.Text = "Start";
             this.tsmiStartAll.Click += new System.EventHandler(this.StartAll_Click);
             // 
             // tsmiStopAll
             // 
             this.tsmiStopAll.Image = ((System.Drawing.Image)(resources.GetObject("tsmiStopAll.Image")));
             this.tsmiStopAll.Name = "tsmiStopAll";
-            this.tsmiStopAll.Size = new System.Drawing.Size(74, 20);
-            this.tsmiStopAll.Text = "Stop all";
+            this.tsmiStopAll.Size = new System.Drawing.Size(59, 20);
+            this.tsmiStopAll.Text = "Stop";
             this.tsmiStopAll.Click += new System.EventHandler(this.StopAll_Click);
             // 
             // tsmiDeleteAll
             // 
             this.tsmiDeleteAll.Image = ((System.Drawing.Image)(resources.GetObject("tsmiDeleteAll.Image")));
             this.tsmiDeleteAll.Name = "tsmiDeleteAll";
-            this.tsmiDeleteAll.Size = new System.Drawing.Size(83, 20);
-            this.tsmiDeleteAll.Text = "Delete all";
+            this.tsmiDeleteAll.Size = new System.Drawing.Size(68, 20);
+            this.tsmiDeleteAll.Text = "Delete";
             this.tsmiDeleteAll.Click += new System.EventHandler(this.DeleteAll_Click);
-            // 
-            // BtnAdd
-            // 
-            this.BtnAdd.Location = new System.Drawing.Point(585, 363);
-            this.BtnAdd.Name = "BtnAdd";
-            this.BtnAdd.Size = new System.Drawing.Size(75, 33);
-            this.BtnAdd.TabIndex = 5;
-            this.BtnAdd.Text = "Add";
-            this.BtnAdd.UseVisualStyleBackColor = true;
-            this.BtnAdd.Click += new System.EventHandler(this.BtnAdd_Click);
             // 
             // LiveDownloaderDispatcher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(672, 408);
-            this.Controls.Add(this.BtnAdd);
+            this.ClientSize = new System.Drawing.Size(672, 366);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.gridDownloaders);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -229,7 +230,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiStartAll;
         private System.Windows.Forms.ToolStripMenuItem tsmiStopAll;
         private System.Windows.Forms.ToolStripMenuItem tsmiDeleteAll;
-        private System.Windows.Forms.Button BtnAdd;
+        private System.Windows.Forms.ToolStripMenuItem addToolStripMenuItem;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column7;

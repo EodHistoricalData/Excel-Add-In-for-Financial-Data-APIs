@@ -482,6 +482,7 @@
     <Content Include="icon.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\icons8-add-16.png" />
     <Resource Include="Resources\greenStatus.png" />
     <Resource Include="Resources\redStatus.png" />
     <Resource Include="Resources\yellowStatus.png" />

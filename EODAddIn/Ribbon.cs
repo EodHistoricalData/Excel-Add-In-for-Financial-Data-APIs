@@ -452,24 +452,19 @@ namespace EODAddIn
 
         private void BtnGetLive_Click(object sender, RibbonControlEventArgs e)
         {
-            if (DispatcherIsOpened)
-            {
-
-            }
-            else
+            LiveDownloaderDispatcher frm;
+            if (!DispatcherIsOpened)
             {
                 if (LiveDownloaders.Count == 0)
                 {
-                    LiveDownloaderDispatcher frm = new LiveDownloaderDispatcher();
-                    frm.FormClosing += Frm_FormClosing;
-                    frm.ShowDialog(new WinHwnd());
+                    frm = new LiveDownloaderDispatcher();
                 }
                 else
                 {
-                    LiveDownloaderDispatcher frm = new LiveDownloaderDispatcher(LiveDownloaders, CancellationTokenSources);
-                    frm.FormClosing += Frm_FormClosing;
-                    frm.ShowDialog(new WinHwnd());
+                    frm = new LiveDownloaderDispatcher(LiveDownloaders, CancellationTokenSources);                 
                 }
+                frm.FormClosing += Frm_FormClosing;
+                FormShower.FrmShow(frm);
                 DispatcherIsOpened = true;
             }
         }
