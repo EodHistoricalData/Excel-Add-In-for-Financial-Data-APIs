@@ -4,6 +4,7 @@ using EODAddIn.Utils;
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace EODAddIn.View.Forms
@@ -28,14 +29,18 @@ namespace EODAddIn.View.Forms
         public static void LiveDownloaderDispatcherShow() => FrmShow(typeof(LiveDownloaderDispatcher));
 
 
-
         private static void FrmShow(Type formType)
         {
             try
             {
                 string key = Globals.ThisAddIn.Application.Hwnd.ToString() + formType.Name;
                 Form form;
-
+                if (_forms.Count > 0)
+                {
+                    form = _forms.First().Value;
+                    form.Activate();
+                    return;
+                }
                 if (_forms.ContainsKey(key))
                 {
                     form = _forms[key];

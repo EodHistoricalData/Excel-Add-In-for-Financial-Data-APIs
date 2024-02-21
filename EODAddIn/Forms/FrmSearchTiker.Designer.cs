@@ -123,6 +123,7 @@ namespace EODAddIn.Forms
             this.Controls.Add(this.gridResult);
             this.Controls.Add(this.btnSelect);
             this.Controls.Add(this.txtSearch);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "FrmSearchTiker";
             this.ShowIcon = false;
             this.Text = "Search tikers";

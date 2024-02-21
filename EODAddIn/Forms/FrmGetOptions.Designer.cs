@@ -186,6 +186,7 @@
             this.Controls.Add(this.dtpFrom);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.menuStrip1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "FrmGetOptions";
             this.ShowIcon = false;
             this.Text = "Options";

@@ -443,6 +443,7 @@
             this.Controls.Add(this.lblField);
             this.Controls.Add(this.cboSortField);
             this.Controls.Add(this.dataGridViewFilters);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "FrmScreener";
             this.ShowIcon = false;
             this.Text = "                                ";
