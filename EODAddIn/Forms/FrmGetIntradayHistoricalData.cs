@@ -24,7 +24,7 @@ namespace EODAddIn.Forms
             InitializeComponent();
 
             /*  5m,1h,1m  */
-            switch (Settings.SettingsFields.IntradayInterval)
+            switch (Settings.Data.IntradayInterval)
             {
                 case "1m":
                     cboInterval.SelectedIndex = 0;
@@ -46,10 +46,10 @@ namespace EODAddIn.Forms
                     break;
             }
 
-            dtpFrom.Value = Settings.SettingsFields.IntradayFrom;
+            dtpFrom.Value = Settings.Data.IntradayFrom;
             dtpTo.Value = DateTime.Now.AddDays(-1);
 
-            foreach (string ticker in Settings.SettingsFields.IntradayTickers)
+            foreach (string ticker in Settings.Data.IntradayTickers)
             {
                 int i = gridTickers.Rows.Add();
                 gridTickers.Rows[i].Cells[0].Value = ticker;
@@ -163,10 +163,10 @@ namespace EODAddIn.Forms
                 ExcelUtils.MakeTable("A2", "J" + rowIntraday.ToString(), Globals.ThisAddIn.Application.ActiveSheet, "Intraday", 9);
             }
             progress.Finish();
-            Settings.SettingsFields.IntradayInterval = interval;
-            Settings.SettingsFields.IntradayTo = to;
-            Settings.SettingsFields.IntradayFrom = from;
-            Settings.SettingsFields.IntradayTickers = tikers;
+            Settings.Data.IntradayInterval = interval;
+            Settings.Data.IntradayTo = to;
+            Settings.Data.IntradayFrom = from;
+            Settings.Data.IntradayTickers = tikers;
             Settings.Save();
 
             Close();
@@ -304,6 +304,7 @@ namespace EODAddIn.Forms
         private void TsmiFromExcel_Click(object sender, EventArgs e)
         {
             FrmSelectRange frm = new FrmSelectRange();
+            tsmiFromExcel.Enabled = false;
             frm.Show(new WinHwnd());
             frm.FormClosing += FrmSelectRangeClosing;
         }
@@ -325,6 +326,7 @@ namespace EODAddIn.Forms
                     }
                 }
             }
+            tsmiFromExcel.Enabled = true;
         }
 
         private void dtpFrom_ValueChanged(object sender, EventArgs e)

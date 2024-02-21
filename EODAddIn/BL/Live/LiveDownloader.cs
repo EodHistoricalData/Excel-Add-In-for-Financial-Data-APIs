@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using WinForms = System.Windows.Forms;
 using static EODAddIn.Utils.ExcelUtils;
+using System.Windows.Threading;
 
 namespace EODAddIn.BL.Live
 {
@@ -48,7 +49,10 @@ namespace EODAddIn.BL.Live
         public LiveDownloader(List<(string, string)> tickers, int interval, int output, bool smart, List<(string, bool)> filters, string name, List<(string, string)> wsNames)
         {
             Tickers = tickers;
-            CreateRules();
+
+            Dispatcher dispUI = Dispatcher.CurrentDispatcher;
+            dispUI.Invoke(CreateRules);
+
             Interval = interval;
             Output = output;
             Smart = smart;
@@ -57,7 +61,7 @@ namespace EODAddIn.BL.Live
             WsNames = wsNames;
         }
 
-        private void CreateRules()
+        private async void CreateRules()
         {
             EOD.API api = new EOD.API(Program.Program.APIKey);
             var exchanges = Tickers.GroupBy(x => x.Item2);
@@ -65,7 +69,7 @@ namespace EODAddIn.BL.Live
             {
                 try
                 {
-                    var details = api.GetExchangeDetailsAsync(exchange.Key).Result;
+                    var details = await api.GetExchangeDetailsAsync(exchange.Key);
                     var rules = new ExchangeDownloadRules(details);
                     Rules.Add(rules);
                 }

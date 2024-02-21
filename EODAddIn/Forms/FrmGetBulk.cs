@@ -9,12 +9,12 @@ namespace EODAddIn.Forms
     public partial class FrmGetBulk : Form
     {
         public Dictionary<string, BulkFundamentalData> Results;
-        public List<string> Tickers = Settings.SettingsFields.BulkFundamentalTickers;
+        public List<string> Tickers = Settings.Data.BulkFundamentalTickers;
         public string BulkTypeOfOutput;
         public FrmGetBulk()
         {
             InitializeComponent();
-            foreach (string ticker in Settings.SettingsFields.BulkFundamentalTickers)
+            foreach (string ticker in Settings.Data.BulkFundamentalTickers)
             {
                 int i = gridTickers.Rows.Add();
                 gridTickers.Rows[i].Cells[0].Value = ticker;
@@ -55,7 +55,7 @@ namespace EODAddIn.Forms
             {
 
             }
-            Settings.SettingsFields.BulkFundamentalTickers = Tickers;
+            Settings.Data.BulkFundamentalTickers = Tickers;
             Settings.Save();
             //string warning = "You are going to download " + Tickers.Count + " symbols.";
             DialogResult =  DialogResult.OK;

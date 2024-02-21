@@ -14,7 +14,7 @@ namespace EODAddIn.Forms
         public FrmGetEtf()
         {
             InitializeComponent();
-            txtCode.Text = Settings.SettingsFields.EtfTicker;
+            txtCode.Text = Settings.Data.EtfTicker;
         }
 
         private bool CheckForm()
@@ -61,7 +61,7 @@ namespace EODAddIn.Forms
                 return;
             }
 
-            Settings.SettingsFields.EtfTicker = Tiker;
+            Settings.Data.EtfTicker = Tiker;
             Settings.Save();
             Close();
         }

@@ -21,10 +21,10 @@ namespace EODAddIn.Forms
 {
     public partial class FrmGetBulkEod : Form
     {
-        public string Exchange = Settings.SettingsFields.BulkEodExchange;
-        public string Type = Settings.SettingsFields.BulkEodType;
-        public DateTime Date = Settings.SettingsFields.BulkEodDate;
-        public List<string> Tickers = Settings.SettingsFields.BulkEodSymbols;
+        public string Exchange = Settings.Data.BulkEodExchange;
+        public string Type = Settings.Data.BulkEodType;
+        public DateTime Date = Settings.Data.BulkEodDate;
+        public List<string> Tickers = Settings.Data.BulkEodSymbols;
 
         public FrmGetBulkEod()
         {
@@ -61,10 +61,10 @@ namespace EODAddIn.Forms
                 Tickers.Add(row.Cells[0].Value.ToString());
             }
 
-            Settings.SettingsFields.BulkEodExchange = Exchange;
-            Settings.SettingsFields.BulkEodType = Type;
-            Settings.SettingsFields.BulkEodDate = Date;
-            Settings.SettingsFields.BulkEodSymbols = Tickers;
+            Settings.Data.BulkEodExchange = Exchange;
+            Settings.Data.BulkEodType = Type;
+            Settings.Data.BulkEodDate = Date;
+            Settings.Data.BulkEodSymbols = Tickers;
             Settings.Save();
 
             DialogResult = DialogResult.OK;
@@ -120,7 +120,8 @@ namespace EODAddIn.Forms
         private void tsmiFromExcel_Click(object sender, EventArgs e)
         {
             FrmSelectRange frm = new FrmSelectRange();
-            frm.Show(new WinHwnd());
+            frm.ShowDialog(new WinHwnd());
+            tsmiFromExcel.Enabled = false;
             frm.FormClosing += FrmSelectRangeClosing;
         }
 
@@ -141,6 +142,7 @@ namespace EODAddIn.Forms
                     }
                 }
             }
+            tsmiFromExcel.Enabled = true;
         }
     }
 }

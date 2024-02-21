@@ -42,11 +42,11 @@ namespace EODAddIn.Forms
         {
             InitializeComponent();
 
-            cboFunction.SelectedIndex = Settings.SettingsFields.TechnicalsFunctionId;
-            dtpFrom.Value = Settings.SettingsFields.TechnicalsFrom != DateTime.MinValue ? Settings.SettingsFields.TechnicalsFrom : new DateTime(2020, 1, 1);
+            cboFunction.SelectedIndex = Settings.Data.TechnicalsFunctionId;
+            dtpFrom.Value = Settings.Data.TechnicalsFrom != DateTime.MinValue ? Settings.Data.TechnicalsFrom : new DateTime(2020, 1, 1);
             dtpTo.Value =  DateTime.Today;
 
-            foreach (string ticker in Settings.SettingsFields.TechnicalsTickers)
+            foreach (string ticker in Settings.Data.TechnicalsTickers)
             {
                 int i = gridTickers.Rows.Add();
                 gridTickers.Rows[i].Cells[0].Value = ticker;
@@ -161,9 +161,9 @@ namespace EODAddIn.Forms
             DateTime from = dtpFrom.Value;
             DateTime to = dtpTo.Value;
 
-            Settings.SettingsFields.TechnicalsFunctionId = cboFunction.SelectedIndex;
-            Settings.SettingsFields.TechnicalsTo = to;
-            Settings.SettingsFields.TechnicalsFrom = from;
+            Settings.Data.TechnicalsFunctionId = cboFunction.SelectedIndex;
+            Settings.Data.TechnicalsTo = to;
+            Settings.Data.TechnicalsFrom = from;
             Settings.Save();
 
             List<IndicatorParameters> parameters = GetParameters();
@@ -216,7 +216,7 @@ namespace EODAddIn.Forms
             }
 
             progress.Finish();
-            Settings.SettingsFields.TechnicalsTickers = tikers;
+            Settings.Data.TechnicalsTickers = tikers;
             Settings.Save();
             DialogResult = DialogResult.OK;
         }
@@ -321,6 +321,7 @@ namespace EODAddIn.Forms
         private void tsmiFromExcel_Click(object sender, EventArgs e)
         {
             FrmSelectRange frm = new FrmSelectRange();
+            tsmiFromExcel.Enabled = false;
             frm.Show(new WinHwnd());
             frm.FormClosing += FrmSelectRangeClosing;
         }
@@ -342,6 +343,7 @@ namespace EODAddIn.Forms
                     }
                 }
             }
+            tsmiFromExcel.Enabled = true;
         }
     }
 }

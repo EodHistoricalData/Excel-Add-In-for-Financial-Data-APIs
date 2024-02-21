@@ -1,4 +1,6 @@
-﻿using System;
+﻿using EODAddIn.Program.SettingsModel;
+
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
@@ -15,6 +17,8 @@ namespace EODAddIn.Program
         /// Program name
         /// </summary>
         public string AppName = "EOD Excel Plug-in";
+
+        public GetHistoricalFormSettings GetHistoricalForm = new GetHistoricalFormSettings();
 
         public List<string> EndOfDayTickers;
         public string EndOfDayPeriod;

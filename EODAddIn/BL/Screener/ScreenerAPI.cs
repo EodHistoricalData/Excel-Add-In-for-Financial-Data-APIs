@@ -8,7 +8,7 @@ namespace EODAddIn.BL.Screener
     {
         public static async Task<EOD.Model.Screener.StockMarkerScreener> GetScreener(List<(API.Field, API.Operation, string)> filters, List<API.Signal> signals, (API.Field, API.Order)? sort, int limit)
         {
-            API api = new API(Program.Settings.SettingsFields.APIKey, null, Program.Settings.SettingsFields.AppName);
+            API api = new API(Program.Settings.Data.APIKey, null, Program.Settings.Data.AppName);
             
             EOD.Model.Screener.StockMarkerScreener screener = new EOD.Model.Screener.StockMarkerScreener();
             screener.Data = new List<EOD.Model.Screener.ScreenerData>();

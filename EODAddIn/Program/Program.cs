@@ -40,10 +40,10 @@ namespace EODAddIn.Program
         /// </summary>
         internal static string APIKey
         {
-            get => Settings.SettingsFields.APIKey;
+            get => Settings.Data.APIKey;
             private set
             {
-                Settings.SettingsFields.APIKey = value;
+                Settings.Data.APIKey = value;
                 Settings.Save();
             }
         }

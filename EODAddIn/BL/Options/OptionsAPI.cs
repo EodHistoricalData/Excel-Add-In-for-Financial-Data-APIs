@@ -8,8 +8,8 @@ namespace EODAddIn.BL.OptionsAPI
 {
     public class OptionsAPI
     {
-        private static string AppName = Settings.SettingsFields.AppName;
-        private static string ApiKey = Settings.SettingsFields.APIKey;
+        private static string AppName = Settings.Data.AppName;
+        private static string ApiKey = Settings.Data.APIKey;
         public static async Task<OptionsData> GetOptionsData(string ticker, DateTime from, DateTime to, DateTime? fromTrade, DateTime? toTrade)
         {
             API api = new API(ApiKey, null, AppName);

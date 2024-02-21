@@ -232,7 +232,7 @@ namespace EODAddIn.Forms
                     downloaderNames.Add(downloaderName);
                 }
             }
-            Settings.SettingsFields.LiveDownloaderNames = downloaderNames;
+            Settings.Data.LiveDownloaderNames = downloaderNames;
             Settings.Save();
         }
 

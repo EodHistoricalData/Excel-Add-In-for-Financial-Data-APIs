@@ -72,6 +72,7 @@ namespace EODAddIn.Forms
         private void TsmiFromExcel_Click(object sender, EventArgs e)
         {
             FrmSelectRange frm = new FrmSelectRange();
+            tsmiFromExcel.Enabled = false;
             frm.Show(new WinHwnd());
             frm.FormClosing += FrmSelectRangeClosing;
         }
@@ -93,6 +94,7 @@ namespace EODAddIn.Forms
                     }
                 }
             }
+            tsmiFromExcel.Enabled = true;
         }
 
         private void BtnFilters_Click(object sender, EventArgs e)
@@ -148,7 +150,7 @@ namespace EODAddIn.Forms
                 do
                 {
                     downloaderName = "Live Downloader " + i;
-                    if (Settings.SettingsFields.LiveDownloaderNames.Contains(downloaderName))
+                    if (Settings.Data.LiveDownloaderNames.Contains(downloaderName))
                     {
                         i++;
                     }
@@ -170,8 +172,10 @@ namespace EODAddIn.Forms
                         wsNames.Add((tickerStr, downloaderName + " " + tickerStr));
                     }
                 }
+                
+
                 LiveDownloader = new LiveDownloader(tickers, interval, output, smart, Filters, downloaderName, wsNames);
-                Settings.SettingsFields.LiveDownloaderNames.Add(downloaderName);
+                Settings.Data.LiveDownloaderNames.Add(downloaderName);
                 Settings.Save();
                 Close();
             }
@@ -199,6 +203,11 @@ namespace EODAddIn.Forms
 
         private bool CheckForm()
         {
+            if (gridTickers.Rows.Count == 0)
+            {
+                MessageBox.Show("Enter the ticker in the Ticker.Exchange format", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
             foreach (DataGridViewRow row in gridTickers.Rows)
             {
                 if (row.Cells[0].Value != null && !row.Cells[0].Value.ToString().Contains("."))

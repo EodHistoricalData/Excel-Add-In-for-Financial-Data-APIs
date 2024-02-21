@@ -101,7 +101,7 @@ namespace EODAddIn
 
         private void UpdateRequests(object sender, EventArgs e)
         {
-            string key = Program.Settings.SettingsFields.APIKey;
+            string key = Program.Settings.Data.APIKey;
             if (string.IsNullOrEmpty(key))
             {
                 lblRequest.Label = "-";

@@ -8,8 +8,8 @@ namespace EODAddIn.BL.BulkFundametnalData
 {
     internal class BulkFundamentalAPI
     {
-        private static string AppName = Settings.SettingsFields.AppName;
-        private static string ApiKey = Settings.SettingsFields.APIKey;
+        private static string AppName = Settings.Data.AppName;
+        private static string ApiKey = Settings.Data.APIKey;
         public static async Task<Dictionary<string, BulkFundamentalData>> GetBulkData(string exchange, List<string> symbols, int offset, int limit)
         {
             string symbolStr = string.Empty;

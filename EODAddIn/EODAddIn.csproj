@@ -356,6 +356,7 @@
     <Compile Include="Program\Program.cs" />
     <Compile Include="Program\Settings.cs" />
     <Compile Include="Program\SettingsFields.cs" />
+    <Compile Include="Program\SettingsModel\GetHistoricalFormSettings.cs" />
     <Compile Include="Program\Version.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

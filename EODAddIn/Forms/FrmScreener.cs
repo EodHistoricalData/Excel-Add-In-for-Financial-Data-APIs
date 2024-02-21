@@ -349,22 +349,22 @@ namespace EODAddIn.Forms
         public FrmScreener()
         {
             InitializeComponent();
-            cboSector.Text = Settings.SettingsFields.ScreenerSector;
-            cboIndustry.Text = Settings.SettingsFields.ScreenerIndustry;
-            txtCode.Text = Settings.SettingsFields.ScreenerCode;
-            txtName.Text = Settings.SettingsFields.ScreenerName;
-            txtExchange.Text = Settings.SettingsFields.ScreenerExchange;
-            numLimit.Value = Settings.SettingsFields.ScreenerLimit;
-            chk50d_new_hi.CheckState = Settings.SettingsFields.Screener50d_New_Hi;
-            chk50d_new_lo.CheckState = Settings.SettingsFields.Screener50d_New_Lo;
-            chk200d_new_hi.CheckState = Settings.SettingsFields.Screener200d_New_Hi;
-            chk200d_new_lo.CheckState = Settings.SettingsFields.Screener200d_New_Lo;
-            chkWallstreet_hi.CheckState = Settings.SettingsFields.ScreenerWallStreet_Hi;
-            chkWallstreet_lo.CheckState = Settings.SettingsFields.ScreenerWallStreet_Lo;
-            rbtnSortAsc.Checked = Settings.SettingsFields.ScreenerRbtnSortAsc;
-            rbtnSortDesc.Checked = Settings.SettingsFields.ScreenerRbtnSortDesc;
+            cboSector.Text = Settings.Data.ScreenerSector;
+            cboIndustry.Text = Settings.Data.ScreenerIndustry;
+            txtCode.Text = Settings.Data.ScreenerCode;
+            txtName.Text = Settings.Data.ScreenerName;
+            txtExchange.Text = Settings.Data.ScreenerExchange;
+            numLimit.Value = Settings.Data.ScreenerLimit;
+            chk50d_new_hi.CheckState = Settings.Data.Screener50d_New_Hi;
+            chk50d_new_lo.CheckState = Settings.Data.Screener50d_New_Lo;
+            chk200d_new_hi.CheckState = Settings.Data.Screener200d_New_Hi;
+            chk200d_new_lo.CheckState = Settings.Data.Screener200d_New_Lo;
+            chkWallstreet_hi.CheckState = Settings.Data.ScreenerWallStreet_Hi;
+            chkWallstreet_lo.CheckState = Settings.Data.ScreenerWallStreet_Lo;
+            rbtnSortAsc.Checked = Settings.Data.ScreenerRbtnSortAsc;
+            rbtnSortDesc.Checked = Settings.Data.ScreenerRbtnSortDesc;
             int dataGridRow=0;
-            foreach ((string,string,string) values in Settings.SettingsFields.ScreenerDataGridViewFilters)
+            foreach ((string,string,string) values in Settings.Data.ScreenerDataGridViewFilters)
             {
 
                 dataGridViewFilters.Rows.Add();
@@ -373,7 +373,7 @@ namespace EODAddIn.Forms
                 dataGridViewFilters.Rows[dataGridRow].Cells[2].Value = values.Item3;
                 dataGridRow++;
             }
-            Settings.SettingsFields.ScreenerDataGridViewFilters.Clear();
+            Settings.Data.ScreenerDataGridViewFilters.Clear();
         }
         private void dataGridViewFilters_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
@@ -442,28 +442,28 @@ namespace EODAddIn.Forms
                 MessageBox.Show(ex.Message, "Screener error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            Settings.SettingsFields.ScreenerSector = cboSector.Text;
-            Settings.SettingsFields.ScreenerIndustry = cboIndustry.Text;
-            Settings.SettingsFields.ScreenerCode = txtCode.Text;
-            Settings.SettingsFields.ScreenerName = txtName.Text;
-            Settings.SettingsFields.ScreenerExchange = txtExchange.Text;
-            Settings.SettingsFields.ScreenerLimit = (int)numLimit.Value;
-            Settings.SettingsFields.Screener50d_New_Lo = chk50d_new_lo.CheckState;
-            Settings.SettingsFields.Screener50d_New_Hi = chk50d_new_hi.CheckState;
-            Settings.SettingsFields.Screener200d_New_Hi = chk200d_new_hi.CheckState;
-            Settings.SettingsFields.Screener200d_New_Lo = chk200d_new_lo.CheckState;
-            Settings.SettingsFields.ScreenerBookValue_Neg = chkBookvalue_neg.CheckState;
-            Settings.SettingsFields.ScreenerBookValue_Pos = chkBookvalue_pos.CheckState;
-            Settings.SettingsFields.ScreenerWallStreet_Lo = chkWallstreet_lo.CheckState;
-            Settings.SettingsFields.ScreenerWallStreet_Hi = chkWallstreet_hi.CheckState;
-            Settings.SettingsFields.ScreenerRbtnSortAsc = rbtnSortAsc.Checked;
-            Settings.SettingsFields.ScreenerRbtnSortDesc = rbtnSortDesc.Checked;
+            Settings.Data.ScreenerSector = cboSector.Text;
+            Settings.Data.ScreenerIndustry = cboIndustry.Text;
+            Settings.Data.ScreenerCode = txtCode.Text;
+            Settings.Data.ScreenerName = txtName.Text;
+            Settings.Data.ScreenerExchange = txtExchange.Text;
+            Settings.Data.ScreenerLimit = (int)numLimit.Value;
+            Settings.Data.Screener50d_New_Lo = chk50d_new_lo.CheckState;
+            Settings.Data.Screener50d_New_Hi = chk50d_new_hi.CheckState;
+            Settings.Data.Screener200d_New_Hi = chk200d_new_hi.CheckState;
+            Settings.Data.Screener200d_New_Lo = chk200d_new_lo.CheckState;
+            Settings.Data.ScreenerBookValue_Neg = chkBookvalue_neg.CheckState;
+            Settings.Data.ScreenerBookValue_Pos = chkBookvalue_pos.CheckState;
+            Settings.Data.ScreenerWallStreet_Lo = chkWallstreet_lo.CheckState;
+            Settings.Data.ScreenerWallStreet_Hi = chkWallstreet_hi.CheckState;
+            Settings.Data.ScreenerRbtnSortAsc = rbtnSortAsc.Checked;
+            Settings.Data.ScreenerRbtnSortDesc = rbtnSortDesc.Checked;
             for(int i = 0; i < dataGridViewFilters.Rows.Count; i++)
             {
                 string field = dataGridViewFilters.Rows[i].Cells[0].Value.ToString() ;
                 string operation = dataGridViewFilters.Rows[i].Cells[1].Value.ToString();
                 string value = dataGridViewFilters.Rows[i].Cells[2].Value.ToString();
-                Settings.SettingsFields.ScreenerDataGridViewFilters.Add((field,operation,value));
+                Settings.Data.ScreenerDataGridViewFilters.Add((field,operation,value));
             }
             Settings.Save();
         }

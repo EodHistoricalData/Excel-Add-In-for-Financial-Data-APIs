@@ -19,7 +19,7 @@ namespace EODAddIn.Forms
         public FrmGetFundamental()
         {
             InitializeComponent();
-            txtCode.Text = Program.Settings.SettingsFields.FundamentalTicker;
+            txtCode.Text = Program.Settings.Data.FundamentalTicker;
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace EODAddIn.Forms
                 return;
             }
 
-            Settings.SettingsFields.FundamentalTicker = Tiker;
+            Settings.Data.FundamentalTicker = Tiker;
             Settings.Save();
             Close();
         }
