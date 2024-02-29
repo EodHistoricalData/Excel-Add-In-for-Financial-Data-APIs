@@ -1,4 +1,6 @@
-﻿using EODAddIn.BL.HistoricalPrinter;
+﻿using EOD.Model.OptionsData;
+
+using EODAddIn.BL.HistoricalPrinter;
 using EODAddIn.BL.TechnicalIndicatorData;
 using EODAddIn.Program;
 using EODAddIn.Utils;
@@ -141,20 +143,20 @@ namespace EODAddIn.Forms
         {
             if (!CheckForm()) return;
 
-            if (cboTypeOfOutput.SelectedItem.ToString() == "One worksheet")
-            {
-                Excel.Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
-                if (sh.UsedRange.Value != null)
-                {
-                    MessageBox.Show(
-                    "Select empty worksheet",
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-                    return;
-                }
-            }
+            //if (cboTypeOfOutput.SelectedItem.ToString() == "One worksheet")
+            //{              
+            //    Excel.Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
+            //    if (sh.UsedRange.Value != null)
+            //    {
+            //        MessageBox.Show(
+            //        "Select empty worksheet",
+            //        "Error",
+            //        MessageBoxButtons.OK,
+            //        MessageBoxIcon.Warning
+            //    );
+            //        return;
+            //    }
+            //}
             bool isSummary = false;
             int row = 1;
             Order order = rbtnAscOrder.Checked ? Order.Ascending : Order.Descending;
@@ -178,6 +180,12 @@ namespace EODAddIn.Forms
                 try
                 {
                     var result = await TechnicalIndicatorAPI.GetTechnicalIndicatorsData(ticker, from, to, order, parameters);
+
+                    if (result.Count == 0)
+                    {
+                        MessageBox.Show("There is no available data for the selected parameters.", "No data", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        return;
+                    }
 
                     if (rbtnAscOrder.Checked)
                     {
@@ -228,15 +236,18 @@ namespace EODAddIn.Forms
             parameters.Add(new IndicatorParameters("function", function));
             if (labelFirstOption.Visible)
             {
-                parameters.Add(new IndicatorParameters(labelFirstOption.Text.ToLower(), tbFirstOption.Text.ToLower()));
+                if (!string.IsNullOrEmpty(tbFirstOption.Text))
+                    parameters.Add(new IndicatorParameters(labelFirstOption.Text.ToLower(), tbFirstOption.Text.ToLower()));
             }
             if (labelSecondOption.Visible)
             {
-                parameters.Add(new IndicatorParameters(labelSecondOption.Text.ToLower(), tbSecondOption.Text.ToLower()));
+                if (!string.IsNullOrEmpty(tbSecondOption.Text))
+                    parameters.Add(new IndicatorParameters(labelSecondOption.Text.ToLower(), tbSecondOption.Text.ToLower()));
             }
             if (labelThirdOption.Visible)
             {
-                parameters.Add(new IndicatorParameters(labelThirdOption.Text.ToLower(), tbThirdOption.Text.ToLower()));
+                if (!string.IsNullOrEmpty(tbThirdOption.Text))
+                    parameters.Add(new IndicatorParameters(labelThirdOption.Text.ToLower(), tbThirdOption.Text.ToLower()));
             }
             return parameters;
         }

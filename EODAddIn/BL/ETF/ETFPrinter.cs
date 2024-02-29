@@ -18,7 +18,7 @@ namespace EODAddIn.BL.ETFPrinter
             {
                 SetNonInteractive();
 
-                string nameSheet = $"{ticker}-Etfs";
+                string nameSheet = GetWorksheetNewName($"{ticker} ETF Data");
 
                 Excel.Worksheet sh = AddSheet(nameSheet);
 

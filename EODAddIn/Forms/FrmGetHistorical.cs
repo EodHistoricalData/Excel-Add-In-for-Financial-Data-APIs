@@ -4,6 +4,8 @@ using EODAddIn.BL.HistoricalPrinter;
 using EODAddIn.Program;
 using EODAddIn.Utils;
 
+using Microsoft.Office.Interop.Excel;
+
 using MS.ProgressBar;
 
 using System;
@@ -55,27 +57,23 @@ namespace EODAddIn.Forms
         private async void BtnLoad_Click(object sender, EventArgs e)
         {
             if (!CheckForm()) return;
-            if (cboTypeOfOutput.SelectedItem.ToString() == "One worksheet")
-            {
-                Excel.Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
-                if (sh.UsedRange.Value != null)
-                {
-                    MessageBox.Show(
-                    "Select empty worksheet",
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-                    return;
-                }
-            }
+            string sheetName;
             bool isSummary = false;
+            Worksheet worksheet = null;
             string period = cboPeriod.SelectedItem.ToString().ToLower().Substring(0, 1);
             DateTime from = dtpFrom.Value;
             DateTime to = dtpTo.Value;
             List<string> tikers = new List<string>();
             int rowHistorical = 3;
             Progress progress = new Progress("Load end of data", gridTickers.Rows.Count - 1);
+
+            if (cboTypeOfOutput.SelectedItem.ToString() == "One worksheet")
+            {
+                isSummary = true;
+                sheetName = ExcelUtils.GetWorksheetNewName("End of day summary");
+                worksheet = ExcelUtils.AddSheet(sheetName);
+            }
+
             foreach (DataGridViewRow row in gridTickers.Rows)
             {
                 if (row.Cells[0].Value == null) continue;
@@ -98,8 +96,14 @@ namespace EODAddIn.Forms
                             rowHistorical = HistoricalPrinter.PrintEndOfDay(res, ticker, period, false, chkIsTable.Checked);
                             break;
                         case "One worksheet":
-                            rowHistorical = HistoricalPrinter.PrintEndOfDaySummary(res, ticker, period, rowHistorical);
-                            isSummary = true;
+                            if (gridTickers.Rows.Count > 1)
+                            {
+                                rowHistorical = HistoricalPrinter.PrintEndOfDaySummary(res, ticker, period, rowHistorical, worksheet);
+                            }
+                            else
+                            {
+                                rowHistorical = HistoricalPrinter.PrintEndOfDay(res, ticker, period, false, chkIsTable.Checked);
+                            }
                             break;
                     }
                 }
@@ -117,7 +121,7 @@ namespace EODAddIn.Forms
             }
             if (isSummary && chkIsTable.Checked)
             {
-                ExcelUtils.MakeTable("A2", "K" + rowHistorical.ToString(), Globals.ThisAddIn.Application.ActiveSheet, "Historical", 9);
+                ExcelUtils.MakeTable("A2", "K" + rowHistorical.ToString(), worksheet, "Historical", 9);
             }
             progress.Finish();
             FormSettingsSave(tikers);

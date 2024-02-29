@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
+
 using static EODAddIn.Utils.ExcelUtils;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -21,7 +23,9 @@ namespace EODAddIn.BL.HistoricalPrinter
             try
             {
                 SetNonInteractive();
-                string nameSheet = $"{ticker}-{period}";
+
+                string nameSheet = GetWorksheetNewName($"{ticker} EOD {period} {endOfDays.First().Date:d}");
+
                 int r = 2;
 
                 Excel.Worksheet worksheet = AddSheet(nameSheet);
@@ -143,9 +147,8 @@ namespace EODAddIn.BL.HistoricalPrinter
             }
         }
 
-        public static int PrintEndOfDaySummary(List<HistoricalStockPrice> res, string ticker, string period, int row)
+        public static int PrintEndOfDaySummary(List<HistoricalStockPrice> res, string ticker, string period, int row, Excel.Worksheet sh)
         {
-            Excel.Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
             int c = 1;
             int r = 1;
             sh.Cells[r, c] = "Historical data";

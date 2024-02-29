@@ -33,8 +33,6 @@
             this.colField = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.colOperation = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.colValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.chk50d_new_lo = new System.Windows.Forms.CheckBox();
-            this.chk50d_new_hi = new System.Windows.Forms.CheckBox();
             this.chk200d_new_lo = new System.Windows.Forms.CheckBox();
             this.chk200d_new_hi = new System.Windows.Forms.CheckBox();
             this.chkBookvalue_neg = new System.Windows.Forms.CheckBox();
@@ -49,7 +47,6 @@
             this.numLimit = new System.Windows.Forms.NumericUpDown();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.btnAddFilter = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
             this.txtCode = new System.Windows.Forms.TextBox();
@@ -62,6 +59,7 @@
             this.cboSector = new System.Windows.Forms.ComboBox();
             this.cboIndustry = new System.Windows.Forms.ComboBox();
             this.btnClearFilters = new System.Windows.Forms.Button();
+            this.btnAddFilter = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFilters)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numLimit)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -106,30 +104,10 @@
             this.colValue.HeaderText = "Value";
             this.colValue.Name = "colValue";
             // 
-            // chk50d_new_lo
-            // 
-            this.chk50d_new_lo.AutoSize = true;
-            this.chk50d_new_lo.Location = new System.Drawing.Point(10, 19);
-            this.chk50d_new_lo.Name = "chk50d_new_lo";
-            this.chk50d_new_lo.Size = new System.Drawing.Size(84, 17);
-            this.chk50d_new_lo.TabIndex = 3;
-            this.chk50d_new_lo.Text = "50d_new_lo";
-            this.chk50d_new_lo.UseVisualStyleBackColor = true;
-            // 
-            // chk50d_new_hi
-            // 
-            this.chk50d_new_hi.AutoSize = true;
-            this.chk50d_new_hi.Location = new System.Drawing.Point(128, 19);
-            this.chk50d_new_hi.Name = "chk50d_new_hi";
-            this.chk50d_new_hi.Size = new System.Drawing.Size(84, 17);
-            this.chk50d_new_hi.TabIndex = 4;
-            this.chk50d_new_hi.Text = "50d_new_hi";
-            this.chk50d_new_hi.UseVisualStyleBackColor = true;
-            // 
             // chk200d_new_lo
             // 
             this.chk200d_new_lo.AutoSize = true;
-            this.chk200d_new_lo.Location = new System.Drawing.Point(240, 19);
+            this.chk200d_new_lo.Location = new System.Drawing.Point(10, 19);
             this.chk200d_new_lo.Name = "chk200d_new_lo";
             this.chk200d_new_lo.Size = new System.Drawing.Size(90, 17);
             this.chk200d_new_lo.TabIndex = 5;
@@ -139,7 +117,7 @@
             // chk200d_new_hi
             // 
             this.chk200d_new_hi.AutoSize = true;
-            this.chk200d_new_hi.Location = new System.Drawing.Point(353, 19);
+            this.chk200d_new_hi.Location = new System.Drawing.Point(128, 19);
             this.chk200d_new_hi.Name = "chk200d_new_hi";
             this.chk200d_new_hi.Size = new System.Drawing.Size(90, 17);
             this.chk200d_new_hi.TabIndex = 6;
@@ -290,26 +268,10 @@
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // btnAddFilter
-            // 
-            this.btnAddFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddFilter.Image = ((System.Drawing.Image)(resources.GetObject("btnAddFilter.Image")));
-            this.btnAddFilter.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAddFilter.Location = new System.Drawing.Point(466, 70);
-            this.btnAddFilter.Name = "btnAddFilter";
-            this.btnAddFilter.Size = new System.Drawing.Size(127, 23);
-            this.btnAddFilter.TabIndex = 20;
-            this.btnAddFilter.Text = "      Add number filter";
-            this.btnAddFilter.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAddFilter.UseVisualStyleBackColor = true;
-            this.btnAddFilter.Click += new System.EventHandler(this.btnAddFilter_Click);
-            // 
             // groupBox1
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.chk50d_new_lo);
-            this.groupBox1.Controls.Add(this.chk50d_new_hi);
             this.groupBox1.Controls.Add(this.chk200d_new_lo);
             this.groupBox1.Controls.Add(this.chk200d_new_hi);
             this.groupBox1.Controls.Add(this.chkBookvalue_neg);
@@ -416,6 +378,20 @@
             this.btnClearFilters.UseVisualStyleBackColor = true;
             this.btnClearFilters.Click += new System.EventHandler(this.btnClearFilters_Click);
             // 
+            // btnAddFilter
+            // 
+            this.btnAddFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAddFilter.Image = ((System.Drawing.Image)(resources.GetObject("btnAddFilter.Image")));
+            this.btnAddFilter.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAddFilter.Location = new System.Drawing.Point(466, 70);
+            this.btnAddFilter.Name = "btnAddFilter";
+            this.btnAddFilter.Size = new System.Drawing.Size(127, 23);
+            this.btnAddFilter.TabIndex = 20;
+            this.btnAddFilter.Text = "      Add number filter";
+            this.btnAddFilter.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAddFilter.UseVisualStyleBackColor = true;
+            this.btnAddFilter.Click += new System.EventHandler(this.btnAddFilter_Click);
+            // 
             // FrmScreener
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -460,8 +436,6 @@
         #endregion
 
         private System.Windows.Forms.DataGridView dataGridViewFilters;
-        private System.Windows.Forms.CheckBox chk50d_new_lo;
-        private System.Windows.Forms.CheckBox chk50d_new_hi;
         private System.Windows.Forms.CheckBox chk200d_new_lo;
         private System.Windows.Forms.CheckBox chk200d_new_hi;
         private System.Windows.Forms.CheckBox chkBookvalue_neg;

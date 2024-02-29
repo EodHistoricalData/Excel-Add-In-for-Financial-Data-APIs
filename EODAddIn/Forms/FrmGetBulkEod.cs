@@ -73,6 +73,11 @@ namespace EODAddIn.Forms
 
         private bool CheckForm()
         {
+            if (cboType.SelectedIndex == -1)
+            {
+                MessageBox.Show("Select type please", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
             return true;
         }
 

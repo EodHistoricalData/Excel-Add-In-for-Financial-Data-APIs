@@ -7,6 +7,7 @@ using System.Drawing;
 using Excel = Microsoft.Office.Interop.Excel;
 using static EODAddIn.Utils.ExcelUtils;
 using EODAddIn.BL.Screener;
+using System.Linq;
 
 namespace EODAddIn.BL.IntradayPrinter
 {
@@ -25,7 +26,9 @@ namespace EODAddIn.BL.IntradayPrinter
             try
             {
                 SetNonInteractive();
-                string nameSheet = $"{ticker}-{interval}";
+
+                string nameSheet = GetWorksheetNewName($"{ticker}  Intraday {interval}");
+
                 Excel.Worksheet worksheet = AddSheet(nameSheet);
                 int r = 2;
                 worksheet.Cells[r, 1] = "DateTime";
@@ -170,9 +173,9 @@ namespace EODAddIn.BL.IntradayPrinter
                 _xlsApp.Interactive = true;
             }
         }
-        public static int PrintIntradaySummary(List<EOD.Model.IntradayHistoricalStockPrice> res, string ticker, string interval, int row)
+        public static int PrintIntradaySummary(List<EOD.Model.IntradayHistoricalStockPrice> res, string ticker, string interval, int row, Worksheet sh)
         {
-            Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
+ 
             int c = 1;
             int r = 1;
             sh.Cells[r, c] = "Intraday data";

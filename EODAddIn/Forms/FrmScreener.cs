@@ -355,8 +355,6 @@ namespace EODAddIn.Forms
             txtName.Text = Settings.Data.ScreenerName;
             txtExchange.Text = Settings.Data.ScreenerExchange;
             numLimit.Value = Settings.Data.ScreenerLimit;
-            chk50d_new_hi.CheckState = Settings.Data.Screener50d_New_Hi;
-            chk50d_new_lo.CheckState = Settings.Data.Screener50d_New_Lo;
             chk200d_new_hi.CheckState = Settings.Data.Screener200d_New_Hi;
             chk200d_new_lo.CheckState = Settings.Data.Screener200d_New_Lo;
             chkWallstreet_hi.CheckState = Settings.Data.ScreenerWallStreet_Hi;
@@ -448,8 +446,7 @@ namespace EODAddIn.Forms
             Settings.Data.ScreenerName = txtName.Text;
             Settings.Data.ScreenerExchange = txtExchange.Text;
             Settings.Data.ScreenerLimit = (int)numLimit.Value;
-            Settings.Data.Screener50d_New_Lo = chk50d_new_lo.CheckState;
-            Settings.Data.Screener50d_New_Hi = chk50d_new_hi.CheckState;
+
             Settings.Data.Screener200d_New_Hi = chk200d_new_hi.CheckState;
             Settings.Data.Screener200d_New_Lo = chk200d_new_lo.CheckState;
             Settings.Data.ScreenerBookValue_Neg = chkBookvalue_neg.CheckState;
@@ -572,8 +569,7 @@ namespace EODAddIn.Forms
         private void SetSignals()
         {
             Signals = new List<Signal>();
-            if (chk50d_new_lo.Checked) Signals.Add(Signal.New_50d_low);
-            if (chk50d_new_hi.Checked) Signals.Add(Signal.New_50d_hi);
+
             if (chk200d_new_lo.Checked) Signals.Add(Signal.New_200d_low);
             if (chk200d_new_hi.Checked) Signals.Add(Signal.New_200d_hi);
             if (chkBookvalue_neg.Checked) Signals.Add(Signal.Bookvalue_neg);
@@ -678,8 +674,6 @@ namespace EODAddIn.Forms
             txtName.Text = null;
             txtExchange.Text = null;
             numLimit.Value = 100;
-            chk50d_new_hi.CheckState = CheckState.Unchecked;
-            chk50d_new_lo.CheckState = CheckState.Unchecked;
             chk200d_new_hi.CheckState = CheckState.Unchecked;
             chk200d_new_lo.CheckState = CheckState.Unchecked;
             chkWallstreet_hi.CheckState = CheckState.Unchecked;

@@ -22,7 +22,7 @@ namespace EODAddIn.BL.FundamentalDataPrinter
             {
                 SetNonInteractive();
 
-                string nameSheet = $"{ticker}-Fundamentals";
+                string nameSheet = GetWorksheetNewName($"{ticker}-Fundamental");
 
                 Worksheet sh = AddSheet(nameSheet);
 
@@ -48,20 +48,6 @@ namespace EODAddIn.BL.FundamentalDataPrinter
                 }
 
                 int startGroup1 = 2;
-                //Type myType = data.GetType();
-                //IList<PropertyInfo> props = new List<PropertyInfo>(myType.GetProperties());
-
-                //foreach (PropertyInfo prop in props)
-                //{
-                //    object propValue = prop.GetValue(data, null);
-                //    switch (prop.Name)
-                //    {
-                //        case "General":
-                //            row = Printer.PrintVerticalTable(prop.Name, propValue, sh.Cells[row, 1]);
-                //            row++;
-                //            break;
-                //    }
-                //}
 
                 row = PrintFundamentalGeneral(data, sh.Cells[row, 1]);
                 row++;
@@ -371,5 +357,7 @@ namespace EODAddIn.BL.FundamentalDataPrinter
                 }
             }
         }
+
+
     }
 }

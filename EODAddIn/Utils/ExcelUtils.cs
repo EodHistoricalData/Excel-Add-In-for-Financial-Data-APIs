@@ -407,5 +407,26 @@ namespace EODAddIn.Utils
             Workbook workbook = application.ActiveWorkbook;
             workbook.Save();
         }
+
+        public static string GetWorksheetNewName(string sheetName)
+        {
+            int i = -1;
+            string name;
+            do
+            {
+                i++;
+                if (i ==0)
+                {
+                    name = sheetName;               
+                }
+                else
+                {
+                    name = sheetName + $" ({i})";
+                }
+
+            } while (SheetExists(name));
+
+            return name;
+        }
     }
 }

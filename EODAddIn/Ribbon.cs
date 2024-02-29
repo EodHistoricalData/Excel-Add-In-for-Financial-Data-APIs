@@ -419,7 +419,7 @@ namespace EODAddIn
                     string type = null;
                     switch (frm.Type)
                     {
-                        case "end-of-day":
+                        case "end-of-day data":
                             break;
                         case "":
                             break;

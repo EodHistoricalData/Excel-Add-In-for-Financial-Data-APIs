@@ -5,6 +5,8 @@ using EODAddIn.BL.Screener;
 using EODAddIn.Program;
 using EODAddIn.Utils;
 using Microsoft.Office.Interop.Excel;
+using Microsoft.Office.Tools.Excel;
+
 using MS.ProgressBar;
 using System;
 using System.Collections.Generic;
@@ -59,20 +61,8 @@ namespace EODAddIn.Forms
         private void BtnLoad_Click(object sender, EventArgs e)
         {
             if (!CheckForm()) return;
-            if (cboTypeOfOutput.SelectedItem.ToString() == "One worksheet")
-            {
-                Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
-                if (sh.UsedRange.Value != null)
-                {
-                    MessageBox.Show(
-                    "Select empty worksheet",
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-                    return;
-                }
-            }
+            Excel.Worksheet worksheet = null;
+            string sheetName;
             bool isSummary = false;
             string interval = cboInterval.SelectedItem.ToString().ToLower();
             int period = 0;
@@ -100,6 +90,14 @@ namespace EODAddIn.Forms
             List<string> tikers = new List<string>();
             int rowIntraday = 3;
             Progress progress = new Progress("Load end of data", gridTickers.Rows.Count - 1);
+
+            if (cboTypeOfOutput.SelectedItem.ToString() == "One worksheet")
+            {
+                isSummary = true;
+                sheetName = ExcelUtils.GetWorksheetNewName("Intraday summary");
+                worksheet = ExcelUtils.AddSheet(sheetName);
+            }
+
             foreach (DataGridViewRow row in gridTickers.Rows)
             {
                 if (row.Cells[0].Value == null) continue;
@@ -113,25 +111,7 @@ namespace EODAddIn.Forms
                     {
                         res.Reverse();
                     }
-                    switch (period)
-                    {
-                        case 15:
-                            {
-                                res = CollapseRows(res, 15);
-                                interval = "15m";
-                                break;
-                            }
-                        case 30:
-                            {
-                                res = CollapseRows(res, 30);
-                                interval = "30m";
-                                break;
-                            }
-                        default:
-                            {
-                                break;
-                            }
-                    }
+
                     switch (cboTypeOfOutput.SelectedItem.ToString())
                     {
                         case "Separated with chart":
@@ -141,8 +121,14 @@ namespace EODAddIn.Forms
                             rowIntraday = IntradayPrinter.PrintIntraday(res, ticker, interval, false, chkIsTable.Checked);
                             break;
                         case "One worksheet":
-                            rowIntraday = IntradayPrinter.PrintIntradaySummary(res, ticker, interval, rowIntraday);
-                            isSummary = true;
+                            if (gridTickers.Rows.Count > 1)
+                            {
+                                rowIntraday = IntradayPrinter.PrintIntradaySummary(res, ticker, interval, rowIntraday, worksheet);
+                            }
+                            else
+                            {
+                                rowIntraday = IntradayPrinter.PrintIntraday(res, ticker, interval, false, chkIsTable.Checked);
+                            }
                             break;
                     }
                 }
