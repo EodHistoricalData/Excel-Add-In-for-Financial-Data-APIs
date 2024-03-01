@@ -28,11 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LiveDownloaderDispatcher));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LiveDownloaderDispatcher));
             this.gridDownloaders = new System.Windows.Forms.DataGridView();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiStartAll = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiStopAll = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiDeleteAll = new System.Windows.Forms.ToolStripMenuItem();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -40,11 +45,6 @@
             this.Column3 = new System.Windows.Forms.DataGridViewButtonColumn();
             this.Column4 = new System.Windows.Forms.DataGridViewButtonColumn();
             this.Column5 = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiStartAll = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiStopAll = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiDeleteAll = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.gridDownloaders)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -76,6 +76,51 @@
             this.gridDownloaders.TabIndex = 3;
             this.gridDownloaders.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.GridDownloaders_CellContentClick);
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addToolStripMenuItem,
+            this.tsmiStartAll,
+            this.tsmiStopAll,
+            this.tsmiDeleteAll});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(672, 24);
+            this.menuStrip1.TabIndex = 4;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // addToolStripMenuItem
+            // 
+            this.addToolStripMenuItem.Image = global::EODAddIn.Properties.Resources.icons8_add_16;
+            this.addToolStripMenuItem.Name = "addToolStripMenuItem";
+            this.addToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
+            this.addToolStripMenuItem.Text = "Add";
+            this.addToolStripMenuItem.Click += new System.EventHandler(this.AddToolStripMenuItem_Click);
+            // 
+            // tsmiStartAll
+            // 
+            this.tsmiStartAll.Image = ((System.Drawing.Image)(resources.GetObject("tsmiStartAll.Image")));
+            this.tsmiStartAll.Name = "tsmiStartAll";
+            this.tsmiStartAll.Size = new System.Drawing.Size(59, 20);
+            this.tsmiStartAll.Text = "Start";
+            this.tsmiStartAll.Click += new System.EventHandler(this.StartAll_Click);
+            // 
+            // tsmiStopAll
+            // 
+            this.tsmiStopAll.Image = ((System.Drawing.Image)(resources.GetObject("tsmiStopAll.Image")));
+            this.tsmiStopAll.Name = "tsmiStopAll";
+            this.tsmiStopAll.Size = new System.Drawing.Size(59, 20);
+            this.tsmiStopAll.Text = "Stop";
+            this.tsmiStopAll.Click += new System.EventHandler(this.StopAll_Click);
+            // 
+            // tsmiDeleteAll
+            // 
+            this.tsmiDeleteAll.Image = ((System.Drawing.Image)(resources.GetObject("tsmiDeleteAll.Image")));
+            this.tsmiDeleteAll.Name = "tsmiDeleteAll";
+            this.tsmiDeleteAll.Size = new System.Drawing.Size(68, 20);
+            this.tsmiDeleteAll.Text = "Delete";
+            this.tsmiDeleteAll.Click += new System.EventHandler(this.DeleteAll_Click);
+            // 
             // Column1
             // 
             this.Column1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
@@ -97,14 +142,14 @@
             // 
             this.Column7.HeaderText = "Interval";
             this.Column7.Name = "Column7";
-            this.Column7.Width = 50;
+            this.Column7.Width = 70;
             // 
             // Column6
             // 
             this.Column6.HeaderText = "Status";
             this.Column6.Name = "Column6";
             this.Column6.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Column6.Width = 45;
+            this.Column6.Width = 70;
             // 
             // Column3
             // 
@@ -155,51 +200,6 @@
             this.Column5.Text = "";
             this.Column5.Visible = false;
             this.Column5.Width = 50;
-            // 
-            // menuStrip1
-            // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addToolStripMenuItem,
-            this.tsmiStartAll,
-            this.tsmiStopAll,
-            this.tsmiDeleteAll});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(672, 24);
-            this.menuStrip1.TabIndex = 4;
-            this.menuStrip1.Text = "menuStrip1";
-            // 
-            // addToolStripMenuItem
-            // 
-            this.addToolStripMenuItem.Image = global::EODAddIn.Properties.Resources.icons8_add_16;
-            this.addToolStripMenuItem.Name = "addToolStripMenuItem";
-            this.addToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
-            this.addToolStripMenuItem.Text = "Add";
-            this.addToolStripMenuItem.Click += new System.EventHandler(this.AddToolStripMenuItem_Click);
-            // 
-            // tsmiStartAll
-            // 
-            this.tsmiStartAll.Image = ((System.Drawing.Image)(resources.GetObject("tsmiStartAll.Image")));
-            this.tsmiStartAll.Name = "tsmiStartAll";
-            this.tsmiStartAll.Size = new System.Drawing.Size(59, 20);
-            this.tsmiStartAll.Text = "Start";
-            this.tsmiStartAll.Click += new System.EventHandler(this.StartAll_Click);
-            // 
-            // tsmiStopAll
-            // 
-            this.tsmiStopAll.Image = ((System.Drawing.Image)(resources.GetObject("tsmiStopAll.Image")));
-            this.tsmiStopAll.Name = "tsmiStopAll";
-            this.tsmiStopAll.Size = new System.Drawing.Size(59, 20);
-            this.tsmiStopAll.Text = "Stop";
-            this.tsmiStopAll.Click += new System.EventHandler(this.StopAll_Click);
-            // 
-            // tsmiDeleteAll
-            // 
-            this.tsmiDeleteAll.Image = ((System.Drawing.Image)(resources.GetObject("tsmiDeleteAll.Image")));
-            this.tsmiDeleteAll.Name = "tsmiDeleteAll";
-            this.tsmiDeleteAll.Size = new System.Drawing.Size(68, 20);
-            this.tsmiDeleteAll.Text = "Delete";
-            this.tsmiDeleteAll.Click += new System.EventHandler(this.DeleteAll_Click);
             // 
             // LiveDownloaderDispatcher
             // 

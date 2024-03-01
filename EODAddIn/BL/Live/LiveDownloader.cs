@@ -1,5 +1,7 @@
 ﻿using EOD.Model;
+
 using Microsoft.Office.Interop.Excel;
+
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -7,9 +9,9 @@ using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using WinForms = System.Windows.Forms;
-using static EODAddIn.Utils.ExcelUtils;
 using System.Windows.Threading;
+
+using static EODAddIn.Utils.ExcelUtils;
 
 namespace EODAddIn.BL.Live
 {
@@ -17,6 +19,7 @@ namespace EODAddIn.BL.Live
     {
         public List<(string, string)> Tickers { get; set; }
         public List<(string, bool)> Filters { get; set; }
+
         /// <summary>
         /// ticker - Worksheet Name
         /// </summary>
@@ -26,10 +29,11 @@ namespace EODAddIn.BL.Live
         public bool Smart { get; set; }
         public List<ExchangeDownloadRules> Rules { get; set; } = new List<ExchangeDownloadRules>();
         public string Name { get; set; }
-        private static SemaphoreSlim SemaphoreSlim = new SemaphoreSlim(1, 1);
+        private static readonly SemaphoreSlim _semaphoreSlim = new SemaphoreSlim(1, 1);
 
         public delegate void StatusHandler(object sender, EventArgs e);
         public event StatusHandler OnStatusChanged;
+
         public bool? IsActive
         {
             get => isActive;
@@ -139,13 +143,13 @@ namespace EODAddIn.BL.Live
                         }
                         try
                         {
-                            await SemaphoreSlim.WaitAsync();
+                            await _semaphoreSlim.WaitAsync();
                             PrintLive(list, tickers);
                         }
                         catch { }
                         finally
                         {
-                            SemaphoreSlim.Release();
+                            _semaphoreSlim.Release();
                         }
                     }
                     await Task.Delay(TimeSpan.FromMinutes(Interval), token);

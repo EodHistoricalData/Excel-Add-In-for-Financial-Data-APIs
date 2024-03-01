@@ -59,6 +59,7 @@ namespace EODAddIn.Forms
             Settings.Save();
             //string warning = "You are going to download " + Tickers.Count + " symbols.";
             DialogResult =  DialogResult.OK;
+            Close();
         }
     }
 }

@@ -22,7 +22,6 @@ namespace EODAddIn.Forms
     public partial class FrmGetBulkEod : Form
     {
         public string Exchange = Settings.Data.BulkEodExchange;
-        public string Type = Settings.Data.BulkEodType;
         public DateTime Date = Settings.Data.BulkEodDate;
         public List<string> Tickers = Settings.Data.BulkEodSymbols;
 
@@ -30,7 +29,6 @@ namespace EODAddIn.Forms
         {
             InitializeComponent();
             tbExchange.Text = Exchange;
-            cboType.SelectedValue = Type;
             if (Date < dtpDate.MinDate)
             {
                 dtpDate.Value = dtpDate.MinDate;
@@ -51,7 +49,6 @@ namespace EODAddIn.Forms
             if (!CheckForm()) return;
 
             Exchange = tbExchange.Text;
-            Type = cboType.SelectedItem.ToString();
             Date = dtpDate.Value;
             Tickers.Clear();
 
@@ -62,7 +59,6 @@ namespace EODAddIn.Forms
             }
 
             Settings.Data.BulkEodExchange = Exchange;
-            Settings.Data.BulkEodType = Type;
             Settings.Data.BulkEodDate = Date;
             Settings.Data.BulkEodSymbols = Tickers;
             Settings.Save();
@@ -72,12 +68,7 @@ namespace EODAddIn.Forms
         }
 
         private bool CheckForm()
-        {
-            if (cboType.SelectedIndex == -1)
-            {
-                MessageBox.Show("Select type please", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
+        {       
             return true;
         }
 

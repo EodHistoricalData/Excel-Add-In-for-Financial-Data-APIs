@@ -42,8 +42,6 @@
             this.BtnGet = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.tbExchange = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.cboType = new System.Windows.Forms.ComboBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridTickers)).BeginInit();
             this.SuspendLayout();
@@ -104,7 +102,7 @@
             // 
             // dtpDate
             // 
-            this.dtpDate.Location = new System.Drawing.Point(108, 296);
+            this.dtpDate.Location = new System.Drawing.Point(108, 276);
             this.dtpDate.MaxDate = new System.DateTime(2200, 12, 31, 0, 0, 0, 0);
             this.dtpDate.MinDate = new System.DateTime(1970, 1, 1, 0, 0, 0, 0);
             this.dtpDate.Name = "dtpDate";
@@ -115,7 +113,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(14, 302);
+            this.label2.Location = new System.Drawing.Point(14, 282);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(30, 13);
             this.label2.TabIndex = 8;
@@ -145,7 +143,7 @@
             // 
             // BtnGet
             // 
-            this.BtnGet.Location = new System.Drawing.Point(197, 334);
+            this.BtnGet.Location = new System.Drawing.Point(197, 314);
             this.BtnGet.Name = "BtnGet";
             this.BtnGet.Size = new System.Drawing.Size(75, 23);
             this.BtnGet.TabIndex = 13;
@@ -169,34 +167,11 @@
             this.tbExchange.Size = new System.Drawing.Size(164, 20);
             this.tbExchange.TabIndex = 15;
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(13, 273);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(31, 13);
-            this.label4.TabIndex = 16;
-            this.label4.Text = "Type";
-            // 
-            // cboType
-            // 
-            this.cboType.FormattingEnabled = true;
-            this.cboType.Items.AddRange(new object[] {
-            "end-of-day data",
-            "splits",
-            "dividends"});
-            this.cboType.Location = new System.Drawing.Point(108, 270);
-            this.cboType.Name = "cboType";
-            this.cboType.Size = new System.Drawing.Size(164, 21);
-            this.cboType.TabIndex = 17;
-            // 
             // FrmGetBulkEod
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 366);
-            this.Controls.Add(this.cboType);
-            this.Controls.Add(this.label4);
+            this.ClientSize = new System.Drawing.Size(284, 345);
             this.Controls.Add(this.tbExchange);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.BtnGet);
@@ -231,7 +206,5 @@
         private System.Windows.Forms.Button BtnGet;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox tbExchange;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox cboType;
     }
 }

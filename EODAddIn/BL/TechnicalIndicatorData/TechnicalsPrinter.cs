@@ -133,20 +133,17 @@ namespace EODAddIn.BL.TechnicalIndicatorData
 
         }
 
-        public static int PrintTechnicalsSummary(List<TechnicalIndicator> data, string ticker, int row, List<IndicatorParameters> parameters)
+        public static int PrintTechnicalsSummary(List<TechnicalIndicator> data, string ticker, int row, List<IndicatorParameters> parameters, Worksheet sh)
         {
             try
             {
                 SetNonInteractive();
                 OnStart();
 
-                Worksheet worksheet = Globals.ThisAddIn.Application.ActiveSheet;
                 if (row == 1)
                 {
                     string function = parameters.First(x => x.Name == "function").Value;
-                    string nameSheet = GetWorksheetNewName($"{ticker} - {function}");
-                    worksheet.Name = nameSheet;
-                    worksheet.Cells[row, 1] = "Technical Indicator Data";
+
                     row++;
 
                     Type myType = data[data.Count - 1].GetType();
@@ -187,7 +184,7 @@ namespace EODAddIn.BL.TechnicalIndicatorData
                             }
                         }
                     }
-                    row = Printer.PrintHorisontalTable(worksheet.Cells[row, 1], table) - 1;
+                    row = Printer.PrintHorisontalTable(sh.Cells[row, 1], table) - 1;
                 }
                 else
                 {
@@ -218,7 +215,7 @@ namespace EODAddIn.BL.TechnicalIndicatorData
                             }
                         }
                     }
-                    row = Printer.PrintHorisontalTable(worksheet.Cells[row, 1], table);
+                    row = Printer.PrintHorisontalTable(sh.Cells[row, 1], table);
                 }
             }
             catch

@@ -463,6 +463,7 @@ namespace EODAddIn.Forms
                 Settings.Data.ScreenerDataGridViewFilters.Add((field,operation,value));
             }
             Settings.Save();
+            Close();
         }
 
         private void SetFilteres()

@@ -5,10 +5,14 @@ using EODAddIn.BL.TechnicalIndicatorData;
 using EODAddIn.Program;
 using EODAddIn.Utils;
 using EODHistoricalData.Wrapper.Model.TechnicalIndicators;
+
+using Microsoft.Office.Interop.Excel;
+
 using MS.ProgressBar;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
 using static EOD.API;
 using Excel = Microsoft.Office.Interop.Excel;
@@ -142,22 +146,9 @@ namespace EODAddIn.Forms
         private async void BtnLoad_Click(object sender, EventArgs e)
         {
             if (!CheckForm()) return;
-
-            //if (cboTypeOfOutput.SelectedItem.ToString() == "One worksheet")
-            //{              
-            //    Excel.Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
-            //    if (sh.UsedRange.Value != null)
-            //    {
-            //        MessageBox.Show(
-            //        "Select empty worksheet",
-            //        "Error",
-            //        MessageBoxButtons.OK,
-            //        MessageBoxIcon.Warning
-            //    );
-            //        return;
-            //    }
-            //}
+            string sheetName;
             bool isSummary = false;
+            Worksheet worksheet = null;
             int row = 1;
             Order order = rbtnAscOrder.Checked ? Order.Ascending : Order.Descending;
             DateTime from = dtpFrom.Value;
@@ -168,11 +159,21 @@ namespace EODAddIn.Forms
             Settings.Data.TechnicalsFrom = from;
             Settings.Save();
 
+            btnLoad.Enabled = false;
             List<IndicatorParameters> parameters = GetParameters();
             List<string> tikers = new List<string>();
             Progress progress = new Progress("Loading data", gridTickers.Rows.Count - 1);
-            foreach (DataGridViewRow item in gridTickers.Rows)
+
+            if (cboTypeOfOutput.SelectedItem.ToString() == "One worksheet")
             {
+                isSummary = true;
+                string function = parameters.First(x => x.Name == "function").Value;
+                sheetName = ExcelUtils.GetWorksheetNewName($"Technical summary - {function}");
+                worksheet = ExcelUtils.AddSheet(sheetName);
+            }
+
+            foreach (DataGridViewRow item in gridTickers.Rows)
+            {            
                 if (item.Cells[0].Value == null) continue;
                 progress.TaskStart(item.Cells[0].Value?.ToString(), 1);
                 string ticker = item.Cells[0].Value.ToString();
@@ -200,7 +201,7 @@ namespace EODAddIn.Forms
                             row = TechnicalsPrinter.PrintTechnicals(result, ticker, parameters, false, chkIsTable.Checked);
                             break;
                         case "One worksheet":
-                            row = TechnicalsPrinter.PrintTechnicalsSummary(result, ticker, row, parameters);
+                            row = TechnicalsPrinter.PrintTechnicalsSummary(result, ticker, row, parameters, worksheet);
                             isSummary = true;
                             break;
                     }
@@ -208,12 +209,14 @@ namespace EODAddIn.Forms
                 catch (APIException ex)
                 {
                     MessageBox.Show(ex.StatusError, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Close();
                     return;
                 }
                 catch (Exception ex)
                 {
                     ErrorReport error = new ErrorReport(ex);
                     error.ShowAndSend();
+                    Close();
                     return;
                 }
             }
@@ -224,9 +227,11 @@ namespace EODAddIn.Forms
             }
 
             progress.Finish();
+            btnLoad.Enabled = true;
             Settings.Data.TechnicalsTickers = tikers;
             Settings.Save();
             DialogResult = DialogResult.OK;
+            Close();
         }
 
         private List<IndicatorParameters> GetParameters()

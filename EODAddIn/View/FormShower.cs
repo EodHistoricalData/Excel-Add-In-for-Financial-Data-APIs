@@ -1,17 +1,22 @@
-﻿using EODAddIn.Forms;
+﻿using EODAddIn.BL.Live;
+using EODAddIn.Forms;
 using EODAddIn.Program;
 using EODAddIn.Utils;
+
+using Microsoft.Office.Core;
+using Microsoft.VisualStudio.Tools.Applications.Runtime;
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace EODAddIn.View.Forms
 {
     internal class FormShower
     {
-        private static readonly Dictionary<string, Form> _forms = new Dictionary<string, Form>();
+        private static readonly Dictionary<(string, string), Form> _forms = new Dictionary<(string, string), Form>();
 
         public static void FrmGetBulkShow() => FrmShow(typeof(FrmGetBulk));
         public static void FrmGetBulkEodShow() => FrmShow(typeof(FrmGetBulkEod));
@@ -26,14 +31,45 @@ namespace EODAddIn.View.Forms
         public static void FrmScreenerShow() => FrmShow(typeof(FrmScreener));
         public static void FrmScreenerHistoricalShow() => FrmShow(typeof(FrmScreenerHistorical));
         public static void FrmScreenerIntradayShow() => FrmShow(typeof(FrmScreenerIntraday));
-        public static void LiveDownloaderDispatcherShow() => FrmShow(typeof(LiveDownloaderDispatcher));
 
+        public static LiveDownloaderDispatcher LiveDownloaderDispatcherShow(Dictionary<LiveDownloader, CustomXMLPart> downloaders, Dictionary<LiveDownloader, CancellationTokenSource> cancellationTokenSources)
+        {
+            if (ShowActiveForm()) throw new DocumentAlreadyLoadedException();
+
+            LiveDownloaderDispatcher frm;
+
+            if (downloaders.Count == 0)
+            {
+                frm = new LiveDownloaderDispatcher();
+            }
+            else
+            {
+                frm = new LiveDownloaderDispatcher(downloaders, cancellationTokenSources);
+            }
+
+            FrmShow(frm);
+            return frm;
+        }
+
+        public static bool ShowActiveForm()
+        {
+            string appHwnd = Globals.ThisAddIn.Application.Hwnd.ToString();
+            var formsApp = _forms.Where(x => x.Key.Item1 == appHwnd);
+            if (formsApp.Count() > 0)
+            {
+                formsApp.First().Value.Activate();
+                return true;
+            }
+            return false;
+        }
 
         private static void FrmShow(Type formType)
         {
             try
             {
-                string key = Globals.ThisAddIn.Application.Hwnd.ToString() + formType.Name;
+                var key = (Globals.ThisAddIn.Application.Hwnd.ToString(), formType.Name);
+                
+
                 Form form;
                 if (_forms.Count > 0)
                 {
@@ -68,7 +104,8 @@ namespace EODAddIn.View.Forms
         {
             try
             {
-                string key = Globals.ThisAddIn.Application.Hwnd.ToString() + form.GetType().Name;
+                var key = (Globals.ThisAddIn.Application.Hwnd.ToString(), form.GetType().Name);
+               // string key = Globals.ThisAddIn.Application.Hwnd.ToString() + form.GetType().Name;
                 if (_forms.Count > 0)
                 {
                     form = _forms.First().Value;
@@ -84,6 +121,7 @@ namespace EODAddIn.View.Forms
                 {
                     form.FormClosed += Form_FormClosed;
                     form.Show(new WinHwnd());
+                    _forms.Add(key, form);
                 }
             }
             catch (ViewException ex)
@@ -98,7 +136,7 @@ namespace EODAddIn.View.Forms
 
         private static void Form_FormClosed(object sender, FormClosedEventArgs e)
         {
-            string key = Globals.ThisAddIn.Application.Hwnd.ToString() + sender.GetType().Name;
+            var key = (Globals.ThisAddIn.Application.Hwnd.ToString(), sender.GetType().Name);
             _forms.Remove(key);
         }
 

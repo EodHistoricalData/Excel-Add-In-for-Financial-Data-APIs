@@ -92,7 +92,7 @@
             // 
             this.tsmiFromTxt.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFromTxt.Image")));
             this.tsmiFromTxt.Name = "tsmiFromTxt";
-            this.tsmiFromTxt.Size = new System.Drawing.Size(180, 22);
+            this.tsmiFromTxt.Size = new System.Drawing.Size(165, 22);
             this.tsmiFromTxt.Text = "From file txt";
             this.tsmiFromTxt.Click += new System.EventHandler(this.TsmiFromTxt_Click);
             // 
@@ -100,7 +100,7 @@
             // 
             this.tsmiFromExcel.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFromExcel.Image")));
             this.tsmiFromExcel.Name = "tsmiFromExcel";
-            this.tsmiFromExcel.Size = new System.Drawing.Size(180, 22);
+            this.tsmiFromExcel.Size = new System.Drawing.Size(165, 22);
             this.tsmiFromExcel.Text = "From Excel range";
             this.tsmiFromExcel.Click += new System.EventHandler(this.TsmiFromExcel_Click);
             // 
@@ -201,7 +201,7 @@
             // BtnCreate
             // 
             this.BtnCreate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnCreate.Location = new System.Drawing.Point(187, 66);
+            this.BtnCreate.Location = new System.Drawing.Point(186, 66);
             this.BtnCreate.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
             this.BtnCreate.MinimumSize = new System.Drawing.Size(75, 23);
             this.BtnCreate.Name = "BtnCreate";
@@ -279,7 +279,7 @@
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 71.59091F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 28.40909F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(265, 92);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(264, 92);
             this.tableLayoutPanel1.TabIndex = 33;
             // 
             // FrmGetLive

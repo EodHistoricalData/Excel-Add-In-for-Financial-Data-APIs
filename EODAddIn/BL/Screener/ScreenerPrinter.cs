@@ -46,8 +46,8 @@ namespace EODAddIn.BL.Screener
                     sh = Globals.ThisAddIn.Application.ActiveWorkbook.Worksheets.Add();
                     sh.Name = nameSheet;
                 }
-                object[,] val = new object[screener.Data.Count + 1, 15];
-                int i = 1;
+                object[,] val = new object[screener.Data.Count+1, 15];
+                
                 val[0, 0] = "Code";
                 val[0, 1] = "Exchange";
                 val[0, 2] = "Currency symbol";
@@ -65,25 +65,27 @@ namespace EODAddIn.BL.Screener
                     MessageBox.Show("No matches", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
+                int i = 0;
+                int j = 0;
                 foreach (var item in screener.Data)
                 {
-                    int j = 0;
-                    val[i, j] = "'" + item.Code; j++;
-                    val[i, j] = item.Exchange; j++;
-                    val[i, j] = item.Currency_Symbol; j++;
-                    val[i, j] = item.Name; j++;
-                    val[i, j] = item.Last_Day_Data_Date; j++;
-                    val[i, j] = item.Adjusted_Close; j++;
-                    val[i, j] = item.Refund_1d; j++;
-                    val[i, j] = item.Market_Capitalization; j++;
-                    val[i, j] = item.Earnings_Share; j++;
-                    val[i, j] = item.Dividend_Yield; j++;
-                    val[i, j] = item.Sector; j++;
-                    val[i, j] = item.Industry; j++;
+                    j = 0;
                     i++;
+                    val[i, 0] = "'" + item.Code; 
+                    val[i, 1] = item.Exchange;
+                    val[i, 2] = item.Currency_Symbol; 
+                    val[i, 3] = item.Name; 
+                    val[i, 4] = item.Last_Day_Data_Date; 
+                    val[i, 5] = item.Adjusted_Close;
+                    val[i, 6] = item.Refund_1d; 
+                    val[i, 7] = item.Market_Capitalization;
+                    val[i, 8] = item.Earnings_Share; 
+                    val[i,9] = item.Dividend_Yield;
+                    val[i, 10] = item.Sector;
+                    val[i, 11] = item.Industry; 
                 }
-                sh.Range[sh.Cells[1, 1], sh.Cells[screener.Data.Count, 15]].Value = val;
-                string endpoint = "L" + Convert.ToString(i - 1);
+                sh.Range[sh.Cells[1, 1], sh.Cells[screener.Data.Count+1, 15]].Value = val;
+                string endpoint = "L" + Convert.ToString(i)+1;
                 MakeTable("A1", endpoint, sh, "Screener result", 9);
                 sh.UsedRange.EntireColumn.AutoFit();
             }
