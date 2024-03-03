@@ -69,8 +69,6 @@ namespace EODAddIn.Program
         public DateTime TechnicalsTo = DateTime.Today;
         public int TechnicalsFunctionId;
 
-        public List<string> LiveDownloaderNames = new List<string>();
-
         public SettingsFields()
         {
 

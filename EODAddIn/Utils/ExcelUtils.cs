@@ -401,6 +401,12 @@ namespace EODAddIn.Utils
             return workbook.CustomXMLParts;
         }
 
+        public static Microsoft.Office.Core.CustomXMLParts GetXmlPart(Workbook workbook)
+        {
+            if (workbook == null) return null;
+            return workbook.CustomXMLParts;
+        }
+
         public static void SaveWorkbook()
         {
             Application application = Globals.ThisAddIn.Application;

@@ -39,8 +39,6 @@
             this.gridTickers = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.chkIsTable = new System.Windows.Forms.CheckBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.cboTypeOfOutput = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
             this.NudInterval = new System.Windows.Forms.NumericUpDown();
             this.BtnCreate = new System.Windows.Forms.Button();
@@ -137,7 +135,7 @@
             // 
             this.chkIsTable.Checked = true;
             this.chkIsTable.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkIsTable.Location = new System.Drawing.Point(15, 279);
+            this.chkIsTable.Location = new System.Drawing.Point(15, 252);
             this.chkIsTable.Name = "chkIsTable";
             this.chkIsTable.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
             this.chkIsTable.Size = new System.Drawing.Size(110, 18);
@@ -145,27 +143,6 @@
             this.chkIsTable.Text = "Smart table";
             this.chkIsTable.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.chkIsTable.UseVisualStyleBackColor = true;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 255);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(78, 13);
-            this.label1.TabIndex = 26;
-            this.label1.Text = "Type of Output";
-            // 
-            // cboTypeOfOutput
-            // 
-            this.cboTypeOfOutput.FormattingEnabled = true;
-            this.cboTypeOfOutput.Items.AddRange(new object[] {
-            "One worksheet",
-            "Separated"});
-            this.cboTypeOfOutput.Location = new System.Drawing.Point(108, 252);
-            this.cboTypeOfOutput.Name = "cboTypeOfOutput";
-            this.cboTypeOfOutput.Size = new System.Drawing.Size(124, 21);
-            this.cboTypeOfOutput.TabIndex = 25;
-            this.cboTypeOfOutput.Text = "One worksheet";
             // 
             // label5
             // 
@@ -201,7 +178,7 @@
             // BtnCreate
             // 
             this.BtnCreate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnCreate.Location = new System.Drawing.Point(186, 66);
+            this.BtnCreate.Location = new System.Drawing.Point(181, 66);
             this.BtnCreate.Margin = new System.Windows.Forms.Padding(3, 0, 3, 3);
             this.BtnCreate.MinimumSize = new System.Drawing.Size(75, 23);
             this.BtnCreate.Name = "BtnCreate";
@@ -217,7 +194,7 @@
             this.BtnFilters.Location = new System.Drawing.Point(3, 21);
             this.BtnFilters.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
             this.BtnFilters.Name = "BtnFilters";
-            this.BtnFilters.Size = new System.Drawing.Size(77, 23);
+            this.BtnFilters.Size = new System.Drawing.Size(75, 23);
             this.BtnFilters.TabIndex = 31;
             this.BtnFilters.Text = "Filters";
             this.BtnFilters.UseVisualStyleBackColor = true;
@@ -229,7 +206,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.LblFilters.AutoSize = true;
-            this.LblFilters.Location = new System.Drawing.Point(86, 3);
+            this.LblFilters.Location = new System.Drawing.Point(84, 3);
             this.LblFilters.Margin = new System.Windows.Forms.Padding(3);
             this.LblFilters.MaximumSize = new System.Drawing.Size(155, 0);
             this.LblFilters.Name = "LblFilters";
@@ -274,24 +251,22 @@
             this.tableLayoutPanel1.Controls.Add(this.BtnFilters, 0, 0);
             this.tableLayoutPanel1.Controls.Add(this.BtnCreate, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.LblFilters, 1, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(8, 308);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(8, 278);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 71.59091F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 28.40909F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(264, 92);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(259, 92);
             this.tableLayoutPanel1.TabIndex = 33;
             // 
             // FrmGetLive
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 423);
+            this.ClientSize = new System.Drawing.Size(284, 393);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.NudInterval);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.label1);
-            this.Controls.Add(this.cboTypeOfOutput);
             this.Controls.Add(this.chkIsTable);
             this.Controls.Add(this.gridTickers);
             this.Controls.Add(this.menuStrip1);
@@ -324,8 +299,6 @@
         private System.Windows.Forms.DataGridView gridTickers;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.CheckBox chkIsTable;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox cboTypeOfOutput;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.NumericUpDown NudInterval;
         private System.Windows.Forms.Button BtnCreate;

@@ -1,74 +1,151 @@
 ﻿using EOD.Model;
 
+using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Excel;
+
 
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Web.UI.WebControls;
+using System.Windows.Forms;
 using System.Windows.Threading;
+using System.Xml;
+using System.Xml.Linq;
+using System.Xml.Serialization;
 
 using static EODAddIn.Utils.ExcelUtils;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
 
 namespace EODAddIn.BL.Live
 {
+    [Serializable]
     public class LiveDownloader
     {
-        public List<(string, string)> Tickers { get; set; }
-        public List<(string, bool)> Filters { get; set; }
 
-        /// <summary>
-        /// ticker - Worksheet Name
-        /// </summary>
-        public List<(string, string)> WsNames { get; set; } = new List<(string, string)>();
-        public int Interval { get; set; }
-        public int Output { get; set; }
-        public bool Smart { get; set; }
-        public List<ExchangeDownloadRules> Rules { get; set; } = new List<ExchangeDownloadRules>();
+        public Guid Id { get; set; }
         public string Name { get; set; }
-        private static readonly SemaphoreSlim _semaphoreSlim = new SemaphoreSlim(1, 1);
+        public List<Ticker> Tickers { get; set; }
+        public List<Filter> Filters { get; set; }
+        public int Interval { get; set; }
+        public bool Smart { get; set; }
 
-        public delegate void StatusHandler(object sender, EventArgs e);
-        public event StatusHandler OnStatusChanged;
-
+        [XmlIgnore]
         public bool? IsActive
         {
-            get => isActive;
-            set
+            get => _isActivate;
+            private set
             {
-                isActive = value;
-                OnStatusChanged?.Invoke(this, EventArgs.Empty);
+                _isActivate = value;
+                ActiveChanged?.Invoke(this, EventArgs.Empty);
             }
         }
-        private bool? isActive = false;
+        private bool? _isActivate;
+
+        public event EventHandler ActiveChanged;
+        private CustomXMLPart _customXMLPart;
+
+        public event EventHandler OnDeleted;
+
+        public List<ExchangeDownloadRules> Rules { get; set; } = new List<ExchangeDownloadRules>();
+
+        private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+        [XmlIgnore]
+        public Workbook Workbook
+        {
+            get;
+            private set;
+        }
+
+        private static readonly SemaphoreSlim _semaphoreSlim = new SemaphoreSlim(1, 1);
 
         private EOD.API API { get; set; } = new EOD.API(Program.Program.APIKey);
+
+        /// <summary>
+        /// For serialize
+        /// </summary>
         public LiveDownloader()
         {
 
         }
-        public LiveDownloader(List<(string, string)> tickers, int interval, int output, bool smart, List<(string, bool)> filters, string name, List<(string, string)> wsNames)
+
+        public LiveDownloader(List<Ticker> tickers, int interval, bool smart, List<Filter> filters, string name, Workbook workbook)
         {
             Tickers = tickers;
+            Filters = filters;
+            Interval = interval;
+            Id = Guid.NewGuid();
+
+            Smart = smart;
+            Name = name;
+            Workbook = workbook;
+            Workbook.BeforeClose += Workbook_BeforeClose;
 
             Dispatcher dispUI = Dispatcher.CurrentDispatcher;
             dispUI.Invoke(CreateRules);
 
-            Interval = interval;
-            Output = output;
-            Smart = smart;
-            Filters = filters;
-            Name = name;
-            WsNames = wsNames;
+        }
+
+        public void Set(Workbook workbook, CustomXMLPart customXMLPart)
+        {
+            Workbook = workbook;
+            _customXMLPart = customXMLPart;
+
+        }
+
+        private void Workbook_BeforeClose(ref bool Cancel)
+        {
+            Stop();
+        }
+
+        public void Save()
+        {
+
+            XmlSerializer xmlSerializer = new XmlSerializer(typeof(LiveDownloader));
+            var xml = "";
+            using (var sww = new StringWriter())
+            {
+                using (XmlWriter writer = XmlWriter.Create(sww))
+                {
+                    xmlSerializer.Serialize(writer, this);
+                    xml = sww.ToString();
+                }
+            }
+
+            _customXMLPart?.Delete();
+            _customXMLPart = Workbook.CustomXMLParts.Add(xml);
+        }
+
+        public async void Start()
+        {
+            _cancellationTokenSource.Cancel();
+            _cancellationTokenSource = new CancellationTokenSource();
+            await DoWork(_cancellationTokenSource.Token);
+
+        }
+
+        public void Stop()
+        {
+            _cancellationTokenSource.Cancel();
+        }
+
+        public void Delete()
+        {
+            _cancellationTokenSource.Cancel();
+            _customXMLPart?.Delete();
+            _customXMLPart = null;
+            OnDeleted?.Invoke(this, EventArgs.Empty);
         }
 
         private async void CreateRules()
         {
             EOD.API api = new EOD.API(Program.Program.APIKey);
-            var exchanges = Tickers.GroupBy(x => x.Item2);
+            var exchanges = Tickers.GroupBy(x => x.Exchange);
             foreach (var exchange in exchanges)
             {
                 try
@@ -89,69 +166,56 @@ namespace EODAddIn.BL.Live
             string result = "";
             foreach (var ticker in Tickers)
             {
-                result += ticker.Item1 + "." + ticker.Item2 + ", ";
+                result += ticker.FullName + ", ";
             }
+
+            if (result.Length < 3) return string.Empty;
             return result.Remove(result.LastIndexOf(','), 2);
         }
 
-        internal async Task RequestAndPrint(CancellationToken token)
+        private async Task DoWork(CancellationToken token)
         {
-            bool first = true;
-            while (true)
+            while (!token.IsCancellationRequested)
             {
-                if (token.IsCancellationRequested) break;
                 try
                 {
                     IsActive = true;
-                    List<string> tickers = new List<string>();
-                    var exchanges = Tickers.GroupBy(x => x.Item2);
-                    foreach (var exchange in exchanges)
+                    List<Ticker> tickers = GetActiveTickers();
+                    var excenges = tickers.GroupBy(x => x.Exchange).Select(x => x.Key).ToList();
+                    if (tickers.Count == 0)
                     {
-                        if (CheckWorkTime(exchange.Key))
-                        {
-                            foreach (var code in exchange)
-                            {
-                                tickers.Add(code.Item1 + "." + code.Item2);
-                            }
-                        }
-                        else
-                        {
-                            if (first)
-                            {
-                                foreach (var code in exchange)
-                                {
-                                    tickers.Add(code.Item1 + "." + code.Item2);
-                                }
-                            }
-                            IsActive = null;
-                        }
+                        Stop();
+                        return;
                     }
-                    first = false;
-                    if (tickers.Count != 0)
+
+                    List<LiveStockPrice> list = new List<LiveStockPrice>();
+                    if (excenges.Count() == 1)
                     {
-                        string firstTicker = tickers[0];
-                        List<LiveStockPrice> list = new List<LiveStockPrice>();
-                        if (tickers.Count == 1)
+                        foreach (var ticker in tickers)
                         {
-                            var result = await API.GetLiveStockPricesAsync(firstTicker);
+                            var result = await API.GetLiveStockPricesAsync(ticker.FullName);
                             list.Add(result);
                         }
-                        else
+                    }
+                    else
+                    {
+                        foreach (var ticker in tickers)
                         {
-                            var result = await API.GetLiveStockPricesAsync(firstTicker, tickers);
-                            list = result;
-                        }
-                        try
-                        {
-                            await _semaphoreSlim.WaitAsync();
-                            PrintLive(list, tickers);
-                        }
-                        catch { }
-                        finally
-                        {
-                            _semaphoreSlim.Release();
+                            var result = await API.GetLiveStockPricesAsync(ticker.FullName, excenges);
+                            list.AddRange(result);
                         }
                     }
+                    try
+                    {
+                        await _semaphoreSlim.WaitAsync();
+                        PrintLive(list);
+                    }
+                    catch { }
+                    finally
+                    {
+                        _semaphoreSlim.Release();
+                    }
+
                     await Task.Delay(TimeSpan.FromMinutes(Interval), token);
                 }
                 catch
@@ -161,71 +225,57 @@ namespace EODAddIn.BL.Live
             }
         }
 
+        private List<Ticker> GetActiveTickers()
+        {
+            List<Ticker> tickers = new List<Ticker>();
+
+            var exchanges = Tickers.GroupBy(x => x.Exchange);
+            foreach (var exchange in exchanges)
+            {
+                if (CheckWorkTime(exchange.Key))
+                {
+                    foreach (var code in exchange)
+                    {
+                        tickers.Add(code);
+                    }
+                }
+                else
+                {
+                    foreach (var code in exchange)
+                    {
+                        tickers.Add(code);
+                    }
+                }
+            }
+            return tickers;
+        }
+
         /// <summary>
         /// Collect WSs for tickers data
         /// </summary>
         /// <param name="data"></param>
         /// <param name="tickers"></param>
-        private void PrintLive(List<LiveStockPrice> data, List<string> tickers)
+        private void PrintLive(List<LiveStockPrice> data)
         {
             try
             {
                 OnStart();
                 SetNonInteractive();
-                Application excel = Globals.ThisAddIn.Application;
-                Dictionary<string, Worksheet> targetWSs = new Dictionary<string, Worksheet>();
-                if (Output == 0)
+
+                Worksheet sh = null;
+                foreach (Worksheet ws in Workbook.Worksheets)
                 {
-                    //=1 ws
-                    string wsName = WsNames.Find(x => x.Item1 == "").Item2;
-                    Worksheet targetWS = null;
-                    foreach (Worksheet ws in excel.Worksheets)
+                    if (ws.Name == Name)
                     {
-                        if (ws.Name == wsName)
-                        {
-                            targetWS = ws;
-                        }
-                    }
-                    if (targetWS == null)
-                    {
-                        WsNames.Clear();
-                        targetWS = AddSheet(Name);
-                        WsNames.Add(("", targetWS.Name));
-                    }
-                    targetWSs.Add("", targetWS);
-                }
-                else
-                {
-                    //>1 ws
-                    foreach (var ticker in tickers)
-                    {
-                        bool found = false;
-                        string codeName = WsNames.Find(x => x.Item1 == ticker).Item2;
-                        foreach (Worksheet ws in excel.Worksheets)
-                        {
-                            if (ws.Name == codeName)
-                            {
-                                targetWSs.Add(ticker, ws);
-                                found = true;
-                            }
-                        }
-                        if (!found)
-                        {
-                            Worksheet targetWS = AddSheet(Name + " " + ticker);
-                            int index = WsNames.IndexOf(WsNames.Find(x => x.Item1 == ticker));
-                            if (index > -1)
-                            {
-                                WsNames[index] = (ticker, targetWS.Name);
-                            }
-                            else
-                            {
-                                WsNames.Add((ticker, targetWS.Name));
-                            }
-                            targetWSs.Add(ticker, targetWS);
-                        }
+                        sh = ws;
                     }
                 }
-                PrintData(data, targetWSs);
+                if (sh == null)
+                {
+                    sh = AddSheet(Name);
+                }
+
+                PrintData(data, sh);
             }
             catch
             {
@@ -243,128 +293,80 @@ namespace EODAddIn.BL.Live
         /// </summary>
         /// <param name="data"></param>
         /// <param name="targetWSs">ticker - Worksheet</param>
-        private void PrintData(List<LiveStockPrice> data, Dictionary<string, Worksheet> targetWSs)
+        private void PrintData(List<LiveStockPrice> data, Worksheet worksheet)
         {
-            if (targetWSs.ContainsKey(""))
+            Range usedRange = worksheet.UsedRange;
+            int rows = usedRange.Rows.Count;
+            if (rows > 1)
             {
-                // = 1 ws
-                Worksheet targetWS = targetWSs[""];
-                string sheetName = targetWS.Name;
-                Range usedRange = targetWS.UsedRange;
-                int rows = usedRange.Rows.Count;
-                if (rows > 1)
+                //old - need to seek for row
+                foreach (var dataRow in data)
                 {
-                    //old - need to seek for row
-                    foreach (var dataRow in data)
+                    bool found = false;
+                    for (int row = 2; row <= usedRange.Rows.Count; row++)
                     {
-                        bool found = false;
-                        for (int row = 2; row <= usedRange.Rows.Count; row++)
+                        if (worksheet.Cells[row, 1].Value == dataRow.Code)
                         {
-                            if (targetWS.Cells[row, 1].Value == dataRow.Code)
-                            {
-                                found = true;
-                                for (int col = 2; col <= usedRange.Columns.Count; col++)
-                                {
-                                    if (targetWS.Cells[1, col].Value != null)
-                                    {
-                                        targetWS.Cells[row, col] = dataRow.GetType().GetProperty(targetWS.Cells[1, col].Value).GetValue(dataRow, null);
-                                    }
-                                }
-                            }
-                        }
-                        if (!found)
-                        {
-                            usedRange = targetWS.UsedRange;
-                            targetWS.Cells[usedRange.Rows.Count + 1, 1] = dataRow.Code;
+                            found = true;
                             for (int col = 2; col <= usedRange.Columns.Count; col++)
                             {
-                                if (targetWS.Cells[1, col].Value != null)
+                                if (worksheet.Cells[1, col].Value != null)
                                 {
-                                    targetWS.Cells[usedRange.Rows.Count + 1, col] = dataRow.GetType().GetProperty(targetWS.Cells[1, col].Value).GetValue(dataRow, null);
+                                    worksheet.Cells[row, col] = dataRow.GetType().GetProperty(worksheet.Cells[1, col].Value).GetValue(dataRow, null);
                                 }
                             }
                         }
                     }
-                }
-                else
-                {
-                    //new
-                    var props = Filters.Where(x => x.Item2 == true).Select(x => x.Item1).ToList();
-                    if (props.Contains("Code"))
+                    if (!found)
                     {
-                        string item = props[props.IndexOf("Code")];
-                        props.RemoveAt(props.IndexOf("Code"));
-                        props.Insert(0, item);
-                    }
-                    else
-                    {
-                        props.Insert(0, "Code");
-                    }
-                    object[,] table = new object[data.Count + 1, props.Count];
-                    for (int j = 0; j < props.Count; j++)
-                    {
-                        table[0, j] = props[j];
-                    }
-                    for (int i = 0; i < data.Count; i++)
-                    {
-                        foreach (var prop in props)
+                        usedRange = worksheet.UsedRange;
+                        worksheet.Cells[usedRange.Rows.Count + 1, 1] = dataRow.Code;
+                        for (int col = 2; col <= usedRange.Columns.Count; col++)
                         {
-                            table[i + 1, props.IndexOf(prop)] = data[i].GetType().GetProperty(prop).GetValue(data[i], null);
+                            if (worksheet.Cells[1, col].Value != null)
+                            {
+                                worksheet.Cells[usedRange.Rows.Count + 1, col] = dataRow.GetType().GetProperty(worksheet.Cells[1, col].Value).GetValue(dataRow, null);
+                            }
                         }
-                    }
-                    Range tableRange = targetWS.Range[targetWS.Cells[1, 1], targetWS.Cells[table.GetLength(0), table.GetLength(1)]];
-                    tableRange.Value = table;
-
-                    if (Smart)
-                    {
-                        MakeTable(tableRange, targetWS, Name, 1);
                     }
                 }
             }
             else
             {
-                // > 1 ws
-                foreach (var item in targetWSs)
+                //new
+                var props = Filters.Where(x => x.IsChecked == true).Select(x => x.Name).ToList();
+                if (props.Contains("Code"))
                 {
-                    string ticker = item.Key;
-                    Worksheet targetWS = item.Value;
-                    var dataRow = data.Find(x => x.Code == ticker);
-                    var props = Filters.Where(x => x.Item2 == true).Select(x => x.Item1).ToList();
-                    string sheetName = targetWS.Name;
-                    Range usedRange = targetWS.UsedRange;
-                    int rows = usedRange.Rows.Count;
-                    if (rows > 1)
+                    string item = props[props.IndexOf("Code")];
+                    props.RemoveAt(props.IndexOf("Code"));
+                    props.Insert(0, item);
+                }
+                else
+                {
+                    props.Insert(0, "Code");
+                }
+                object[,] table = new object[data.Count + 1, props.Count];
+                for (int j = 0; j < props.Count; j++)
+                {
+                    table[0, j] = props[j];
+                }
+                for (int i = 0; i < data.Count; i++)
+                {
+                    foreach (var prop in props)
                     {
-                        //old - need to move second row down
-                        Range secondRow = targetWS.Cells[2, 1].EntireRow;
-                        secondRow.Insert(XlInsertShiftDirection.xlShiftDown);
-                        object[] tableRow = new object[props.Count];
-                        foreach (var prop in props)
-                        {
-                            tableRow[props.IndexOf(prop)] = dataRow.GetType().GetProperty(prop).GetValue(dataRow, null);
-                        }
-                        Range tableRowRange = targetWS.Range[targetWS.Cells[2, 1], targetWS.Cells[2, tableRow.Length]];
-                        tableRowRange.Value = tableRow;
-                    }
-                    else
-                    {
-                        //new
-                        object[,] table = new object[2, props.Count];
-                        foreach (var prop in props)
-                        {
-                            table[0, props.IndexOf(prop)] = prop;
-                            table[1, props.IndexOf(prop)] = dataRow.GetType().GetProperty(prop).GetValue(dataRow, null);
-                        }
-                        Range tableRange = targetWS.Range[targetWS.Cells[1, 1], targetWS.Cells[table.GetLength(0), table.GetLength(1)]];
-                        tableRange.Value = table;
-
-                        if (Smart)
-                        {
-                            MakeTable(tableRange, targetWS, Name, 1);
-                        }
+                        table[i + 1, props.IndexOf(prop)] = data[i].GetType().GetProperty(prop).GetValue(data[i], null);
                     }
                 }
+                Range tableRange = worksheet.Range[worksheet.Cells[1, 1], worksheet.Cells[table.GetLength(0), table.GetLength(1)]];
+                tableRange.Value = table;
+
+                if (Smart)
+                {
+                    MakeTable(tableRange, worksheet, Name, 1);
+                }
             }
+
+
         }
 
         /// <summary>

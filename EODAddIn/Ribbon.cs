@@ -1,4 +1,5 @@
 ﻿using EOD.Model.Bulks;
+
 using EODAddIn.BL.BulkEod;
 using EODAddIn.BL.BulkFundamental;
 using EODAddIn.BL.ETFPrinter;
@@ -9,22 +10,25 @@ using EODAddIn.BL.OptionsPrinter;
 using EODAddIn.BL.Screener;
 using EODAddIn.Forms;
 using EODAddIn.Utils;
-using static EODAddIn.Utils.ExcelUtils;
+using EODAddIn.View.Forms;
+
 using Microsoft.Office.Core;
-using Excel = Microsoft.Office.Interop.Excel;
+using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
+
 using Newtonsoft.Json;
+
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Threading;
-using System.IO;
 using System.Xml.Serialization;
-using Microsoft.Office.Interop.Excel;
-using EODAddIn.View.Forms;
+
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace EODAddIn
 {
@@ -32,12 +36,6 @@ namespace EODAddIn
     {
         private Excel.Application _xlapp;
         private DispatcherTimer timer = null;
-
-        private Dictionary<LiveDownloader, CustomXMLPart> LiveDownloaders = new Dictionary<LiveDownloader, CustomXMLPart>();
-        private Dictionary<LiveDownloader, CancellationTokenSource> CancellationTokenSources = new Dictionary<LiveDownloader, CancellationTokenSource>();
-        private bool DispatcherIsOpened = false;
-        private delegate void Download();
-        private Download _download;
 
         private void Ribbon_Load(object sender, RibbonUIEventArgs e)
         {
@@ -47,8 +45,11 @@ namespace EODAddIn
             timer.Start();
 
             _xlapp = Globals.ThisAddIn.Application;
-            _xlapp.WorkbookOpen += Xlapp_WorkbookOpen;
+            _xlapp.WorkbookOpen += OnWorkbookOpen;
+            _xlapp.WorkbookBeforeClose += OnWorkbookBeforeClose;
         }
+
+        
 
         private void BtnAbout_Click(object sender, RibbonControlEventArgs e)
         {
@@ -492,6 +493,9 @@ namespace EODAddIn
             try
             {
                 if (FormShower.ShowActiveForm()) return;
+                if (!ScreenerPrinter.CheckIsScreenerResult(Globals.ThisAddIn.Application.ActiveSheet)) return;
+       
+
                 Forms.FrmScreenerHistorical frm = new Forms.FrmScreenerHistorical();
                 frm.ShowDialog(new WinHwnd());
             }
@@ -502,9 +506,10 @@ namespace EODAddIn
             }
         }
 
-        private void button1_Click(object sender, RibbonControlEventArgs e)
+        private void BtnGetIntradayScreener_Click(object sender, RibbonControlEventArgs e)
         {
             if (FormShower.ShowActiveForm()) return;
+            if (!ScreenerPrinter.CheckIsScreenerResult(Globals.ThisAddIn.Application.ActiveSheet)) return;
             try
             {
                 Forms.FrmScreenerIntraday frm = new Forms.FrmScreenerIntraday();
@@ -558,13 +563,13 @@ namespace EODAddIn
                 {
                     string exchange = frm.Exchange;
                     string type = "end-of-day data";
-                    
+
                     DateTime date = frm.Date;
                     string tickers = string.Join(",", frm.Tickers);
                     BtnBulkEod.Label = "Processing";
                     BtnBulkEod.Enabled = false;
 
-                    List<Bulk> res = await GetBulkEod.GetBulkEodData(exchange, type, date, tickers);
+                    List<Bulk> res = await GetBulkEod.GetBulkEodData(exchange, EODHistoricalData.Wrapper.Model.Bulks.BulkQueryTypes.EndOfDay, date, tickers);
                     BulkEodPrinter.PrintBulkEod(res, exchange, date, tickers, type);
                 }
             }
@@ -585,7 +590,6 @@ namespace EODAddIn
             try
             {
                 FormShower.FrmGetTechnicalsShow();
-
             }
             catch (Exception ex)
             {
@@ -598,10 +602,7 @@ namespace EODAddIn
         {
             try
             {
-                LiveDownloaderDispatcher frm = FormShower.LiveDownloaderDispatcherShow(LiveDownloaders, CancellationTokenSources);
-                if (frm == null) return;
-
-                frm.FormClosing += Frm_FormClosing;
+                LiveDownloaderDispatcher frm = FormShower.LiveDownloaderDispatcherShow();
             }
             catch (Exception ex)
             {
@@ -610,55 +611,17 @@ namespace EODAddIn
             }
         }
 
-        private void Xlapp_WorkbookOpen(Excel.Workbook Wb)
+        private void OnWorkbookOpen(Excel.Workbook Wb)
         {
-            var xml = GetXmlPart();
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(LiveDownloader));
-            if (xml == null) return;
-            foreach (CustomXMLPart item in xml)
-            {
-                LiveDownloader liveDownloader = null;
-                try
-                {
-                    using (TextReader reader = new StringReader(item.XML))
-                    {
-                        liveDownloader = xmlSerializer.Deserialize(reader) as LiveDownloader;
-                    }
-                }
-                catch
-                {
+            LiveDownloaderManager.LoadWorkbook(Wb);
 
-                }
-                finally
-                {
-                    if (liveDownloader != null)
-                        LiveDownloaders.Add(liveDownloader, item);
-                }
-            }
-
-            foreach (var pair in LiveDownloaders)
-            {
-                if (pair.Key.IsActive == true)
-                    StartDowloader(pair.Key);
-            }
         }
 
-        private void StartDowloader(LiveDownloader downloader)
-        {
-            CancellationTokenSource src = new CancellationTokenSource();
-            CancellationTokenSources.Add(downloader, src);
 
-            async void Live() => await downloader.RequestAndPrint(src.Token);
-            _download = Live;
-            _download.Invoke();
+        private void OnWorkbookBeforeClose(Workbook Wb, ref bool Cancel)
+        {
+            LiveDownloaderManager.CloseWorkbook(Wb);
         }
 
-        private void Frm_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            LiveDownloaderDispatcher frm = (LiveDownloaderDispatcher)sender;
-            LiveDownloaders = frm.GetDownloaders();
-            CancellationTokenSources = frm.GetTokens();
-            DispatcherIsOpened = false;
-        }
     }
 }

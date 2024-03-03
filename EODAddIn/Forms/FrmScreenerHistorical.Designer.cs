@@ -47,7 +47,7 @@
             // 
             // dateTimePicker2
             // 
-            this.dateTimePicker2.Location = new System.Drawing.Point(77, 73);
+            this.dateTimePicker2.Location = new System.Drawing.Point(77, 51);
             this.dateTimePicker2.Name = "dateTimePicker2";
             this.dateTimePicker2.Size = new System.Drawing.Size(200, 20);
             this.dateTimePicker2.TabIndex = 1;
@@ -64,7 +64,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 73);
+            this.label2.Location = new System.Drawing.Point(12, 51);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(20, 13);
             this.label2.TabIndex = 3;
@@ -73,7 +73,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 122);
+            this.label3.Location = new System.Drawing.Point(12, 80);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(37, 13);
             this.label3.TabIndex = 4;
@@ -90,7 +90,7 @@
             "daily",
             "weekly",
             "monthly"});
-            this.period.Location = new System.Drawing.Point(77, 119);
+            this.period.Location = new System.Drawing.Point(77, 77);
             this.period.Name = "period";
             this.period.Size = new System.Drawing.Size(200, 21);
             this.period.TabIndex = 5;
@@ -98,7 +98,7 @@
             // 
             // btnLoad
             // 
-            this.btnLoad.Location = new System.Drawing.Point(223, 194);
+            this.btnLoad.Location = new System.Drawing.Point(202, 104);
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(75, 23);
             this.btnLoad.TabIndex = 6;
@@ -110,7 +110,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(323, 229);
+            this.ClientSize = new System.Drawing.Size(297, 142);
             this.Controls.Add(this.btnLoad);
             this.Controls.Add(this.period);
             this.Controls.Add(this.label3);
@@ -120,7 +120,8 @@
             this.Controls.Add(this.dateTimePicker1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "FrmScreenerHistorical";
-            this.Text = "Form1";
+            this.ShowIcon = false;
+            this.Text = "Select params";
             this.ResumeLayout(false);
             this.PerformLayout();
 

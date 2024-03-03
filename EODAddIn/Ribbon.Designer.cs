@@ -279,7 +279,7 @@ namespace EODAddIn
             this.btnGetScreenerIntraday.Label = "Get intraday ";
             this.btnGetScreenerIntraday.Name = "btnGetScreenerIntraday";
             this.btnGetScreenerIntraday.ShowImage = true;
-            this.btnGetScreenerIntraday.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button1_Click);
+            this.btnGetScreenerIntraday.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnGetIntradayScreener_Click);
             // 
             // menuAvailableDataFeeds
             // 

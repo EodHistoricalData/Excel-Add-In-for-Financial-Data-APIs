@@ -32,20 +32,13 @@ namespace EODAddIn.View.Forms
         public static void FrmScreenerHistoricalShow() => FrmShow(typeof(FrmScreenerHistorical));
         public static void FrmScreenerIntradayShow() => FrmShow(typeof(FrmScreenerIntraday));
 
-        public static LiveDownloaderDispatcher LiveDownloaderDispatcherShow(Dictionary<LiveDownloader, CustomXMLPart> downloaders, Dictionary<LiveDownloader, CancellationTokenSource> cancellationTokenSources)
+        public static LiveDownloaderDispatcher LiveDownloaderDispatcherShow()
         {
             if (ShowActiveForm()) throw new DocumentAlreadyLoadedException();
 
             LiveDownloaderDispatcher frm;
 
-            if (downloaders.Count == 0)
-            {
-                frm = new LiveDownloaderDispatcher();
-            }
-            else
-            {
-                frm = new LiveDownloaderDispatcher(downloaders, cancellationTokenSources);
-            }
+            frm = new LiveDownloaderDispatcher();
 
             FrmShow(frm);
             return frm;
@@ -68,7 +61,7 @@ namespace EODAddIn.View.Forms
             try
             {
                 var key = (Globals.ThisAddIn.Application.Hwnd.ToString(), formType.Name);
-                
+
 
                 Form form;
                 if (_forms.Count > 0)
@@ -105,7 +98,7 @@ namespace EODAddIn.View.Forms
             try
             {
                 var key = (Globals.ThisAddIn.Application.Hwnd.ToString(), form.GetType().Name);
-               // string key = Globals.ThisAddIn.Application.Hwnd.ToString() + form.GetType().Name;
+                // string key = Globals.ThisAddIn.Application.Hwnd.ToString() + form.GetType().Name;
                 if (_forms.Count > 0)
                 {
                     form = _forms.First().Value;

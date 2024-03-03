@@ -74,7 +74,6 @@
             this.gridDownloaders.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.gridDownloaders.Size = new System.Drawing.Size(648, 329);
             this.gridDownloaders.TabIndex = 3;
-            this.gridDownloaders.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.GridDownloaders_CellContentClick);
             // 
             // menuStrip1
             // 

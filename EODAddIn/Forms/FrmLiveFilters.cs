@@ -1,4 +1,6 @@
-﻿using System;
+﻿using EODAddIn.BL.Live;
+
+using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
 
@@ -6,13 +8,13 @@ namespace EODAddIn.Forms
 {
     public partial class FrmLiveFilters : Form, IDisposable
     {
-        internal List<(string, bool)> Filters;
+        internal List<Filter> Filters;
         public FrmLiveFilters()
         {
             InitializeComponent();
         }
 
-        public FrmLiveFilters(List<(string, bool)> filters)
+        public FrmLiveFilters(List<Filter> filters)
         {
             InitializeComponent();
 
@@ -20,7 +22,7 @@ namespace EODAddIn.Forms
 
             for (int i = 0; i < filters.Count; i++)
             {
-                ClbFilters.SetItemChecked(i, filters[i].Item2);
+                ClbFilters.SetItemChecked(i, filters[i].IsChecked);
             }
         }
 
@@ -35,12 +37,17 @@ namespace EODAddIn.Forms
             DialogResult = DialogResult.OK;
         }
 
-        private List<(string, bool)> SaveFilters()
+        private List<Filter> SaveFilters()
         {
-            List<(string, bool)> filters = new List<(string, bool)>();
+            List<Filter> filters = new List<Filter>();
             for (int i = 0; i < Filters.Count; i++)
             {
-                filters.Add((ClbFilters.GetItemText(ClbFilters.Items[i]), ClbFilters.GetItemChecked(i)));
+                var filter = new Filter()
+                {
+                    Name = ClbFilters.GetItemText(ClbFilters.Items[i]), 
+                    IsChecked = ClbFilters.GetItemChecked(i)
+                };
+                filters.Add(filter);
             }
             return filters;
         }

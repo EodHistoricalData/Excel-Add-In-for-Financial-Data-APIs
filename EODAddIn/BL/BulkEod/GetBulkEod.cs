@@ -11,7 +11,7 @@ namespace EODAddIn.BL.BulkEod
     {
         private static string AppName = Settings.Data.AppName;
         private static string ApiKey = Settings.Data.APIKey;
-        public static async Task<List<Bulk>> GetBulkEodData(string exchange, string type, DateTime? date, string symbols)
+        public static async Task<List<Bulk>> GetBulkEodData(string exchange, EODHistoricalData.Wrapper.Model.Bulks.BulkQueryTypes type, DateTime? date, string symbols)
         {
             API api = new API(ApiKey, null, AppName);
             List<Bulk> bulkEodData = await api.GetBulksAsync(exchange, type, date, symbols);

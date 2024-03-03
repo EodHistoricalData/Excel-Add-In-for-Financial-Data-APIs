@@ -44,7 +44,7 @@
             "1m",
             "5m",
             "1h"});
-            this.comboBox1.Location = new System.Drawing.Point(111, 174);
+            this.comboBox1.Location = new System.Drawing.Point(111, 64);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(156, 21);
             this.comboBox1.TabIndex = 0;
@@ -52,7 +52,7 @@
             // 
             // dateTimePicker1
             // 
-            this.dateTimePicker1.Location = new System.Drawing.Point(111, 42);
+            this.dateTimePicker1.Location = new System.Drawing.Point(111, 12);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(156, 20);
             this.dateTimePicker1.TabIndex = 1;
@@ -60,7 +60,7 @@
             // 
             // dateTimePicker2
             // 
-            this.dateTimePicker2.Location = new System.Drawing.Point(111, 108);
+            this.dateTimePicker2.Location = new System.Drawing.Point(111, 38);
             this.dateTimePicker2.Name = "dateTimePicker2";
             this.dateTimePicker2.Size = new System.Drawing.Size(156, 20);
             this.dateTimePicker2.TabIndex = 2;
@@ -68,7 +68,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(22, 48);
+            this.label1.Location = new System.Drawing.Point(22, 18);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(30, 13);
             this.label1.TabIndex = 3;
@@ -77,7 +77,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(22, 108);
+            this.label2.Location = new System.Drawing.Point(22, 38);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(20, 13);
             this.label2.TabIndex = 4;
@@ -86,7 +86,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(22, 177);
+            this.label3.Location = new System.Drawing.Point(22, 67);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(41, 13);
             this.label3.TabIndex = 5;
@@ -94,7 +94,7 @@
             // 
             // btnScreenLoadIntraday
             // 
-            this.btnScreenLoadIntraday.Location = new System.Drawing.Point(217, 241);
+            this.btnScreenLoadIntraday.Location = new System.Drawing.Point(192, 100);
             this.btnScreenLoadIntraday.Name = "btnScreenLoadIntraday";
             this.btnScreenLoadIntraday.Size = new System.Drawing.Size(75, 23);
             this.btnScreenLoadIntraday.TabIndex = 6;
@@ -106,7 +106,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(304, 276);
+            this.ClientSize = new System.Drawing.Size(313, 136);
             this.Controls.Add(this.btnScreenLoadIntraday);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -116,7 +116,8 @@
             this.Controls.Add(this.comboBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "FrmScreenerIntraday";
-            this.Text = "Form1";
+            this.ShowIcon = false;
+            this.Text = "Select params";
             this.ResumeLayout(false);
             this.PerformLayout();
 
