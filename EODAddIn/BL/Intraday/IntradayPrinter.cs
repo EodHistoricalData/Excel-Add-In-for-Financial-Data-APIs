@@ -8,6 +8,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 using static EODAddIn.Utils.ExcelUtils;
 using EODAddIn.BL.Screener;
 using System.Linq;
+using System.Windows.Forms;
 
 namespace EODAddIn.BL.IntradayPrinter
 {
@@ -40,21 +41,25 @@ namespace EODAddIn.BL.IntradayPrinter
                 worksheet.Cells[r, 7] = "Close";
                 worksheet.Cells[r, 8] = "Volume";
                 worksheet.Cells[r, 9] = "Timestamp";
+
+                object[,] data = new object[intraday.Count, 9];
+                int i = 0;
                 try
                 {
                     ExcelUtils.OnStart();
                     foreach (EOD.Model.IntradayHistoricalStockPrice item in intraday)
                     {
                         r++;
-                        worksheet.Cells[r, 1] = item.DateTime;
-                        worksheet.Cells[r, 2] = item.Gmtoffset;
-                        worksheet.Cells[r, 3] = item.DateTime;
-                        worksheet.Cells[r, 4] = item.Open;
-                        worksheet.Cells[r, 5] = item.High;
-                        worksheet.Cells[r, 6] = item.Low;
-                        worksheet.Cells[r, 7] = item.Close;
-                        worksheet.Cells[r, 8] = item.Volume;
-                        worksheet.Cells[r, 9] = item.Timestamp;
+                        data[i, 0] = item.DateTime;
+                        data[i, 1] = item.Gmtoffset;
+                        data[i,2] = item.DateTime;
+                        data[i, 3] = item.Open;
+                        data[i, 4] = item.High;
+                        data[i, 5] = item.Low;
+                        data[i, 6] = item.Close;
+                        data[i, 7] = item.Volume;
+                        data[i, 8] = item.Timestamp;
+                        i++;
                     }
                 }
                 catch (Exception)
@@ -69,7 +74,8 @@ namespace EODAddIn.BL.IntradayPrinter
                 {
                     ExcelUtils.MakeTable("A2", "H" + r.ToString(), worksheet, "Intraday", 9);
                 }
-                
+
+                worksheet.Range[worksheet.Cells[3, 1], worksheet.Cells[r, 9]].Value = data;
                 if (!CreateSheet) return r;
                 if (!chart) return r;
 
@@ -175,7 +181,7 @@ namespace EODAddIn.BL.IntradayPrinter
         }
         public static int PrintIntradaySummary(List<EOD.Model.IntradayHistoricalStockPrice> res, string ticker, string interval, int row, Worksheet sh)
         {
- 
+
             int c = 1;
             int r = 1;
             sh.Cells[r, c] = "Intraday data";
@@ -187,23 +193,31 @@ namespace EODAddIn.BL.IntradayPrinter
             sh.Cells[r, c] = "High"; c++;
             sh.Cells[r, c] = "Low"; c++;
             sh.Cells[r, c] = "Close"; c++;
-            sh.Cells[r, c] = "Volume";c++;
+            sh.Cells[r, c] = "Volume"; c++;
             sh.Cells[r, c] = "TimeStamp";
+
+            object[,] data = new object[res.Count, c];
+
+            int i = 0;
             foreach (IntradayHistoricalStockPrice item in res)
             {
-                sh.Cells[row, 1] = ticker;
-                sh.Cells[row, 2] = item.DateTime;
-                sh.Cells[row, 3] = item.Gmtoffset;
-                sh.Cells[row, 4] = item.Open;
-                sh.Cells[row, 5] = item.High;
-                sh.Cells[row, 6] = item.Low;
-                sh.Cells[row, 7] = item.Close;
-                sh.Cells[row, 8] = item.Volume;
-                sh.Cells[row, 9] = item.Timestamp;
-                row++;
+                data[i, 0] = ticker;
+                data[i, 1] = item.DateTime;
+                data[i, 2] = item.Gmtoffset;
+                data[i, 3] = item.Open;
+                data[i, 4] = item.High;
+                data[i, 5] = item.Low;
+                data[i, 6] = item.Close;
+                data[i, 7] = item.Volume;
+                data[i, 8] = item.Timestamp;
+                i++;
             }
+
+            var rng = sh.Range[sh.Cells[row, 1], sh.Cells[row + i + 1, c]];
+            rng.Value = data;
+
             sh.UsedRange.EntireColumn.AutoFit();
-            return row;
+            return row + i + 1;
         }
     }
 }

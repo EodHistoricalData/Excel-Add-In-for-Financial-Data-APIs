@@ -720,7 +720,7 @@ namespace EODAddIn.BL.Screener
                 _xlsApp.Interactive = true;
             }
         }
-        public static void PrintScreenerIntraday(DateTime from, DateTime to, string interval)
+        public static async void PrintScreenerIntraday(DateTime from, DateTime to, EOD.API.IntradayHistoricalInterval interval)
         {
             try
             {
@@ -743,7 +743,7 @@ namespace EODAddIn.BL.Screener
                 sh = CreateScreenerIntradayWorksheet(sh.Name);
                 foreach ((string, string) ticker in tickers)
                 {
-                    List<EOD.Model.IntradayHistoricalStockPrice> res = IntradayAPI.IntradayAPI.GetIntraday(ticker.Item1, from, to, interval);
+                    List<EOD.Model.IntradayHistoricalStockPrice> res = await IntradayAPI.IntradayAPI.GetIntraday(ticker.Item1, from, to, interval);
                     foreach (EOD.Model.IntradayHistoricalStockPrice item in res)
                     {
                         sh.Cells[row, 1] = ticker.Item1;

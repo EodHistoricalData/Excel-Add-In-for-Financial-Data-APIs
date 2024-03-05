@@ -96,7 +96,7 @@ namespace EODAddIn.BL
         {
             try
             {
-                List<EOD.Model.IntradayHistoricalStockPrice> res = IntradayAPI.IntradayAPI.GetIntraday(ticker, date, date, "1m");
+                List<EOD.Model.IntradayHistoricalStockPrice> res = IntradayAPI.IntradayAPI.GetIntraday(ticker, date, date,  EOD.API.IntradayHistoricalInterval.OneMinute).Result;
                 return res[0].Open;
             }
             catch (APIException ex)
@@ -109,7 +109,7 @@ namespace EODAddIn.BL
         {
             try
             {
-                List<EOD.Model.IntradayHistoricalStockPrice> res = IntradayAPI.IntradayAPI.GetIntraday(ticker, date, date, "1m");
+                List<EOD.Model.IntradayHistoricalStockPrice> res = IntradayAPI.IntradayAPI.GetIntraday(ticker, date, date,  EOD.API.IntradayHistoricalInterval.OneMinute).Result;
                 return res[0].High;
             }
             catch (APIException ex)
@@ -122,7 +122,7 @@ namespace EODAddIn.BL
         {
             try
             {
-                List<EOD.Model.IntradayHistoricalStockPrice> res = IntradayAPI.IntradayAPI.GetIntraday(ticker, date, date, "1m");
+                List<EOD.Model.IntradayHistoricalStockPrice> res = IntradayAPI.IntradayAPI.GetIntraday(ticker, date, date, EOD.API.IntradayHistoricalInterval.OneMinute).Result;
                 return res[0].Low;
             }
             catch (APIException ex)
@@ -135,7 +135,7 @@ namespace EODAddIn.BL
         {
             try
             {
-                List<EOD.Model.IntradayHistoricalStockPrice> res = IntradayAPI.IntradayAPI.GetIntraday(ticker, date, date, "1m");
+                List<EOD.Model.IntradayHistoricalStockPrice> res = IntradayAPI.IntradayAPI.GetIntraday(ticker, date, date, EOD.API.IntradayHistoricalInterval.OneMinute).Result;
                 return res[0].Close;
             }
             catch (APIException ex)
@@ -148,7 +148,7 @@ namespace EODAddIn.BL
         {
             try
             {
-                List<EOD.Model.IntradayHistoricalStockPrice> res = IntradayAPI.IntradayAPI.GetIntraday(ticker, date, date, "1m");
+                List<EOD.Model.IntradayHistoricalStockPrice> res = IntradayAPI.IntradayAPI.GetIntraday(ticker, date, date, EOD.API.IntradayHistoricalInterval.OneMinute).Result;
                 return res[0].Volume;
             }
             catch (APIException ex)
@@ -161,7 +161,7 @@ namespace EODAddIn.BL
         {
             try
             {
-                List<EOD.Model.IntradayHistoricalStockPrice> res = IntradayAPI.IntradayAPI.GetIntraday(ticker, date, date, "1m");
+                List<EOD.Model.IntradayHistoricalStockPrice> res = IntradayAPI.IntradayAPI.GetIntraday(ticker, date, date, EOD.API.IntradayHistoricalInterval.OneMinute).Result;
                 return res[0].Timestamp;
             }
             catch (APIException ex)

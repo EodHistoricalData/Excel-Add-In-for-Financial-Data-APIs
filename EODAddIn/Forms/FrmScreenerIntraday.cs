@@ -31,7 +31,21 @@ namespace EODAddIn.Forms
                     MessageBoxIcon.Error);
                 return;
             }
-            ScreenerPrinter.PrintScreenerIntraday(dateTimePicker1.Value, dateTimePicker2.Value, Convert.ToString(comboBox1.SelectedItem));
+
+            EOD.API.IntradayHistoricalInterval interval;
+            switch (Convert.ToString(comboBox1.SelectedItem))
+            {
+                case "1m":
+                    interval = EOD.API.IntradayHistoricalInterval.OneMinute; break;
+                case "5m":
+                    interval = EOD.API.IntradayHistoricalInterval.FiveMinutes; break;
+                case "1h":
+                    interval = EOD.API.IntradayHistoricalInterval.OneHour; break;
+                default:
+                    interval = EOD.API.IntradayHistoricalInterval.FiveMinutes;
+                    break;
+            }
+            ScreenerPrinter.PrintScreenerIntraday(dateTimePicker1.Value, dateTimePicker2.Value, interval);
 
             Close();
         }
