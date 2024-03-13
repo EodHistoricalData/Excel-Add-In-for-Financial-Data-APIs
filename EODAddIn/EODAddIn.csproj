@@ -211,7 +211,10 @@
     <Compile Include="BL\Options\OptionsAPI.cs" />
     <Compile Include="BL\Options\OptionsPrinter.cs" />
     <Compile Include="BL\Printer.cs" />
+    <Compile Include="BL\Screener\Filter.cs" />
     <Compile Include="BL\Screener\ScreenerAPI.cs" />
+    <Compile Include="BL\Screener\Screener.cs" />
+    <Compile Include="BL\Screener\ScreenerManager.cs" />
     <Compile Include="BL\Screener\ScreenerPrinter.cs" />
     <Compile Include="BL\TechnicalIndicatorData\TechnicalIndicatorAPI.cs" />
     <Compile Include="BL\TechnicalIndicatorData\TechnicalsPrinter.cs" />
@@ -252,6 +255,12 @@
     </Compile>
     <Compile Include="Forms\FrmLiveFilters.Designer.cs">
       <DependentUpon>FrmLiveFilters.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmScreenerDispatcher.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmScreenerDispatcher.Designer.cs">
+      <DependentUpon>FrmScreenerDispatcher.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FrmScreenerIntraday.cs">
       <SubType>Form</SubType>
@@ -388,6 +397,9 @@
     <EmbeddedResource Include="Forms\FrmLiveFilters.resx">
       <DependentUpon>FrmLiveFilters.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmScreenerDispatcher.resx">
+      <DependentUpon>FrmScreenerDispatcher.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmScreenerHistorical.resx">
       <DependentUpon>FrmScreenerHistorical.cs</DependentUpon>
     </EmbeddedResource>
@@ -485,6 +497,8 @@
     <Content Include="icon.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\icons8-edit-16 %281%29.png" />
+    <None Include="Resources\icons8-close-16.png" />
     <None Include="Resources\icons8-add-16.png" />
     <Resource Include="Resources\greenStatus.png" />
     <Resource Include="Resources\redStatus.png" />

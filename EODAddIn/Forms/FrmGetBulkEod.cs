@@ -140,5 +140,10 @@ namespace EODAddIn.Forms
             }
             tsmiFromExcel.Enabled = true;
         }
+
+        private void FrmGetBulkEod_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

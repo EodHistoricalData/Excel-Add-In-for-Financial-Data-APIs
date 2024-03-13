@@ -54,11 +54,7 @@ namespace EODAddIn
             this.BtnOptions = this.Factory.CreateRibbonButton();
             this.BtnBulkEod = this.Factory.CreateRibbonButton();
             this.btnTechnicals = this.Factory.CreateRibbonButton();
-            this.menuScreener = this.Factory.CreateRibbonMenu();
-            this.btnCreateScreener = this.Factory.CreateRibbonButton();
-            this.btnGetScreenerFundamenat = this.Factory.CreateRibbonButton();
-            this.btnGetSreenerHistorical = this.Factory.CreateRibbonButton();
-            this.btnGetScreenerIntraday = this.Factory.CreateRibbonButton();
+            this.BtnScreener = this.Factory.CreateRibbonButton();
             this.menuAvailableDataFeeds = this.Factory.CreateRibbonMenu();
             this.btnListOfExchanges = this.Factory.CreateRibbonButton();
             this.btnListOfCRYPTOCurrencies = this.Factory.CreateRibbonButton();
@@ -100,7 +96,7 @@ namespace EODAddIn
             this.grpMain.Items.Add(this.BtnOptions);
             this.grpMain.Items.Add(this.BtnBulkEod);
             this.grpMain.Items.Add(this.btnTechnicals);
-            this.grpMain.Items.Add(this.menuScreener);
+            this.grpMain.Items.Add(this.BtnScreener);
             this.grpMain.Items.Add(this.menuAvailableDataFeeds);
             this.grpMain.Label = "Commands";
             this.grpMain.Name = "grpMain";
@@ -241,45 +237,14 @@ namespace EODAddIn
             this.btnTechnicals.ShowImage = true;
             this.btnTechnicals.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnTechnicals_Click);
             // 
-            // menuScreener
+            // BtnScreener
             // 
-            this.menuScreener.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.menuScreener.Image = ((System.Drawing.Image)(resources.GetObject("menuScreener.Image")));
-            this.menuScreener.Items.Add(this.btnCreateScreener);
-            this.menuScreener.Items.Add(this.btnGetScreenerFundamenat);
-            this.menuScreener.Items.Add(this.btnGetSreenerHistorical);
-            this.menuScreener.Items.Add(this.btnGetScreenerIntraday);
-            this.menuScreener.Label = "Stock Screener";
-            this.menuScreener.Name = "menuScreener";
-            this.menuScreener.ShowImage = true;
-            // 
-            // btnCreateScreener
-            // 
-            this.btnCreateScreener.Label = "Create";
-            this.btnCreateScreener.Name = "btnCreateScreener";
-            this.btnCreateScreener.ShowImage = true;
-            this.btnCreateScreener.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCreateScreener_Click);
-            // 
-            // btnGetScreenerFundamenat
-            // 
-            this.btnGetScreenerFundamenat.Label = "Get fundamental";
-            this.btnGetScreenerFundamenat.Name = "btnGetScreenerFundamenat";
-            this.btnGetScreenerFundamenat.ShowImage = true;
-            this.btnGetScreenerFundamenat.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnGetScreenerFundamental_Click);
-            // 
-            // btnGetSreenerHistorical
-            // 
-            this.btnGetSreenerHistorical.Label = "Get historical";
-            this.btnGetSreenerHistorical.Name = "btnGetSreenerHistorical";
-            this.btnGetSreenerHistorical.ShowImage = true;
-            this.btnGetSreenerHistorical.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnGetSreenerHistorical_Click);
-            // 
-            // btnGetScreenerIntraday
-            // 
-            this.btnGetScreenerIntraday.Label = "Get intraday ";
-            this.btnGetScreenerIntraday.Name = "btnGetScreenerIntraday";
-            this.btnGetScreenerIntraday.ShowImage = true;
-            this.btnGetScreenerIntraday.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnGetIntradayScreener_Click);
+            this.BtnScreener.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.BtnScreener.Image = ((System.Drawing.Image)(resources.GetObject("BtnScreener.Image")));
+            this.BtnScreener.Label = "Stock Screener";
+            this.BtnScreener.Name = "BtnScreener";
+            this.BtnScreener.ShowImage = true;
+            this.BtnScreener.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnScreener_Click);
             // 
             // menuAvailableDataFeeds
             // 
@@ -452,12 +417,7 @@ namespace EODAddIn
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnGetIntradayHistoricalData;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnGetEtf;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnOptions;
-        internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuScreener;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnCreateScreener;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnGetBulk;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnGetScreenerFundamenat;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnGetSreenerHistorical;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnGetScreenerIntraday;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuAvailableDataFeeds;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnListOfExchanges;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnListOfCRYPTOCurrencies;
@@ -465,6 +425,7 @@ namespace EODAddIn
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnBulkEod;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnTechnicals;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnGetLive;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnScreener;
     }
 
     partial class ThisRibbonCollection

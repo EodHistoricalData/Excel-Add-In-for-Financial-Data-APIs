@@ -127,6 +127,39 @@ namespace EODAddIn.View.Forms
             }
         }
 
+        public static void FrmShowDialog(Form form)
+        {
+            try
+            {
+                var key = (Globals.ThisAddIn.Application.Hwnd.ToString(), form.GetType().Name);
+                // string key = Globals.ThisAddIn.Application.Hwnd.ToString() + form.GetType().Name;
+                if (_forms.Count > 0)
+                {
+                    form = _forms.First().Value;
+                    form.Activate();
+                    return;
+                }
+                if (_forms.ContainsKey(key))
+                {
+                    form = _forms[key];
+                    form.Activate();
+                }
+                else
+                {
+                    form.FormClosed += Form_FormClosed;
+                    form.ShowDialog(new WinHwnd());
+                }
+            }
+            catch (ViewException ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                new ErrorReport(ex).ShowAndSend();
+            }
+        }
+
         private static void Form_FormClosed(object sender, FormClosedEventArgs e)
         {
             var key = (Globals.ThisAddIn.Application.Hwnd.ToString(), sender.GetType().Name);

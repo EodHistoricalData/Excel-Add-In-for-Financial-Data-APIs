@@ -1,4 +1,5 @@
-﻿using EODAddIn.Program.SettingsModel;
+﻿using EODAddIn.BL.Screener;
+using EODAddIn.Program.SettingsModel;
 
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace EODAddIn.Program
         public string AppName = "EOD Excel Plug-in";
 
         public GetHistoricalFormSettings GetHistoricalForm = new GetHistoricalFormSettings();
+        public List<Screener> Screeners = new List<Screener>();
 
         public List<string> EndOfDayTickers;
         public string EndOfDayPeriod;
@@ -41,22 +43,7 @@ namespace EODAddIn.Program
         public int BulkFundamentalOffset = 0;
         public int BulkFundamentalLimit = 500;
 
-        public string ScreenerSector;
-        public string ScreenerIndustry;
-        public string ScreenerCode;
-        public string ScreenerName;
-        public string ScreenerExchange;
-        public int ScreenerLimit=100;
 
-        public CheckState Screener200d_New_Lo;
-        public CheckState Screener200d_New_Hi;
-        public CheckState ScreenerBookValue_Neg;
-        public CheckState ScreenerBookValue_Pos;
-        public CheckState ScreenerWallStreet_Lo;
-        public CheckState ScreenerWallStreet_Hi;
-        public bool ScreenerRbtnSortAsc;
-        public bool ScreenerRbtnSortDesc;
-        public List<(string, string, string)> ScreenerDataGridViewFilters;
         public bool IsInfoShowed;
 
         public string BulkEodExchange;

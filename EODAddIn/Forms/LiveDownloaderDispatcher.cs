@@ -6,7 +6,9 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Threading;
 
 namespace EODAddIn.Forms
 {
@@ -27,12 +29,14 @@ namespace EODAddIn.Forms
                 downloader.ActiveChanged += Downloader_ActiveChanged;
             }
 
-            UpdateGrid();
+            Dispatcher dispatcherUI = Dispatcher.CurrentDispatcher;
+            dispatcherUI.Invoke(UpdateGrid);
         }
 
         private void Downloader_ActiveChanged(object sender, EventArgs e)
         {
-            UpdateGrid();
+            Dispatcher dispatcherUI = Dispatcher.CurrentDispatcher;
+            dispatcherUI.Invoke(UpdateGrid);
         }
 
         private void BtnAdd_Click(object sender, EventArgs e)
@@ -42,7 +46,7 @@ namespace EODAddIn.Forms
             frm.FormClosing += Frm_FormClosing;
         }
 
-        private void Frm_FormClosing(object sender, FormClosingEventArgs e)
+        private async void Frm_FormClosing(object sender, FormClosingEventArgs e)
         {
             var frm = sender as FrmGetLive;
             var subReq = frm.LiveDownloader;
@@ -51,14 +55,13 @@ namespace EODAddIn.Forms
                 subReq.ActiveChanged += Downloader_ActiveChanged;
                 LiveDownloaderManager.Add(subReq);
             }
-            UpdateGrid();
+            await UpdateGrid();
         }
 
-        private void UpdateGrid()
+        private async Task UpdateGrid()
         {
-            _semaphore.Wait();
-            try
-            {
+      
+           
                 gridDownloaders.Rows.Clear();
                 foreach (var downloader in LiveDownloaderManager.LiveDownloaders)
                 {
@@ -80,13 +83,8 @@ namespace EODAddIn.Forms
                     }
                     gridDownloaders.Rows.Add(downloader.Name, downloader.GetTickers(), downloader.Interval, bmp);
                 }
-            }
-            catch
-            {
+            
 
-
-            }
-            finally { _semaphore.Release(); }
         }
 
         private void Downloader_OnStatusChanged(object sender, EventArgs e)

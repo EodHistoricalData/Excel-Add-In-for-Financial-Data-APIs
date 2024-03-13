@@ -183,6 +183,7 @@
             this.Name = "FrmGetBulkEod";
             this.ShowIcon = false;
             this.Text = "Bulk EOD";
+            this.Load += new System.EventHandler(this.FrmGetBulkEod_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.gridTickers)).EndInit();

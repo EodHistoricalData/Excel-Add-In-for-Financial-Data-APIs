@@ -41,8 +41,11 @@ namespace EODAddIn.BL.Live
             get => _isActivate;
             private set
             {
-                _isActivate = value;
-                ActiveChanged?.Invoke(this, EventArgs.Empty);
+                if (_isActivate != value)
+                {
+                    _isActivate = value;
+                    ActiveChanged?.Invoke(this, EventArgs.Empty);
+                }
             }
         }
         private bool? _isActivate;

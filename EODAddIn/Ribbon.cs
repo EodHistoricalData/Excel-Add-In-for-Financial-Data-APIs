@@ -445,82 +445,7 @@ namespace EODAddIn
             }
         }
 
-        private async void btnCreateScreener_Click(object sender, RibbonControlEventArgs e)
-        {
-            try
-            {
-                if (FormShower.ShowActiveForm()) return;
-                Forms.FrmScreener frm = new Forms.FrmScreener();
-                frm.ShowDialog(new WinHwnd());
-                if (frm.DialogResult == DialogResult.OK)
-                {
-                    BtnOptions.Label = "Processing";
-                    BtnOptions.Enabled = false;
-
-                    var res = await ScreenerAPI.GetScreener(frm.Filters, frm.Signals, frm.Sort, frm.Limit);
-                    ScreenerPrinter.PrintScreener(res);
-
-                    BtnOptions.Label = "Get Options";
-                    BtnOptions.Enabled = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                Program.ErrorReport errorReport = new Program.ErrorReport(ex);
-                errorReport.ShowAndSend();
-            }
-        }
-
-        private void btnGetScreenerFundamental_Click(object sender, RibbonControlEventArgs e)
-        {
-            try
-            {
-                if (!ScreenerPrinter.CheckIsScreenerResult(Globals.ThisAddIn.Application.ActiveSheet))
-                {
-                    return;
-                }
-                ScreenerPrinter.PrintScreenerBulk(ScreenerPrinter.GetTickersFromScreener());
-            }
-            catch (Exception ex)
-            {
-                Program.ErrorReport errorReport = new Program.ErrorReport(ex);
-                errorReport.ShowAndSend();
-            }
-        }
-
-        private void btnGetSreenerHistorical_Click(object sender, RibbonControlEventArgs e)
-        {
-            try
-            {
-                if (FormShower.ShowActiveForm()) return;
-                if (!ScreenerPrinter.CheckIsScreenerResult(Globals.ThisAddIn.Application.ActiveSheet)) return;
        
-
-                Forms.FrmScreenerHistorical frm = new Forms.FrmScreenerHistorical();
-                frm.ShowDialog(new WinHwnd());
-            }
-            catch (Exception ex)
-            {
-                Program.ErrorReport errorReport = new Program.ErrorReport(ex);
-                errorReport.ShowAndSend();
-            }
-        }
-
-        private void BtnGetIntradayScreener_Click(object sender, RibbonControlEventArgs e)
-        {
-            if (FormShower.ShowActiveForm()) return;
-            if (!ScreenerPrinter.CheckIsScreenerResult(Globals.ThisAddIn.Application.ActiveSheet)) return;
-            try
-            {
-                Forms.FrmScreenerIntraday frm = new Forms.FrmScreenerIntraday();
-                frm.ShowDialog(new WinHwnd());
-            }
-            catch (Exception ex)
-            {
-                Program.ErrorReport errorReport = new Program.ErrorReport(ex);
-                errorReport.ShowAndSend();
-            }
-        }
 
         private void BtnListOfExchanges_Click(object sender, RibbonControlEventArgs e)
         {
@@ -546,10 +471,7 @@ namespace EODAddIn
 
         }
 
-        private void BtnListOfIndices_Click(object sender, RibbonControlEventArgs e)
-        {
-            System.Diagnostics.Process.Start("https://eodhd.com/financial-apis/list-supported-indices/?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
-        }
+
 
         private async void BtnBulkEod_Click(object sender, RibbonControlEventArgs e)
         {
@@ -623,5 +545,10 @@ namespace EODAddIn
             LiveDownloaderManager.CloseWorkbook(Wb);
         }
 
+        private void BtnScreener_Click(object sender, RibbonControlEventArgs e)
+        {
+            ScreenerManager manager = new ScreenerManager();
+            manager.AddNewScreener();
+        }
     }
 }
