@@ -102,7 +102,7 @@ namespace EODAddIn.Forms
             DateTime from = dtpFrom.Value;
             DateTime to = dtpTo.Value;
             List<string> tikers = new List<string>();
-            int rowIntraday = 3;
+            int rowIntraday = 2;
             Progress progress = new Progress("Get intraday data", gridTickers.Rows.Count - 1);
 
             if (cboTypeOfOutput.SelectedItem.ToString() == "One worksheet")
@@ -136,9 +136,9 @@ namespace EODAddIn.Forms
                             rowIntraday = IntradayPrinter.PrintIntraday(res, ticker, intervalString, false, chkIsTable.Checked);
                             break;
                         case "One worksheet":
-                            if (gridTickers.Rows.Count > 1)
+                            if (gridTickers.Rows.Count > 2)
                             {
-                                rowIntraday = IntradayPrinter.PrintIntradaySummary(res, ticker, intervalString, rowIntraday, worksheet);
+                                rowIntraday = IntradayPrinter.PrintIntradaySummary(res, ticker, rowIntraday, worksheet);
                             }
                             else
                             {
@@ -161,7 +161,7 @@ namespace EODAddIn.Forms
             }
             if (isSummary && chkIsTable.Checked)
             {
-                ExcelUtils.MakeTable("A2", "J" + rowIntraday.ToString(), Globals.ThisAddIn.Application.ActiveSheet, "Intraday", 9);
+                ExcelUtils.MakeTable("A1", "I" + (rowIntraday - 1).ToString(), Globals.ThisAddIn.Application.ActiveSheet, "Intraday", 9);
             }
             progress.Finish();
             Settings.Data.IntradayInterval = intervalString;

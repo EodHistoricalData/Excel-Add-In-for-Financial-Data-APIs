@@ -64,7 +64,7 @@ namespace EODAddIn.Forms
             DateTime from = dtpFrom.Value;
             DateTime to = dtpTo.Value;
             List<string> tikers = new List<string>();
-            int rowHistorical = 3;
+            int rowHistorical = 2;
             Progress progress = new Progress("Load end of data", gridTickers.Rows.Count - 1);
 
             if (cboTypeOfOutput.SelectedItem.ToString() == "One worksheet")
@@ -121,7 +121,7 @@ namespace EODAddIn.Forms
             }
             if (isSummary && chkIsTable.Checked)
             {
-                ExcelUtils.MakeTable("A2", "K" + rowHistorical.ToString(), worksheet, "Historical", 9);
+                ExcelUtils.MakeTable("A1", "K" + (rowHistorical-1).ToString(), worksheet, "Historical", 9);
             }
             progress.Finish();
             FormSettingsSave(tikers);

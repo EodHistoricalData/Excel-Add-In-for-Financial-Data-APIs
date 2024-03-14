@@ -29,145 +29,46 @@ namespace EODAddIn.BL.IntradayPrinter
                 SetNonInteractive();
 
                 string nameSheet = GetWorksheetNewName($"{ticker}  Intraday {interval}");
+                Worksheet worksheet = AddSheet(nameSheet);
 
-                Excel.Worksheet worksheet = AddSheet(nameSheet);
-                int r = 2;
-                worksheet.Cells[r, 1] = "DateTime";
-                worksheet.Cells[r, 2] = "Gmtoffset";
-                worksheet.Cells[r, 3] = "DateTime";
-                worksheet.Cells[r, 4] = "Open";
-                worksheet.Cells[r, 5] = "High";
-                worksheet.Cells[r, 6] = "Low";
-                worksheet.Cells[r, 7] = "Close";
-                worksheet.Cells[r, 8] = "Volume";
-                worksheet.Cells[r, 9] = "Timestamp";
-
-                object[,] data = new object[intraday.Count, 9];
+                object[,] data = new object[intraday.Count + 1, 8];
+                int r = 1;
+                data[0, 0] = "Timestamp";
+                data[0, 1] = "Gmtoffset";
+                data[0, 2] = "DateTime";
+                data[0, 3] = "Open";
+                data[0, 4] = "High";
+                data[0, 5] = "Low";
+                data[0, 6] = "Close";
+                data[0, 7] = "Volume";
                 int i = 0;
-                try
+                foreach (IntradayHistoricalStockPrice item in intraday)
                 {
-                    ExcelUtils.OnStart();
-                    foreach (EOD.Model.IntradayHistoricalStockPrice item in intraday)
-                    {
-                        r++;
-                        data[i, 0] = item.DateTime;
-                        data[i, 1] = item.Gmtoffset;
-                        data[i,2] = item.DateTime;
-                        data[i, 3] = item.Open;
-                        data[i, 4] = item.High;
-                        data[i, 5] = item.Low;
-                        data[i, 6] = item.Close;
-                        data[i, 7] = item.Volume;
-                        data[i, 8] = item.Timestamp;
-                        i++;
-                    }
+                    r++;
+                    i++;
+                    data[i, 0] = item.Timestamp;
+                    data[i, 1] = item.Gmtoffset;
+                    data[i, 2] = item.DateTime;
+                    data[i, 3] = item.Open;
+                    data[i, 4] = item.High;
+                    data[i, 5] = item.Low;
+                    data[i, 6] = item.Close;
+                    data[i, 7] = item.Volume;
                 }
-                catch (Exception)
-                {
-                    throw;
-                }
-                finally
-                {
-                    ExcelUtils.OnEnd();
-                }
+                worksheet.Range[worksheet.Cells[1, 1], worksheet.Cells[r, 8]].Value = data;
+                worksheet.Range["A:H"].EntireColumn.AutoFit();
+
                 if (isCreateTable)
                 {
-                    ExcelUtils.MakeTable("A2", "H" + r.ToString(), worksheet, "Intraday", 9);
+                    MakeTable("A1", "H" + r.ToString(), worksheet, "Intraday", 9);
                 }
 
-                worksheet.Range[worksheet.Cells[3, 1], worksheet.Cells[r, 9]].Value = data;
                 if (!CreateSheet) return r;
+
                 if (!chart) return r;
 
-                worksheet.Range["C2:G3"].Select();
+                DrawCharts(worksheet, r);
 
-                Excel.Shape shp = worksheet.Shapes.AddChart2(-1, Excel.XlChartType.xlStockOHLC);
-                Excel.Chart chrt = shp.Chart;
-
-                chrt.ChartGroups(1).UpBars.Format.Fill.ForeColor.RGB = Color.FromArgb(0, 176, 80);
-                chrt.ChartGroups(1).DownBars.Format.Fill.ForeColor.RGB = Color.FromArgb(255, 0, 0);
-
-                worksheet.Cells[2, 13].Value = DateTime.Now.AddDays(-10);
-                worksheet.Cells[3, 13].Value = DateTime.Now.AddDays(-1);
-
-                worksheet.Range["I:I"].EntireColumn.Hidden = true;
-                Excel.Range rng = worksheet.Range["Q1"];
-
-                string formula;
-                rng.FormulaR1C1 = $"=IFERROR(OFFSET('{worksheet.Name}'!R2C3,MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C3:C3,1)-2,1,MATCH('{worksheet.Name}'!R3C13,'{worksheet.Name}'!C3:C3,1)-MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C3:C3,1)+1,1),1)";
-                formula = rng.FormulaR1C1Local;
-                worksheet.Names.Add("_open", RefersToR1C1Local: formula);
-
-                rng.FormulaR1C1 = $"=IFERROR(OFFSET('{worksheet.Name}'!R2C3,MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C3:C3,1)-2,2,MATCH('{worksheet.Name}'!R3C13,'{worksheet.Name}'!C3:C3,1)-MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C3:C3,1)+1,1),1)";
-                formula = rng.FormulaR1C1Local;
-                worksheet.Names.Add("_high", RefersToR1C1Local: formula);
-
-                rng.FormulaR1C1 = $"=IFERROR(OFFSET('{worksheet.Name}'!R2C3,MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C3:C3,1)-2,3,MATCH('{worksheet.Name}'!R3C13,'{worksheet.Name}'!C3:C3,1)-MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C3:C3,1)+1,1),1)";
-                formula = rng.FormulaR1C1Local;
-                worksheet.Names.Add("_low", RefersToR1C1Local: formula);
-
-                rng.FormulaR1C1 = $"=IFERROR(OFFSET('{worksheet.Name}'!R2C3,MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C3:C3,1)-2,4,MATCH('{worksheet.Name}'!R3C13,'{worksheet.Name}'!C3:C3,1)-MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C3:C3,1)+1,1),1)";
-                formula = rng.FormulaR1C1Local;
-                worksheet.Names.Add("_close", RefersToR1C1Local: formula);
-
-                rng.FormulaR1C1 = $"=OFFSET('{worksheet.Name}'!R2C3,IFERROR(MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C3:C3,1)-2,0),0,IFERROR(MATCH('{worksheet.Name}'!R3C13,'{worksheet.Name}'!C3:C3,1)-MATCH('{worksheet.Name}'!R2C13,'{worksheet.Name}'!C3:C3,1)+1,1),1)";
-                formula = rng.FormulaR1C1Local;
-                worksheet.Names.Add("_period", RefersToR1C1Local: formula);
-
-                rng.ClearContents();
-
-                chrt.FullSeriesCollection(1).Values = $"='{worksheet.Name}'!_open";
-                chrt.FullSeriesCollection(2).Values = $"='{worksheet.Name}'!_high";
-                chrt.FullSeriesCollection(3).Values = $"='{worksheet.Name}'!_low";
-                chrt.FullSeriesCollection(4).Values = $"='{worksheet.Name}'!_close";
-                chrt.FullSeriesCollection(1).XValues = $"='{worksheet.Name}'!_period";
-
-                chrt.FullSeriesCollection(4).Trendlines().Add();
-                chrt.FullSeriesCollection(4).Trendlines(1).Type = Excel.XlTrendlineType.xlMovingAvg;
-                chrt.FullSeriesCollection(4).Trendlines(1).Period = 2;
-
-                shp.Left = (float)worksheet.Cells[5, 11].Left;
-                shp.Top = (float)worksheet.Cells[5, 11].Top;
-                shp.Height = 340.157480315f;
-                shp.Width = 680.3149606299f;
-                chrt.ChartTitle.Caption = worksheet.Name;
-
-
-                int lastrow = ExcelUtils.RowsCount(worksheet);
-                if (lastrow <= 2) return r;
-
-                Excel.Range timestampRng = worksheet.Range[$"I2:I{lastrow}"];
-                Excel.Range timeRng = worksheet.Range[$"C2:C{lastrow}"];
-                timeRng.Value = timestampRng.Value;
-
-                worksheet.Cells[2, 11].Value = "Start";
-                worksheet.Cells[3, 11].Value = "End";
-                worksheet.Cells[1, 12].Value = "Date";
-                worksheet.Cells[1, 13].Value = "Timestamp";
-
-                Excel.Range firstTimeRng = worksheet.Range[$"A2:A{lastrow}"];
-                worksheet.Cells[2, 12].Value = firstTimeRng.Cells[2, 1].Value;
-                worksheet.Cells[3, 12].Value = firstTimeRng.Cells[firstTimeRng.Rows.Count, 1].Value;
-
-                Excel.Range vlookupRng = worksheet.Range[$"A2:C{lastrow}"];
-                string addressRng = vlookupRng.Address;
-
-                string addressCell = worksheet.Cells[2, 12].Address[RowAbsolute: true, ColumnAbsolute: true];
-                Excel.Range cellEdit = worksheet.Cells[2, 13];
-                cellEdit.Formula = $"=IFERROR(VLOOKUP({addressCell},{addressRng},3,),1)";
-                cellEdit.NumberFormat = "@";
-
-                addressCell = worksheet.Cells[3, 12].Address[RowAbsolute: true, ColumnAbsolute: true];
-                cellEdit = worksheet.Cells[3, 13];
-                cellEdit.Formula = $"=IFERROR(VLOOKUP({addressCell},{addressRng},3,),1)";
-                cellEdit.NumberFormat = "@";
-                timeRng.NumberFormat = "@";
-
-                worksheet.Range["A:C"].EntireColumn.AutoFit();
-                worksheet.Range["L:M"].EntireColumn.AutoFit();
-
-                shp.Left = (float)worksheet.Cells[5, 11].Left;
-                shp.Top = (float)worksheet.Cells[5, 11].Top;
                 return r;
             }
             catch
@@ -179,45 +80,75 @@ namespace EODAddIn.BL.IntradayPrinter
                 _xlsApp.Interactive = true;
             }
         }
-        public static int PrintIntradaySummary(List<EOD.Model.IntradayHistoricalStockPrice> res, string ticker, string interval, int row, Worksheet sh)
+        public static int PrintIntradaySummary(List<IntradayHistoricalStockPrice> res, string ticker, int row, Worksheet worksheet)
         {
+            if (row == 2)
+            {
+                worksheet.Cells[1, 1] = "Ticker";
+                worksheet.Cells[1, 2] = "TimeStamp";
+                worksheet.Cells[1, 3] = "Gmtoffset";
+                worksheet.Cells[1, 4] = "DateTime";
+                worksheet.Cells[1, 5] = "Open";
+                worksheet.Cells[1, 6] = "High";
+                worksheet.Cells[1, 7] = "Low";
+                worksheet.Cells[1, 8] = "Close";
+                worksheet.Cells[1, 9] = "Volume";
+            }
 
-            int c = 1;
-            int r = 1;
-            sh.Cells[r, c] = "Intraday data";
-            sh.Cells[r, c].Font.Bold = true; r++;
-            sh.Cells[r, c] = "Ticker"; c++;
-            sh.Cells[r, c] = "DateTime"; c++;
-            sh.Cells[r, c] = "Gmtoffset"; c++;
-            sh.Cells[r, c] = "Open"; c++;
-            sh.Cells[r, c] = "High"; c++;
-            sh.Cells[r, c] = "Low"; c++;
-            sh.Cells[r, c] = "Close"; c++;
-            sh.Cells[r, c] = "Volume"; c++;
-            sh.Cells[r, c] = "TimeStamp";
-
-            object[,] data = new object[res.Count, c];
+            object[,] data = new object[res.Count, 9];
 
             int i = 0;
             foreach (IntradayHistoricalStockPrice item in res)
             {
                 data[i, 0] = ticker;
-                data[i, 1] = item.DateTime;
+                data[i, 1] = item.Timestamp;
                 data[i, 2] = item.Gmtoffset;
-                data[i, 3] = item.Open;
-                data[i, 4] = item.High;
-                data[i, 5] = item.Low;
-                data[i, 6] = item.Close;
-                data[i, 7] = item.Volume;
-                data[i, 8] = item.Timestamp;
+                data[i, 3] = item.DateTime;
+                data[i, 4] = item.Open;
+                data[i, 5] = item.High;
+                data[i, 6] = item.Low;
+                data[i, 7] = item.Close;
+                data[i, 8] = item.Volume;
                 i++;
             }
 
-            var rng = sh.Range[sh.Cells[row, 1], sh.Cells[row + i + 1, c]];
-            rng.Value = data;
+            worksheet.Range[worksheet.Cells[row, 1], worksheet.Cells[row + i - 1, 9]] = data;
+            worksheet.UsedRange.EntireColumn.AutoFit();
 
-            sh.UsedRange.EntireColumn.AutoFit();
-            return row + i + 1;
+            return row + i;
+        }
+
+        private static void DrawCharts(Worksheet worksheet, int row)
+        {
+            int lastCol = worksheet.UsedRange.Columns.Count;
+            var charts = worksheet.ChartObjects();
+            var chartObject = charts.Add(60, 10, 300, 300);
+            Chart chart = chartObject.Chart;
+            chart.ChartType = XlChartType.xlLine;
+            Range range = worksheet.get_Range((Range)worksheet.Cells[1, 8], (Range)worksheet.Cells[row, lastCol]);
+            chart.SetSourceData(range);
+            range = worksheet.get_Range((Range)worksheet.Cells[1, 3], (Range)worksheet.Cells[row, 3]);
+            chart.FullSeriesCollection(1).XValues = range;
+            chart.DisplayBlanksAs = XlDisplayBlanksAs.xlInterpolated;
+            chartObject.Left = (float)worksheet.Cells[1, lastCol + 1].Left;
+            chartObject.Top = (float)worksheet.Cells[1, lastCol + 1].Top + 340.157480315f;
+            chartObject.Height = 340.157480315f;
+            chartObject.Width = 680.3149606299f;
+
+            worksheet.Range["C1:G2"].Select();
+            chartObject = worksheet.Shapes.AddChart2(-1, XlChartType.xlStockOHLC);
+            chart = chartObject.Chart;
+            chart.ChartGroups(1).UpBars.Format.Fill.ForeColor.RGB = Color.FromArgb(0, 176, 80);
+            chart.ChartGroups(1).DownBars.Format.Fill.ForeColor.RGB = Color.FromArgb(255, 0, 0);
+            range = worksheet.get_Range((Range)worksheet.Cells[1, 3], (Range)worksheet.Cells[row - 1, 7]);
+            chart.SetSourceData(range);
+            chart.Axes(XlAxisType.xlCategory).CategoryType = XlCategoryType.xlCategoryScale;
+
+            chartObject.Left = (float)worksheet.Cells[1, lastCol + 1].Left;
+            chartObject.Top = (float)worksheet.Cells[1, lastCol + 1].Top;
+            chartObject.Height = 340.157480315f;
+            chartObject.Width = 680.3149606299f;
+            chart.ChartTitle.Caption = worksheet.Name;
         }
     }
 }
