@@ -122,6 +122,12 @@ namespace EODAddIn.Forms
                 try
                 {
                     List<EOD.Model.IntradayHistoricalStockPrice> res = await IntradayAPI.GetIntraday(ticker, from, to, interval);
+                    if (res.Count == 0)
+                    {
+                        throw new APIException(200, "There is no available data for the selected parameters.");
+                    }
+                    if (period == 15 || period == 30)
+                        res = CollapseRows(res, period);
                     if (rbtnAscOrder.Checked)
                     {
                         res.Reverse();
