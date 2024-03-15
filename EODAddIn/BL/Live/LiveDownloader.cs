@@ -12,15 +12,12 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web.UI.WebControls;
 using System.Windows.Forms;
 using System.Windows.Threading;
 using System.Xml;
-using System.Xml.Linq;
 using System.Xml.Serialization;
 
 using static EODAddIn.Utils.ExcelUtils;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.TrackBar;
 
 namespace EODAddIn.BL.Live
 {
@@ -88,9 +85,15 @@ namespace EODAddIn.BL.Live
             Name = name;
             Workbook = workbook;
             Workbook.BeforeClose += Workbook_BeforeClose;
-
-            Dispatcher dispUI = Dispatcher.CurrentDispatcher;
-            dispUI.Invoke(CreateRules);
+            try
+            {
+                Dispatcher dispUI = Dispatcher.CurrentDispatcher;
+                dispUI.Invoke(CreateRules);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
 
         }
 
@@ -128,6 +131,16 @@ namespace EODAddIn.BL.Live
         {
             _cancellationTokenSource.Cancel();
             _cancellationTokenSource = new CancellationTokenSource();
+            try
+            {
+                if (Rules.Count == 0)
+                    await CreateRules();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             await DoWork(_cancellationTokenSource.Token);
 
         }
@@ -135,6 +148,7 @@ namespace EODAddIn.BL.Live
         public void Stop()
         {
             _cancellationTokenSource.Cancel();
+            IsActive = false;
         }
 
         public void Delete()
@@ -145,7 +159,7 @@ namespace EODAddIn.BL.Live
             OnDeleted?.Invoke(this, EventArgs.Empty);
         }
 
-        private async void CreateRules()
+        private async Task CreateRules()
         {
             EOD.API api = new EOD.API(Program.Program.APIKey);
             var exchanges = Tickers.GroupBy(x => x.Exchange);
@@ -192,22 +206,35 @@ namespace EODAddIn.BL.Live
                     }
 
                     List<LiveStockPrice> list = new List<LiveStockPrice>();
-                    if (excenges.Count() == 1)
+                    //if (excenges.Count() == 1)
+                    //{
+                    //    foreach (var ticker in tickers)
+                    //    {
+                    //        var result = await API.GetLiveStockPricesAsync(ticker.FullName);
+                    //        list.Add(result);
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    foreach (var ticker in tickers)
+                    //    {
+                    //        var result = await API.GetLiveStockPricesAsync(ticker.FullName, excenges);
+                    //        list.AddRange(result);
+                    //    }
+                    //}
+                    if (tickers.Count == 1)
                     {
-                        foreach (var ticker in tickers)
-                        {
-                            var result = await API.GetLiveStockPricesAsync(ticker.FullName);
-                            list.Add(result);
-                        }
+                        var result = await API.GetLiveStockPricesAsync(tickers[0].FullName);
+                        list.Add(result);
                     }
-                    else
+                    if (tickers.Count > 1)
                     {
-                        foreach (var ticker in tickers)
-                        {
-                            var result = await API.GetLiveStockPricesAsync(ticker.FullName, excenges);
-                            list.AddRange(result);
-                        }
+                        var firstTicker = tickers[0];
+                        tickers.RemoveAt(0);
+                        List<string> symbols = tickers.Select(t => t.FullName).ToList();
+                        list = await API.GetLiveStockPricesAsync(firstTicker.FullName, symbols);
                     }
+
                     try
                     {
                         await _semaphoreSlim.WaitAsync();
@@ -223,7 +250,7 @@ namespace EODAddIn.BL.Live
                 }
                 catch
                 {
-                    IsActive = false;
+                    Stop();
                 }
             }
         }

@@ -156,7 +156,7 @@ namespace EODAddIn.Forms
 
         }
 
-        private void EditToolStripMenuItem_Click(object sender, EventArgs e)
+        private async void EditToolStripMenuItem_Click(object sender, EventArgs e)
         {
             
             foreach (DataGridViewRow row in dataGridViewData.Rows)
@@ -169,6 +169,7 @@ namespace EODAddIn.Forms
                     FrmScreener frm = new FrmScreener(screener);
                     frm.ShowDialog(this);
                     _screenerManager.Save();
+                    await _screenerManager.LoadAndPrintScreener(screener);
                     UpdateTable();
                     Show();
                     return;

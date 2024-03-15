@@ -41,7 +41,7 @@ namespace EODAddIn
         {
             timer = new DispatcherTimer();
             timer.Tick += new EventHandler(UpdateRequests);
-            timer.Interval = new TimeSpan(0, 0, 0, 20, 0);
+            timer.Interval = new TimeSpan(0, 0, 10, 0, 0);
             timer.Start();
 
             _xlapp = Globals.ThisAddIn.Application;
@@ -545,10 +545,10 @@ namespace EODAddIn
             LiveDownloaderManager.CloseWorkbook(Wb);
         }
 
-        private void BtnScreener_Click(object sender, RibbonControlEventArgs e)
+        private async void BtnScreener_Click(object sender, RibbonControlEventArgs e)
         {
             ScreenerManager manager = new ScreenerManager();
-            manager.AddNewScreener();
+            await manager.AddNewScreener();
         }
     }
 }
