@@ -223,7 +223,7 @@ namespace EODAddIn
             // 
             this.BtnBulkEod.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.BtnBulkEod.Image = global::EODAddIn.Properties.Resources.button_80;
-            this.BtnBulkEod.Label = "Get Bulk EOD data";
+            this.BtnBulkEod.Label = "Get Bulk EOD";
             this.BtnBulkEod.Name = "BtnBulkEod";
             this.BtnBulkEod.ShowImage = true;
             this.BtnBulkEod.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnBulkEod_Click);

@@ -478,12 +478,12 @@ namespace EODAddIn
             try
             {
                 if (FormShower.ShowActiveForm()) return;
-                Forms.FrmGetBulkEod frm = new Forms.FrmGetBulkEod();
+                FrmGetBulkEod frm = new FrmGetBulkEod();
                 frm.ShowDialog(new WinHwnd());
 
                 if (frm.DialogResult == DialogResult.OK)
                 {
-                    string exchange = frm.Exchange;
+                    string exchange = string.IsNullOrEmpty(frm.Exchange) ? "US" : frm.Exchange;
                     string type = "end-of-day data";
 
                     DateTime date = frm.Date;
@@ -492,6 +492,10 @@ namespace EODAddIn
                     BtnBulkEod.Enabled = false;
 
                     List<Bulk> res = await GetBulkEod.GetBulkEodData(exchange, EODHistoricalData.Wrapper.Model.Bulks.BulkQueryTypes.EndOfDay, date, tickers);
+                    if (!frm.IsExchange)
+                    {
+                        exchange = "Tickers";
+                    }
                     BulkEodPrinter.PrintBulkEod(res, exchange, date, tickers, type);
                 }
             }
@@ -502,7 +506,7 @@ namespace EODAddIn
             }
             finally
             {
-                BtnBulkEod.Label = "Get Bulk Eod";
+                BtnBulkEod.Label = "Get Bulk EOD";
                 BtnBulkEod.Enabled = true;
             }
         }
