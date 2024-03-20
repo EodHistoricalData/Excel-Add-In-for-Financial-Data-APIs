@@ -70,32 +70,31 @@ namespace EODAddIn.BL.Screener
                 res.Add((filter.Field, filter.Operation, filter.Value));
             }
 
-            if (!string.IsNullOrEmpty(screener.Code))
-            {
-                (Field, Operation, string) newfilter = (Field.Code, Operation.Equals, screener.Code);
-                res.Add(newfilter);
-            }
-
-            if (!string.IsNullOrEmpty(screener.Name))
-            {
-                (Field, Operation, string) newfilter = (Field.Name, Operation.Equals, screener.Name);
-                res.Add(newfilter);
-            }
-            if (!string.IsNullOrEmpty(screener.Exchange))
-            {
-                (Field, Operation, string) filter = (Field.Exchange, Operation.Equals, screener.Exchange);
-                res.Add(filter);
-            }
-            if (!string.IsNullOrEmpty(screener.Sector))
-            {
-                (Field, Operation, string) filter = (Field.Sector, Operation.Equals, screener.Sector);
-                res.Add(filter);
-            }
-            if (!string.IsNullOrEmpty(screener.Industry))
-            {
-                (Field, Operation, string) filter = (Field.Industry, Operation.Equals, screener.Industry);
-                res.Add(filter);
-            }
+            //if (!string.IsNullOrEmpty(screener.Code))
+            //{
+            //    (Field, Operation, string) newfilter = (Field.Code, Operation.Equals, screener.Code);
+            //    res.Add(newfilter);
+            //}
+            //if (!string.IsNullOrEmpty(screener.Name))
+            //{
+            //    (Field, Operation, string) newfilter = (Field.Name, Operation.Equals, screener.Name);
+            //    res.Add(newfilter);
+            //}
+            //if (!string.IsNullOrEmpty(screener.Exchange))
+            //{
+            //    (Field, Operation, string) filter = (Field.Exchange, Operation.Equals, screener.Exchange);
+            //    res.Add(filter);
+            //}
+            //if (!string.IsNullOrEmpty(screener.Sector))
+            //{
+            //    (Field, Operation, string) filter = (Field.Sector, Operation.Equals, screener.Sector);
+            //    res.Add(filter);
+            //}
+            //if (!string.IsNullOrEmpty(screener.Industry))
+            //{
+            //    (Field, Operation, string) filter = (Field.Industry, Operation.Equals, screener.Industry);
+            //    res.Add(filter);
+            //}
 
             return res;
         }

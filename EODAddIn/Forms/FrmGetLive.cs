@@ -23,11 +23,6 @@ namespace EODAddIn.Forms
             Filters = NewFilters();
         }
 
-        private void ClearTicker_Click(object sender, EventArgs e)
-        {
-            gridTickers.Rows.Clear();
-        }
-
         private void TsmiDeleteRowDataGrid_Click(object sender, EventArgs e)
         {
             if (gridTickers.SelectedRows.Count == 0) return;
@@ -216,6 +211,11 @@ namespace EODAddIn.Forms
                 }
             }
             return true;
+        }
+
+        private void tsmiClearTicker_Click(object sender, EventArgs e)
+        {
+            gridTickers.Rows.Clear();
         }
     }
 }

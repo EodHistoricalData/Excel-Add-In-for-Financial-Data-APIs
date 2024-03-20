@@ -366,6 +366,7 @@ namespace EODAddIn.Forms
 
             txtNameScreener.Text = Screener.NameScreener;
             cboSector.Text = Screener.Sector;
+            cboSector_SelectedIndexChanged(null, null);
             cboIndustry.Text = Screener.Industry;
             txtCode.Text = Screener.Code;
             txtName.Text = Screener.Name;

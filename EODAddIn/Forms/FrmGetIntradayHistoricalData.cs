@@ -165,7 +165,7 @@ namespace EODAddIn.Forms
                     continue;
                 }
             }
-            if (isSummary && chkIsTable.Checked)
+            if (isSummary && chkIsTable.Checked && gridTickers.Rows.Count > 2)
             {
                 ExcelUtils.MakeTable("A1", "I" + (rowIntraday - 1).ToString(), Globals.ThisAddIn.Application.ActiveSheet, "Intraday", 9);
             }
