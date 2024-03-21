@@ -134,7 +134,7 @@
             this.gridTickers.RowHeadersVisible = false;
             this.gridTickers.RowHeadersWidth = 20;
             this.gridTickers.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.gridTickers.Size = new System.Drawing.Size(260, 192);
+            this.gridTickers.Size = new System.Drawing.Size(260, 186);
             this.gridTickers.TabIndex = 12;
             // 
             // Column1
@@ -156,7 +156,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(14, 253);
+            this.label1.Location = new System.Drawing.Point(14, 247);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(55, 13);
             this.label1.TabIndex = 14;
@@ -164,7 +164,7 @@
             // 
             // tbExchange
             // 
-            this.tbExchange.Location = new System.Drawing.Point(108, 250);
+            this.tbExchange.Location = new System.Drawing.Point(108, 244);
             this.tbExchange.Name = "tbExchange";
             this.tbExchange.Size = new System.Drawing.Size(164, 20);
             this.tbExchange.TabIndex = 15;
@@ -174,17 +174,17 @@
             this.RadioExchange.AutoSize = true;
             this.RadioExchange.Location = new System.Drawing.Point(13, 29);
             this.RadioExchange.Name = "RadioExchange";
-            this.RadioExchange.Size = new System.Drawing.Size(92, 17);
+            this.RadioExchange.Size = new System.Drawing.Size(103, 17);
             this.RadioExchange.TabIndex = 16;
             this.RadioExchange.TabStop = true;
-            this.RadioExchange.Text = "Full Exchange";
+            this.RadioExchange.Text = "Entire Exchange";
             this.RadioExchange.UseVisualStyleBackColor = true;
             this.RadioExchange.CheckedChanged += new System.EventHandler(this.RadioExchange_CheckedChanged);
             // 
             // RadioTickers
             // 
             this.RadioTickers.AutoSize = true;
-            this.RadioTickers.Location = new System.Drawing.Point(111, 29);
+            this.RadioTickers.Location = new System.Drawing.Point(123, 29);
             this.RadioTickers.Name = "RadioTickers";
             this.RadioTickers.Size = new System.Drawing.Size(105, 17);
             this.RadioTickers.TabIndex = 17;
