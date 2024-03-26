@@ -12,7 +12,7 @@ using EODAddIn.Forms;
 using EODAddIn.Utils;
 using EODAddIn.View.Forms;
 
-using Microsoft.Office.Core;
+using Microsoft.Office.Tools;
 using Microsoft.Office.Interop.Excel;
 using Microsoft.Office.Tools.Ribbon;
 
@@ -20,13 +20,10 @@ using Newtonsoft.Json;
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Threading;
-using System.Xml.Serialization;
 
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -62,15 +59,33 @@ namespace EODAddIn
             try
             {
                 var panels = Globals.ThisAddIn.CustomTaskPanes;
-                var panel = panels.FirstOrDefault(p => p.Title == "Info");
-                if (panel == null)
+                var infoPanels = panels.Where(p => p.Title == "Info").ToList();
+                if (infoPanels.Count == 0)
                 {
                     var panelInfo = new Panels.PanelInfo();
                     panelInfo.ShowPanel();
                 }
                 else
                 {
-                    panel.Visible = panel.Visible ? false : true;
+                    var activeWindow = _xlapp.ActiveWindow;
+                    CustomTaskPane taskPane = null;
+                    foreach (var panel in infoPanels)
+                    {
+                        var panelWindow = (Window)panel.Window;
+                        if (panelWindow.Hwnd == activeWindow.Hwnd)
+                        {
+                            taskPane = panel;
+                        }
+                    }
+                    if (taskPane == null)
+                    {
+                        var panelInfo = new Panels.PanelInfo();
+                        panelInfo.ShowPanel();
+                    }
+                    else
+                    {
+                        taskPane.Visible = !taskPane.Visible;
+                    }
                 }
             }
             catch (Exception ex)
