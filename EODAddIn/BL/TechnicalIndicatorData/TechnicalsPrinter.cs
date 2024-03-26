@@ -1,10 +1,14 @@
-﻿using EODHistoricalData.Wrapper.Model.TechnicalIndicators;
+﻿using EODAddIn.Utils;
+
+using EODHistoricalData.Wrapper.Model.TechnicalIndicators;
 using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
+using System.Windows.Forms;
+
 using static EODAddIn.Utils.ExcelUtils;
 
 namespace EODAddIn.BL.TechnicalIndicatorData
@@ -20,13 +24,19 @@ namespace EODAddIn.BL.TechnicalIndicatorData
                 OnStart();
 
                 string function = parameters.First(x => x.Name == "function").Value;
-                string nameSheet = $"{ticker} - {function}";
+
+                string nameSheet = GetWorksheetNewName($"{ticker} - {function}");
 
                 Worksheet worksheet = AddSheet(nameSheet);
 
                 worksheet.Cells[row, 1] = "Technical Indicator Data";
                 worksheet.Range["A:A"].EntireColumn.AutoFit();
                 row++;
+
+                if (data.Count == 0)
+                {
+                    MessageBox.Show("There is no available data for the selected parameters.", "No data", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
 
                 Type myType = data[data.Count - 1].GetType();
                 IList<PropertyInfo> props = new List<PropertyInfo>(myType.GetProperties());
@@ -123,18 +133,17 @@ namespace EODAddIn.BL.TechnicalIndicatorData
 
         }
 
-        public static int PrintTechnicalsSummary(List<TechnicalIndicator> data, string ticker, int row, List<IndicatorParameters> parameters)
+        public static int PrintTechnicalsSummary(List<TechnicalIndicator> data, string ticker, int row, List<IndicatorParameters> parameters, Worksheet sh)
         {
             try
             {
                 SetNonInteractive();
                 OnStart();
-                Worksheet worksheet = Globals.ThisAddIn.Application.ActiveSheet;
+
                 if (row == 1)
                 {
                     string function = parameters.First(x => x.Name == "function").Value;
-                    string nameSheet = $"{ticker} - {function}";
-                    worksheet.Cells[row, 1] = "Technical Indicator Data";
+
                     row++;
 
                     Type myType = data[data.Count - 1].GetType();
@@ -175,7 +184,7 @@ namespace EODAddIn.BL.TechnicalIndicatorData
                             }
                         }
                     }
-                    row = Printer.PrintHorisontalTable(worksheet.Cells[row, 1], table) - 1;
+                    row = Printer.PrintHorisontalTable(sh.Cells[row, 1], table) - 1;
                 }
                 else
                 {
@@ -206,7 +215,7 @@ namespace EODAddIn.BL.TechnicalIndicatorData
                             }
                         }
                     }
-                    row = Printer.PrintHorisontalTable(worksheet.Cells[row, 1], table);
+                    row = Printer.PrintHorisontalTable(sh.Cells[row, 1], table);
                 }
             }
             catch

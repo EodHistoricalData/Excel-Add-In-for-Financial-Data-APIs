@@ -1,14 +1,25 @@
-﻿using EODAddIn.BL.HistoricalPrinter;
+﻿using EOD.Model.OptionsData;
+
+using EODAddIn.BL.HistoricalPrinter;
 using EODAddIn.BL.TechnicalIndicatorData;
 using EODAddIn.Program;
 using EODAddIn.Utils;
+
 using EODHistoricalData.Wrapper.Model.TechnicalIndicators;
+
+using Microsoft.Office.Interop.Excel;
+
 using MS.ProgressBar;
+
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Windows.Forms;
+
 using static EOD.API;
+
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace EODAddIn.Forms
@@ -42,11 +53,11 @@ namespace EODAddIn.Forms
         {
             InitializeComponent();
 
-            cboFunction.SelectedIndex = Settings.SettingsFields.TechnicalsFunctionId;
-            dtpFrom.Value = Settings.SettingsFields.TechnicalsFrom != DateTime.MinValue ? Settings.SettingsFields.TechnicalsFrom : new DateTime(2020, 1, 1);
-            dtpTo.Value =  DateTime.Today;
+            cboFunction.SelectedIndex = Settings.Data.TechnicalsFunctionId;
+            dtpFrom.Value = Settings.Data.TechnicalsFrom != DateTime.MinValue ? Settings.Data.TechnicalsFrom : new DateTime(2020, 1, 1);
+            dtpTo.Value = DateTime.Today;
 
-            foreach (string ticker in Settings.SettingsFields.TechnicalsTickers)
+            foreach (string ticker in Settings.Data.TechnicalsTickers)
             {
                 int i = gridTickers.Rows.Add();
                 gridTickers.Rows[i].Cells[0].Value = ticker;
@@ -140,85 +151,104 @@ namespace EODAddIn.Forms
         private async void BtnLoad_Click(object sender, EventArgs e)
         {
             if (!CheckForm()) return;
-
-            if (cboTypeOfOutput.SelectedItem.ToString() == "One worksheet")
-            {
-                Excel.Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
-                if (sh.UsedRange.Value != null)
-                {
-                    MessageBox.Show(
-                    "Select empty worksheet",
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-                    return;
-                }
-            }
+            string sheetName;
             bool isSummary = false;
+            Worksheet worksheet = null;
             int row = 1;
             Order order = rbtnAscOrder.Checked ? Order.Ascending : Order.Descending;
             DateTime from = dtpFrom.Value;
             DateTime to = dtpTo.Value;
 
-            Settings.SettingsFields.TechnicalsFunctionId = cboFunction.SelectedIndex;
-            Settings.SettingsFields.TechnicalsTo = to;
-            Settings.SettingsFields.TechnicalsFrom = from;
+            Settings.Data.TechnicalsFunctionId = cboFunction.SelectedIndex;
+            Settings.Data.TechnicalsTo = to;
+            Settings.Data.TechnicalsFrom = from;
             Settings.Save();
 
+            btnLoad.Enabled = false;
             List<IndicatorParameters> parameters = GetParameters();
             List<string> tikers = new List<string>();
+
             Progress progress = new Progress("Loading data", gridTickers.Rows.Count - 1);
-            foreach (DataGridViewRow item in gridTickers.Rows)
+            try
             {
-                if (item.Cells[0].Value == null) continue;
-                progress.TaskStart(item.Cells[0].Value?.ToString(), 1);
-                string ticker = item.Cells[0].Value.ToString();
-                tikers.Add(ticker);
-                try
+                if (cboTypeOfOutput.SelectedItem.ToString() == "One worksheet")
                 {
-                    var result = await TechnicalIndicatorAPI.GetTechnicalIndicatorsData(ticker, from, to, order, parameters);
+                    isSummary = true;
+                    string function = parameters.First(x => x.Name == "function").Value;
+                    sheetName = ExcelUtils.GetWorksheetNewName($"Tech summary - {function}");
+                    worksheet = ExcelUtils.AddSheet(sheetName);
+                }
 
-                    if (rbtnAscOrder.Checked)
-                    {
-                        result.Reverse();
-                    }
-                    switch (cboTypeOfOutput.SelectedItem.ToString())
-                    {
-                        case "Separated with chart":
-                            row = TechnicalsPrinter.PrintTechnicals(result, ticker, parameters, true, chkIsTable.Checked);
-                            break;
-                        case "Separated without chart":
-                            row = TechnicalsPrinter.PrintTechnicals(result, ticker, parameters, false, chkIsTable.Checked);
-                            break;
-                        case "One worksheet":
-                            row = TechnicalsPrinter.PrintTechnicalsSummary(result, ticker, row, parameters);
-                            isSummary = true;
-                            break;
-                    }
-                }
-                catch (APIException ex)
+                foreach (DataGridViewRow item in gridTickers.Rows)
                 {
-                    MessageBox.Show(ex.StatusError, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
+                    if (item.Cells[0].Value == null) continue;
+                    progress.TaskStart(item.Cells[0].Value?.ToString(), 1);
+                    string ticker = item.Cells[0].Value.ToString();
+                    tikers.Add(ticker);
+                    try
+                    {
+                        var result = await TechnicalIndicatorAPI.GetTechnicalIndicatorsData(ticker, from, to, order, parameters);
+
+                        if (result.Count == 0)
+                        {
+                            MessageBox.Show("There is no available data for the selected parameters.", "No data", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            return;
+                        }
+
+                        if (rbtnAscOrder.Checked)
+                        {
+                            result.Reverse();
+                        }
+                        switch (cboTypeOfOutput.SelectedItem.ToString())
+                        {
+                            case "Separated with chart":
+                                row = TechnicalsPrinter.PrintTechnicals(result, ticker, parameters, true, chkIsTable.Checked);
+                                break;
+                            case "Separated without chart":
+                                row = TechnicalsPrinter.PrintTechnicals(result, ticker, parameters, false, chkIsTable.Checked);
+                                break;
+                            case "One worksheet":
+                                row = TechnicalsPrinter.PrintTechnicalsSummary(result, ticker, row, parameters, worksheet);
+                                isSummary = true;
+                                break;
+                        }
+                    }
+                    catch (APIException ex)
+                    {
+                        MessageBox.Show(ex.StatusError, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        Close();
+                        return;
+                    }
+                    catch (Exception ex)
+                    {
+                        ErrorReport error = new ErrorReport(ex);
+                        error.ShowAndSend();
+                        Close();
+                        return;
+                    }
                 }
-                catch (Exception ex)
+
+                if (isSummary && chkIsTable.Checked)
                 {
-                    ErrorReport error = new ErrorReport(ex);
-                    error.ShowAndSend();
-                    return;
+                    ExcelUtils.MakeTable("A2", "K" + row.ToString(), Globals.ThisAddIn.Application.ActiveSheet, "Historical", 9);
                 }
+
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                progress.Finish();
+                btnLoad.Enabled = true;
             }
 
-            if (isSummary && chkIsTable.Checked)
-            {
-                ExcelUtils.MakeTable("A2", "K" + row.ToString(), Globals.ThisAddIn.Application.ActiveSheet, "Historical", 9);
-            }
 
-            progress.Finish();
-            Settings.SettingsFields.TechnicalsTickers = tikers;
+            Settings.Data.TechnicalsTickers = tikers;
             Settings.Save();
             DialogResult = DialogResult.OK;
+            Close();
         }
 
         private List<IndicatorParameters> GetParameters()
@@ -228,15 +258,18 @@ namespace EODAddIn.Forms
             parameters.Add(new IndicatorParameters("function", function));
             if (labelFirstOption.Visible)
             {
-                parameters.Add(new IndicatorParameters(labelFirstOption.Text.ToLower(), tbFirstOption.Text.ToLower()));
+                if (!string.IsNullOrEmpty(tbFirstOption.Text))
+                    parameters.Add(new IndicatorParameters(labelFirstOption.Text.ToLower(), tbFirstOption.Text.ToLower()));
             }
             if (labelSecondOption.Visible)
             {
-                parameters.Add(new IndicatorParameters(labelSecondOption.Text.ToLower(), tbSecondOption.Text.ToLower()));
+                if (!string.IsNullOrEmpty(tbSecondOption.Text))
+                    parameters.Add(new IndicatorParameters(labelSecondOption.Text.ToLower(), tbSecondOption.Text.ToLower()));
             }
             if (labelThirdOption.Visible)
             {
-                parameters.Add(new IndicatorParameters(labelThirdOption.Text.ToLower(), tbThirdOption.Text.ToLower()));
+                if (!string.IsNullOrEmpty(tbThirdOption.Text))
+                    parameters.Add(new IndicatorParameters(labelThirdOption.Text.ToLower(), tbThirdOption.Text.ToLower()));
             }
             return parameters;
         }
@@ -279,7 +312,7 @@ namespace EODAddIn.Forms
 
         private void ClearTicker_Click(object sender, EventArgs e)
         {
-            gridTickers.Rows.Clear(); 
+            gridTickers.Rows.Clear();
         }
 
         private void tsmiFindTicker_Click(object sender, EventArgs e)
@@ -321,6 +354,7 @@ namespace EODAddIn.Forms
         private void tsmiFromExcel_Click(object sender, EventArgs e)
         {
             FrmSelectRange frm = new FrmSelectRange();
+            tsmiFromExcel.Enabled = false;
             frm.Show(new WinHwnd());
             frm.FormClosing += FrmSelectRangeClosing;
         }
@@ -342,6 +376,7 @@ namespace EODAddIn.Forms
                     }
                 }
             }
+            tsmiFromExcel.Enabled = true;
         }
     }
 }

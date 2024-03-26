@@ -131,6 +131,7 @@
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.gridTickers);
             this.Controls.Add(this.btnLoad);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FrmGetBulk";

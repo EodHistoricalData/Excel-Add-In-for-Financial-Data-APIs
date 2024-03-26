@@ -12,11 +12,11 @@ namespace EODAddIn.Program
     {
         private static readonly string xmlFilename = "settings.xml";
         private static readonly string path;
-        internal static SettingsFields SettingsFields;
+        internal static SettingsFields Data;
 
         static Settings()
         {
-            SettingsFields = new SettingsFields();
+            Data = new SettingsFields();
             path = Path.Combine(Program.UserFolder, xmlFilename);
             Read();
         }
@@ -33,7 +33,7 @@ namespace EODAddIn.Program
                 XmlSerializer formatter = new XmlSerializer(typeof(SettingsFields));
                 using (FileStream fs = File.OpenRead(path))
                 {
-                    SettingsFields = (SettingsFields)formatter.Deserialize(fs);
+                    Data = (SettingsFields)formatter.Deserialize(fs);
                 }
             }
             catch (Exception)
@@ -53,7 +53,7 @@ namespace EODAddIn.Program
                 XmlSerializer formatter = new XmlSerializer(typeof(SettingsFields));
                 using (FileStream fs = new FileStream(path, FileMode.Create))
                 {
-                    formatter.Serialize(fs, SettingsFields);
+                    formatter.Serialize(fs, Data);
                 }
             }
             catch (Exception ex)

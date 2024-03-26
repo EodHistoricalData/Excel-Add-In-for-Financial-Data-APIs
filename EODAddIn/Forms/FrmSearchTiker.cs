@@ -32,6 +32,7 @@ namespace EODAddIn.Forms
 
         private void TxtSearch_TextChanged(object sender, EventArgs e)
         {
+            if (string.IsNullOrEmpty(txtSearch.Text)) return;
             gridResult.Rows.Clear();
             List<EOD.Model.SearchResult> searchResults = JsonConvert.DeserializeObject<List<EOD.Model.SearchResult>>(Response.GET($"https://eodhistoricaldata.com/api/query-search-extended/?q={txtSearch.Text}"));
 

@@ -9,22 +9,18 @@ using System.Windows.Forms;
 
 using Excel = Microsoft.Office.Interop.Excel;
 using static EODAddIn.Utils.ExcelUtils;
+using EODAddIn.BL;
 
 namespace EODAddIn.Forms
 {
     public partial class FrmGetLive : Form
     {
-        private List<(string, bool)> Filters = null;
+        private List<Filter> Filters = null;
         internal LiveDownloader LiveDownloader = null;
         public FrmGetLive()
         {
             InitializeComponent();
             Filters = NewFilters();
-        }
-
-        private void ClearTicker_Click(object sender, EventArgs e)
-        {
-            gridTickers.Rows.Clear();
         }
 
         private void TsmiDeleteRowDataGrid_Click(object sender, EventArgs e)
@@ -72,6 +68,7 @@ namespace EODAddIn.Forms
         private void TsmiFromExcel_Click(object sender, EventArgs e)
         {
             FrmSelectRange frm = new FrmSelectRange();
+            tsmiFromExcel.Enabled = false;
             frm.Show(new WinHwnd());
             frm.FormClosing += FrmSelectRangeClosing;
         }
@@ -93,6 +90,7 @@ namespace EODAddIn.Forms
                     }
                 }
             }
+            tsmiFromExcel.Enabled = true;
         }
 
         private void BtnFilters_Click(object sender, EventArgs e)
@@ -101,18 +99,18 @@ namespace EODAddIn.Forms
             if (frm.ShowDialog(new WinHwnd()) == DialogResult.OK)
             {
                 Filters = frm.Filters;
-                if (Filters.All(x => x.Item2 == true))
+                if (Filters.All(x => x.IsChecked == true))
                 {
                     LblFilters.Text = "All";
                 }
                 else
                 {
-                    LblFilters.Text = string.Join(", ", Filters.FindAll(x => x.Item2 == true).Select(x => x.Item1));
+                    LblFilters.Text = string.Join(", ", Filters.FindAll(x => x.IsChecked == true).Select(x => x.Name));
                 }
             }
         }
 
-        private List<(string, bool)> NewFilters()
+        private List<Filter> NewFilters()
         {
             List<(string, bool)> pairs = new List<(string, bool)>
             {
@@ -127,7 +125,20 @@ namespace EODAddIn.Forms
                 { ("Change", true) },
                 { ("Change_p", true) }
             };
-            return pairs;
+
+            var filters = new List<Filter>();
+
+            foreach (var pair in pairs)
+            {
+                var filter = new Filter()
+                {
+                    Name = pair.Item1,
+                    IsChecked = pair.Item2,
+                };
+                filters.Add(filter);
+            }
+
+            return filters;
         }
 
         private void BtnCreate_Click(object sender, EventArgs e)
@@ -140,50 +151,32 @@ namespace EODAddIn.Forms
             {
                 int interval = Convert.ToInt32(NudInterval.Value);
                 bool smart = chkIsTable.Checked;
-                List<(string, string)> tickers = GetTickers();
-                int output = cboTypeOfOutput.SelectedIndex;
-                List<(string, string)> wsNames = new List<(string, string)>();
+                List<Ticker> tickers = GetTickers();
+
                 int i = 1;
                 string downloaderName;
                 do
                 {
                     downloaderName = "Live Downloader " + i;
-                    if (Settings.SettingsFields.LiveDownloaderNames.Contains(downloaderName))
-                    {
-                        i++;
-                    }
-                    else
-                    {
-                        break;
-                    }
+                    var count = LiveDownloaderManager.LiveDownloaders.Where(x => x.Name == downloaderName).Count();
+                    if (count == 0) break;
+                    i++;
                 }
                 while (true);
-                if (output == 0)
-                {
-                    wsNames.Add(("", downloaderName));
-                }
-                else
-                {
-                    foreach (var ticker in tickers)
-                    {
-                        string tickerStr = ticker.Item1 + "." + ticker.Item2;
-                        wsNames.Add((tickerStr, downloaderName + " " + tickerStr));
-                    }
-                }
-                LiveDownloader = new LiveDownloader(tickers, interval, output, smart, Filters, downloaderName, wsNames);
-                Settings.SettingsFields.LiveDownloaderNames.Add(downloaderName);
-                Settings.Save();
+
+                LiveDownloader = new LiveDownloader(tickers, interval, smart, Filters, downloaderName, Globals.ThisAddIn.Application.ActiveWorkbook);
+
                 Close();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private List<(string, string)> GetTickers()
+        private List<Ticker> GetTickers()
         {
-            List<(string, string)> tickers = new List<(string, string)>();
+            List<Ticker> tickers = new List<Ticker>();
             foreach (DataGridViewRow row in gridTickers.Rows)
             {
                 if (row.Cells[0].Value == null) continue;
@@ -191,7 +184,12 @@ namespace EODAddIn.Forms
                 List<string> codeexchange = ticker.Split('.').ToList();
                 if (codeexchange.Count == 2)
                 {
-                    tickers.Add((codeexchange[0], codeexchange[1]));
+                    var newTicker = new Ticker()
+                    {
+                        Name = codeexchange[0],
+                        Exchange = codeexchange[1]
+                    };
+                    tickers.Add(newTicker);
                 }
             }
             return tickers;
@@ -199,6 +197,11 @@ namespace EODAddIn.Forms
 
         private bool CheckForm()
         {
+            if (gridTickers.Rows.Count == 0)
+            {
+                MessageBox.Show("Enter the ticker in the Ticker.Exchange format", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
             foreach (DataGridViewRow row in gridTickers.Rows)
             {
                 if (row.Cells[0].Value != null && !row.Cells[0].Value.ToString().Contains("."))
@@ -208,6 +211,11 @@ namespace EODAddIn.Forms
                 }
             }
             return true;
+        }
+
+        private void tsmiClearTicker_Click(object sender, EventArgs e)
+        {
+            gridTickers.Rows.Clear();
         }
     }
 }

@@ -1,5 +1,7 @@
-﻿using EODAddIn.Program;
-using Microsoft.Office.Interop.Excel;
+﻿using EODAddIn.BL.Screener;
+
+using Microsoft.Office.Core;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +14,9 @@ namespace EODAddIn.Forms
 {
     public partial class FrmScreener : Form
     {
-        public List<(Field, Operation, string)> Filters { get; set; } = new List<(Field, Operation, string)>();
-        public List<Signal> Signals { get; set; } = new List<Signal>();
-        public (Field, Order)? Sort { get; set; }
-        public int Limit { get; set; }
+        public Screener Screener { get; private set; }
 
-        private Dictionary<string, string> _fields = new Dictionary<string, string>()
+        private readonly Dictionary<string, string> _fields = new Dictionary<string, string>()
         {
             { "market capitalization", "number" },
             { "earnings share", "number" },
@@ -27,7 +26,7 @@ namespace EODAddIn.Forms
             { "avgvol 1d", "number" },
             { "avgvol 200d", "number" },
         };
-        private List<string> _operation = new List<string>()
+        private readonly List<string> _operation = new List<string>()
         {
             { "=" },
             { ">" },
@@ -36,8 +35,7 @@ namespace EODAddIn.Forms
             { "<=" },
             { "!=" },
         };
-
-        private List<(string, string)> _industriesAndSectors = new List<(string, string)>()
+        private readonly List<(string, string)> _industriesAndSectors = new List<(string, string)>()
             {
             ( "Agricultural Chemicals", "Basic Materials" ),
             ( "Agricultural Inputs", "Basic Materials"),
@@ -122,7 +120,7 @@ namespace EODAddIn.Forms
             ( "Household & Personal Products", "Consumer Defensive"),
             ( "Packaged Foods", "Consumer Defensive"),
             ( "Pharmaceutical Retailers", "Consumer Defensive"),
-            ( "Tobacco", "Consumer Defensive"),            
+            ( "Tobacco", "Consumer Defensive"),
             ( "Oil & Gas Drilling", "Energy"),
             ( "Oil & Gas E&P", "Energy"),
             ( "Oil & Gas Equipment & Services", "Energy"),
@@ -274,7 +272,7 @@ namespace EODAddIn.Forms
             ( "REIT-Office", "Real Estate"),
             ( "REIT-Residential", "Real Estate"),
             ( "REIT-Retail", "Real Estate"),
-            ( "REIT-Specialty", "Real Estate"),          
+            ( "REIT-Specialty", "Real Estate"),
             ( "Application Software", "Technology"),
             ( "Business Software & Services", "Technology"),
             ( "Communication Equipment", "Technology"),
@@ -346,35 +344,222 @@ namespace EODAddIn.Forms
 
         };
 
-        public FrmScreener()
+        public FrmScreener(Screener screener = null)
         {
+            Screener = screener;
             InitializeComponent();
-            cboSector.Text = Settings.SettingsFields.ScreenerSector;
-            cboIndustry.Text = Settings.SettingsFields.ScreenerIndustry;
-            txtCode.Text = Settings.SettingsFields.ScreenerCode;
-            txtName.Text = Settings.SettingsFields.ScreenerName;
-            txtExchange.Text = Settings.SettingsFields.ScreenerExchange;
-            numLimit.Value = Settings.SettingsFields.ScreenerLimit;
-            chk50d_new_hi.CheckState = Settings.SettingsFields.Screener50d_New_Hi;
-            chk50d_new_lo.CheckState = Settings.SettingsFields.Screener50d_New_Lo;
-            chk200d_new_hi.CheckState = Settings.SettingsFields.Screener200d_New_Hi;
-            chk200d_new_lo.CheckState = Settings.SettingsFields.Screener200d_New_Lo;
-            chkWallstreet_hi.CheckState = Settings.SettingsFields.ScreenerWallStreet_Hi;
-            chkWallstreet_lo.CheckState = Settings.SettingsFields.ScreenerWallStreet_Lo;
-            rbtnSortAsc.Checked = Settings.SettingsFields.ScreenerRbtnSortAsc;
-            rbtnSortDesc.Checked = Settings.SettingsFields.ScreenerRbtnSortDesc;
-            int dataGridRow=0;
-            foreach ((string,string,string) values in Settings.SettingsFields.ScreenerDataGridViewFilters)
-            {
-
-                dataGridViewFilters.Rows.Add();
-                dataGridViewFilters.Rows[dataGridRow].Cells[0].Value = values.Item1;
-                dataGridViewFilters.Rows[dataGridRow].Cells[1].Value = values.Item2;
-                dataGridViewFilters.Rows[dataGridRow].Cells[2].Value = values.Item3;
-                dataGridRow++;
-            }
-            Settings.SettingsFields.ScreenerDataGridViewFilters.Clear();
+            SetForm();
         }
+
+        /// <summary>
+        /// Fill form from screener data
+        /// </summary>
+        private void SetForm()
+        {
+            if (Screener == null)
+            {
+                Screener = new Screener
+                {
+                    NameScreener = "New screener"
+                };
+            }
+
+            txtNameScreener.Text = Screener.NameScreener;
+            cboSector.Text = Screener.Sector;
+            cboSector_SelectedIndexChanged(null, null);
+            cboIndustry.Text = Screener.Industry;
+            txtCode.Text = Screener.Code;
+            txtName.Text = Screener.Name;
+            txtExchange.Text = Screener.Exchange;
+            numLimit.Value = Screener.Limit;
+
+            if (Screener.Signals != null)
+            {
+                foreach (var signal in Screener.Signals)
+                {
+                    switch (signal)
+                    {
+                        case Signal.New_50d_low:
+                            break;
+                        case Signal.New_50d_hi:
+                            break;
+                        case Signal.New_200d_low:
+                            chk200d_new_lo.Checked = true;
+                            break;
+                        case Signal.New_200d_hi:
+                            chk200d_new_hi.Checked = true;
+                            break;
+                        case Signal.Bookvalue_neg:
+                            chkBookvalue_neg.Checked = true;
+                            break;
+                        case Signal.Bookvalue_pos:
+                            chkBookvalue_pos.Checked = true;
+                            break;
+                        case Signal.Wallstreet_low:
+                            chkWallstreet_lo.Checked = true;
+                            break;
+                        case Signal.Wallstreet_hi:
+                            chkWallstreet_hi.Checked = true;
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
+
+
+            if (Screener.Sort != null)
+            {
+                if (Screener.Sort.Value.Item2 == Order.Ascending)
+                {
+                    rbtnSortAsc.Checked = true;
+                }
+                else
+                {
+                    rbtnSortDesc.Checked = true;
+                }
+
+                switch (Screener.Sort.Value.Item1)
+                {
+                    case Field.Code:
+                        cboSortField.Text = "code";
+                        break;
+                    case Field.Name:
+                        cboSortField.Text = "name";
+                        break;
+                    case Field.Exchange:
+                        cboSortField.Text = "exchange";
+                        break;
+                    case Field.Sector:
+                        cboSortField.Text = "sector";
+                        break;
+                    case Field.Industry:
+                        cboSortField.Text = "industry";
+                        break;
+                    case Field.MarketCapitalization:
+                        cboSortField.Text = "market capitalization";
+                        break;
+                    case Field.EarningsShare:
+                        cboSortField.Text = "earnings share";
+                        break;
+                    case Field.DividendYield:
+                        cboSortField.Text = "dividend yield";
+                        break;
+                    case Field.Refund1dP:
+                        cboSortField.Text = "refund 1d";
+                        break;
+                    //case Field.Refund5dP:
+                    //    cboSortField.Text = "code";
+                    //    break;
+                    //case Field.Avgvol1d:
+                    //    cboSortField.Text = "code";
+                    //    break;
+                    //case Field.Avgvol200d:
+                    //    cboSortField.Text = "code";
+                    //    break;
+                    default:
+                        cboSortField.SelectedIndex = -1;
+                        break;
+                }
+
+                int dataGridRow = 0;
+                foreach (var filter in Screener.Filters)
+                {
+                    switch (filter.Field)
+                    {
+                        case Field.Code:
+                            continue;
+                        case Field.Name:
+                            continue;
+                        case Field.Exchange:
+                            continue;
+                        case Field.Sector:
+                            continue;
+                        case Field.Industry:
+                            continue;
+                        case Field.MarketCapitalization:
+
+                            dataGridViewFilters.Rows.Add();
+                            dataGridViewFilters.Rows[dataGridRow].Cells[0].Value = "market capitalization";
+
+                            break;
+                        case Field.EarningsShare:
+
+                            dataGridViewFilters.Rows.Add();
+                            dataGridViewFilters.Rows[dataGridRow].Cells[0].Value = "earnings share";
+
+                            break;
+                        case Field.DividendYield:
+
+                            dataGridViewFilters.Rows.Add();
+                            dataGridViewFilters.Rows[dataGridRow].Cells[0].Value = "dividend yield";
+
+                            break;
+                        case Field.Refund1dP:
+
+                            dataGridViewFilters.Rows.Add();
+                            dataGridViewFilters.Rows[dataGridRow].Cells[0].Value = "refund 1d p";
+                            break;
+                        case Field.Refund5dP:
+
+                            dataGridViewFilters.Rows.Add();
+                            dataGridViewFilters.Rows[dataGridRow].Cells[0].Value = "refund 5d p";
+                            continue;
+                        case Field.Avgvol1d:
+
+                            dataGridViewFilters.Rows.Add();
+                            dataGridViewFilters.Rows[dataGridRow].Cells[0].Value = "avgvol 1d";
+
+                            continue;
+                        case Field.Avgvol200d:
+
+                            dataGridViewFilters.Rows.Add();
+                            dataGridViewFilters.Rows[dataGridRow].Cells[0].Value = "avgvol 200d";
+                            continue;
+                        default:
+                            continue;
+                    }
+
+
+
+
+                    switch (filter.Operation)
+                    {
+                        case Operation.Matches:
+                            dataGridViewFilters.Rows[dataGridRow].Cells[1].Value = "=";
+                            break;
+                        case Operation.Equals:
+                            dataGridViewFilters.Rows[dataGridRow].Cells[1].Value = "=";
+                            break;
+                        case Operation.More:
+                            dataGridViewFilters.Rows[dataGridRow].Cells[1].Value = ">";
+                            break;
+                        case Operation.Less:
+                            dataGridViewFilters.Rows[dataGridRow].Cells[1].Value = "<";
+                            break;
+                        case Operation.NotLess:
+                            dataGridViewFilters.Rows[dataGridRow].Cells[1].Value = ">=";
+                            break;
+                        case Operation.NotMore:
+                            dataGridViewFilters.Rows[dataGridRow].Cells[1].Value = "<=";
+                            break;
+                        case Operation.NotEquals:
+                            dataGridViewFilters.Rows[dataGridRow].Cells[1].Value = "!=";
+                            break;
+                        default:
+                            break;
+                    }
+
+
+
+                    dataGridViewFilters.Rows[dataGridRow].Cells[2].Value = filter.Value;
+                    dataGridRow++;
+
+
+                }
+            }
+        }
+
         private void dataGridViewFilters_RowsAdded(object sender, DataGridViewRowsAddedEventArgs e)
         {
             DataGridViewComboBoxCell cell = (DataGridViewComboBoxCell)dataGridViewFilters.Rows[e.RowIndex].Cells[colField.Index];
@@ -393,16 +578,9 @@ namespace EODAddIn.Forms
                 {
                     DataGridViewComboBoxCell cell;
                     List<string> lst;
-                    //if (_fields[val] == "string")
-                    //{
-                    //    cell = (DataGridViewComboBoxCell)dataGridViewFilters.Rows[e.RowIndex].Cells[colOperation.Index];
-                    //    lst = _operationString;
-                    //}
-                    //else
-                    //{
-                        cell = (DataGridViewComboBoxCell)dataGridViewFilters.Rows[e.RowIndex].Cells[colOperation.Index];
-                        lst = _operation;
-                    //}
+
+                    cell = (DataGridViewComboBoxCell)dataGridViewFilters.Rows[e.RowIndex].Cells[colOperation.Index];
+                    lst = _operation;
 
                     cell.Items.Clear();
                     foreach (var item in lst)
@@ -423,84 +601,68 @@ namespace EODAddIn.Forms
             dataGridViewFilters.Rows.Add();
         }
 
-        private void btnOk_Click(object sender, EventArgs e)
+        private void Ok_Click(object sender, EventArgs e)
         {
             try
             {
+                Screener.NameScreener = txtNameScreener.Text;
+                Screener.Sector = cboSector.Text;
+                Screener.Industry = cboIndustry.Text;
+                Screener.Code = txtCode.Text;
+                Screener.Name = txtName.Text;
+                Screener.Exchange = txtExchange.Text;
+                Screener.Limit = (int)numLimit.Value;
+
                 SetFilteres();
-                if (Filters.Count==0)
-                {
-                    return; 
-                }
+                if (Screener.Filters.Count == 0) return;
+
                 SetSignals();
                 SetSort();
-                Limit = (int)numLimit.Value+1;
+
                 DialogResult = DialogResult.OK;
+                Close();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "Screener error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            Settings.SettingsFields.ScreenerSector = cboSector.Text;
-            Settings.SettingsFields.ScreenerIndustry = cboIndustry.Text;
-            Settings.SettingsFields.ScreenerCode = txtCode.Text;
-            Settings.SettingsFields.ScreenerName = txtName.Text;
-            Settings.SettingsFields.ScreenerExchange = txtExchange.Text;
-            Settings.SettingsFields.ScreenerLimit = (int)numLimit.Value;
-            Settings.SettingsFields.Screener50d_New_Lo = chk50d_new_lo.CheckState;
-            Settings.SettingsFields.Screener50d_New_Hi = chk50d_new_hi.CheckState;
-            Settings.SettingsFields.Screener200d_New_Hi = chk200d_new_hi.CheckState;
-            Settings.SettingsFields.Screener200d_New_Lo = chk200d_new_lo.CheckState;
-            Settings.SettingsFields.ScreenerBookValue_Neg = chkBookvalue_neg.CheckState;
-            Settings.SettingsFields.ScreenerBookValue_Pos = chkBookvalue_pos.CheckState;
-            Settings.SettingsFields.ScreenerWallStreet_Lo = chkWallstreet_lo.CheckState;
-            Settings.SettingsFields.ScreenerWallStreet_Hi = chkWallstreet_hi.CheckState;
-            Settings.SettingsFields.ScreenerRbtnSortAsc = rbtnSortAsc.Checked;
-            Settings.SettingsFields.ScreenerRbtnSortDesc = rbtnSortDesc.Checked;
-            for(int i = 0; i < dataGridViewFilters.Rows.Count; i++)
-            {
-                string field = dataGridViewFilters.Rows[i].Cells[0].Value.ToString() ;
-                string operation = dataGridViewFilters.Rows[i].Cells[1].Value.ToString();
-                string value = dataGridViewFilters.Rows[i].Cells[2].Value.ToString();
-                Settings.SettingsFields.ScreenerDataGridViewFilters.Add((field,operation,value));
-            }
-            Settings.Save();
+
         }
 
         private void SetFilteres()
         {
-            Filters.Clear();
+            Screener.Filters.Clear();
+
             foreach (DataGridViewRow row in dataGridViewFilters.Rows)
             {
+                Filter newFilter = new Filter();
                 if (row.Cells[colField.Index].Value == null) continue;
                 if (row.Cells[colOperation.Index].Value == null) throw new Exception("Select operation type from the list");
                 if (row.Cells[colValue.Index].Value == null) throw new Exception("Select a value for the operation");
 
-                Field field;
-                Operation operation;
                 switch (row.Cells[colField.Index].Value.ToString())
-                {            
+                {
                     case "market capitalization":
-                        field = Field.MarketCapitalization;
+                        newFilter.Field = Field.MarketCapitalization;
                         break;
                     case "earnings share":
-                        field = Field.EarningsShare;
+                        newFilter.Field = Field.EarningsShare;
                         break;
                     case "dividend yield":
-                        field = Field.DividendYield;
+                        newFilter.Field = Field.DividendYield;
                         break;
                     case "refund 1d p":
-                        field = Field.Refund1dP;
+                        newFilter.Field = Field.Refund1dP;
                         break;
                     case "refund 5d p":
-                        field = Field.Refund5dP;
+                        newFilter.Field = Field.Refund5dP;
                         break;
                     case "avgvol 1d":
-                        field = Field.Refund5dP;
+                        newFilter.Field = Field.Refund5dP;
                         break;
                     case "avgvol 200d":
-                        field = Field.Refund5dP;
+                        newFilter.Field = Field.Refund5dP;
                         break;
 
                     default:
@@ -510,78 +672,100 @@ namespace EODAddIn.Forms
                 switch (row.Cells[colOperation.Index].Value.ToString())
                 {
                     case "=":
-                        operation = Operation.Equals;
+                        newFilter.Operation = Operation.Equals;
                         break;
                     case ">":
-                        operation = Operation.More;
+                        newFilter.Operation = Operation.More;
                         break;
                     case "<":
-                        operation = Operation.Less;
+                        newFilter.Operation = Operation.Less;
                         break;
                     case ">=":
-                        operation = Operation.NotLess;
+                        newFilter.Operation = Operation.NotLess;
                         break;
                     case "<=":
-                        operation = Operation.NotMore;
+                        newFilter.Operation = Operation.NotMore;
                         break;
                     case "!=":
-                        operation = Operation.NotEquals;
+                        newFilter.Operation = Operation.NotEquals;
                         break;
 
                     default:
                         throw new Exception("Select a operation");
                 }
 
-                (Field, Operation, string) filter = (field, operation, row.Cells[colValue.Index].Value.ToString());
-                Filters.Add(filter);
+                newFilter.Value = row.Cells[colValue.Index].Value.ToString();
+                Screener.Filters.Add(newFilter);
             }
 
             if (!string.IsNullOrEmpty(txtCode.Text))
             {
-                (Field, Operation, string) filter = (Field.Code, Operation.Equals, txtCode.Text);
-                Filters.Add(filter);
+                Filter newFilter = new Filter()
+                {
+                    Field = Field.Code,
+                    Operation = Operation.Equals,
+                    Value = txtCode.Text,
+                };
+                Screener.Filters.Add(newFilter);
             }
-
             if (!string.IsNullOrEmpty(txtName.Text))
             {
-                (Field, Operation, string) filter = (Field.Name, Operation.Equals, txtName.Text);
-                Filters.Add(filter);
+                Filter newFilter = new Filter()
+                {
+                    Field = Field.Name,
+                    Operation = Operation.Equals,
+                    Value = txtName.Text,
+                };
+                Screener.Filters.Add(newFilter);
             }
             if (!string.IsNullOrEmpty(txtExchange.Text))
             {
-                (Field, Operation, string) filter = (Field.Exchange, Operation.Equals, txtExchange.Text);
-                Filters.Add(filter);
+                Filter newFilter = new Filter()
+                {
+                    Field = Field.Exchange,
+                    Operation = Operation.Equals,
+                    Value = txtExchange.Text,
+                };
+                Screener.Filters.Add(newFilter);
             }
             if (!string.IsNullOrEmpty(cboSector.Text))
             {
-                (Field, Operation, string) filter = (Field.Sector, Operation.Equals, cboSector.Text);
-                Filters.Add(filter);
+                Filter newFilter = new Filter()
+                {
+                    Field = Field.Sector,
+                    Operation = Operation.Equals,
+                    Value = cboSector.Text,
+                };
+                Screener.Filters.Add(newFilter);
             }
             if (!string.IsNullOrEmpty(cboIndustry.Text))
             {
-                (Field, Operation, string) filter = (Field.Industry, Operation.Equals, cboIndustry.Text);
-                Filters.Add(filter);
+                Filter newFilter = new Filter()
+                {
+                    Field = Field.Industry,
+                    Operation = Operation.Equals,
+                    Value = cboIndustry.Text,
+                };
+                Screener.Filters.Add(newFilter);
             }
-            if (Filters.Count == 0)
+            if (Screener.Filters.Count == 0)
             {
-                MessageBox.Show("Not enough filters", "Error",  MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Not enough filters", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }
 
         private void SetSignals()
         {
-            Signals = new List<Signal>();
-            if (chk50d_new_lo.Checked) Signals.Add(Signal.New_50d_low);
-            if (chk50d_new_hi.Checked) Signals.Add(Signal.New_50d_hi);
-            if (chk200d_new_lo.Checked) Signals.Add(Signal.New_200d_low);
-            if (chk200d_new_hi.Checked) Signals.Add(Signal.New_200d_hi);
-            if (chkBookvalue_neg.Checked) Signals.Add(Signal.Bookvalue_neg);
-            if (chkBookvalue_pos.Checked) Signals.Add(Signal.Bookvalue_pos);
-            if (chkWallstreet_lo.Checked) Signals.Add(Signal.Wallstreet_low);
-            if (chkWallstreet_hi.Checked) Signals.Add(Signal.Wallstreet_hi);
+            Screener.Signals = new List<Signal>();
 
-            if (Signals.Count == 0) Signals = null;
+            if (chk200d_new_lo.Checked) Screener.Signals.Add(Signal.New_200d_low);
+            if (chk200d_new_hi.Checked) Screener.Signals.Add(Signal.New_200d_hi);
+            if (chkBookvalue_neg.Checked) Screener.Signals.Add(Signal.Bookvalue_neg);
+            if (chkBookvalue_pos.Checked) Screener.Signals.Add(Signal.Bookvalue_pos);
+            if (chkWallstreet_lo.Checked) Screener.Signals.Add(Signal.Wallstreet_low);
+            if (chkWallstreet_hi.Checked) Screener.Signals.Add(Signal.Wallstreet_hi);
+            if (Screener.Signals.Count == 0) Screener.Signals = null;
         }
 
         private void SetSort()
@@ -610,7 +794,7 @@ namespace EODAddIn.Forms
                     break;
                 case "earnings share":
                     field = Field.EarningsShare;
-                    break;   
+                    break;
                 case "dividend yield":
                     field = Field.DividendYield;
                     break;
@@ -621,7 +805,7 @@ namespace EODAddIn.Forms
                     field = Field.Industry;
                     break;
                 default:
-                    Sort = null;
+                    Screener.Sort = null;
                     return;
             }
 
@@ -634,7 +818,7 @@ namespace EODAddIn.Forms
                 order = Order.Descending;
             }
 
-            Sort = (field, order);
+            Screener.Sort = (field, order);
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -662,7 +846,7 @@ namespace EODAddIn.Forms
 
             foreach (var item in _industriesAndSectors)
             {
-                if (item.Item2==cboSector.Text)
+                if (item.Item2 == cboSector.Text)
                 {
                     list.Add(item.Item1);
                 }
@@ -678,8 +862,6 @@ namespace EODAddIn.Forms
             txtName.Text = null;
             txtExchange.Text = null;
             numLimit.Value = 100;
-            chk50d_new_hi.CheckState = CheckState.Unchecked;
-            chk50d_new_lo.CheckState = CheckState.Unchecked;
             chk200d_new_hi.CheckState = CheckState.Unchecked;
             chk200d_new_lo.CheckState = CheckState.Unchecked;
             chkWallstreet_hi.CheckState = CheckState.Unchecked;
@@ -687,6 +869,16 @@ namespace EODAddIn.Forms
             rbtnSortAsc.Checked = true;
             rbtnSortDesc.Checked = false;
             dataGridViewFilters.Rows.Clear();
+        }
+
+        private void ClearToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            dataGridViewFilters.Rows.RemoveAt(dataGridViewFilters.CurrentCell.RowIndex);
+        }
+
+        private void clearToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

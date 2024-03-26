@@ -21,9 +21,8 @@ namespace EODAddIn.BL.BulkEod
             }
             try
             {
-                type = type == null ? "end-of-day" : type;
-                string sheetName = exchange + " Bulk (" + type + ")";
-
+                type = type == null ? "end-of-day data" : type;
+                string sheetName = GetWorksheetNewName(exchange + " Bulk (" + type + ")");
                 Excel.Worksheet worksheet = AddSheet(sheetName);
                 int row = 1;
                 int column = 1;
@@ -32,7 +31,7 @@ namespace EODAddIn.BL.BulkEod
 
                 switch (type)
                 {
-                    case "end-of-day":
+                    case "end-of-day data":
                         {
                             // header
                             worksheet.Cells[row, column] = "Code";

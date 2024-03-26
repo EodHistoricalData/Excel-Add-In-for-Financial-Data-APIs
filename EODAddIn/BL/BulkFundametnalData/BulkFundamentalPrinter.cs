@@ -37,7 +37,8 @@ namespace EODAddIn.BL.BulkFundamental
                     for (int i = 0; i < data.Count; i++)
                     {
                         BulkFundamentalData symbol = data[i.ToString()];
-                        string nameSheet = $"{symbol.General.Code},{symbol.General.Exchange}-Bulk fundamental";
+
+                        string nameSheet = GetWorksheetNewName($"{symbol.General.Code}.{symbol.General.Exchange} Bulk fundamentals");
 
                         Excel.Worksheet sh = AddSheet(nameSheet);
 

@@ -4,10 +4,13 @@ using EODAddIn.BL.HistoricalPrinter;
 using EODAddIn.Program;
 using EODAddIn.Utils;
 
+using Microsoft.Office.Interop.Excel;
+
 using MS.ProgressBar;
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 
@@ -22,7 +25,7 @@ namespace EODAddIn.Forms
         {
             InitializeComponent();
 
-            switch (Settings.SettingsFields.EndOfDayPeriod)
+            switch (Settings.Data.GetHistoricalForm.Period)
             {
                 case "d":
                     cboPeriod.SelectedIndex = 0;
@@ -38,11 +41,13 @@ namespace EODAddIn.Forms
                     break;
             }
 
-            dtpFrom.Value = Settings.SettingsFields.EndOfDayFrom;
+            dtpFrom.Value = Settings.Data.GetHistoricalForm.From;
             dtpTo.Value = DateTime.Today.AddDays(-1);
 
+            if (Settings.Data.GetHistoricalForm.OrderDesc) rbtnDescOrder.Checked = true;
+            chkIsTable.Checked = Settings.Data.GetHistoricalForm.SmartTable;
 
-            foreach (string ticker in Settings.SettingsFields.EndOfDayTickers)
+            foreach (string ticker in Settings.Data.GetHistoricalForm.Tickers)
             {
                 int i = gridTickers.Rows.Add();
                 gridTickers.Rows[i].Cells[0].Value = ticker;
@@ -52,27 +57,23 @@ namespace EODAddIn.Forms
         private async void BtnLoad_Click(object sender, EventArgs e)
         {
             if (!CheckForm()) return;
-            if (cboTypeOfOutput.SelectedItem.ToString() == "One worksheet")
-            {
-                Excel.Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
-                if (sh.UsedRange.Value != null)
-                {
-                    MessageBox.Show(
-                    "Select empty worksheet",
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-                    return;
-                }
-            }
+            string sheetName;
             bool isSummary = false;
+            Worksheet worksheet = null;
             string period = cboPeriod.SelectedItem.ToString().ToLower().Substring(0, 1);
             DateTime from = dtpFrom.Value;
             DateTime to = dtpTo.Value;
             List<string> tikers = new List<string>();
-            int rowHistorical = 3;
+            int rowHistorical = 2;
             Progress progress = new Progress("Load end of data", gridTickers.Rows.Count - 1);
+
+            if (cboTypeOfOutput.SelectedItem.ToString() == "One worksheet")
+            {
+                isSummary = true;
+                sheetName = ExcelUtils.GetWorksheetNewName("End of day summary");
+                worksheet = ExcelUtils.AddSheet(sheetName);
+            }
+
             foreach (DataGridViewRow row in gridTickers.Rows)
             {
                 if (row.Cells[0].Value == null) continue;
@@ -95,8 +96,14 @@ namespace EODAddIn.Forms
                             rowHistorical = HistoricalPrinter.PrintEndOfDay(res, ticker, period, false, chkIsTable.Checked);
                             break;
                         case "One worksheet":
-                            rowHistorical = HistoricalPrinter.PrintEndOfDaySummary(res, ticker, period, rowHistorical);
-                            isSummary = true;
+                            if (gridTickers.Rows.Count > 1)
+                            {
+                                rowHistorical = HistoricalPrinter.PrintEndOfDaySummary(res, ticker, period, rowHistorical, worksheet);
+                            }
+                            else
+                            {
+                                rowHistorical = HistoricalPrinter.PrintEndOfDay(res, ticker, period, false, chkIsTable.Checked);
+                            }
                             break;
                     }
                 }
@@ -114,16 +121,23 @@ namespace EODAddIn.Forms
             }
             if (isSummary && chkIsTable.Checked)
             {
-                ExcelUtils.MakeTable("A2", "K" + rowHistorical.ToString(), Globals.ThisAddIn.Application.ActiveSheet, "Historical", 9);
+                ExcelUtils.MakeTable("A1", "K" + (rowHistorical-1).ToString(), worksheet, "Historical", 9);
             }
             progress.Finish();
-            Settings.SettingsFields.EndOfDayPeriod = period;
-            Settings.SettingsFields.EndOfDayTo = to;
-            Settings.SettingsFields.EndOfDayFrom = from;
-            Settings.SettingsFields.TechnicalsTickers = tikers;
-            Settings.Save();
+            FormSettingsSave(tikers);
 
             Close();
+        }
+
+        private void FormSettingsSave(List<string> tikers)
+        {
+            Settings.Data.GetHistoricalForm.Period = cboPeriod.SelectedItem.ToString().ToLower().Substring(0, 1);
+            Settings.Data.GetHistoricalForm.To = dtpTo.Value;
+            Settings.Data.GetHistoricalForm.From = dtpFrom.Value;
+            Settings.Data.GetHistoricalForm.OrderDesc = rbtnDescOrder.Checked;
+            Settings.Data.GetHistoricalForm.SmartTable = chkIsTable.Checked;
+            Settings.Data.GetHistoricalForm.Tickers = tikers;
+            Settings.Save();
         }
 
         private bool CheckForm()
@@ -213,6 +227,7 @@ namespace EODAddIn.Forms
         private void TsmiFromExcel_Click(object sender, EventArgs e)
         {
             FrmSelectRange frm = new FrmSelectRange();
+            tsmiFromExcel.Enabled = false;
             frm.Show(new WinHwnd());
             frm.FormClosing += FrmSelectRangeClosing;
         }
@@ -234,6 +249,7 @@ namespace EODAddIn.Forms
                     }
                 }
             }
+            tsmiFromExcel.Enabled = true;
         }
     }
 }

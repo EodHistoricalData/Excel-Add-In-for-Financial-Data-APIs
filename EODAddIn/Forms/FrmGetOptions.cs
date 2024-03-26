@@ -14,7 +14,7 @@ namespace EODAddIn.Forms
 {
     public partial class FrmGetOptions : Form
     {
-        public string Ticker = Settings.SettingsFields.OptionsTicker;
+        public string Ticker = Settings.Data.OptionsTicker;
         public DateTime From;
         public DateTime To;
         public DateTime? FromTrade;
@@ -57,7 +57,7 @@ namespace EODAddIn.Forms
                 ToTrade = dtpToTrade.Value;
             }
 
-            Settings.SettingsFields.OptionsTicker = Ticker;
+            Settings.Data.OptionsTicker = Ticker;
             Settings.Save();
             DialogResult = DialogResult.OK;
             Close();

@@ -5,6 +5,8 @@ using EODAddIn.BL.Screener;
 using EODAddIn.Program;
 using EODAddIn.Utils;
 using Microsoft.Office.Interop.Excel;
+using Microsoft.Office.Tools.Excel;
+
 using MS.ProgressBar;
 using System;
 using System.Collections.Generic;
@@ -24,7 +26,7 @@ namespace EODAddIn.Forms
             InitializeComponent();
 
             /*  5m,1h,1m  */
-            switch (Settings.SettingsFields.IntradayInterval)
+            switch (Settings.Data.IntradayInterval)
             {
                 case "1m":
                     cboInterval.SelectedIndex = 0;
@@ -46,103 +48,108 @@ namespace EODAddIn.Forms
                     break;
             }
 
-            dtpFrom.Value = Settings.SettingsFields.IntradayFrom;
+            dtpFrom.Value = Settings.Data.IntradayFrom;
             dtpTo.Value = DateTime.Now.AddDays(-1);
 
-            foreach (string ticker in Settings.SettingsFields.IntradayTickers)
+            foreach (string ticker in Settings.Data.IntradayTickers)
             {
                 int i = gridTickers.Rows.Add();
                 gridTickers.Rows[i].Cells[0].Value = ticker;
             }
         }
 
-        private void BtnLoad_Click(object sender, EventArgs e)
+        private async void BtnLoad_Click(object sender, EventArgs e)
         {
             if (!CheckForm()) return;
-            if (cboTypeOfOutput.SelectedItem.ToString() == "One worksheet")
-            {
-                Worksheet sh = Globals.ThisAddIn.Application.ActiveSheet;
-                if (sh.UsedRange.Value != null)
-                {
-                    MessageBox.Show(
-                    "Select empty worksheet",
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Warning
-                );
-                    return;
-                }
-            }
+            Excel.Worksheet worksheet = null;
+            string sheetName;
             bool isSummary = false;
-            string interval = cboInterval.SelectedItem.ToString().ToLower();
+            string intervalString = cboInterval.SelectedItem.ToString().ToLower();
+            EOD.API.IntradayHistoricalInterval interval;
+            Hide();
             int period = 0;
-            switch (interval)
+            switch (intervalString)
             {
                 case "15m":
                     {
                         period = 15;
-                        interval = "5m";
+                        interval = EOD.API.IntradayHistoricalInterval.FiveMinutes;
                         break;
                     }
                 case "30m":
                     {
                         period = 30;
-                        interval = "5m";
+                        interval = EOD.API.IntradayHistoricalInterval.FiveMinutes;
+                        break;
+                    }
+
+                case "1m": {
+                        interval = EOD.API.IntradayHistoricalInterval.OneMinute; 
+                        break;
+                    }
+
+                case "1h":
+                    {
+                        interval = EOD.API.IntradayHistoricalInterval.OneHour;
                         break;
                     }
                 default:
                     {
+                        interval = EOD.API.IntradayHistoricalInterval.FiveMinutes;
                         break;
                     }
             }
             DateTime from = dtpFrom.Value;
             DateTime to = dtpTo.Value;
             List<string> tikers = new List<string>();
-            int rowIntraday = 3;
-            Progress progress = new Progress("Load end of data", gridTickers.Rows.Count - 1);
+            int rowIntraday = 2;
+            Progress progress = new Progress("Get intraday data", gridTickers.Rows.Count - 1);
+
+            if (cboTypeOfOutput.SelectedItem.ToString() == "One worksheet")
+            {
+                isSummary = true;
+                sheetName = ExcelUtils.GetWorksheetNewName("Intraday summary");
+                worksheet = ExcelUtils.AddSheet(sheetName);
+            }
+
             foreach (DataGridViewRow row in gridTickers.Rows)
             {
                 if (row.Cells[0].Value == null) continue;
-                progress.TaskStart(row.Cells[0].Value?.ToString(), 1);
+               
+                progress.TaskStart(row.Cells[0].Value?.ToString() + " loading...", 1);
                 string ticker = row.Cells[0].Value.ToString();
                 tikers.Add(ticker);
                 try
                 {
-                    List<EOD.Model.IntradayHistoricalStockPrice> res = IntradayAPI.GetIntraday(ticker, from, to, interval);
+                    List<EOD.Model.IntradayHistoricalStockPrice> res = await IntradayAPI.GetIntraday(ticker, from, to, interval);
+                    if (res.Count == 0)
+                    {
+                        throw new APIException(200, "There is no available data for the selected parameters.");
+                    }
+                    if (period == 15 || period == 30)
+                        res = CollapseRows(res, period);
                     if (rbtnAscOrder.Checked)
                     {
                         res.Reverse();
                     }
-                    switch (period)
-                    {
-                        case 15:
-                            {
-                                res = CollapseRows(res, 15);
-                                interval = "15m";
-                                break;
-                            }
-                        case 30:
-                            {
-                                res = CollapseRows(res, 30);
-                                interval = "30m";
-                                break;
-                            }
-                        default:
-                            {
-                                break;
-                            }
-                    }
+
                     switch (cboTypeOfOutput.SelectedItem.ToString())
                     {
                         case "Separated with chart":
-                            rowIntraday = IntradayPrinter.PrintIntraday(res, ticker, interval, true, chkIsTable.Checked);
+                            rowIntraday = IntradayPrinter.PrintIntraday(res, ticker, intervalString, true, chkIsTable.Checked);
                             break;
                         case "Separated without chart":
-                            rowIntraday = IntradayPrinter.PrintIntraday(res, ticker, interval, false, chkIsTable.Checked);
+                            rowIntraday = IntradayPrinter.PrintIntraday(res, ticker, intervalString, false, chkIsTable.Checked);
                             break;
                         case "One worksheet":
-                            rowIntraday = IntradayPrinter.PrintIntradaySummary(res, ticker, interval, rowIntraday);
-                            isSummary = true;
+                            if (gridTickers.Rows.Count > 2)
+                            {
+                                rowIntraday = IntradayPrinter.PrintIntradaySummary(res, ticker, rowIntraday, worksheet);
+                            }
+                            else
+                            {
+                                rowIntraday = IntradayPrinter.PrintIntraday(res, ticker, intervalString, false, chkIsTable.Checked);
+                            }
                             break;
                     }
                 }
@@ -158,15 +165,15 @@ namespace EODAddIn.Forms
                     continue;
                 }
             }
-            if (isSummary && chkIsTable.Checked)
+            if (isSummary && chkIsTable.Checked && gridTickers.Rows.Count > 2)
             {
-                ExcelUtils.MakeTable("A2", "J" + rowIntraday.ToString(), Globals.ThisAddIn.Application.ActiveSheet, "Intraday", 9);
+                ExcelUtils.MakeTable("A1", "I" + (rowIntraday - 1).ToString(), Globals.ThisAddIn.Application.ActiveSheet, "Intraday", 9);
             }
             progress.Finish();
-            Settings.SettingsFields.IntradayInterval = interval;
-            Settings.SettingsFields.IntradayTo = to;
-            Settings.SettingsFields.IntradayFrom = from;
-            Settings.SettingsFields.IntradayTickers = tikers;
+            Settings.Data.IntradayInterval = intervalString;
+            Settings.Data.IntradayTo = to;
+            Settings.Data.IntradayFrom = from;
+            Settings.Data.IntradayTickers = tikers;
             Settings.Save();
 
             Close();
@@ -304,6 +311,7 @@ namespace EODAddIn.Forms
         private void TsmiFromExcel_Click(object sender, EventArgs e)
         {
             FrmSelectRange frm = new FrmSelectRange();
+            tsmiFromExcel.Enabled = false;
             frm.Show(new WinHwnd());
             frm.FormClosing += FrmSelectRangeClosing;
         }
@@ -325,6 +333,7 @@ namespace EODAddIn.Forms
                     }
                 }
             }
+            tsmiFromExcel.Enabled = true;
         }
 
         private void dtpFrom_ValueChanged(object sender, EventArgs e)

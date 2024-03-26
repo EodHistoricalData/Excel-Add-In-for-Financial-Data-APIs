@@ -15,7 +15,6 @@ namespace EODAddIn.Utils
 
         public static void OnStart()
         {
-            Application app = Globals.ThisAddIn.Application;
             Calculation = _xlsApp.Calculation;
             _xlsApp.ScreenUpdating = false;
             _xlsApp.Calculation = XlCalculation.xlCalculationManual;
@@ -29,10 +28,9 @@ namespace EODAddIn.Utils
 
         public static bool IsRange(string rangeAddress)
         {
-            Application app = Globals.ThisAddIn.Application;
             try
             {
-                Range range = app.Range[rangeAddress];
+                Range range = _xlsApp.Range[rangeAddress];
                 return true;
             }
             catch
@@ -58,11 +56,28 @@ namespace EODAddIn.Utils
             return true;
         }
 
+        public static string ClearSheetName(string name, int len = 31)
+        {
+            name = name.Replace("/", "");
+            name = name.Replace("\\", "");
+            name = name.Replace("?", "");
+            name = name.Replace("*", "");
+            name = name.Replace(":", "");
+            name = name.Replace("[", "");
+            name = name.Replace("]", "");
+
+            if (name[0] == '\'') name = name.Substring(1);
+
+            if (name.Length > len) name = name.Substring(0, len);
+
+            return name;
+        }
+
         public static bool SheetExists(string name)
         {
             try
             {
-                Worksheet worksheet = Globals.ThisAddIn.Application.Worksheets[name];
+                Worksheet worksheet = _xlsApp.Worksheets[name];
                 return true;
             }
             catch (Exception)
@@ -401,11 +416,41 @@ namespace EODAddIn.Utils
             return workbook.CustomXMLParts;
         }
 
+        public static Microsoft.Office.Core.CustomXMLParts GetXmlPart(Workbook workbook)
+        {
+            if (workbook == null) return null;
+            return workbook.CustomXMLParts;
+        }
+
         public static void SaveWorkbook()
         {
             Application application = Globals.ThisAddIn.Application;
             Workbook workbook = application.ActiveWorkbook;
             workbook.Save();
+        }
+
+        public static string GetWorksheetNewName(string sheetName)
+        {
+            int i = -1;
+            string name;
+            do
+            {
+                i++;
+                if (i ==0)
+                {
+                    name = sheetName;
+                    name = ClearSheetName(name);
+                }
+                else
+                {
+                    name = sheetName;
+                    name = ClearSheetName(name, 31 - $" ({i})".Length);
+                    name += $" ({i})";
+                }
+
+            } while (SheetExists(name));
+
+            return name;
         }
     }
 }

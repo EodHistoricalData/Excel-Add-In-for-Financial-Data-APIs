@@ -28,13 +28,13 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmScreener));
             this.dataGridViewFilters = new System.Windows.Forms.DataGridView();
             this.colField = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.colOperation = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.colValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.chk50d_new_lo = new System.Windows.Forms.CheckBox();
-            this.chk50d_new_hi = new System.Windows.Forms.CheckBox();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.chk200d_new_lo = new System.Windows.Forms.CheckBox();
             this.chk200d_new_hi = new System.Windows.Forms.CheckBox();
             this.chkBookvalue_neg = new System.Windows.Forms.CheckBox();
@@ -49,7 +49,6 @@
             this.numLimit = new System.Windows.Forms.NumericUpDown();
             this.btnOk = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.btnAddFilter = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
             this.txtCode = new System.Windows.Forms.TextBox();
@@ -61,8 +60,13 @@
             this.label5 = new System.Windows.Forms.Label();
             this.cboSector = new System.Windows.Forms.ComboBox();
             this.cboIndustry = new System.Windows.Forms.ComboBox();
+            this.txtNameScreener = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.btnClearFilters = new System.Windows.Forms.Button();
+            this.btnAddFilter = new System.Windows.Forms.Button();
+            this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFilters)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numLimit)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
@@ -80,10 +84,11 @@
             this.colField,
             this.colOperation,
             this.colValue});
-            this.dataGridViewFilters.Location = new System.Drawing.Point(12, 99);
+            this.dataGridViewFilters.ContextMenuStrip = this.contextMenuStrip1;
+            this.dataGridViewFilters.Location = new System.Drawing.Point(12, 121);
             this.dataGridViewFilters.Name = "dataGridViewFilters";
             this.dataGridViewFilters.RowHeadersWidth = 20;
-            this.dataGridViewFilters.Size = new System.Drawing.Size(581, 226);
+            this.dataGridViewFilters.Size = new System.Drawing.Size(584, 204);
             this.dataGridViewFilters.TabIndex = 0;
             this.dataGridViewFilters.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewFilters_CellValueChanged);
             this.dataGridViewFilters.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dataGridViewFilters_RowsAdded);
@@ -106,30 +111,17 @@
             this.colValue.HeaderText = "Value";
             this.colValue.Name = "colValue";
             // 
-            // chk50d_new_lo
+            // contextMenuStrip1
             // 
-            this.chk50d_new_lo.AutoSize = true;
-            this.chk50d_new_lo.Location = new System.Drawing.Point(10, 19);
-            this.chk50d_new_lo.Name = "chk50d_new_lo";
-            this.chk50d_new_lo.Size = new System.Drawing.Size(84, 17);
-            this.chk50d_new_lo.TabIndex = 3;
-            this.chk50d_new_lo.Text = "50d_new_lo";
-            this.chk50d_new_lo.UseVisualStyleBackColor = true;
-            // 
-            // chk50d_new_hi
-            // 
-            this.chk50d_new_hi.AutoSize = true;
-            this.chk50d_new_hi.Location = new System.Drawing.Point(128, 19);
-            this.chk50d_new_hi.Name = "chk50d_new_hi";
-            this.chk50d_new_hi.Size = new System.Drawing.Size(84, 17);
-            this.chk50d_new_hi.TabIndex = 4;
-            this.chk50d_new_hi.Text = "50d_new_hi";
-            this.chk50d_new_hi.UseVisualStyleBackColor = true;
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.clearToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(102, 26);
             // 
             // chk200d_new_lo
             // 
             this.chk200d_new_lo.AutoSize = true;
-            this.chk200d_new_lo.Location = new System.Drawing.Point(240, 19);
+            this.chk200d_new_lo.Location = new System.Drawing.Point(10, 19);
             this.chk200d_new_lo.Name = "chk200d_new_lo";
             this.chk200d_new_lo.Size = new System.Drawing.Size(90, 17);
             this.chk200d_new_lo.TabIndex = 5;
@@ -139,7 +131,7 @@
             // chk200d_new_hi
             // 
             this.chk200d_new_hi.AutoSize = true;
-            this.chk200d_new_hi.Location = new System.Drawing.Point(353, 19);
+            this.chk200d_new_hi.Location = new System.Drawing.Point(128, 19);
             this.chk200d_new_hi.Name = "chk200d_new_hi";
             this.chk200d_new_hi.Size = new System.Drawing.Size(90, 17);
             this.chk200d_new_hi.TabIndex = 6;
@@ -277,7 +269,7 @@
             this.btnOk.TabIndex = 18;
             this.btnOk.Text = "Ok";
             this.btnOk.UseVisualStyleBackColor = true;
-            this.btnOk.Click += new System.EventHandler(this.btnOk_Click);
+            this.btnOk.Click += new System.EventHandler(this.Ok_Click);
             // 
             // btnCancel
             // 
@@ -290,26 +282,10 @@
             this.btnCancel.UseVisualStyleBackColor = true;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
-            // btnAddFilter
-            // 
-            this.btnAddFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddFilter.Image = ((System.Drawing.Image)(resources.GetObject("btnAddFilter.Image")));
-            this.btnAddFilter.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAddFilter.Location = new System.Drawing.Point(466, 70);
-            this.btnAddFilter.Name = "btnAddFilter";
-            this.btnAddFilter.Size = new System.Drawing.Size(127, 23);
-            this.btnAddFilter.TabIndex = 20;
-            this.btnAddFilter.Text = "      Add number filter";
-            this.btnAddFilter.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAddFilter.UseVisualStyleBackColor = true;
-            this.btnAddFilter.Click += new System.EventHandler(this.btnAddFilter_Click);
-            // 
             // groupBox1
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.chk50d_new_lo);
-            this.groupBox1.Controls.Add(this.chk50d_new_hi);
             this.groupBox1.Controls.Add(this.chk200d_new_lo);
             this.groupBox1.Controls.Add(this.chk200d_new_hi);
             this.groupBox1.Controls.Add(this.chkBookvalue_neg);
@@ -318,7 +294,7 @@
             this.groupBox1.Controls.Add(this.chkWallstreet_hi);
             this.groupBox1.Location = new System.Drawing.Point(11, 340);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(581, 99);
+            this.groupBox1.Size = new System.Drawing.Size(585, 99);
             this.groupBox1.TabIndex = 21;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Signals";
@@ -326,7 +302,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(15, 14);
+            this.label1.Location = new System.Drawing.Point(206, 62);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(32, 13);
             this.label1.TabIndex = 22;
@@ -334,7 +310,7 @@
             // 
             // txtCode
             // 
-            this.txtCode.Location = new System.Drawing.Point(90, 11);
+            this.txtCode.Location = new System.Drawing.Point(244, 59);
             this.txtCode.Name = "txtCode";
             this.txtCode.Size = new System.Drawing.Size(100, 20);
             this.txtCode.TabIndex = 23;
@@ -342,23 +318,25 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(15, 40);
+            this.label2.Location = new System.Drawing.Point(356, 62);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(35, 13);
             this.label2.TabIndex = 24;
             this.label2.Text = "Name";
+            this.label2.Visible = false;
             // 
             // txtName
             // 
-            this.txtName.Location = new System.Drawing.Point(90, 37);
+            this.txtName.Location = new System.Drawing.Point(431, 59);
             this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(100, 20);
+            this.txtName.Size = new System.Drawing.Size(165, 20);
             this.txtName.TabIndex = 25;
+            this.txtName.Visible = false;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(15, 66);
+            this.label3.Location = new System.Drawing.Point(15, 62);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(55, 13);
             this.label3.TabIndex = 26;
@@ -366,15 +344,15 @@
             // 
             // txtExchange
             // 
-            this.txtExchange.Location = new System.Drawing.Point(90, 63);
+            this.txtExchange.Location = new System.Drawing.Point(112, 59);
             this.txtExchange.Name = "txtExchange";
-            this.txtExchange.Size = new System.Drawing.Size(100, 20);
+            this.txtExchange.Size = new System.Drawing.Size(78, 20);
             this.txtExchange.TabIndex = 27;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(223, 14);
+            this.label4.Location = new System.Drawing.Point(14, 38);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(38, 13);
             this.label4.TabIndex = 28;
@@ -383,7 +361,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(224, 40);
+            this.label5.Location = new System.Drawing.Point(356, 37);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(44, 13);
             this.label5.TabIndex = 29;
@@ -392,47 +370,89 @@
             // cboSector
             // 
             this.cboSector.FormattingEnabled = true;
-            this.cboSector.Location = new System.Drawing.Point(289, 10);
+            this.cboSector.Location = new System.Drawing.Point(112, 34);
             this.cboSector.Name = "cboSector";
-            this.cboSector.Size = new System.Drawing.Size(165, 21);
+            this.cboSector.Size = new System.Drawing.Size(232, 21);
             this.cboSector.TabIndex = 30;
             this.cboSector.SelectedIndexChanged += new System.EventHandler(this.cboSector_SelectedIndexChanged);
             // 
             // cboIndustry
             // 
             this.cboIndustry.FormattingEnabled = true;
-            this.cboIndustry.Location = new System.Drawing.Point(289, 37);
+            this.cboIndustry.Location = new System.Drawing.Point(431, 34);
             this.cboIndustry.Name = "cboIndustry";
             this.cboIndustry.Size = new System.Drawing.Size(165, 21);
             this.cboIndustry.TabIndex = 31;
             // 
+            // txtNameScreener
+            // 
+            this.txtNameScreener.Location = new System.Drawing.Point(112, 8);
+            this.txtNameScreener.Name = "txtNameScreener";
+            this.txtNameScreener.Size = new System.Drawing.Size(232, 20);
+            this.txtNameScreener.TabIndex = 33;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(15, 11);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(79, 13);
+            this.label6.TabIndex = 34;
+            this.label6.Text = "Screener name";
+            // 
             // btnClearFilters
             // 
-            this.btnClearFilters.Location = new System.Drawing.Point(484, 8);
+            this.btnClearFilters.Image = global::EODAddIn.Properties.Resources.icons8_close_16;
+            this.btnClearFilters.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnClearFilters.Location = new System.Drawing.Point(347, 88);
             this.btnClearFilters.Name = "btnClearFilters";
-            this.btnClearFilters.Size = new System.Drawing.Size(93, 23);
+            this.btnClearFilters.Size = new System.Drawing.Size(113, 27);
             this.btnClearFilters.TabIndex = 32;
-            this.btnClearFilters.Text = "Clear filters\r\n";
+            this.btnClearFilters.Text = "Clear all filters\r\n";
             this.btnClearFilters.UseVisualStyleBackColor = true;
             this.btnClearFilters.Click += new System.EventHandler(this.btnClearFilters_Click);
+            // 
+            // btnAddFilter
+            // 
+            this.btnAddFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAddFilter.Image = ((System.Drawing.Image)(resources.GetObject("btnAddFilter.Image")));
+            this.btnAddFilter.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAddFilter.Location = new System.Drawing.Point(469, 88);
+            this.btnAddFilter.Name = "btnAddFilter";
+            this.btnAddFilter.Size = new System.Drawing.Size(127, 27);
+            this.btnAddFilter.TabIndex = 20;
+            this.btnAddFilter.Text = "      Add number filter";
+            this.btnAddFilter.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnAddFilter.UseVisualStyleBackColor = true;
+            this.btnAddFilter.Click += new System.EventHandler(this.btnAddFilter_Click);
+            // 
+            // clearToolStripMenuItem
+            // 
+            this.clearToolStripMenuItem.Image = global::EODAddIn.Properties.Resources.icons8_close_16;
+            this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
+            this.clearToolStripMenuItem.Size = new System.Drawing.Size(101, 22);
+            this.clearToolStripMenuItem.Text = "Clear";
+            this.clearToolStripMenuItem.Click += new System.EventHandler(this.ClearToolStripMenuItem_Click);
             // 
             // FrmScreener
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(605, 533);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.txtNameScreener);
             this.Controls.Add(this.btnClearFilters);
             this.Controls.Add(this.cboIndustry);
             this.Controls.Add(this.cboSector);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.txtExchange);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.txtName);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.txtCode);
             this.Controls.Add(this.label1);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.txtCode);
             this.Controls.Add(this.btnAddFilter);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOk);
@@ -443,11 +463,14 @@
             this.Controls.Add(this.lblField);
             this.Controls.Add(this.cboSortField);
             this.Controls.Add(this.dataGridViewFilters);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "FrmScreener";
             this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.Text = "                                ";
             this.Load += new System.EventHandler(this.FrmScreener_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFilters)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.numLimit)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -459,8 +482,6 @@
         #endregion
 
         private System.Windows.Forms.DataGridView dataGridViewFilters;
-        private System.Windows.Forms.CheckBox chk50d_new_lo;
-        private System.Windows.Forms.CheckBox chk50d_new_hi;
         private System.Windows.Forms.CheckBox chk200d_new_lo;
         private System.Windows.Forms.CheckBox chk200d_new_hi;
         private System.Windows.Forms.CheckBox chkBookvalue_neg;
@@ -491,5 +512,9 @@
         private System.Windows.Forms.ComboBox cboSector;
         private System.Windows.Forms.ComboBox cboIndustry;
         private System.Windows.Forms.Button btnClearFilters;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
+        private System.Windows.Forms.TextBox txtNameScreener;
+        private System.Windows.Forms.Label label6;
     }
 }

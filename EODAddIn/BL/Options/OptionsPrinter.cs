@@ -18,7 +18,7 @@ namespace EODAddIn.BL.OptionsPrinter
             {
                 SetNonInteractive();
 
-                string nameSheet = $"{ticker}-Options";
+                string nameSheet = GetWorksheetNewName($"{ticker} Options Data");
 
                 Excel.Worksheet sh = AddSheet(nameSheet);
 

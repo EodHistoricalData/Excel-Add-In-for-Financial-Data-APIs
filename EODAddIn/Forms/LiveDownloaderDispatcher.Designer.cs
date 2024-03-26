@@ -28,16 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LiveDownloaderDispatcher));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LiveDownloaderDispatcher));
             this.gridDownloaders = new System.Windows.Forms.DataGridView();
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.tsmiStartAll = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiStopAll = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsmiDeleteAll = new System.Windows.Forms.ToolStripMenuItem();
-            this.BtnAdd = new System.Windows.Forms.Button();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -45,6 +40,11 @@
             this.Column3 = new System.Windows.Forms.DataGridViewButtonColumn();
             this.Column4 = new System.Windows.Forms.DataGridViewButtonColumn();
             this.Column5 = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.addToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiStartAll = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiStopAll = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiDeleteAll = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.gridDownloaders)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -69,58 +69,12 @@
             this.Column5});
             this.gridDownloaders.Location = new System.Drawing.Point(12, 28);
             this.gridDownloaders.Name = "gridDownloaders";
+            this.gridDownloaders.ReadOnly = true;
             this.gridDownloaders.RowHeadersVisible = false;
             this.gridDownloaders.RowHeadersWidth = 20;
             this.gridDownloaders.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.gridDownloaders.Size = new System.Drawing.Size(648, 329);
             this.gridDownloaders.TabIndex = 3;
-            this.gridDownloaders.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.GridDownloaders_CellContentClick);
-            // 
-            // menuStrip1
-            // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsmiStartAll,
-            this.tsmiStopAll,
-            this.tsmiDeleteAll});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(672, 24);
-            this.menuStrip1.TabIndex = 4;
-            this.menuStrip1.Text = "menuStrip1";
-            // 
-            // tsmiStartAll
-            // 
-            this.tsmiStartAll.Image = ((System.Drawing.Image)(resources.GetObject("tsmiStartAll.Image")));
-            this.tsmiStartAll.Name = "tsmiStartAll";
-            this.tsmiStartAll.Size = new System.Drawing.Size(74, 20);
-            this.tsmiStartAll.Text = "Start all";
-            this.tsmiStartAll.Click += new System.EventHandler(this.StartAll_Click);
-            // 
-            // tsmiStopAll
-            // 
-            this.tsmiStopAll.Image = ((System.Drawing.Image)(resources.GetObject("tsmiStopAll.Image")));
-            this.tsmiStopAll.Name = "tsmiStopAll";
-            this.tsmiStopAll.Size = new System.Drawing.Size(74, 20);
-            this.tsmiStopAll.Text = "Stop all";
-            this.tsmiStopAll.Click += new System.EventHandler(this.StopAll_Click);
-            // 
-            // tsmiDeleteAll
-            // 
-            this.tsmiDeleteAll.Image = ((System.Drawing.Image)(resources.GetObject("tsmiDeleteAll.Image")));
-            this.tsmiDeleteAll.Name = "tsmiDeleteAll";
-            this.tsmiDeleteAll.Size = new System.Drawing.Size(83, 20);
-            this.tsmiDeleteAll.Text = "Delete all";
-            this.tsmiDeleteAll.Click += new System.EventHandler(this.DeleteAll_Click);
-            // 
-            // BtnAdd
-            // 
-            this.BtnAdd.Location = new System.Drawing.Point(585, 363);
-            this.BtnAdd.Name = "BtnAdd";
-            this.BtnAdd.Size = new System.Drawing.Size(75, 33);
-            this.BtnAdd.TabIndex = 5;
-            this.BtnAdd.Text = "Add";
-            this.BtnAdd.UseVisualStyleBackColor = true;
-            this.BtnAdd.Click += new System.EventHandler(this.BtnAdd_Click);
             // 
             // Column1
             // 
@@ -128,6 +82,7 @@
             this.Column1.Frozen = true;
             this.Column1.HeaderText = "Name";
             this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
             this.Column1.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.Column1.Width = 60;
             // 
@@ -136,6 +91,7 @@
             this.Column2.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Column2.HeaderText = "Tickers";
             this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
             this.Column2.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             // 
@@ -143,14 +99,16 @@
             // 
             this.Column7.HeaderText = "Interval";
             this.Column7.Name = "Column7";
-            this.Column7.Width = 50;
+            this.Column7.ReadOnly = true;
+            this.Column7.Width = 70;
             // 
             // Column6
             // 
             this.Column6.HeaderText = "Status";
             this.Column6.Name = "Column6";
+            this.Column6.ReadOnly = true;
             this.Column6.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Column6.Width = 45;
+            this.Column6.Width = 70;
             // 
             // Column3
             // 
@@ -163,10 +121,12 @@
             this.Column3.HeaderText = "Start";
             this.Column3.MinimumWidth = 50;
             this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
             this.Column3.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.Column3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.Column3.Text = "";
             this.Column3.UseColumnTextForButtonValue = true;
+            this.Column3.Visible = false;
             this.Column3.Width = 50;
             // 
             // Column4
@@ -180,7 +140,9 @@
             this.Column4.HeaderText = "Stop";
             this.Column4.MinimumWidth = 50;
             this.Column4.Name = "Column4";
+            this.Column4.ReadOnly = true;
             this.Column4.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Column4.Visible = false;
             this.Column4.Width = 50;
             // 
             // Column5
@@ -194,20 +156,66 @@
             this.Column5.HeaderText = "Delete";
             this.Column5.MinimumWidth = 50;
             this.Column5.Name = "Column5";
+            this.Column5.ReadOnly = true;
             this.Column5.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.Column5.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             this.Column5.Text = "";
+            this.Column5.Visible = false;
             this.Column5.Width = 50;
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addToolStripMenuItem,
+            this.tsmiStartAll,
+            this.tsmiStopAll,
+            this.tsmiDeleteAll});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(672, 24);
+            this.menuStrip1.TabIndex = 4;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // addToolStripMenuItem
+            // 
+            this.addToolStripMenuItem.Image = global::EODAddIn.Properties.Resources.icons8_add_16;
+            this.addToolStripMenuItem.Name = "addToolStripMenuItem";
+            this.addToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
+            this.addToolStripMenuItem.Text = "Add";
+            this.addToolStripMenuItem.Click += new System.EventHandler(this.AddToolStripMenuItem_Click);
+            // 
+            // tsmiStartAll
+            // 
+            this.tsmiStartAll.Image = ((System.Drawing.Image)(resources.GetObject("tsmiStartAll.Image")));
+            this.tsmiStartAll.Name = "tsmiStartAll";
+            this.tsmiStartAll.Size = new System.Drawing.Size(59, 20);
+            this.tsmiStartAll.Text = "Start";
+            this.tsmiStartAll.Click += new System.EventHandler(this.StartAll_Click);
+            // 
+            // tsmiStopAll
+            // 
+            this.tsmiStopAll.Image = ((System.Drawing.Image)(resources.GetObject("tsmiStopAll.Image")));
+            this.tsmiStopAll.Name = "tsmiStopAll";
+            this.tsmiStopAll.Size = new System.Drawing.Size(59, 20);
+            this.tsmiStopAll.Text = "Stop";
+            this.tsmiStopAll.Click += new System.EventHandler(this.StopAll_Click);
+            // 
+            // tsmiDeleteAll
+            // 
+            this.tsmiDeleteAll.Image = ((System.Drawing.Image)(resources.GetObject("tsmiDeleteAll.Image")));
+            this.tsmiDeleteAll.Name = "tsmiDeleteAll";
+            this.tsmiDeleteAll.Size = new System.Drawing.Size(68, 20);
+            this.tsmiDeleteAll.Text = "Delete";
+            this.tsmiDeleteAll.Click += new System.EventHandler(this.DeleteAll_Click);
             // 
             // LiveDownloaderDispatcher
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(672, 408);
-            this.Controls.Add(this.BtnAdd);
+            this.ClientSize = new System.Drawing.Size(672, 366);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.gridDownloaders);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "LiveDownloaderDispatcher";
@@ -229,7 +237,7 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiStartAll;
         private System.Windows.Forms.ToolStripMenuItem tsmiStopAll;
         private System.Windows.Forms.ToolStripMenuItem tsmiDeleteAll;
-        private System.Windows.Forms.Button BtnAdd;
+        private System.Windows.Forms.ToolStripMenuItem addToolStripMenuItem;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column7;

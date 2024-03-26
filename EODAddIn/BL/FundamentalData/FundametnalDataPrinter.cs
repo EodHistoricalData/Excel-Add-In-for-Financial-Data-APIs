@@ -7,6 +7,7 @@ using static EODAddIn.Utils.ExcelUtils;
 using EOD.Model.Fundamental;
 using Microsoft.Office.Interop.Excel;
 using EOD.Model.BulkFundamental;
+using System.Windows.Forms;
 
 namespace EODAddIn.BL.FundamentalDataPrinter
 {
@@ -22,7 +23,7 @@ namespace EODAddIn.BL.FundamentalDataPrinter
             {
                 SetNonInteractive();
 
-                string nameSheet = $"{ticker}-Fundamentals";
+                string nameSheet = GetWorksheetNewName($"{ticker}-Fundamental");
 
                 Worksheet sh = AddSheet(nameSheet);
 
@@ -48,20 +49,6 @@ namespace EODAddIn.BL.FundamentalDataPrinter
                 }
 
                 int startGroup1 = 2;
-                //Type myType = data.GetType();
-                //IList<PropertyInfo> props = new List<PropertyInfo>(myType.GetProperties());
-
-                //foreach (PropertyInfo prop in props)
-                //{
-                //    object propValue = prop.GetValue(data, null);
-                //    switch (prop.Name)
-                //    {
-                //        case "General":
-                //            row = Printer.PrintVerticalTable(prop.Name, propValue, sh.Cells[row, 1]);
-                //            row++;
-                //            break;
-                //    }
-                //}
 
                 row = PrintFundamentalGeneral(data, sh.Cells[row, 1]);
                 row++;
@@ -126,7 +113,14 @@ namespace EODAddIn.BL.FundamentalDataPrinter
         /// <param name="data"></param>
         public static void PrintFundamentalEarnings(EOD.Model.Fundamental.FundamentalData data)
         {
-            PrintFundamentalData("Earnings", data.Earnings.History, data.Earnings.Trend, Globals.ThisAddIn.Application.ActiveCell, "History", "Trend");
+            if (data.Earnings != null)
+            {
+                PrintFundamentalData("Earnings", data.Earnings.History, data.Earnings.Trend, Globals.ThisAddIn.Application.ActiveCell, "History", "Trend");
+            }
+            else
+            {
+                MessageBox.Show("There is no available data for the selected parameters.", "No data", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
         /// <summary>
@@ -144,7 +138,14 @@ namespace EODAddIn.BL.FundamentalDataPrinter
         /// <param name="data"></param>
         public static void PrintFundamentalBalanceSheet(EOD.Model.Fundamental.FundamentalData data)
         {
-            PrintFundamentalData("Balance Sheet", data.Financials.Balance_Sheet.Quarterly, data.Financials.Balance_Sheet.Yearly, Globals.ThisAddIn.Application.ActiveCell);
+            if (data.Financials != null)
+            {
+                PrintFundamentalData("Balance Sheet", data.Financials.Balance_Sheet.Quarterly, data.Financials.Balance_Sheet.Yearly, Globals.ThisAddIn.Application.ActiveCell);
+            }
+            else
+            {
+                MessageBox.Show("There is no available data for the selected parameters.", "No data", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
         /// <summary>
@@ -153,7 +154,14 @@ namespace EODAddIn.BL.FundamentalDataPrinter
         /// <param name="data"></param>
         public static void PrintFundamentalIncomeStatement(EOD.Model.Fundamental.FundamentalData data)
         {
-            PrintFundamentalData("Income Statement", data.Financials.Income_Statement.Quarterly, data.Financials.Income_Statement.Yearly, Globals.ThisAddIn.Application.ActiveCell);
+            if (data.Financials != null)
+            {
+                PrintFundamentalData("Income Statement", data.Financials.Income_Statement.Quarterly, data.Financials.Income_Statement.Yearly, Globals.ThisAddIn.Application.ActiveCell);
+            }
+            else
+            {
+                MessageBox.Show("There is no available data for the selected parameters.", "No data", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
 
         /// <summary>
@@ -164,6 +172,12 @@ namespace EODAddIn.BL.FundamentalDataPrinter
         /// <returns>The number of the last involved line</returns>
         private static int PrintFundamentalHighlights(EOD.Model.Fundamental.FundamentalData data, Excel.Range range)
         {
+            if (data.Highlights == null)
+            {
+
+                MessageBox.Show("There is no available data for the selected parameters.", "No data", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return 0;
+            }
             Excel.Worksheet sh = range.Parent;
             int row = range.Row;
             int column = range.Column;
@@ -371,5 +385,7 @@ namespace EODAddIn.BL.FundamentalDataPrinter
                 }
             }
         }
+
+
     }
 }

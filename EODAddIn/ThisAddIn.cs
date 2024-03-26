@@ -11,12 +11,12 @@ namespace EODAddIn
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
             Program.Program.Run();
-            if (!Settings.SettingsFields.IsInfoShowed)
+            if (!Settings.Data.IsInfoShowed)
             {
                 Panels.PanelInfo panel = new Panels.PanelInfo(); // add to settings save 
                 panel.ShowPanel();
             }
-            Settings.SettingsFields.IsInfoShowed = true;
+            Settings.Data.IsInfoShowed = true;
             string filename = Path.Combine(Program.Program.UserFolder, "EODAddIn.xla");
             if (!File.Exists(filename))
             {

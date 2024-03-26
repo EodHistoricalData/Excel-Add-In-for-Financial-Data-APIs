@@ -38,14 +38,6 @@ namespace EODAddIn
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Ribbon));
             this.tabMain = this.Factory.CreateRibbonTab();
             this.grpMain = this.Factory.CreateRibbonGroup();
-            this.group1 = this.Factory.CreateRibbonGroup();
-            this.label2 = this.Factory.CreateRibbonLabel();
-            this.label3 = this.Factory.CreateRibbonLabel();
-            this.label1 = this.Factory.CreateRibbonLabel();
-            this.lblRequest = this.Factory.CreateRibbonLabel();
-            this.lblRequestLeft = this.Factory.CreateRibbonLabel();
-            this.separator1 = this.Factory.CreateRibbonSeparator();
-            this.grpAbout = this.Factory.CreateRibbonGroup();
             this.btnGetHistorical = this.Factory.CreateRibbonButton();
             this.btnGetIntradayHistoricalData = this.Factory.CreateRibbonButton();
             this.BtnGetLive = this.Factory.CreateRibbonButton();
@@ -62,18 +54,20 @@ namespace EODAddIn
             this.BtnOptions = this.Factory.CreateRibbonButton();
             this.BtnBulkEod = this.Factory.CreateRibbonButton();
             this.btnTechnicals = this.Factory.CreateRibbonButton();
-            this.menuScreener = this.Factory.CreateRibbonMenu();
-            this.btnCreateScreener = this.Factory.CreateRibbonButton();
-            this.btnGetScreenerFundamenat = this.Factory.CreateRibbonButton();
-            this.btnGetSreenerHistorical = this.Factory.CreateRibbonButton();
-            this.btnGetScreenerIntraday = this.Factory.CreateRibbonButton();
+            this.BtnScreener = this.Factory.CreateRibbonButton();
             this.menuAvailableDataFeeds = this.Factory.CreateRibbonMenu();
             this.btnListOfExchanges = this.Factory.CreateRibbonButton();
             this.btnListOfCRYPTOCurrencies = this.Factory.CreateRibbonButton();
-            this.btnListOfFutures = this.Factory.CreateRibbonButton();
             this.btnListOfForexCurrencies = this.Factory.CreateRibbonButton();
-            this.btnListOfIndices = this.Factory.CreateRibbonButton();
+            this.group1 = this.Factory.CreateRibbonGroup();
+            this.label2 = this.Factory.CreateRibbonLabel();
+            this.label3 = this.Factory.CreateRibbonLabel();
+            this.label1 = this.Factory.CreateRibbonLabel();
+            this.lblRequest = this.Factory.CreateRibbonLabel();
+            this.lblRequestLeft = this.Factory.CreateRibbonLabel();
+            this.separator1 = this.Factory.CreateRibbonSeparator();
             this.btnSettings = this.Factory.CreateRibbonButton();
+            this.grpAbout = this.Factory.CreateRibbonGroup();
             this.btnSendIdea = this.Factory.CreateRibbonButton();
             this.btnCheckUpdate = this.Factory.CreateRibbonButton();
             this.btnErrorMessage = this.Factory.CreateRibbonButton();
@@ -102,60 +96,10 @@ namespace EODAddIn
             this.grpMain.Items.Add(this.BtnOptions);
             this.grpMain.Items.Add(this.BtnBulkEod);
             this.grpMain.Items.Add(this.btnTechnicals);
-            this.grpMain.Items.Add(this.menuScreener);
+            this.grpMain.Items.Add(this.BtnScreener);
             this.grpMain.Items.Add(this.menuAvailableDataFeeds);
             this.grpMain.Label = "Commands";
             this.grpMain.Name = "grpMain";
-            // 
-            // group1
-            // 
-            this.group1.Items.Add(this.label2);
-            this.group1.Items.Add(this.label3);
-            this.group1.Items.Add(this.label1);
-            this.group1.Items.Add(this.lblRequest);
-            this.group1.Items.Add(this.lblRequestLeft);
-            this.group1.Items.Add(this.separator1);
-            this.group1.Items.Add(this.btnSettings);
-            this.group1.Label = "Limits";
-            this.group1.Name = "group1";
-            // 
-            // label2
-            // 
-            this.label2.Label = "Request   ";
-            this.label2.Name = "label2";
-            // 
-            // label3
-            // 
-            this.label3.Label = "Left";
-            this.label3.Name = "label3";
-            // 
-            // label1
-            // 
-            this.label1.Label = " ";
-            this.label1.Name = "label1";
-            // 
-            // lblRequest
-            // 
-            this.lblRequest.Label = "-";
-            this.lblRequest.Name = "lblRequest";
-            // 
-            // lblRequestLeft
-            // 
-            this.lblRequestLeft.Label = "-";
-            this.lblRequestLeft.Name = "lblRequestLeft";
-            // 
-            // separator1
-            // 
-            this.separator1.Name = "separator1";
-            // 
-            // grpAbout
-            // 
-            this.grpAbout.Items.Add(this.btnSendIdea);
-            this.grpAbout.Items.Add(this.btnCheckUpdate);
-            this.grpAbout.Items.Add(this.btnErrorMessage);
-            this.grpAbout.Items.Add(this.btnAbout);
-            this.grpAbout.Label = "About";
-            this.grpAbout.Name = "grpAbout";
             // 
             // btnGetHistorical
             // 
@@ -279,7 +223,7 @@ namespace EODAddIn
             // 
             this.BtnBulkEod.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.BtnBulkEod.Image = global::EODAddIn.Properties.Resources.button_80;
-            this.BtnBulkEod.Label = "Get Bulk EOD data";
+            this.BtnBulkEod.Label = "Get Bulk EOD";
             this.BtnBulkEod.Name = "BtnBulkEod";
             this.BtnBulkEod.ShowImage = true;
             this.BtnBulkEod.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnBulkEod_Click);
@@ -293,45 +237,14 @@ namespace EODAddIn
             this.btnTechnicals.ShowImage = true;
             this.btnTechnicals.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnTechnicals_Click);
             // 
-            // menuScreener
+            // BtnScreener
             // 
-            this.menuScreener.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.menuScreener.Image = ((System.Drawing.Image)(resources.GetObject("menuScreener.Image")));
-            this.menuScreener.Items.Add(this.btnCreateScreener);
-            this.menuScreener.Items.Add(this.btnGetScreenerFundamenat);
-            this.menuScreener.Items.Add(this.btnGetSreenerHistorical);
-            this.menuScreener.Items.Add(this.btnGetScreenerIntraday);
-            this.menuScreener.Label = "Stock Screener";
-            this.menuScreener.Name = "menuScreener";
-            this.menuScreener.ShowImage = true;
-            // 
-            // btnCreateScreener
-            // 
-            this.btnCreateScreener.Label = "Create";
-            this.btnCreateScreener.Name = "btnCreateScreener";
-            this.btnCreateScreener.ShowImage = true;
-            this.btnCreateScreener.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnCreateScreener_Click);
-            // 
-            // btnGetScreenerFundamenat
-            // 
-            this.btnGetScreenerFundamenat.Label = "Get fundamental";
-            this.btnGetScreenerFundamenat.Name = "btnGetScreenerFundamenat";
-            this.btnGetScreenerFundamenat.ShowImage = true;
-            this.btnGetScreenerFundamenat.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnGetScreenerFundamental_Click);
-            // 
-            // btnGetSreenerHistorical
-            // 
-            this.btnGetSreenerHistorical.Label = "Get historical";
-            this.btnGetSreenerHistorical.Name = "btnGetSreenerHistorical";
-            this.btnGetSreenerHistorical.ShowImage = true;
-            this.btnGetSreenerHistorical.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.btnGetSreenerHistorical_Click);
-            // 
-            // btnGetScreenerIntraday
-            // 
-            this.btnGetScreenerIntraday.Label = "Get intraday ";
-            this.btnGetScreenerIntraday.Name = "btnGetScreenerIntraday";
-            this.btnGetScreenerIntraday.ShowImage = true;
-            this.btnGetScreenerIntraday.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button1_Click);
+            this.BtnScreener.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.BtnScreener.Image = ((System.Drawing.Image)(resources.GetObject("BtnScreener.Image")));
+            this.BtnScreener.Label = "Stock Screener";
+            this.BtnScreener.Name = "BtnScreener";
+            this.BtnScreener.ShowImage = true;
+            this.BtnScreener.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnScreener_Click);
             // 
             // menuAvailableDataFeeds
             // 
@@ -339,9 +252,7 @@ namespace EODAddIn
             this.menuAvailableDataFeeds.Image = ((System.Drawing.Image)(resources.GetObject("menuAvailableDataFeeds.Image")));
             this.menuAvailableDataFeeds.Items.Add(this.btnListOfExchanges);
             this.menuAvailableDataFeeds.Items.Add(this.btnListOfCRYPTOCurrencies);
-            this.menuAvailableDataFeeds.Items.Add(this.btnListOfFutures);
             this.menuAvailableDataFeeds.Items.Add(this.btnListOfForexCurrencies);
-            this.menuAvailableDataFeeds.Items.Add(this.btnListOfIndices);
             this.menuAvailableDataFeeds.Label = "Available Data Feeds";
             this.menuAvailableDataFeeds.Name = "menuAvailableDataFeeds";
             this.menuAvailableDataFeeds.ShowImage = true;
@@ -360,13 +271,6 @@ namespace EODAddIn
             this.btnListOfCRYPTOCurrencies.ShowImage = true;
             this.btnListOfCRYPTOCurrencies.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnListOfCRYPTOCurrencies_Click);
             // 
-            // btnListOfFutures
-            // 
-            this.btnListOfFutures.Label = "List of Futures/Commodities";
-            this.btnListOfFutures.Name = "btnListOfFutures";
-            this.btnListOfFutures.ShowImage = true;
-            this.btnListOfFutures.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnListOfFutures_Click);
-            // 
             // btnListOfForexCurrencies
             // 
             this.btnListOfForexCurrencies.Label = "List of Forex Currencies";
@@ -374,12 +278,46 @@ namespace EODAddIn
             this.btnListOfForexCurrencies.ShowImage = true;
             this.btnListOfForexCurrencies.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnListOfForexCurrencies_Click);
             // 
-            // btnListOfIndices
+            // group1
             // 
-            this.btnListOfIndices.Label = "List of Indices";
-            this.btnListOfIndices.Name = "btnListOfIndices";
-            this.btnListOfIndices.ShowImage = true;
-            this.btnListOfIndices.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnListOfIndices_Click);
+            this.group1.Items.Add(this.label2);
+            this.group1.Items.Add(this.label3);
+            this.group1.Items.Add(this.label1);
+            this.group1.Items.Add(this.lblRequest);
+            this.group1.Items.Add(this.lblRequestLeft);
+            this.group1.Items.Add(this.separator1);
+            this.group1.Items.Add(this.btnSettings);
+            this.group1.Label = "Limits";
+            this.group1.Name = "group1";
+            // 
+            // label2
+            // 
+            this.label2.Label = "Request   ";
+            this.label2.Name = "label2";
+            // 
+            // label3
+            // 
+            this.label3.Label = "Left";
+            this.label3.Name = "label3";
+            // 
+            // label1
+            // 
+            this.label1.Label = " ";
+            this.label1.Name = "label1";
+            // 
+            // lblRequest
+            // 
+            this.lblRequest.Label = "-";
+            this.lblRequest.Name = "lblRequest";
+            // 
+            // lblRequestLeft
+            // 
+            this.lblRequestLeft.Label = "-";
+            this.lblRequestLeft.Name = "lblRequestLeft";
+            // 
+            // separator1
+            // 
+            this.separator1.Name = "separator1";
             // 
             // btnSettings
             // 
@@ -389,6 +327,15 @@ namespace EODAddIn
             this.btnSettings.Name = "btnSettings";
             this.btnSettings.ShowImage = true;
             this.btnSettings.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.BtnSettings_Click);
+            // 
+            // grpAbout
+            // 
+            this.grpAbout.Items.Add(this.btnSendIdea);
+            this.grpAbout.Items.Add(this.btnCheckUpdate);
+            this.grpAbout.Items.Add(this.btnErrorMessage);
+            this.grpAbout.Items.Add(this.btnAbout);
+            this.grpAbout.Label = "About";
+            this.grpAbout.Name = "grpAbout";
             // 
             // btnSendIdea
             // 
@@ -470,21 +417,15 @@ namespace EODAddIn
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnGetIntradayHistoricalData;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnGetEtf;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnOptions;
-        internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuScreener;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnCreateScreener;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnGetBulk;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnGetScreenerFundamenat;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnGetSreenerHistorical;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnGetScreenerIntraday;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menuAvailableDataFeeds;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnListOfExchanges;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnListOfCRYPTOCurrencies;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnListOfFutures;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnListOfForexCurrencies;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton btnListOfIndices;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnBulkEod;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton btnTechnicals;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnGetLive;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton BtnScreener;
     }
 
     partial class ThisRibbonCollection
