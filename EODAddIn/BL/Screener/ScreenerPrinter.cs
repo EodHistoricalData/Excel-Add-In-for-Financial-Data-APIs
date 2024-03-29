@@ -660,19 +660,19 @@ namespace EODAddIn.BL.Screener
                 string nameSheet = GetWorksheetNewName(screenerName + " Historical");
                 sh = AddSheet(nameSheet);
 
-                List<(string, string)> tickers=new List<(string, string)>();
+                List<Ticker> tickers=new List<Ticker>();
                 foreach (string ticker in GetTickersFromScreener(screener))
                 {
                     string[] subs = ticker.Split('.');
-                    tickers.Add((subs[0], subs[1]));
+                    tickers.Add(new Ticker(subs[0], subs[1]));
                 }
                 CreateScreenerHictoricalWorksheet(sh);
-                foreach ((string, string) ticker in tickers)
+                foreach (var ticker in tickers)
                 {
-                    List<EOD.Model.HistoricalStockPrice> res = HistoricalAPI.HistoricalAPI.GetEOD(ticker.Item1, from, to, period);
+                    List<EOD.Model.HistoricalStockPrice> res = HistoricalAPI.HistoricalAPI.GetEOD(ticker.FullName, from, to, period);
                     foreach (EOD.Model.HistoricalStockPrice item in res)
                     {
-                        sh.Cells[row, 1] = ticker.Item1;
+                        sh.Cells[row, 1] = ticker.FullName;
                         sh.Cells[row, 2] = item.Date;
                         sh.Cells[row, 3] = item.Open;
                         sh.Cells[row, 4] = item.High;
