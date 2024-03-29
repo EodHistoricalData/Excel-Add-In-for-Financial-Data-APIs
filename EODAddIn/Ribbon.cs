@@ -58,6 +58,13 @@ namespace EODAddIn
         {
             try
             {
+                var activeWindow = _xlapp.ActiveWindow;
+                if (activeWindow == null)
+                {
+                    Program.ErrorReport errorReport = new Program.ErrorReport(new Exception("please, open any excel file."));
+                    errorReport.MessageToUser();
+                    return;
+                }
                 var panels = Globals.ThisAddIn.CustomTaskPanes;
                 var infoPanels = panels.Where(p => p.Title == "Info").ToList();
                 if (infoPanels.Count == 0)
@@ -67,7 +74,6 @@ namespace EODAddIn
                 }
                 else
                 {
-                    var activeWindow = _xlapp.ActiveWindow;
                     CustomTaskPane taskPane = null;
                     foreach (var panel in infoPanels)
                     {

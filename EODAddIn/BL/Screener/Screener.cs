@@ -30,7 +30,7 @@ namespace EODAddIn.BL.Screener
         //public bool ScreenerRbtnSortDesc { get; set; }
 
         public List<Filter> Filters { get; set; } = new List<Filter>();
-        public List<Signal> Signals { get; set; }
+        public List<Signal> Signals { get; set; } = null;
         //{
         //    get
         //    {

@@ -34,6 +34,18 @@ namespace EODAddIn.Program
                 using (FileStream fs = File.OpenRead(path))
                 {
                     Data = (SettingsFields)formatter.Deserialize(fs);
+                    // wrapper methods take nulls
+                    foreach(var screener in Data.Screeners)
+                    {
+                        if (screener.Signals.Count == 0)
+                        {
+                            screener.Signals = null;
+                        }
+                        if (screener.Filters.Count == 0)
+                        {
+                            screener.Filters = null;
+                        }
+                    }
                 }
             }
             catch (Exception)
