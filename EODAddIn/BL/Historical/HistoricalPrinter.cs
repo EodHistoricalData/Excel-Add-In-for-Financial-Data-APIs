@@ -19,13 +19,21 @@ namespace EODAddIn.BL.HistoricalPrinter
         /// <param name="ticker">Ticker</param>
         /// <param name="period">Period</param>
         /// <param name="chart"> necessity of chart</param>
-        public static int PrintEndOfDay(List<HistoricalStockPrice> endOfDays, string ticker, string period, bool chart, bool isCreateTable)
+        public static int PrintEndOfDay(List<HistoricalStockPrice> endOfDays, string ticker, string period, bool chart, bool isCreateTable, bool addDate)
         {
             try
             {
                 SetNonInteractive();
 
-                string nameSheet = GetWorksheetNewName($"{ticker} EOD {period} {endOfDays.First().Date:d}");
+                string nameSheet = "";
+                if (addDate)
+                {
+                    nameSheet = GetWorksheetNewName($"{ticker} EOD {period} {endOfDays.First().Date:d}");
+                }
+                else
+                {
+                    nameSheet = GetWorksheetNewName($"{ticker}");
+                }
 
                 int r = 1;
 
