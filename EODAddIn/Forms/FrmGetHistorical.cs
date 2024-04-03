@@ -1,4 +1,5 @@
 ﻿using EOD.Model;
+using EODAddIn.BL;
 using EODAddIn.BL.HistoricalAPI;
 using EODAddIn.BL.HistoricalPrinter;
 using EODAddIn.Program;
@@ -46,6 +47,20 @@ namespace EODAddIn.Forms
 
             if (Settings.Data.GetHistoricalForm.OrderDesc) rbtnDescOrder.Checked = true;
             chkIsTable.Checked = Settings.Data.GetHistoricalForm.SmartTable;
+            chkDateToWS.Checked = Settings.Data.GetHistoricalForm.AddDate;
+
+            switch (Settings.Data.GetHistoricalForm.TypeOfOutput)
+            {
+                case "Separated with chart":
+                    cboTypeOfOutput.SelectedIndex = 1;
+                    break;
+                case "Separated without chart":
+                    cboTypeOfOutput.SelectedIndex = 2;
+                    break;
+                case "One worksheet":
+                    cboTypeOfOutput.SelectedIndex = 0;
+                    break;
+            }
 
             foreach (string ticker in Settings.Data.GetHistoricalForm.Tickers)
             {
@@ -90,10 +105,10 @@ namespace EODAddIn.Forms
                     switch (cboTypeOfOutput.SelectedItem.ToString())
                     {
                         case "Separated with chart":
-                            rowHistorical = HistoricalPrinter.PrintEndOfDay(res, ticker, period, true, chkIsTable.Checked);
+                            rowHistorical = HistoricalPrinter.PrintEndOfDay(res, ticker, period, true, chkIsTable.Checked, chkDateToWS.Checked);
                             break;
                         case "Separated without chart":
-                            rowHistorical = HistoricalPrinter.PrintEndOfDay(res, ticker, period, false, chkIsTable.Checked);
+                            rowHistorical = HistoricalPrinter.PrintEndOfDay(res, ticker, period, false, chkIsTable.Checked, chkDateToWS.Checked);
                             break;
                         case "One worksheet":
                             if (gridTickers.Rows.Count > 1)
@@ -102,7 +117,7 @@ namespace EODAddIn.Forms
                             }
                             else
                             {
-                                rowHistorical = HistoricalPrinter.PrintEndOfDay(res, ticker, period, false, chkIsTable.Checked);
+                                rowHistorical = HistoricalPrinter.PrintEndOfDay(res, ticker, period, false, chkIsTable.Checked, chkDateToWS.Checked);
                             }
                             break;
                     }
@@ -121,7 +136,7 @@ namespace EODAddIn.Forms
             }
             if (isSummary && chkIsTable.Checked)
             {
-                ExcelUtils.MakeTable("A1", "K" + (rowHistorical-1).ToString(), worksheet, "Historical", 9);
+                ExcelUtils.MakeTable("A1", "K" + (rowHistorical - 1).ToString(), worksheet, "Historical", 9);
             }
             progress.Finish();
             FormSettingsSave(tikers);
@@ -136,7 +151,9 @@ namespace EODAddIn.Forms
             Settings.Data.GetHistoricalForm.From = dtpFrom.Value;
             Settings.Data.GetHistoricalForm.OrderDesc = rbtnDescOrder.Checked;
             Settings.Data.GetHistoricalForm.SmartTable = chkIsTable.Checked;
+            Settings.Data.GetHistoricalForm.AddDate = chkDateToWS.Checked;
             Settings.Data.GetHistoricalForm.Tickers = tikers;
+            Settings.Data.GetHistoricalForm.TypeOfOutput = cboTypeOfOutput.SelectedItem.ToString();
             Settings.Save();
         }
 

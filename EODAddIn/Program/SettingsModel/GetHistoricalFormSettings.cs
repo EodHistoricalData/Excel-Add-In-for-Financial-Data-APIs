@@ -15,6 +15,8 @@ namespace EODAddIn.Program.SettingsModel
 
         public bool SmartTable = true;
 
+        public bool AddDate = true;
+
         public bool OrderDesc = true;
 
         public string TypeOfOutput = string.Empty;

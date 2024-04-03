@@ -55,6 +55,7 @@ namespace EODAddIn.Forms
             this.chkIsTable = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.cboTypeOfOutput = new System.Windows.Forms.ComboBox();
+            this.chkDateToWS = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.gridTickers)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -96,7 +97,7 @@ namespace EODAddIn.Forms
             // 
             // btnLoad
             // 
-            this.btnLoad.Location = new System.Drawing.Point(197, 414);
+            this.btnLoad.Location = new System.Drawing.Point(197, 427);
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(75, 23);
             this.btnLoad.TabIndex = 8;
@@ -154,13 +155,13 @@ namespace EODAddIn.Forms
             this.findTickerToolStripMenuItem,
             this.tsmiDeleteRowDataGrid});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(130, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(136, 48);
             // 
             // findTickerToolStripMenuItem
             // 
             this.findTickerToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("findTickerToolStripMenuItem.Image")));
             this.findTickerToolStripMenuItem.Name = "findTickerToolStripMenuItem";
-            this.findTickerToolStripMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.findTickerToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.findTickerToolStripMenuItem.Text = "Find ticker";
             this.findTickerToolStripMenuItem.Click += new System.EventHandler(this.TsmiFindTicker_Click);
             // 
@@ -168,7 +169,7 @@ namespace EODAddIn.Forms
             // 
             this.tsmiDeleteRowDataGrid.Image = ((System.Drawing.Image)(resources.GetObject("tsmiDeleteRowDataGrid.Image")));
             this.tsmiDeleteRowDataGrid.Name = "tsmiDeleteRowDataGrid";
-            this.tsmiDeleteRowDataGrid.Size = new System.Drawing.Size(129, 22);
+            this.tsmiDeleteRowDataGrid.Size = new System.Drawing.Size(135, 22);
             this.tsmiDeleteRowDataGrid.Text = "Delete";
             this.tsmiDeleteRowDataGrid.Click += new System.EventHandler(this.TsmiDeleteRowDataGrid_Click);
             // 
@@ -180,7 +181,7 @@ namespace EODAddIn.Forms
             this.tsmiClearTicker});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(284, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(284, 25);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -188,7 +189,7 @@ namespace EODAddIn.Forms
             // 
             this.tsmiFindTicker.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFindTicker.Image")));
             this.tsmiFindTicker.Name = "tsmiFindTicker";
-            this.tsmiFindTicker.Size = new System.Drawing.Size(90, 20);
+            this.tsmiFindTicker.Size = new System.Drawing.Size(95, 21);
             this.tsmiFindTicker.Text = "Find ticker";
             this.tsmiFindTicker.Click += new System.EventHandler(this.TsmiFindTicker_Click);
             // 
@@ -199,14 +200,14 @@ namespace EODAddIn.Forms
             this.tsmiFromExcel});
             this.tsmiLoadTickers.Image = ((System.Drawing.Image)(resources.GetObject("tsmiLoadTickers.Image")));
             this.tsmiLoadTickers.Name = "tsmiLoadTickers";
-            this.tsmiLoadTickers.Size = new System.Drawing.Size(71, 20);
+            this.tsmiLoadTickers.Size = new System.Drawing.Size(75, 21);
             this.tsmiLoadTickers.Text = "Import";
             // 
             // tsmiFromTxt
             // 
             this.tsmiFromTxt.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFromTxt.Image")));
             this.tsmiFromTxt.Name = "tsmiFromTxt";
-            this.tsmiFromTxt.Size = new System.Drawing.Size(180, 22);
+            this.tsmiFromTxt.Size = new System.Drawing.Size(177, 22);
             this.tsmiFromTxt.Text = "From file txt";
             this.tsmiFromTxt.Click += new System.EventHandler(this.TsmiFromTxt_Click);
             // 
@@ -214,7 +215,7 @@ namespace EODAddIn.Forms
             // 
             this.tsmiFromExcel.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFromExcel.Image")));
             this.tsmiFromExcel.Name = "tsmiFromExcel";
-            this.tsmiFromExcel.Size = new System.Drawing.Size(180, 22);
+            this.tsmiFromExcel.Size = new System.Drawing.Size(177, 22);
             this.tsmiFromExcel.Text = "From Excel range";
             this.tsmiFromExcel.Click += new System.EventHandler(this.TsmiFromExcel_Click);
             // 
@@ -222,7 +223,7 @@ namespace EODAddIn.Forms
             // 
             this.tsmiClearTicker.Image = ((System.Drawing.Image)(resources.GetObject("tsmiClearTicker.Image")));
             this.tsmiClearTicker.Name = "tsmiClearTicker";
-            this.tsmiClearTicker.Size = new System.Drawing.Size(80, 20);
+            this.tsmiClearTicker.Size = new System.Drawing.Size(86, 21);
             this.tsmiClearTicker.Text = "Clear list";
             this.tsmiClearTicker.Click += new System.EventHandler(this.ClearTicker_Click);
             // 
@@ -261,10 +262,10 @@ namespace EODAddIn.Forms
             // 
             this.chkIsTable.Checked = true;
             this.chkIsTable.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkIsTable.Location = new System.Drawing.Point(15, 384);
+            this.chkIsTable.Location = new System.Drawing.Point(12, 410);
             this.chkIsTable.Name = "chkIsTable";
             this.chkIsTable.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
-            this.chkIsTable.Size = new System.Drawing.Size(105, 33);
+            this.chkIsTable.Size = new System.Drawing.Size(147, 20);
             this.chkIsTable.TabIndex = 23;
             this.chkIsTable.Text = "Smart Table";
             this.chkIsTable.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -292,11 +293,25 @@ namespace EODAddIn.Forms
             this.cboTypeOfOutput.TabIndex = 21;
             this.cboTypeOfOutput.Text = "One worksheet";
             // 
+            // chkDateToWS
+            // 
+            this.chkDateToWS.Checked = true;
+            this.chkDateToWS.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkDateToWS.Location = new System.Drawing.Point(12, 384);
+            this.chkDateToWS.Name = "chkDateToWS";
+            this.chkDateToWS.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.chkDateToWS.Size = new System.Drawing.Size(147, 20);
+            this.chkDateToWS.TabIndex = 24;
+            this.chkDateToWS.Text = "Add date to sheet name";
+            this.chkDateToWS.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.chkDateToWS.UseVisualStyleBackColor = true;
+            // 
             // FrmGetHistorical
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 444);
+            this.ClientSize = new System.Drawing.Size(284, 462);
+            this.Controls.Add(this.chkDateToWS);
             this.Controls.Add(this.chkIsTable);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cboTypeOfOutput);
@@ -353,5 +368,6 @@ namespace EODAddIn.Forms
         private System.Windows.Forms.CheckBox chkIsTable;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cboTypeOfOutput;
+        private System.Windows.Forms.CheckBox chkDateToWS;
     }
 }
