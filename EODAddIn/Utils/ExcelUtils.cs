@@ -452,5 +452,17 @@ namespace EODAddIn.Utils
 
             return name;
         }
+
+        public static bool WindowAvailable()
+        {
+            var activeWindow = _xlsApp.ActiveWindow;
+            if (activeWindow == null)
+            {
+                ErrorReport errorReport = new ErrorReport(new Exception("please, open any excel file."));
+                errorReport.MessageToUser();
+                return false;
+            }
+            return true;
+        }
     }
 }
