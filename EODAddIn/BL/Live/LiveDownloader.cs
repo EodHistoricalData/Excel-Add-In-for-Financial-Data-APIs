@@ -173,7 +173,7 @@ namespace EODAddIn.BL.Live
                 }
                 catch
                 {
-                    throw new Exception("It was not possible to download an exchange working hours for one or more tickers. Please check that the ticker list is correct.");
+                    //throw new Exception("It was not possible to download an exchange working hours for one or more tickers. Please check that the ticker list is correct.");
                 }
             }
         }
