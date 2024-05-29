@@ -58,13 +58,12 @@ namespace EODAddIn
         {
             try
             {
-                var activeWindow = _xlapp.ActiveWindow;
-                if (activeWindow == null)
+                if (!ExcelUtils.WindowAvailable())
                 {
-                    Program.ErrorReport errorReport = new Program.ErrorReport(new Exception("please, open any excel file."));
-                    errorReport.MessageToUser();
                     return;
                 }
+
+                var activeWindow = _xlapp.ActiveWindow;
                 var panels = Globals.ThisAddIn.CustomTaskPanes;
                 var infoPanels = panels.Where(p => p.Title == "Info").ToList();
                 if (infoPanels.Count == 0)
@@ -106,6 +105,11 @@ namespace EODAddIn
         {
             try
             {
+                if (!ExcelUtils.WindowAvailable())
+                {
+                    return;
+                }
+
                 FormShower.FrmGetHistoricalShow();
 
             }
@@ -120,6 +124,11 @@ namespace EODAddIn
         {
             try
             {
+                if (!ExcelUtils.WindowAvailable())
+                {
+                    return;
+                }
+
                 if (FormShower.ShowActiveForm()) return;
 
                 FrmGetEtf frm = new FrmGetEtf();
@@ -141,6 +150,11 @@ namespace EODAddIn
         {
             try
             {
+                if (!ExcelUtils.WindowAvailable())
+                {
+                    return;
+                }
+
                 if (FormShower.ShowActiveForm()) return;
                 Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
                 frm.ShowDialog(new WinHwnd());
@@ -244,6 +258,11 @@ namespace EODAddIn
         {
             try
             {
+                if (!ExcelUtils.WindowAvailable())
+                {
+                    return;
+                }
+
                 if (FormShower.ShowActiveForm()) return;
                 Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
                 frm.ShowDialog(new WinHwnd());
@@ -266,6 +285,11 @@ namespace EODAddIn
         {
             try
             {
+                if (!ExcelUtils.WindowAvailable())
+                {
+                    return;
+                }
+
                 if (FormShower.ShowActiveForm()) return;
                 Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
                 frm.ShowDialog(new WinHwnd());
@@ -288,6 +312,11 @@ namespace EODAddIn
         {
             try
             {
+                if (!ExcelUtils.WindowAvailable())
+                {
+                    return;
+                }
+
                 if (FormShower.ShowActiveForm()) return;
                 Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
                 frm.ShowDialog(new WinHwnd());
@@ -309,6 +338,11 @@ namespace EODAddIn
         {
             try
             {
+                if (!ExcelUtils.WindowAvailable())
+                {
+                    return;
+                }
+
                 if (FormShower.ShowActiveForm()) return;
                 Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
                 frm.ShowDialog(new WinHwnd());
@@ -330,6 +364,11 @@ namespace EODAddIn
         {
             try
             {
+                if (!ExcelUtils.WindowAvailable())
+                {
+                    return;
+                }
+
                 if (FormShower.ShowActiveForm()) return;
                 Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
                 frm.ShowDialog(new WinHwnd());
@@ -351,6 +390,11 @@ namespace EODAddIn
         {
             try
             {
+                if (!ExcelUtils.WindowAvailable())
+                {
+                    return;
+                }
+
                 if (FormShower.ShowActiveForm()) return;
                 Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
                 frm.ShowDialog(new WinHwnd());
@@ -371,6 +415,11 @@ namespace EODAddIn
         {
             try
             {
+                if (!ExcelUtils.WindowAvailable())
+                {
+                    return;
+                }
+
                 if (FormShower.ShowActiveForm()) return;
                 Forms.FrmGetFundamental frm = new Forms.FrmGetFundamental();
                 frm.ShowDialog(new WinHwnd());
@@ -392,6 +441,11 @@ namespace EODAddIn
         {
             try
             {
+                if (!ExcelUtils.WindowAvailable())
+                {
+                    return;
+                }
+
                 FormShower.FrmGetIntradayHistoricalDataShow();
 
             }
@@ -407,6 +461,11 @@ namespace EODAddIn
         {
             try
             {
+                if (!ExcelUtils.WindowAvailable())
+                {
+                    return;
+                }
+
                 if (FormShower.ShowActiveForm()) return;
                 Forms.FrmGetOptions frm = new Forms.FrmGetOptions();
                 frm.ShowDialog(new WinHwnd());
@@ -436,6 +495,11 @@ namespace EODAddIn
         {
             try
             {
+                if (!ExcelUtils.WindowAvailable())
+                {
+                    return;
+                }
+
                 if (FormShower.ShowActiveForm()) return;
                 Forms.FrmGetBulk frm = new Forms.FrmGetBulk();
                 frm.ShowDialog(new WinHwnd());
@@ -498,6 +562,11 @@ namespace EODAddIn
         {
             try
             {
+                if (!ExcelUtils.WindowAvailable())
+                {
+                    return;
+                }
+
                 if (FormShower.ShowActiveForm()) return;
                 FrmGetBulkEod frm = new FrmGetBulkEod();
                 frm.ShowDialog(new WinHwnd());
@@ -536,6 +605,11 @@ namespace EODAddIn
         {
             try
             {
+                if (!ExcelUtils.WindowAvailable())
+                {
+                    return;
+                }
+
                 FormShower.FrmGetTechnicalsShow();
             }
             catch (Exception ex)
@@ -549,6 +623,11 @@ namespace EODAddIn
         {
             try
             {
+                if (!ExcelUtils.WindowAvailable())
+                {
+                    return;
+                }
+
                 LiveDownloaderDispatcher frm = FormShower.LiveDownloaderDispatcherShow();
             }
             catch (Exception ex)
@@ -572,6 +651,11 @@ namespace EODAddIn
 
         private async void BtnScreener_Click(object sender, RibbonControlEventArgs e)
         {
+            if (!ExcelUtils.WindowAvailable())
+            {
+                return;
+            }
+
             ScreenerManager manager = new ScreenerManager();
             await manager.AddNewScreener();
         }
