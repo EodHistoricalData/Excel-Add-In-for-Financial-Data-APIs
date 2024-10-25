@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Policy;
 using System.Windows.Forms;
+using static System.Net.WebRequestMethods;
 using Excel = Microsoft.Office.Interop.Excel;
 
 namespace EODAddIn.Forms
@@ -61,6 +62,9 @@ namespace EODAddIn.Forms
         private async void BtnLoad_Click(object sender, EventArgs e)
         {
             if (!CheckForm()) return;
+
+            Dictionary<string, string> fails = new Dictionary<string, string>();
+
             Excel.Worksheet worksheet = null;
             string sheetName;
             bool isSummary = false;
@@ -155,16 +159,24 @@ namespace EODAddIn.Forms
                 }
                 catch (APIException ex)
                 {
-                    MessageBox.Show(ex.StatusError, "Error load " + ticker, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    fails.Add(ticker, ex.StatusError);
+                    //MessageBox.Show(ex.StatusError, "Error load " + ticker, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     continue;
                 }
                 catch (Exception ex)
                 {
+                    fails.Add(ticker, ex.Message);
                     ErrorReport error = new ErrorReport(ex);
-                    error.ShowAndSend();
                     continue;
                 }
             }
+
+            if (fails.Count != 0)
+            {
+                ErrorReport error = new ErrorReport(fails);
+                error.ShowAndSend();
+            }
+
             if (isSummary && chkIsTable.Checked && gridTickers.Rows.Count > 2)
             {
                 ExcelUtils.MakeTable("A1", "I" + (rowIntraday - 1).ToString(), Globals.ThisAddIn.Application.ActiveSheet, "Intraday", 9);
