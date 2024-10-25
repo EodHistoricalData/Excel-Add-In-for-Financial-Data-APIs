@@ -44,7 +44,6 @@ namespace EODAddIn.Utils
         public APIException(int code, string message) : base(message)
         {
             Code = code;
-            
         }
     }
 }

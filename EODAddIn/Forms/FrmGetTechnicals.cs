@@ -151,6 +151,9 @@ namespace EODAddIn.Forms
         private async void BtnLoad_Click(object sender, EventArgs e)
         {
             if (!CheckForm()) return;
+
+            Dictionary<string, string> fails = new Dictionary<string, string>();
+
             string sheetName;
             bool isSummary = false;
             Worksheet worksheet = null;
@@ -215,17 +218,22 @@ namespace EODAddIn.Forms
                     }
                     catch (APIException ex)
                     {
-                        MessageBox.Show(ex.StatusError, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        Close();
-                        return;
+                        fails.Add(ticker, ex.StatusError);
+                        //MessageBox.Show(ex.StatusError, "Error load " + ticker, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        continue;
                     }
                     catch (Exception ex)
                     {
+                        fails.Add(ticker, ex.Message);
                         ErrorReport error = new ErrorReport(ex);
-                        error.ShowAndSend();
-                        Close();
-                        return;
+                        continue;
                     }
+                }
+
+                if (fails.Count != 0)
+                {
+                    ErrorReport error = new ErrorReport(fails);
+                    error.ShowAndSend();
                 }
 
                 if (isSummary && chkIsTable.Checked)
