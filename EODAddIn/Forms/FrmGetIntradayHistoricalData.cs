@@ -122,6 +122,9 @@ namespace EODAddIn.Forms
                
                 progress.TaskStart(row.Cells[0].Value?.ToString() + " loading...", 1);
                 string ticker = row.Cells[0].Value.ToString();
+
+                if (tikers.Contains(ticker))
+                    continue;
                 tikers.Add(ticker);
                 try
                 {

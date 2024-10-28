@@ -187,6 +187,10 @@ namespace EODAddIn.Forms
                     if (item.Cells[0].Value == null) continue;
                     progress.TaskStart(item.Cells[0].Value?.ToString(), 1);
                     string ticker = item.Cells[0].Value.ToString();
+
+                    if (tikers.Contains(ticker))
+                        continue;
+
                     tikers.Add(ticker);
                     try
                     {

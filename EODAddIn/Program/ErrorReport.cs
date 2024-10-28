@@ -65,6 +65,11 @@ namespace EODAddIn.Program
                     message += pair.Key + ": " + pair.Value + ". ";
                 }
                 tickers = tickers.Substring(0, tickers.Length - 2);
+                if (message.Length > 450)
+                {
+                    message = message.Substring(0, 450);
+                    message += "...";
+                }
                 MessageBox.Show($"Data for certain tickers was not downloaded. Please double-check that there are no misspellings in the ticker name or exchange code and try again. Contact our support team if the error persists.\n\n" +
                                 $"Failed tickers: {tickers}\n" +
                                 $"Error message: {message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);

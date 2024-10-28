@@ -97,6 +97,10 @@ namespace EODAddIn.Forms
                 if (row.Cells[0].Value == null) continue;
                 progress.TaskStart(row.Cells[0].Value?.ToString(), 1);
                 string ticker = row.Cells[0].Value.ToString();
+
+                if (tikers.Contains(ticker))
+                    continue;
+
                 tikers.Add(ticker);
                 try
                 {
@@ -137,6 +141,7 @@ namespace EODAddIn.Forms
                     ErrorReport error = new ErrorReport(ex);
                     continue;
                 }
+
             }
 
             if (fails.Count != 0)
