@@ -182,7 +182,7 @@ namespace EODAddIn.Forms
 
             if (isSummary && chkIsTable.Checked && gridTickers.Rows.Count > 2)
             {
-                ExcelUtils.MakeTable("A1", "I" + (rowIntraday - 1).ToString(), Globals.ThisAddIn.Application.ActiveSheet, "Intraday", 9);
+                ExcelUtils.MakeTable("A1", "I" + (rowIntraday - 1).ToString(), worksheet, "Intraday", 9);
             }
             progress.Finish();
             Settings.Data.IntradayInterval = intervalString;

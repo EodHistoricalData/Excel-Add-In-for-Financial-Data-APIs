@@ -70,9 +70,24 @@ namespace EODAddIn.Program
                     message = message.Substring(0, 450);
                     message += "...";
                 }
-                MessageBox.Show($"Data for certain tickers was not downloaded. Please double-check that there are no misspellings in the ticker name or exchange code and try again. Contact our support team if the error persists.\n\n" +
-                                $"Failed tickers: {tickers}\n" +
-                                $"Error message: {message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                DialogResult result = MessageBox.Show($"Do you wish to upload the list of errors to a sheet \"Error tickers\"?\n\n" +
+                                                    $"Data for certain tickers was not downloaded. Please double-check that there are no misspellings in the ticker name or exchange code and try again. Contact our support team if the error persists.\n\n" +
+                                                    $"Failed tickers: {tickers}\n" +
+                                                    $"Error message: {message}", "Error", MessageBoxButtons.YesNo, MessageBoxIcon.Error);
+
+                if (result == DialogResult.Yes)
+                {
+                    var worksheet = ExcelUtils.AddSheet("Error tickers");
+                    worksheet.Cells[1, 1].value = "Ticker";
+                    worksheet.Cells[1, 2].value = "Error";
+                    int row = 2;
+                    foreach (var pair in Pairs)
+                    {
+                        worksheet.Cells[row, 1].value = pair.Key;
+                        worksheet.Cells[row, 2].value = pair.Value;
+                        row++;
+                    }
+                }
             }
         }
 
