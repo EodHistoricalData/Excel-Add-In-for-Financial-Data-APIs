@@ -76,7 +76,8 @@ namespace EODAddIn.BL.FundamentalDataPrinter
 
                 sh.Outline.AutomaticStyles = false;
                 sh.Outline.SummaryRow = XlSummaryRow.xlSummaryAbove;
-                sh.UsedRange.EntireColumn.AutoFit();
+                //sh.UsedRange.EntireColumn.AutoFit();
+                sh.UsedRange.ColumnWidth = 20.0;
                 sh.Outline.ShowLevels(1);
             }
             catch
