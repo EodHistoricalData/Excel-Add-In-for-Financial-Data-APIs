@@ -25,22 +25,23 @@ namespace EODAddIn.BL.Screener
                 fixed_filters.Add(temp);
             }
 
-            for (int i = 0; i < limit; i += 100)
+            for (int i = 0, remains = limit; i < limit; i += 100)
             {
                 int ilimit;
-                if (limit > 100)
+                if (remains > 100)
                 {
                     ilimit = 100;
                 }
                 else
                 {
-                    ilimit = limit;
+                    ilimit = remains;
                 }
 
                 EOD.Model.Screener.StockMarkerScreener request = await api.GetStockMarketScreenerAsync(fixed_filters, signals, sort, ilimit, i);
-                if (request.Data.Count == 0) break;
+                if (request.Data.Count == 0)
+                    break;
                 screener.Data.AddRange(request.Data);
-                limit -= ilimit;
+                remains -= 100;
             }
 
             return screener;

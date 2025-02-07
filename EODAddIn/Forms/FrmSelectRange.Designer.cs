@@ -28,21 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.refEdit1 = new EODAddIn.Controls.RefEdit();
             this.btnImport = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
-            // 
-            // refEdit1
-            // 
-            this.refEdit1.Location = new System.Drawing.Point(12, 29);
-            this.refEdit1.Name = "refEdit1";
-            this.refEdit1.Size = new System.Drawing.Size(318, 20);
-            this.refEdit1.TabIndex = 0;
             // 
             // btnImport
             // 
-            this.btnImport.Location = new System.Drawing.Point(255, 55);
+            this.btnImport.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnImport.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.btnImport.Location = new System.Drawing.Point(255, 46);
             this.btnImport.Name = "btnImport";
             this.btnImport.Size = new System.Drawing.Size(75, 23);
             this.btnImport.TabIndex = 1;
@@ -50,38 +43,24 @@
             this.btnImport.UseVisualStyleBackColor = true;
             this.btnImport.Click += new System.EventHandler(this.BtnImport_Click);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(13, 13);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(140, 13);
-            this.label1.TabIndex = 2;
-            this.label1.Text = "Select a range of excel cells";
-            // 
             // FrmSelectRange
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(344, 87);
-            this.Controls.Add(this.label1);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.ClientSize = new System.Drawing.Size(344, 81);
             this.Controls.Add(this.btnImport);
-            this.Controls.Add(this.refEdit1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FrmSelectRange";
             this.ShowIcon = false;
             this.Text = "Range select";
+            this.TopMost = true;
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-
-        private Controls.RefEdit refEdit1;
         private System.Windows.Forms.Button btnImport;
-        private System.Windows.Forms.Label label1;
     }
 }
