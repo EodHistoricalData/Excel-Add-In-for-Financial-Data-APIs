@@ -35,6 +35,7 @@
             this.colOperation = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.colValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chk200d_new_lo = new System.Windows.Forms.CheckBox();
             this.chk200d_new_hi = new System.Windows.Forms.CheckBox();
             this.chkBookvalue_neg = new System.Windows.Forms.CheckBox();
@@ -64,7 +65,9 @@
             this.label6 = new System.Windows.Forms.Label();
             this.btnClearFilters = new System.Windows.Forms.Button();
             this.btnAddFilter = new System.Windows.Forms.Button();
-            this.clearToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewFilters)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numLimit)).BeginInit();
@@ -85,10 +88,10 @@
             this.colOperation,
             this.colValue});
             this.dataGridViewFilters.ContextMenuStrip = this.contextMenuStrip1;
-            this.dataGridViewFilters.Location = new System.Drawing.Point(12, 121);
+            this.dataGridViewFilters.Location = new System.Drawing.Point(12, 181);
             this.dataGridViewFilters.Name = "dataGridViewFilters";
             this.dataGridViewFilters.RowHeadersWidth = 20;
-            this.dataGridViewFilters.Size = new System.Drawing.Size(584, 204);
+            this.dataGridViewFilters.Size = new System.Drawing.Size(584, 135);
             this.dataGridViewFilters.TabIndex = 0;
             this.dataGridViewFilters.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewFilters_CellValueChanged);
             this.dataGridViewFilters.RowsAdded += new System.Windows.Forms.DataGridViewRowsAddedEventHandler(this.dataGridViewFilters_RowsAdded);
@@ -117,6 +120,14 @@
             this.clearToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(102, 26);
+            // 
+            // clearToolStripMenuItem
+            // 
+            this.clearToolStripMenuItem.Image = global::EODAddIn.Properties.Resources.icons8_close_16;
+            this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
+            this.clearToolStripMenuItem.Size = new System.Drawing.Size(101, 22);
+            this.clearToolStripMenuItem.Text = "Clear";
+            this.clearToolStripMenuItem.Click += new System.EventHandler(this.ClearToolStripMenuItem_Click);
             // 
             // chk200d_new_lo
             // 
@@ -192,7 +203,7 @@
             "dividend yield",
             "sector",
             "industry"});
-            this.cboSortField.Location = new System.Drawing.Point(69, 453);
+            this.cboSortField.Location = new System.Drawing.Point(68, 435);
             this.cboSortField.Name = "cboSortField";
             this.cboSortField.Size = new System.Drawing.Size(121, 21);
             this.cboSortField.TabIndex = 12;
@@ -201,7 +212,7 @@
             // 
             this.lblField.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblField.AutoSize = true;
-            this.lblField.Location = new System.Drawing.Point(15, 457);
+            this.lblField.Location = new System.Drawing.Point(14, 438);
             this.lblField.Name = "lblField";
             this.lblField.Size = new System.Drawing.Size(48, 13);
             this.lblField.TabIndex = 13;
@@ -212,7 +223,7 @@
             this.rbtnSortAsc.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.rbtnSortAsc.AutoSize = true;
             this.rbtnSortAsc.Checked = true;
-            this.rbtnSortAsc.Location = new System.Drawing.Point(214, 454);
+            this.rbtnSortAsc.Location = new System.Drawing.Point(195, 436);
             this.rbtnSortAsc.Name = "rbtnSortAsc";
             this.rbtnSortAsc.Size = new System.Drawing.Size(43, 17);
             this.rbtnSortAsc.TabIndex = 14;
@@ -224,7 +235,7 @@
             // 
             this.rbtnSortDesc.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.rbtnSortDesc.AutoSize = true;
-            this.rbtnSortDesc.Location = new System.Drawing.Point(263, 454);
+            this.rbtnSortDesc.Location = new System.Drawing.Point(244, 436);
             this.rbtnSortDesc.Name = "rbtnSortDesc";
             this.rbtnSortDesc.Size = new System.Drawing.Size(50, 17);
             this.rbtnSortDesc.TabIndex = 15;
@@ -236,7 +247,7 @@
             this.lblLimit.AccessibleRole = System.Windows.Forms.AccessibleRole.None;
             this.lblLimit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblLimit.AutoSize = true;
-            this.lblLimit.Location = new System.Drawing.Point(344, 456);
+            this.lblLimit.Location = new System.Drawing.Point(344, 438);
             this.lblLimit.Name = "lblLimit";
             this.lblLimit.Size = new System.Drawing.Size(28, 13);
             this.lblLimit.TabIndex = 16;
@@ -245,9 +256,9 @@
             // numLimit
             // 
             this.numLimit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.numLimit.Location = new System.Drawing.Point(390, 454);
+            this.numLimit.Location = new System.Drawing.Point(378, 435);
             this.numLimit.Maximum = new decimal(new int[] {
-            2000,
+            1000,
             0,
             0,
             0});
@@ -263,7 +274,7 @@
             // btnOk
             // 
             this.btnOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOk.Location = new System.Drawing.Point(435, 498);
+            this.btnOk.Location = new System.Drawing.Point(435, 461);
             this.btnOk.Name = "btnOk";
             this.btnOk.Size = new System.Drawing.Size(75, 23);
             this.btnOk.TabIndex = 18;
@@ -274,7 +285,7 @@
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.Location = new System.Drawing.Point(516, 498);
+            this.btnCancel.Location = new System.Drawing.Point(516, 461);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 19;
@@ -292,7 +303,7 @@
             this.groupBox1.Controls.Add(this.chkBookvalue_pos);
             this.groupBox1.Controls.Add(this.chkWallstreet_lo);
             this.groupBox1.Controls.Add(this.chkWallstreet_hi);
-            this.groupBox1.Location = new System.Drawing.Point(11, 340);
+            this.groupBox1.Location = new System.Drawing.Point(11, 331);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(585, 99);
             this.groupBox1.TabIndex = 21;
@@ -302,7 +313,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(206, 62);
+            this.label1.Location = new System.Drawing.Point(206, 111);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(32, 13);
             this.label1.TabIndex = 22;
@@ -310,7 +321,7 @@
             // 
             // txtCode
             // 
-            this.txtCode.Location = new System.Drawing.Point(244, 59);
+            this.txtCode.Location = new System.Drawing.Point(244, 108);
             this.txtCode.Name = "txtCode";
             this.txtCode.Size = new System.Drawing.Size(100, 20);
             this.txtCode.TabIndex = 23;
@@ -318,7 +329,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(356, 62);
+            this.label2.Location = new System.Drawing.Point(375, 84);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(35, 13);
             this.label2.TabIndex = 24;
@@ -327,7 +338,7 @@
             // 
             // txtName
             // 
-            this.txtName.Location = new System.Drawing.Point(431, 59);
+            this.txtName.Location = new System.Drawing.Point(431, 81);
             this.txtName.Name = "txtName";
             this.txtName.Size = new System.Drawing.Size(165, 20);
             this.txtName.TabIndex = 25;
@@ -336,7 +347,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(15, 62);
+            this.label3.Location = new System.Drawing.Point(15, 111);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(55, 13);
             this.label3.TabIndex = 26;
@@ -344,7 +355,7 @@
             // 
             // txtExchange
             // 
-            this.txtExchange.Location = new System.Drawing.Point(112, 59);
+            this.txtExchange.Location = new System.Drawing.Point(112, 108);
             this.txtExchange.Name = "txtExchange";
             this.txtExchange.Size = new System.Drawing.Size(78, 20);
             this.txtExchange.TabIndex = 27;
@@ -352,7 +363,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(14, 38);
+            this.label4.Location = new System.Drawing.Point(15, 84);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(38, 13);
             this.label4.TabIndex = 28;
@@ -361,7 +372,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(356, 37);
+            this.label5.Location = new System.Drawing.Point(375, 58);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(44, 13);
             this.label5.TabIndex = 29;
@@ -370,7 +381,7 @@
             // cboSector
             // 
             this.cboSector.FormattingEnabled = true;
-            this.cboSector.Location = new System.Drawing.Point(112, 34);
+            this.cboSector.Location = new System.Drawing.Point(112, 81);
             this.cboSector.Name = "cboSector";
             this.cboSector.Size = new System.Drawing.Size(232, 21);
             this.cboSector.TabIndex = 30;
@@ -379,14 +390,14 @@
             // cboIndustry
             // 
             this.cboIndustry.FormattingEnabled = true;
-            this.cboIndustry.Location = new System.Drawing.Point(431, 34);
+            this.cboIndustry.Location = new System.Drawing.Point(431, 54);
             this.cboIndustry.Name = "cboIndustry";
             this.cboIndustry.Size = new System.Drawing.Size(165, 21);
             this.cboIndustry.TabIndex = 31;
             // 
             // txtNameScreener
             // 
-            this.txtNameScreener.Location = new System.Drawing.Point(112, 8);
+            this.txtNameScreener.Location = new System.Drawing.Point(112, 55);
             this.txtNameScreener.Name = "txtNameScreener";
             this.txtNameScreener.Size = new System.Drawing.Size(232, 20);
             this.txtNameScreener.TabIndex = 33;
@@ -394,7 +405,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(15, 11);
+            this.label6.Location = new System.Drawing.Point(15, 58);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(79, 13);
             this.label6.TabIndex = 34;
@@ -404,7 +415,7 @@
             // 
             this.btnClearFilters.Image = global::EODAddIn.Properties.Resources.icons8_close_16;
             this.btnClearFilters.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClearFilters.Location = new System.Drawing.Point(347, 88);
+            this.btnClearFilters.Location = new System.Drawing.Point(347, 148);
             this.btnClearFilters.Name = "btnClearFilters";
             this.btnClearFilters.Size = new System.Drawing.Size(113, 27);
             this.btnClearFilters.TabIndex = 32;
@@ -417,7 +428,7 @@
             this.btnAddFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnAddFilter.Image = ((System.Drawing.Image)(resources.GetObject("btnAddFilter.Image")));
             this.btnAddFilter.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnAddFilter.Location = new System.Drawing.Point(469, 88);
+            this.btnAddFilter.Location = new System.Drawing.Point(469, 148);
             this.btnAddFilter.Name = "btnAddFilter";
             this.btnAddFilter.Size = new System.Drawing.Size(127, 27);
             this.btnAddFilter.TabIndex = 20;
@@ -426,19 +437,47 @@
             this.btnAddFilter.UseVisualStyleBackColor = true;
             this.btnAddFilter.Click += new System.EventHandler(this.btnAddFilter_Click);
             // 
-            // clearToolStripMenuItem
+            // linkLabel1
             // 
-            this.clearToolStripMenuItem.Image = global::EODAddIn.Properties.Resources.icons8_close_16;
-            this.clearToolStripMenuItem.Name = "clearToolStripMenuItem";
-            this.clearToolStripMenuItem.Size = new System.Drawing.Size(101, 22);
-            this.clearToolStripMenuItem.Text = "Clear";
-            this.clearToolStripMenuItem.Click += new System.EventHandler(this.ClearToolStripMenuItem_Click);
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.linkLabel1.Location = new System.Drawing.Point(162, 26);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(92, 15);
+            this.linkLabel1.TabIndex = 36;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "documentation.";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label7.Location = new System.Drawing.Point(15, 9);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(531, 15);
+            this.label7.TabIndex = 37;
+            this.label7.Text = "You can find a detailed description of the Screener API, which is used to make Sc" +
+    "reener requests";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label8.Location = new System.Drawing.Point(15, 24);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(146, 15);
+            this.label8.TabIndex = 38;
+            this.label8.Text = "and its parameters, in our";
             // 
             // FrmScreener
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(605, 533);
+            this.ClientSize = new System.Drawing.Size(605, 496);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.label7);
+            this.Controls.Add(this.linkLabel1);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.txtNameScreener);
             this.Controls.Add(this.btnClearFilters);
@@ -463,7 +502,7 @@
             this.Controls.Add(this.lblField);
             this.Controls.Add(this.cboSortField);
             this.Controls.Add(this.dataGridViewFilters);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Name = "FrmScreener";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
@@ -516,5 +555,8 @@
         private System.Windows.Forms.ToolStripMenuItem clearToolStripMenuItem;
         private System.Windows.Forms.TextBox txtNameScreener;
         private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
     }
 }

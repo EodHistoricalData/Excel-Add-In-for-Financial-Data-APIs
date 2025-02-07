@@ -371,7 +371,14 @@ namespace EODAddIn.Forms
             txtCode.Text = Screener.Code;
             txtName.Text = Screener.Name;
             txtExchange.Text = Screener.Exchange;
-            numLimit.Value = Screener.Limit;
+            if (Screener.Limit > 1000)
+            {
+                numLimit.Value = 1000;
+            }
+            else
+            {
+                numLimit.Value = Screener.Limit;
+            }
 
             if (Screener.Signals != null)
             {
@@ -876,9 +883,9 @@ namespace EODAddIn.Forms
             dataGridViewFilters.Rows.RemoveAt(dataGridViewFilters.CurrentCell.RowIndex);
         }
 
-        private void clearToolStripMenuItem_Click(object sender, EventArgs e)
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-
+            System.Diagnostics.Process.Start("https://eodhd.com/financial-apis/stock-market-screener-api");
         }
     }
 }

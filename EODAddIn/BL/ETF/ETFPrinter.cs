@@ -463,8 +463,8 @@ namespace EODAddIn.BL.ETFPrinter
             row++;
 
             sh.Cells[row, column] = "Consumer Cyclicals";
-            sh.Cells[row, column + 1] = data.ETF_Data.Sector_Weights.ConsumerCyclisials.EquityPercent;
-            sh.Cells[row, column + 2] = data.ETF_Data.Sector_Weights.ConsumerCyclisials.RelativeToCategory;
+            sh.Cells[row, column + 1] = data.ETF_Data.Sector_Weights.ConsumerCyclicals.EquityPercent;
+            sh.Cells[row, column + 2] = data.ETF_Data.Sector_Weights.ConsumerCyclicals.RelativeToCategory;
             row++;
 
             sh.Cells[row, column] = "Financial Services";
