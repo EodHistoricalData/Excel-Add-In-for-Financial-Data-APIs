@@ -1,8 +1,12 @@
 ﻿using EOD.Model.BulkFundamental;
 using EODAddIn.Program;
+using EODAddIn.Utils;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
+
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace EODAddIn.Forms
 {
@@ -60,6 +64,58 @@ namespace EODAddIn.Forms
             //string warning = "You are going to download " + Tickers.Count + " symbols.";
             DialogResult =  DialogResult.OK;
             Close();
+        }
+
+        private void FromTxt_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog())
+            {
+                openFileDialog.Filter = "txt files (*.txt)|*.txt";
+
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string filePath = openFileDialog.FileName;
+
+                    using (StreamReader fstream = new StreamReader(filePath))
+                    {
+                        while (!fstream.EndOfStream)
+                        {
+                            string text = fstream.ReadLine();
+                            int i = gridTickers.Rows.Add();
+                            gridTickers.Rows[i].Cells[0].Value = text;
+                        }
+                        fstream.Close();
+                    }
+                }
+            }
+        }
+
+        private void FromExcel_Click(object sender, EventArgs e)
+        {
+            FrmSelectRange frm = new FrmSelectRange();
+            tsmiFromExcel.Enabled = false;
+            frm.Show(new WinHwnd());
+            frm.FormClosing += FrmSelectRangeClosing;
+        }
+
+        private void FrmSelectRangeClosing(object sender, FormClosingEventArgs e)
+        {
+            FrmSelectRange frm = (FrmSelectRange)sender;
+            if (ExcelUtils.IsRange(frm.RangeAddress))
+            {
+                Excel.Range range = Globals.ThisAddIn.Application.Range[frm.RangeAddress];
+
+                foreach (Excel.Range cell in range)
+                {
+                    string txt = cell.Text;
+                    if (!string.IsNullOrEmpty(txt))
+                    {
+                        int i = gridTickers.Rows.Add();
+                        gridTickers.Rows[i].Cells[0].Value = cell.Text;
+                    }
+                }
+            }
+            tsmiFromExcel.Enabled = true;
         }
     }
 }

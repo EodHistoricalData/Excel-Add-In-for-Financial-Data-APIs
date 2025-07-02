@@ -34,9 +34,13 @@
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.tsmiFindTicker = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiFromTxt = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiFromExcel = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiClearTicker = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
             this.cboTypeOfOutput = new System.Windows.Forms.ComboBox();
+            this.tsmiLoadTickers = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.gridTickers)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -77,10 +81,11 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tsmiFindTicker,
+            this.toolStripMenuItem1,
             this.tsmiClearTicker});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(284, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(284, 25);
             this.menuStrip1.TabIndex = 23;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -88,15 +93,41 @@
             // 
             this.tsmiFindTicker.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFindTicker.Image")));
             this.tsmiFindTicker.Name = "tsmiFindTicker";
-            this.tsmiFindTicker.Size = new System.Drawing.Size(90, 20);
+            this.tsmiFindTicker.Size = new System.Drawing.Size(95, 21);
             this.tsmiFindTicker.Text = "Find ticker";
             this.tsmiFindTicker.Click += new System.EventHandler(this.TsmiFindTicker_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiFromTxt,
+            this.tsmiFromExcel});
+            this.toolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripMenuItem1.Image")));
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(75, 21);
+            this.toolStripMenuItem1.Text = "Import";
+            // 
+            // tsmiFromTxt
+            // 
+            this.tsmiFromTxt.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFromTxt.Image")));
+            this.tsmiFromTxt.Name = "tsmiFromTxt";
+            this.tsmiFromTxt.Size = new System.Drawing.Size(180, 22);
+            this.tsmiFromTxt.Text = "From file txt";
+            this.tsmiFromTxt.Click += new System.EventHandler(this.FromTxt_Click);
+            // 
+            // tsmiFromExcel
+            // 
+            this.tsmiFromExcel.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFromExcel.Image")));
+            this.tsmiFromExcel.Name = "tsmiFromExcel";
+            this.tsmiFromExcel.Size = new System.Drawing.Size(180, 22);
+            this.tsmiFromExcel.Text = "From Excel range";
+            this.tsmiFromExcel.Click += new System.EventHandler(this.FromExcel_Click);
             // 
             // tsmiClearTicker
             // 
             this.tsmiClearTicker.Image = ((System.Drawing.Image)(resources.GetObject("tsmiClearTicker.Image")));
             this.tsmiClearTicker.Name = "tsmiClearTicker";
-            this.tsmiClearTicker.Size = new System.Drawing.Size(80, 20);
+            this.tsmiClearTicker.Size = new System.Drawing.Size(86, 21);
             this.tsmiClearTicker.Text = "Clear list";
             this.tsmiClearTicker.Click += new System.EventHandler(this.ClearTicker_Click);
             // 
@@ -120,6 +151,11 @@
             this.cboTypeOfOutput.Size = new System.Drawing.Size(163, 21);
             this.cboTypeOfOutput.TabIndex = 24;
             this.cboTypeOfOutput.Text = "One worksheet";
+            // 
+            // tsmiLoadTickers
+            // 
+            this.tsmiLoadTickers.Name = "tsmiLoadTickers";
+            this.tsmiLoadTickers.Size = new System.Drawing.Size(12, 21);
             // 
             // FrmGetBulk
             // 
@@ -154,5 +190,9 @@
         private System.Windows.Forms.ToolStripMenuItem tsmiClearTicker;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cboTypeOfOutput;
+        private System.Windows.Forms.ToolStripMenuItem tsmiLoadTickers;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem tsmiFromTxt;
+        private System.Windows.Forms.ToolStripMenuItem tsmiFromExcel;
     }
 }

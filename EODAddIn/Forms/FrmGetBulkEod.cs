@@ -125,8 +125,8 @@ namespace EODAddIn.Forms
         private void tsmiFromExcel_Click(object sender, EventArgs e)
         {
             FrmSelectRange frm = new FrmSelectRange();
-            frm.ShowDialog(new WinHwnd());
             tsmiFromExcel.Enabled = false;
+            frm.Show(new WinHwnd());
             frm.FormClosing += FrmSelectRangeClosing;
         }
 

@@ -502,7 +502,7 @@ namespace EODAddIn
 
                 if (FormShower.ShowActiveForm()) return;
                 Forms.FrmGetBulk frm = new Forms.FrmGetBulk();
-                frm.ShowDialog(new WinHwnd());
+                frm.Show(new WinHwnd());
                 if (frm.DialogResult == DialogResult.OK)
                 {
                     BtnGetBulk.Label = "Processing";
@@ -569,7 +569,7 @@ namespace EODAddIn
 
                 if (FormShower.ShowActiveForm()) return;
                 FrmGetBulkEod frm = new FrmGetBulkEod();
-                frm.ShowDialog(new WinHwnd());
+                frm.Show(new WinHwnd());
 
                 if (frm.DialogResult == DialogResult.OK)
                 {
