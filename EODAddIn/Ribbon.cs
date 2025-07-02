@@ -500,33 +500,13 @@ namespace EODAddIn
                     return;
                 }
 
-                if (FormShower.ShowActiveForm()) return;
-                Forms.FrmGetBulk frm = new Forms.FrmGetBulk();
-                frm.Show(new WinHwnd());
-                if (frm.DialogResult == DialogResult.OK)
-                {
-                    BtnGetBulk.Label = "Processing";
-                    BtnGetBulk.Enabled = false;
-                    switch (frm.BulkTypeOfOutput)
-                    {
-                        case "Separated":
-                            BulkFundamentalPrinter.PrintBulkFundamentals(frm.Tickers);
-                            break;
-                        case "One worksheet":
-                            ScreenerPrinter.PrintScreenerBulk(frm.Tickers);
-                            break;
-                    }
-                }
+                FormShower.FrmGetBulkShow();
+
             }
             catch (Exception ex)
             {
                 Program.ErrorReport errorReport = new Program.ErrorReport(ex);
                 errorReport.ShowAndSend();
-            }
-            finally
-            {
-                BtnGetBulk.Label = "Bulk Fundamentals";
-                BtnGetBulk.Enabled = true;
             }
         }
 

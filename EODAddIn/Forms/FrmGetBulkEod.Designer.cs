@@ -149,7 +149,7 @@
             this.BtnGet.Name = "BtnGet";
             this.BtnGet.Size = new System.Drawing.Size(75, 23);
             this.BtnGet.TabIndex = 13;
-            this.BtnGet.Text = "Get";
+            this.BtnGet.Text = "Get Data";
             this.BtnGet.UseVisualStyleBackColor = true;
             this.BtnGet.Click += new System.EventHandler(this.BtnGet_Click);
             // 

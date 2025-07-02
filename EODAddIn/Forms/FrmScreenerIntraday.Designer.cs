@@ -98,7 +98,7 @@
             this.btnScreenLoadIntraday.Name = "btnScreenLoadIntraday";
             this.btnScreenLoadIntraday.Size = new System.Drawing.Size(75, 23);
             this.btnScreenLoadIntraday.TabIndex = 6;
-            this.btnScreenLoadIntraday.Text = "Load";
+            this.btnScreenLoadIntraday.Text = "Get Data";
             this.btnScreenLoadIntraday.UseVisualStyleBackColor = true;
             this.btnScreenLoadIntraday.Click += new System.EventHandler(this.btnScreenLoadIntraday_Click);
             // 
@@ -106,7 +106,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(313, 136);
+            this.ClientSize = new System.Drawing.Size(285, 135);
             this.Controls.Add(this.btnScreenLoadIntraday);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);

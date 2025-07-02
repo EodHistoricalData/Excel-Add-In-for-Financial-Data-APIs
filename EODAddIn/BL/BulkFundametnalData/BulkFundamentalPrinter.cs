@@ -4,6 +4,7 @@ using System.Reflection;
 using Excel = Microsoft.Office.Interop.Excel;
 using static EODAddIn.Utils.ExcelUtils;
 using EODAddIn.BL.BulkFundametnalData;
+using System.Linq;
 
 namespace EODAddIn.BL.BulkFundamental
 {
@@ -22,8 +23,9 @@ namespace EODAddIn.BL.BulkFundamental
                 {
                     string[] subs = ticker.Split('.');
                     tickerAndExchanges.Add((ticker, subs[1]));
-                    exchanges.Add(subs[1]);
+                    exchanges.Add(subs[1].ToLower());
                 }
+                exchanges = exchanges.Distinct().ToList();
                 foreach (string exchange in exchanges)
                 {
                     foreach ((string, string) tickerAndExchange in tickerAndExchanges)
@@ -401,7 +403,7 @@ namespace EODAddIn.BL.BulkFundamental
 
             row = PrintBulkFundamentalIncomeStatement(data, sh.Cells[row, 1]);
 
-            
+
             return row;
         }
         private static int PrintBulkFundamentalBalanceSheet(BulkFundamentalData data, Excel.Range range)

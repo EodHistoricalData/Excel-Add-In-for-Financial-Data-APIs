@@ -51,7 +51,7 @@
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(75, 23);
             this.btnLoad.TabIndex = 19;
-            this.btnLoad.Text = "Load";
+            this.btnLoad.Text = "Get Data";
             this.btnLoad.UseVisualStyleBackColor = true;
             this.btnLoad.Click += new System.EventHandler(this.BtnLoad_Click);
             // 
@@ -111,7 +111,7 @@
             // 
             this.tsmiFromTxt.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFromTxt.Image")));
             this.tsmiFromTxt.Name = "tsmiFromTxt";
-            this.tsmiFromTxt.Size = new System.Drawing.Size(180, 22);
+            this.tsmiFromTxt.Size = new System.Drawing.Size(177, 22);
             this.tsmiFromTxt.Text = "From file txt";
             this.tsmiFromTxt.Click += new System.EventHandler(this.FromTxt_Click);
             // 
@@ -119,7 +119,7 @@
             // 
             this.tsmiFromExcel.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFromExcel.Image")));
             this.tsmiFromExcel.Name = "tsmiFromExcel";
-            this.tsmiFromExcel.Size = new System.Drawing.Size(180, 22);
+            this.tsmiFromExcel.Size = new System.Drawing.Size(177, 22);
             this.tsmiFromExcel.Text = "From Excel range";
             this.tsmiFromExcel.Click += new System.EventHandler(this.FromExcel_Click);
             // 
@@ -144,7 +144,7 @@
             // 
             this.cboTypeOfOutput.FormattingEnabled = true;
             this.cboTypeOfOutput.Items.AddRange(new object[] {
-            "One worksheet",
+            "Сombined",
             "Separated"});
             this.cboTypeOfOutput.Location = new System.Drawing.Point(109, 281);
             this.cboTypeOfOutput.Name = "cboTypeOfOutput";

@@ -1,4 +1,6 @@
-﻿using EODAddIn.Program;
+﻿using EOD.Model.Bulks;
+using EODAddIn.BL.BulkEod;
+using EODAddIn.Program;
 using EODAddIn.Utils;
 using System;
 using System.Collections.Generic;
@@ -73,6 +75,20 @@ namespace EODAddIn.Forms
             Settings.Save();
 
             DialogResult = DialogResult.OK;
+
+            string exchange = string.IsNullOrEmpty(Exchange) ? "US" : Exchange;
+            string type = "end-of-day data";
+
+            DateTime date = Date;
+            string tickers = string.Join(",", Tickers);
+
+            List<Bulk> res = GetBulkEod.GetBulkEodData(exchange, EODHistoricalData.Wrapper.Model.Bulks.BulkQueryTypes.EndOfDay, date, tickers).Result;
+            if (IsExchange)
+            {
+                exchange = "Tickers";
+            }
+            BulkEodPrinter.PrintBulkEod(res, exchange, date, tickers, type);
+
             Close();
         }
 

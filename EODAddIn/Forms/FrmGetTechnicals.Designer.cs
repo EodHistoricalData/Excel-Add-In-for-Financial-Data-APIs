@@ -69,7 +69,7 @@
             this.tsmiClearTicker});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(284, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(284, 25);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -77,7 +77,7 @@
             // 
             this.tsmiFindTicker.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFindTicker.Image")));
             this.tsmiFindTicker.Name = "tsmiFindTicker";
-            this.tsmiFindTicker.Size = new System.Drawing.Size(90, 20);
+            this.tsmiFindTicker.Size = new System.Drawing.Size(95, 21);
             this.tsmiFindTicker.Text = "Find ticker";
             this.tsmiFindTicker.Click += new System.EventHandler(this.tsmiFindTicker_Click);
             // 
@@ -88,14 +88,14 @@
             this.tsmiFromExcel});
             this.tsmiLoadTickers.Image = ((System.Drawing.Image)(resources.GetObject("tsmiLoadTickers.Image")));
             this.tsmiLoadTickers.Name = "tsmiLoadTickers";
-            this.tsmiLoadTickers.Size = new System.Drawing.Size(71, 20);
+            this.tsmiLoadTickers.Size = new System.Drawing.Size(75, 21);
             this.tsmiLoadTickers.Text = "Import";
             // 
             // tsmiFromTxt
             // 
             this.tsmiFromTxt.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFromTxt.Image")));
             this.tsmiFromTxt.Name = "tsmiFromTxt";
-            this.tsmiFromTxt.Size = new System.Drawing.Size(180, 22);
+            this.tsmiFromTxt.Size = new System.Drawing.Size(177, 22);
             this.tsmiFromTxt.Text = "From file txt";
             this.tsmiFromTxt.Click += new System.EventHandler(this.tsmiFromTxt_Click);
             // 
@@ -103,7 +103,7 @@
             // 
             this.tsmiFromExcel.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFromExcel.Image")));
             this.tsmiFromExcel.Name = "tsmiFromExcel";
-            this.tsmiFromExcel.Size = new System.Drawing.Size(180, 22);
+            this.tsmiFromExcel.Size = new System.Drawing.Size(177, 22);
             this.tsmiFromExcel.Text = "From Excel range";
             this.tsmiFromExcel.Click += new System.EventHandler(this.tsmiFromExcel_Click);
             // 
@@ -111,7 +111,7 @@
             // 
             this.tsmiClearTicker.Image = ((System.Drawing.Image)(resources.GetObject("tsmiClearTicker.Image")));
             this.tsmiClearTicker.Name = "tsmiClearTicker";
-            this.tsmiClearTicker.Size = new System.Drawing.Size(80, 20);
+            this.tsmiClearTicker.Size = new System.Drawing.Size(86, 21);
             this.tsmiClearTicker.Text = "Clear list";
             this.tsmiClearTicker.Click += new System.EventHandler(this.ClearTicker_Click);
             // 
@@ -345,7 +345,7 @@
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(84, 23);
             this.btnLoad.TabIndex = 33;
-            this.btnLoad.Text = "Download";
+            this.btnLoad.Text = "Get Data";
             this.btnLoad.UseVisualStyleBackColor = true;
             this.btnLoad.Click += new System.EventHandler(this.BtnLoad_Click);
             // 

@@ -1,4 +1,6 @@
 ﻿using EOD.Model.BulkFundamental;
+using EODAddIn.BL.BulkFundamental;
+using EODAddIn.BL.Screener;
 using EODAddIn.Program;
 using EODAddIn.Utils;
 using System;
@@ -54,6 +56,16 @@ namespace EODAddIn.Forms
                     Tickers.Add(ticker);
                 }
                 BulkTypeOfOutput = cboTypeOfOutput.Text;
+
+                switch (BulkTypeOfOutput)
+                {
+                    case "Separated":
+                        BulkFundamentalPrinter.PrintBulkFundamentals(Tickers);
+                        break;
+                    case "Сombined":
+                        ScreenerPrinter.PrintScreenerBulk(Tickers);
+                        break;
+                }
             }
             catch
             {

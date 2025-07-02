@@ -60,7 +60,7 @@ namespace EODAddIn.Forms
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(75, 23);
             this.btnLoad.TabIndex = 6;
-            this.btnLoad.Text = "Load";
+            this.btnLoad.Text = "Get Data";
             this.btnLoad.UseVisualStyleBackColor = true;
             this.btnLoad.Click += new System.EventHandler(this.BtnLoad_Click);
             // 
@@ -70,7 +70,7 @@ namespace EODAddIn.Forms
             this.tsmiFindTicker});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(284, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(284, 25);
             this.menuStrip1.TabIndex = 7;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -78,7 +78,7 @@ namespace EODAddIn.Forms
             // 
             this.tsmiFindTicker.Image = ((System.Drawing.Image)(resources.GetObject("tsmiFindTicker.Image")));
             this.tsmiFindTicker.Name = "tsmiFindTicker";
-            this.tsmiFindTicker.Size = new System.Drawing.Size(90, 20);
+            this.tsmiFindTicker.Size = new System.Drawing.Size(95, 21);
             this.tsmiFindTicker.Text = "Find ticker";
             this.tsmiFindTicker.Click += new System.EventHandler(this.TsmiFindTicker_Click);
             // 
