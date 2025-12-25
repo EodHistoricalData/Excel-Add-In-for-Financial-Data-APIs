@@ -287,9 +287,9 @@ namespace EODAddIn.Forms
             "One worksheet",
             "Separated with chart",
             "Separated without chart"});
-            this.cboTypeOfOutput.Location = new System.Drawing.Point(111, 357);
+            this.cboTypeOfOutput.Location = new System.Drawing.Point(101, 357);
             this.cboTypeOfOutput.Name = "cboTypeOfOutput";
-            this.cboTypeOfOutput.Size = new System.Drawing.Size(161, 21);
+            this.cboTypeOfOutput.Size = new System.Drawing.Size(171, 21);
             this.cboTypeOfOutput.TabIndex = 21;
             this.cboTypeOfOutput.Text = "One worksheet";
             // 

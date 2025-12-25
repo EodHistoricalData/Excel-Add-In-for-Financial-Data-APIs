@@ -34,7 +34,7 @@ namespace EODAddIn.Forms
         {
             if (string.IsNullOrEmpty(txtSearch.Text)) return;
             gridResult.Rows.Clear();
-            List<EOD.Model.SearchResult> searchResults = JsonConvert.DeserializeObject<List<EOD.Model.SearchResult>>(Response.GET($"https://eodhistoricaldata.com/api/query-search-extended/?q={txtSearch.Text}"));
+            List<EOD.Model.SearchResult> searchResults = JsonConvert.DeserializeObject<List<EOD.Model.SearchResult>>(Response.GET($"https://eodhd.com/api/search/{txtSearch.Text}?api_token={Program.Program.APIKey}&fmt=json"));
 
             foreach (EOD.Model.SearchResult result in searchResults)
             {
