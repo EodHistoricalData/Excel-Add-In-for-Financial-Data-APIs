@@ -21,7 +21,6 @@ namespace EODAddIn.BL.BulkEod
             }
             try
             {
-                type = type == null ? "end-of-day data" : type;
                 string sheetName = GetWorksheetNewName(exchange + " Bulk (" + type + ")");
                 Excel.Worksheet worksheet = AddSheet(sheetName);
                 int row = 1;
@@ -31,7 +30,7 @@ namespace EODAddIn.BL.BulkEod
 
                 switch (type)
                 {
-                    case "end-of-day data":
+                    case "eod":
                         {
                             // header
                             worksheet.Cells[row, column] = "Code";
@@ -42,7 +41,10 @@ namespace EODAddIn.BL.BulkEod
                             worksheet.Cells[row, column + 5] = "Low";
                             worksheet.Cells[row, column + 6] = "Close";
                             worksheet.Cells[row, column + 7] = "Adjusted Close";
-                            worksheet.Cells[row, column + 8] = "Volume";
+                            worksheet.Cells[row, column + 8] = "Prev_Close";
+                            worksheet.Cells[row, column + 9] = "Volume";
+                            worksheet.Cells[row, column + 10] = "Change";
+                            worksheet.Cells[row, column + 11] = "Change_p";
                             row++;
                             // data
                             foreach (EOD.Model.Bulks.Bulk item in data)
@@ -55,7 +57,10 @@ namespace EODAddIn.BL.BulkEod
                                 worksheet.Cells[row, column + 5] = item.Low;
                                 worksheet.Cells[row, column + 6] = item.Close;
                                 worksheet.Cells[row, column + 7] = item.Adjusted_Close;
-                                worksheet.Cells[row, column + 8] = item.Volume;
+                                worksheet.Cells[row, column + 8] = item.Prev_Close;
+                                worksheet.Cells[row, column + 9] = item.Volume;
+                                worksheet.Cells[row, column + 10] = item.Change;
+                                worksheet.Cells[row, column + 11] = item.Change_p;
                                 row++;
                             }
 
@@ -116,9 +121,9 @@ namespace EODAddIn.BL.BulkEod
                         }
                 }
             }
-            catch
+            catch (Exception ex)
             {
-
+                MessageBox.Show(ex.Message);
             }
             finally
             {

@@ -4,10 +4,11 @@ using EODAddIn.Program;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace EODAddIn.BL.BulkEod
 {
-    internal class GetBulkEod
+    public class GetBulkEod
     {
         private static string AppName = Settings.Data.AppName;
         private static string ApiKey = Settings.Data.APIKey;

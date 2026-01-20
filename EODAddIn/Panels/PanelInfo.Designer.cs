@@ -66,7 +66,7 @@ namespace EODAddIn.Panels
             this.btnRegister.ForeColor = System.Drawing.Color.White;
             this.btnRegister.Location = new System.Drawing.Point(25, 224);
             this.btnRegister.Name = "btnRegister";
-            this.btnRegister.Size = new System.Drawing.Size(92, 41);
+            this.btnRegister.Size = new System.Drawing.Size(147, 41);
             this.btnRegister.TabIndex = 2;
             this.btnRegister.Text = "REGISTER";
             this.btnRegister.UseVisualStyleBackColor = false;
@@ -76,9 +76,9 @@ namespace EODAddIn.Panels
             // 
             this.btnLogin.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(182)))), ((int)(((byte)(214)))));
             this.btnLogin.ForeColor = System.Drawing.Color.White;
-            this.btnLogin.Location = new System.Drawing.Point(123, 224);
+            this.btnLogin.Location = new System.Drawing.Point(204, 224);
             this.btnLogin.Name = "btnLogin";
-            this.btnLogin.Size = new System.Drawing.Size(92, 41);
+            this.btnLogin.Size = new System.Drawing.Size(124, 41);
             this.btnLogin.TabIndex = 3;
             this.btnLogin.Text = "LOGIN";
             this.btnLogin.UseVisualStyleBackColor = false;
@@ -100,7 +100,7 @@ namespace EODAddIn.Panels
             this.btnAPIkey.ForeColor = System.Drawing.Color.White;
             this.btnAPIkey.Location = new System.Drawing.Point(25, 303);
             this.btnAPIkey.Name = "btnAPIkey";
-            this.btnAPIkey.Size = new System.Drawing.Size(92, 41);
+            this.btnAPIkey.Size = new System.Drawing.Size(147, 41);
             this.btnAPIkey.TabIndex = 5;
             this.btnAPIkey.Text = "API key";
             this.btnAPIkey.UseVisualStyleBackColor = false;
@@ -145,7 +145,7 @@ namespace EODAddIn.Panels
             this.btnDocumentation.ForeColor = System.Drawing.Color.White;
             this.btnDocumentation.Location = new System.Drawing.Point(25, 481);
             this.btnDocumentation.Name = "btnDocumentation";
-            this.btnDocumentation.Size = new System.Drawing.Size(124, 41);
+            this.btnDocumentation.Size = new System.Drawing.Size(147, 41);
             this.btnDocumentation.TabIndex = 9;
             this.btnDocumentation.Text = "DOCUMENTATION";
             this.btnDocumentation.UseVisualStyleBackColor = false;
@@ -155,9 +155,9 @@ namespace EODAddIn.Panels
             // 
             this.btnPrivacyPolicy.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(182)))), ((int)(((byte)(214)))));
             this.btnPrivacyPolicy.ForeColor = System.Drawing.Color.White;
-            this.btnPrivacyPolicy.Location = new System.Drawing.Point(8, 669);
+            this.btnPrivacyPolicy.Location = new System.Drawing.Point(25, 666);
             this.btnPrivacyPolicy.Name = "btnPrivacyPolicy";
-            this.btnPrivacyPolicy.Size = new System.Drawing.Size(109, 41);
+            this.btnPrivacyPolicy.Size = new System.Drawing.Size(147, 41);
             this.btnPrivacyPolicy.TabIndex = 10;
             this.btnPrivacyPolicy.Text = "Privacy Policy";
             this.btnPrivacyPolicy.UseVisualStyleBackColor = false;
@@ -178,7 +178,7 @@ namespace EODAddIn.Panels
             // 
             this.btnErrorReport.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(182)))), ((int)(((byte)(214)))));
             this.btnErrorReport.ForeColor = System.Drawing.Color.White;
-            this.btnErrorReport.Location = new System.Drawing.Point(156, 604);
+            this.btnErrorReport.Location = new System.Drawing.Point(204, 604);
             this.btnErrorReport.Name = "btnErrorReport";
             this.btnErrorReport.Size = new System.Drawing.Size(124, 41);
             this.btnErrorReport.TabIndex = 12;
@@ -192,7 +192,7 @@ namespace EODAddIn.Panels
             this.btnSendAnIdea.ForeColor = System.Drawing.Color.White;
             this.btnSendAnIdea.Location = new System.Drawing.Point(25, 604);
             this.btnSendAnIdea.Name = "btnSendAnIdea";
-            this.btnSendAnIdea.Size = new System.Drawing.Size(112, 41);
+            this.btnSendAnIdea.Size = new System.Drawing.Size(147, 41);
             this.btnSendAnIdea.TabIndex = 13;
             this.btnSendAnIdea.Text = "SEND AN IDEA";
             this.btnSendAnIdea.UseVisualStyleBackColor = false;
@@ -201,9 +201,9 @@ namespace EODAddIn.Panels
             // btnHide
             // 
             this.btnHide.BackColor = System.Drawing.Color.White;
-            this.btnHide.Location = new System.Drawing.Point(254, 669);
+            this.btnHide.Location = new System.Drawing.Point(204, 669);
             this.btnHide.Name = "btnHide";
-            this.btnHide.Size = new System.Drawing.Size(74, 38);
+            this.btnHide.Size = new System.Drawing.Size(124, 38);
             this.btnHide.TabIndex = 14;
             this.btnHide.Text = "HIDE";
             this.btnHide.UseVisualStyleBackColor = false;
@@ -213,7 +213,7 @@ namespace EODAddIn.Panels
             // 
             this.btnHowTo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(79)))), ((int)(((byte)(182)))), ((int)(((byte)(214)))));
             this.btnHowTo.ForeColor = System.Drawing.Color.White;
-            this.btnHowTo.Location = new System.Drawing.Point(167, 481);
+            this.btnHowTo.Location = new System.Drawing.Point(204, 481);
             this.btnHowTo.Name = "btnHowTo";
             this.btnHowTo.Size = new System.Drawing.Size(124, 41);
             this.btnHowTo.TabIndex = 16;

@@ -3,6 +3,7 @@ using EOD.Model.Fundamental;
 using EODAddIn.Program;
 using Microsoft.Office.Interop.Excel;
 using System;
+using System.Linq;
 using System.Reflection;
 using Form = System.Windows.Forms;
 namespace EODAddIn.Utils
@@ -75,15 +76,12 @@ namespace EODAddIn.Utils
 
         public static bool SheetExists(string name)
         {
-            try
-            {
-                Worksheet worksheet = _xlsApp.Worksheets[name];
-                return true;
-            }
-            catch (Exception)
+            Worksheet worksheet = _xlsApp.Worksheets.OfType<Worksheet>().FirstOrDefault(ws => ws.Name == name);
+            if (worksheet == null)
             {
                 return false;
             }
+            return true;
         }
 
         /// <summary>
@@ -436,7 +434,7 @@ namespace EODAddIn.Utils
             do
             {
                 i++;
-                if (i ==0)
+                if (i == 0)
                 {
                     name = sheetName;
                     name = ClearSheetName(name);

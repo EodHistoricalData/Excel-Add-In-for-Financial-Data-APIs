@@ -77,13 +77,13 @@ namespace EODAddIn.Forms
             DialogResult = DialogResult.OK;
 
             string exchange = string.IsNullOrEmpty(Exchange) ? "US" : Exchange;
-            string type = "end-of-day data";
+            string type = "eod";
 
             DateTime date = Date;
             string tickers = string.Join(",", Tickers);
 
             List<Bulk> res = GetBulkEod.GetBulkEodData(exchange, EODHistoricalData.Wrapper.Model.Bulks.BulkQueryTypes.EndOfDay, date, tickers).Result;
-            if (IsExchange)
+            if (!IsExchange)
             {
                 exchange = "Tickers";
             }

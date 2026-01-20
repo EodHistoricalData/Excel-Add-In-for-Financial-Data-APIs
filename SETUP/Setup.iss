@@ -33,7 +33,7 @@
 
 [Setup]
 ;Ïîäïèñûâàíèå êîäà
-SignTool=byparam {#SignTool} sign /a /fd SHA256 /n $q{#SingNameSSL}$q /t http://timestamp.comodoca.com/authenticode  /d $q{#AppName}$q $f
+;SignTool=byparam {#SignTool} sign /a /fd SHA256 /n $q{#SingNameSSL}$q /t http://timestamp.comodoca.com/authenticode  /d $q{#AppName}$q $f
 
 
 ;Èñïîëüçîâàòü ñãåíåðèðóåìûé VS GUI

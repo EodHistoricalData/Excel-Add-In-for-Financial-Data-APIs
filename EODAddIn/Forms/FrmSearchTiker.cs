@@ -50,9 +50,9 @@ namespace EODAddIn.Forms
 
         private void GridResult_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            Result.Code = gridResult.SelectedRows[e.RowIndex].Cells[0].Value.ToString();
-            Result.Exchange = gridResult.SelectedRows[e.RowIndex].Cells[1].Value.ToString();
-            Result.Name = gridResult.SelectedRows[e.RowIndex].Cells[2].Value.ToString();
+            Result.Code = gridResult.Rows[e.RowIndex].Cells[0].Value.ToString();
+            Result.Exchange = gridResult.Rows[e.RowIndex].Cells[1].Value.ToString();
+            Result.Name = gridResult.Rows[e.RowIndex].Cells[2].Value.ToString();
 
             Close();
         }

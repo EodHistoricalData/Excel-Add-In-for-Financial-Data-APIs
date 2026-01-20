@@ -514,7 +514,7 @@ namespace EODAddIn
 
         private void BtnListOfExchanges_Click(object sender, RibbonControlEventArgs e)
         {
-            System.Diagnostics.Process.Start("https://eodhd.com/financial-apis/list-supported-exchanges/?utm_source=p_c&utm_medium=excel&utm_campaign=exceladdin");
+            System.Diagnostics.Process.Start("https://eodhd.com/financial-apis/exchanges-api-list-of-tickers-and-trading-hours");
 
         }
 
