@@ -382,57 +382,46 @@ namespace EODAddIn.BL.ETFPrinter
             row++;
 
             sh.Cells[row, column + 1] = "Equity %";
-            sh.Cells[row, column + 2] = "Relative to Category";
             row++;
 
             sh.Cells[row, column] = "North America";
             sh.Cells[row, column + 1] = data.ETF_Data.World_Regions.NorthAmerica.EquityPercent;
-            sh.Cells[row, column + 2] = data.ETF_Data.World_Regions.NorthAmerica.RelativeToCategory;
             row++;
 
             sh.Cells[row, column] = "United Kingdom";
             sh.Cells[row, column + 1] = data.ETF_Data.World_Regions.UnitedKingdom.EquityPercent;
-            sh.Cells[row, column + 2] = data.ETF_Data.World_Regions.UnitedKingdom.RelativeToCategory;
             row++;
 
             sh.Cells[row, column] = "Europe Developed";
             sh.Cells[row, column + 1] = data.ETF_Data.World_Regions.EuropeDeveloped.EquityPercent;
-            sh.Cells[row, column + 2] = data.ETF_Data.World_Regions.EuropeDeveloped.RelativeToCategory;
             row++;
 
             sh.Cells[row, column] = "Europe Emerging";
             sh.Cells[row, column + 1] = data.ETF_Data.World_Regions.EuropeEmerging.EquityPercent;
-            sh.Cells[row, column + 2] = data.ETF_Data.World_Regions.EuropeEmerging.RelativeToCategory;
             row++;
 
             sh.Cells[row, column] = "Africa/Middle East";
             sh.Cells[row, column + 1] = data.ETF_Data.World_Regions.AfricaMiddleEast.EquityPercent;
-            sh.Cells[row, column + 2] = data.ETF_Data.World_Regions.AfricaMiddleEast.RelativeToCategory;
             row++;
 
             sh.Cells[row, column] = "Japan";
             sh.Cells[row, column + 1] = data.ETF_Data.World_Regions.Japan.EquityPercent;
-            sh.Cells[row, column + 2] = data.ETF_Data.World_Regions.Japan.RelativeToCategory;
             row++;
 
             sh.Cells[row, column] = "Australasia";
             sh.Cells[row, column + 1] = data.ETF_Data.World_Regions.Australasia.EquityPercent;
-            sh.Cells[row, column + 2] = data.ETF_Data.World_Regions.Australasia.RelativeToCategory;
             row++;
 
             sh.Cells[row, column] = "Asia Developed";
             sh.Cells[row, column + 1] = data.ETF_Data.World_Regions.AsiaDeveloped.EquityPercent;
-            sh.Cells[row, column + 2] = data.ETF_Data.World_Regions.AsiaDeveloped.RelativeToCategory;
             row++;
 
             sh.Cells[row, column] = "Asia Emerging";
             sh.Cells[row, column + 1] = data.ETF_Data.World_Regions.AsiaEmerging.EquityPercent;
-            sh.Cells[row, column + 2] = data.ETF_Data.World_Regions.AsiaEmerging.RelativeToCategory;
             row++;
 
             sh.Cells[row, column] = "Latin America";
             sh.Cells[row, column + 1] = data.ETF_Data.World_Regions.LatinAmerica.EquityPercent;
-            sh.Cells[row, column + 2] = data.ETF_Data.World_Regions.LatinAmerica.RelativeToCategory;
 
             return row;
         }
@@ -448,52 +437,42 @@ namespace EODAddIn.BL.ETFPrinter
             row++;
 
             sh.Cells[row, column + 1] = "Equity %";
-            sh.Cells[row, column + 2] = "Relative to Category";
             row++;
 
             sh.Cells[row, column] = "Basic Materials";
             sh.Cells[row, column + 1] = data.ETF_Data.Sector_Weights.BasicMaterials.EquityPercent;
-            sh.Cells[row, column + 2] = data.ETF_Data.Sector_Weights.BasicMaterials.RelativeToCategory;
             row++;
 
             sh.Cells[row, column] = "Consumer Cyclicals";
             sh.Cells[row, column + 1] = data.ETF_Data.Sector_Weights.ConsumerCyclicals.EquityPercent;
-            sh.Cells[row, column + 2] = data.ETF_Data.Sector_Weights.ConsumerCyclicals.RelativeToCategory;
             row++;
 
             sh.Cells[row, column] = "Financial Services";
             sh.Cells[row, column + 1] = data.ETF_Data.Sector_Weights.FinancialServices.EquityPercent;
-            sh.Cells[row, column + 2] = data.ETF_Data.Sector_Weights.FinancialServices.RelativeToCategory;
             row++;
 
             sh.Cells[row, column] = "Energy";
             sh.Cells[row, column + 1] = data.ETF_Data.Sector_Weights.Energy.EquityPercent;
-            sh.Cells[row, column + 2] = data.ETF_Data.Sector_Weights.Energy.RelativeToCategory;
             row++;
 
             sh.Cells[row, column] = "Industrials";
             sh.Cells[row, column + 1] = data.ETF_Data.Sector_Weights.Industrials.EquityPercent;
-            sh.Cells[row, column + 2] = data.ETF_Data.Sector_Weights.Industrials.RelativeToCategory;
             row++;
 
             sh.Cells[row, column] = "Technology";
             sh.Cells[row, column + 1] = data.ETF_Data.Sector_Weights.Technology.EquityPercent;
-            sh.Cells[row, column + 2] = data.ETF_Data.Sector_Weights.Technology.RelativeToCategory;
             row++;
 
             sh.Cells[row, column] = "Consumer Defensive";
             sh.Cells[row, column + 1] = data.ETF_Data.Sector_Weights.ConsumerDefencive.EquityPercent;
-            sh.Cells[row, column + 2] = data.ETF_Data.Sector_Weights.ConsumerDefencive.RelativeToCategory;
             row++;
 
             sh.Cells[row, column] = "Healthcare";
             sh.Cells[row, column + 1] = data.ETF_Data.Sector_Weights.Healthcare.EquityPercent;
-            sh.Cells[row, column + 2] = data.ETF_Data.Sector_Weights.Healthcare.RelativeToCategory;
             row++;
 
             sh.Cells[row, column] = "Utilities";
             sh.Cells[row, column + 1] = data.ETF_Data.Sector_Weights.Utilities.EquityPercent;
-            sh.Cells[row, column + 2] = data.ETF_Data.Sector_Weights.Utilities.RelativeToCategory;
 
             return row;
         }
@@ -509,7 +488,6 @@ namespace EODAddIn.BL.ETFPrinter
             row++;
 
             sh.Cells[row, column + 1] = "Fund %";
-            sh.Cells[row, column + 2] = "Relative to Category";
             row++;
 
             sh.Cells[row, column] = "EffectiveDuration";
@@ -519,7 +497,6 @@ namespace EODAddIn.BL.ETFPrinter
             foreach (KeyValuePair< string, EOD.Model.Fundamental.FixedIncomeData> item in data.ETF_Data.Fixed_Income)
             {
                 sh.Cells[row, column + 1] = item.Value.FundPercent;
-                sh.Cells[row, column + 2] = item.Value.RelativeToCategory;
                 row++;
             }
             return row;
@@ -550,14 +527,6 @@ namespace EODAddIn.BL.ETFPrinter
             sh.Cells[row, column + 5] = data.ETF_Data.Valuations_Growth.Valuations_Rates_Portfolio.DividendYieldFactor;
             row++;
 
-            sh.Cells[row, column] = "Valuations Rates To Category";
-            sh.Cells[row, column + 1] = data.ETF_Data.Valuations_Growth.Valuations_Rates_To_Category.PriceProspectiveEarnings;
-            sh.Cells[row, column + 2] = data.ETF_Data.Valuations_Growth.Valuations_Rates_To_Category.PriceBook;
-            sh.Cells[row, column + 3] = data.ETF_Data.Valuations_Growth.Valuations_Rates_To_Category.PriceSales;
-            sh.Cells[row, column + 4] = data.ETF_Data.Valuations_Growth.Valuations_Rates_To_Category.PriceCashFlow;
-            sh.Cells[row, column + 5] = data.ETF_Data.Valuations_Growth.Valuations_Rates_To_Category.DividendYieldFactor;
-            row++;
-
             sh.Cells[row, column + 1] = "Long-Term Projected Earnings Growth";
             sh.Cells[row, column + 2] = "Historical Earnings Growth";
             sh.Cells[row, column + 3] = "Sales Growth";
@@ -571,14 +540,6 @@ namespace EODAddIn.BL.ETFPrinter
             sh.Cells[row, column + 3] = data.ETF_Data.Valuations_Growth.Growth_Rates_Portfolio.SalesGrowth;
             sh.Cells[row, column + 4] = data.ETF_Data.Valuations_Growth.Growth_Rates_Portfolio.CashFlowGrowth;
             sh.Cells[row, column + 5] = data.ETF_Data.Valuations_Growth.Growth_Rates_Portfolio.BookValueGrowth;
-            row++;
-
-            sh.Cells[row, column] = "Growth Rates To Category";
-            sh.Cells[row, column + 1] = data.ETF_Data.Valuations_Growth.Growth_Rates_To_Category.LongTermProjectedEarningsGrowth;
-            sh.Cells[row, column + 2] = data.ETF_Data.Valuations_Growth.Growth_Rates_To_Category.HistoricalEarningsGrowth;
-            sh.Cells[row, column + 3] = data.ETF_Data.Valuations_Growth.Growth_Rates_To_Category.SalesGrowth;
-            sh.Cells[row, column + 4] = data.ETF_Data.Valuations_Growth.Growth_Rates_To_Category.CashFlowGrowth;
-            sh.Cells[row, column + 5] = data.ETF_Data.Valuations_Growth.Growth_Rates_To_Category.BookValueGrowth;
 
             return row;
         }
