@@ -36,7 +36,6 @@ namespace EODAddIn.Model
         public Dictionary<string, HoldingData> Top_10_Holdings { get; set; }
         public Dictionary<string, HoldingData> Holdings { get; set; }
         public ValuationGrowthData Valuations_Growth { get; set; }
-        public MorningStar MorningStar { get; set; }
         public Performance Performance { get; set; }
     }
 }

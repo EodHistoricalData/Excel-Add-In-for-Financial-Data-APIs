@@ -978,11 +978,6 @@ namespace EODAddIn.BL
             sh.Rows[$"{startGroup2}:{row}"].Group();
             row++;
 
-            startGroup2 = row + 1;
-            row = PrintEtfMorningStar(data, sh.Cells[row, 1]);
-
-            sh.Rows[$"{startGroup2}:{row}"].Group();
-            row++;
 
             startGroup2 = row + 1;
             row = PrintEtfPerformance(data, sh.Cells[row, 1]);
@@ -1307,30 +1302,6 @@ namespace EODAddIn.BL
             sh.Cells[row, column + 3] = data.ETF_Data.Valuations_Growth.Growth_Rates_To_Category.SalesGrowth;
             sh.Cells[row, column + 4] = data.ETF_Data.Valuations_Growth.Growth_Rates_To_Category.CashFlowGrowth;
             sh.Cells[row, column + 5] = data.ETF_Data.Valuations_Growth.Growth_Rates_To_Category.BookValueGrowth;
-
-            return row;
-        }
-
-        public static int PrintEtfMorningStar(FundamentalData data, Excel.Range range)
-        {
-            Excel.Worksheet sh = range.Parent;
-            int row = range.Row;
-            int column = range.Column;
-
-            sh.Cells[row, column] = "Morning Star";
-            sh.Cells[row, column].Font.Bold = true;
-            row++;
-
-            sh.Cells[row, column] = "Ratio";
-            sh.Cells[row, column + 1] = data.ETF_Data.MorningStar.Ratio;
-            row++;
-
-            sh.Cells[row, column] = "Category Benchmark";
-            sh.Cells[row, column + 1] = data.ETF_Data.MorningStar.Category_Benchmark;
-            row++;
-
-            sh.Cells[row, column] = "Sustainability Ratio";
-            sh.Cells[row, column + 1] = data.ETF_Data.MorningStar.Sustainability_Ratio;
 
             return row;
         }
