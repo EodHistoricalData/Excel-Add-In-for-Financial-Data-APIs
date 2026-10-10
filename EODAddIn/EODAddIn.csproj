@@ -280,7 +280,6 @@
     <Compile Include="Model\Intraday.cs" />
     <Compile Include="Model\Listing.cs" />
     <Compile Include="Model\MarketCapitalization.cs" />
-    <Compile Include="Model\MorningStar.cs" />
     <Compile Include="Model\Officer.cs" />
     <Compile Include="Model\Performance.cs" />
     <Compile Include="Model\SearchResult.cs" />
